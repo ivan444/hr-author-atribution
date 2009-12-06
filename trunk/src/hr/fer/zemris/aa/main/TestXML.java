@@ -17,7 +17,7 @@ public class TestXML {
 		}
 	
 		XMLMiner littleChineseGuy = new XMLMiner(args[0]);
-		List<Article> lista = littleChineseGuy.getArticlesByAuthor("Branimir Pofuk");//("Živko Kustić");
+		List<Article> lista = littleChineseGuy.getArticlesByAuthor("Živko Kustić");//("Živko Kustić");
 		
 		for (Article a : lista){
 			System.out.println();

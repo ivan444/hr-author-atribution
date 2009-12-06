@@ -3,6 +3,7 @@ package hr.fer.zemris.aa.xml;
 import hr.fer.zemris.aa.features.Article;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,9 +31,11 @@ public class XMLMiner {
 	    } catch (JDOMException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("Neuspješno otvaranje datoteke: " + path);
 		}
 	}
+	
+	
 	
 	/**
 	 * Metoda za dohvaćanje svih članaka određenog autora.
@@ -48,8 +51,7 @@ public class XMLMiner {
 		for (Element doc : children){
 
 			Element extra = getChild(doc, "extraInfo");
-			
-			if (extra == null) continue; //FIXME: ovo mora biti zbog zadnjeg koji nema extraInfo!?
+			//if (extra == null) continue; 
 			
 			Element a = getChild(extra, "author");
 			//if (a == null) continue;
@@ -67,7 +69,7 @@ public class XMLMiner {
 						title.getText(),
 						getChild(extra, "date").getText()
 				);
-				
+		
 				index.add(article);
 			}
 			 
