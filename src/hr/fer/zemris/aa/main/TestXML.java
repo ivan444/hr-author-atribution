@@ -26,6 +26,7 @@ public class TestXML {
 			System.out.println(a.getText());
 			System.out.println();
 		}
+		
 
 	}
 
