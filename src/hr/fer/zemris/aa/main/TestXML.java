@@ -4,6 +4,7 @@ import hr.fer.zemris.aa.features.Article;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
 import java.util.List;
+import java.util.Set;
 
 public class TestXML {
 
@@ -15,9 +16,32 @@ public class TestXML {
 			System.err.println("arg[0] = put do xml datoteke!");
 			System.exit(99);
 		}
-	
+		
 		XMLMiner littleChineseGuy = new XMLMiner(args[0]);
-		List<Article> lista = littleChineseGuy.getArticlesByAuthor("Živko Kustić");//("Živko Kustić");
+		
+		printAllAuthors(littleChineseGuy);
+		
+		//printArticlesByAuthor("Živko Kustić", littleChineseGuy);
+		
+
+	}
+
+	private static void printAllAuthors(XMLMiner littleChineseGuy) {
+		Set<String> authors = littleChineseGuy.getAuthors();
+		
+		System.out.println("------ AUTORI -------");
+		
+		int i = 0;
+		for (String a : authors) {
+			i++;
+			System.out.println(i + ". " + a);
+		}
+		
+	}
+
+	private static void printArticlesByAuthor(String author, XMLMiner littleChineseGuy) {
+		
+		List<Article> lista = littleChineseGuy.getArticlesByAuthor(author);
 		
 		for (Article a : lista){
 			System.out.println();
@@ -27,7 +51,6 @@ public class TestXML {
 			System.out.println();
 		}
 		
-
 	}
 
 }
