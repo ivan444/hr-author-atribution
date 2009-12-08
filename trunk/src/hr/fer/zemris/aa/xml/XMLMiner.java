@@ -4,8 +4,10 @@ import hr.fer.zemris.aa.features.Article;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -35,7 +37,21 @@ public class XMLMiner {
 		}
 	}
 	
-	
+	public Set<String> getAuthors(){
+		Set<String> authors = new HashSet<String>();
+		
+		Element root = this.document.getRootElement();
+		List<Element> children = root.getChildren();
+		
+		for (Element doc : children){
+			
+			Element author = getChild(getChild(doc, "extraInfo"), "author");
+			authors.add(author.getText());
+			
+		}
+		
+		return authors;
+	}
 	
 	/**
 	 * Metoda za dohvaćanje svih članaka određenog autora.
