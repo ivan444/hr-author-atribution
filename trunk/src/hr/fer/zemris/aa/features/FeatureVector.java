@@ -9,7 +9,7 @@ package hr.fer.zemris.aa.features;
 public class FeatureVector {
 	
 	private int[] rawVector;
-	
+	private String author, title;
 	/**
 	 * Konstruktor
 	 * @param size dimenzija vektora
@@ -49,6 +49,19 @@ public class FeatureVector {
 		}
 		sb.append("]");
 		return sb.toString();
+	}
+
+	public void describe(String author, String title) {
+		this.author = author;
+		this.title = title;	
+	}
+	
+	public String getAuthor(){
+		return this.author;
+	}
+	
+	public String getTitle(){
+		return this.title;
 	}
 
 }

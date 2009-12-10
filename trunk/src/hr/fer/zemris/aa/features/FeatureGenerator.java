@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +35,7 @@ public class FeatureGenerator {
 			FeatureClass omega = new FeatureClass(lista.size());
 			
 			for (Article article : lista) {
-				FeatureVector xi = this.vectorize(article.getText());
+				FeatureVector xi = this.vectorize(article);
 				omega.add(xi);
 			}
 			
@@ -50,9 +49,11 @@ public class FeatureGenerator {
 	/**
 	 * first hand solution, don't kill me, will optimize later :)
 	 */
-	public FeatureVector vectorize(String plainText){
+	public FeatureVector vectorize(Article article){
 		
+		String plainText = article.getText();
 		FeatureVector x = new FeatureVector(fWords.size());
+		x.describe(article.getAuthor(), article.getTitle());
 		
 		//reset
 		for (String fWord : this.fWords) {

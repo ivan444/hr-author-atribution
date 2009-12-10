@@ -9,8 +9,6 @@ import java.util.Set;
 public class TestXML {
 
 	public static void main(String[] args) {
-		//putanja trenutno arg[0], nisam htio staviti u projekt XML file jer je ogroman pa
-		//da ne opterecujemo svn, sami si upisite gdje ga drzite...
 		
 		if (args.length != 1) {
 			System.err.println("arg[0] = put do xml datoteke!");
@@ -19,9 +17,10 @@ public class TestXML {
 		
 		XMLMiner littleChineseGuy = new XMLMiner(args[0]);
 		
-		printAllAuthors(littleChineseGuy);
+		//zakomentirati jednu od metoda za bolju preglednost:
 		
-		//printArticlesByAuthor("Živko Kustić", littleChineseGuy);
+		printAllAuthors(littleChineseGuy);
+		printArticlesByAuthor("Živko Kustić", littleChineseGuy);
 		
 
 	}

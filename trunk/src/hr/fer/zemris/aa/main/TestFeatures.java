@@ -20,8 +20,10 @@ public class TestFeatures {
 
 		XMLMiner littleChineseGuy = new XMLMiner(args[0]);
 		
-		//getVectorsOfAuthor("Nino Đula", littleChineseGuy);
 		
+		//zakomentirati jednu od metoda za bolju preglednost:
+		
+		getVectorsOfAuthor("Nino Đula", littleChineseGuy);
 		createAllClasses(littleChineseGuy);
 
 	}
@@ -58,12 +60,13 @@ public class TestFeatures {
 
 		int i = 0;
 		for (Article article : lista) {
-			System.out.println("\n(" + (i + 1) + ") " + article.getAuthor()
-					+ ": \"" + article.getTitle() + "\"");
-
-			FeatureVector xi = fGen.vectorize(article.getText());
+			
+			FeatureVector xi = fGen.vectorize(article);
+			System.out.println("\n(" + (i + 1) + ") " + xi.getAuthor()
+					+ ": \"" + xi.getTitle() + "\"");
 			System.out.println(xi.toString());
 			i++;
+			
 		}
 	}
 
