@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import hr.fer.zemris.aa.features.Article;
+import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
+import hr.fer.zemris.aa.features.FeatureVector;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
 public class TestFeatures {
@@ -28,21 +30,21 @@ public class TestFeatures {
 		
 		FeatureGenerator fGen = new FeatureGenerator();
 		
-		Set<List<int[]>> allClasses = fGen.generateFeatureVectors(littleChineseGuy);
+		Set<FeatureClass> allClasses = fGen.generateFeatureVectors(littleChineseGuy);
 		
 		System.out.println("Stvoreno " + allClasses.size() + " klasa:");
 		
 		int i = 0;
 		int j = 0;
 		
-		for (List<int[]> vektori : allClasses) {
+		for (FeatureClass vektori : allClasses) {
 			
 			System.out.print("Omega(" + i++ + ") = { ");
 			
-			for (int[] x : vektori) {
+			for (int k = 0; k < vektori.size(); k++) {
 				System.out.print("x(" + j++ + "), ");
-				
 			}
+			
 			System.out.println("}");
 		}
 		
@@ -51,7 +53,7 @@ public class TestFeatures {
 	private static void getVectorsOfAuthor(String a, XMLMiner littleChineseGuy) {
 		
 		FeatureGenerator fGen = new FeatureGenerator();
-		
+		System.out.println(fGen.vectorRepresentation());
 		List<Article> lista = littleChineseGuy.getArticlesByAuthor(a);
 
 		int i = 0;
@@ -59,21 +61,10 @@ public class TestFeatures {
 			System.out.println("\n(" + (i + 1) + ") " + article.getAuthor()
 					+ ": \"" + article.getTitle() + "\"");
 
-			int[] xi = fGen.vectorize(article.getText());
-			ispisVektora(xi);
+			FeatureVector xi = fGen.vectorize(article.getText());
+			System.out.println(xi.toString());
 			i++;
-			// add vektor x tu class Omega(author)
 		}
-		
-	}
-
-	private static void ispisVektora(int[] x) {
-		System.out.print("x = [ ");
-		for (int xi : x) {
-			System.out.print(xi + " ");
-		}
-		System.out.println("]");
-
 	}
 
 }

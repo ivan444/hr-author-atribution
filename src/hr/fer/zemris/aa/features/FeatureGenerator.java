@@ -20,27 +20,27 @@ public class FeatureGenerator {
 	public FeatureGenerator(){
 		this.fWords = getFunctionWords();
 		this.count = new HashMap<String, Integer>();
+		for (String fWord : this.fWords) {
+			count.put(fWord, new Integer(0));
+		}
 	}
 	
-	public Set<List<int[]>> generateFeatureVectors(XMLMiner littleChineseGuy){
+	public Set<FeatureClass> generateFeatureVectors(XMLMiner littleChineseGuy){
 		
 		Set<String> authors = littleChineseGuy.getAuthors();
-		
-		//FIXME: UZASSS!!!! :D
-		Set<List<int[]>> allClasses = new HashSet<List<int[]>>();
+		Set<FeatureClass> allClasses = new HashSet<FeatureClass>();
 		
 		for (String author : authors) {
 			
 			List<Article> lista = littleChineseGuy.getArticlesByAuthor(author);
-			List<int[]> omega = new LinkedList<int[]>();
+			FeatureClass omega = new FeatureClass(lista.size());
 			
 			for (Article article : lista) {
-				int[] xi = this.vectorize(article.getText());
+				FeatureVector xi = this.vectorize(article.getText());
 				omega.add(xi);
 			}
 			
 			allClasses.add(omega);
-			
 		}
 		
 		return allClasses;
@@ -50,9 +50,9 @@ public class FeatureGenerator {
 	/**
 	 * first hand solution, don't kill me, will optimize later :)
 	 */
-	public int[] vectorize(String plainText){
+	public FeatureVector vectorize(String plainText){
 		
-		int[] x = new int[fWords.size()];
+		FeatureVector x = new FeatureVector(fWords.size());
 		
 		//reset
 		for (String fWord : this.fWords) {
@@ -76,11 +76,23 @@ public class FeatureGenerator {
 		int i = 0;
 		for (String key : count.keySet()) {
 			//System.out.println(key + " = " + count.get(key));
-			x[i] = count.get(key);
+			x.put(i,count.get(key));
 			i++;
 		}
-		
 		return x;
+	}
+	
+	
+	public String vectorRepresentation(){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("x = [ ");
+		for (String key : this.count.keySet()) {
+			sb.append(key + " ");
+		}
+		sb.append("]");
+		
+		return sb.toString();
 	}
 
 	//TODO: ovo je temp solution, treba bolje
