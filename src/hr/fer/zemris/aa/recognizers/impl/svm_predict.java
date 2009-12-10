@@ -1,4 +1,4 @@
-package hr.fer.zemris.aa.classifiers.svm;
+package hr.fer.zemris.aa.recognizers.impl;
 
 import libsvm.*;
 import java.io.*;
