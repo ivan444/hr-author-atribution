@@ -3,7 +3,6 @@ package hr.fer.zemris.aa.xml;
 import hr.fer.zemris.aa.features.Article;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
