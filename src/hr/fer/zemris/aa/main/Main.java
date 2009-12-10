@@ -1,10 +1,5 @@
 package hr.fer.zemris.aa.main;
 
-import hr.fer.zemris.aa.features.FeatureGenerator;
-import hr.fer.zemris.aa.xml.XMLMiner;
-import java.util.List;
-import java.util.Set;
-
 public class Main {
 
 	/**
