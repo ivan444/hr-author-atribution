@@ -1,73 +1,39 @@
 package hr.fer.zemris.aa.main;
 
-import java.util.List;
+import java.io.File;
 import java.util.Set;
 
-import hr.fer.zemris.aa.features.Article;
+import hr.fer.zemris.aa.features.AdvancedFeatureExtractor;
 import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
-import hr.fer.zemris.aa.features.FeatureVector;
+import hr.fer.zemris.aa.features.IFeatureExtractor;
+import hr.fer.zemris.aa.features.SimpleFeatureExtractor;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
 public class TestFeatures {
 
 	public static void main(String[] args) {
-
+		
 		if (args.length != 1) {
-			System.err.println("arg[0] = put do XML datoteke!");
+			System.err.println("arg[0] = put do xml datoteke!");
 			System.exit(99);
 		}
-
-		XMLMiner littleChineseGuy = new XMLMiner(args[0]);
 		
+		XMLMiner miner = new XMLMiner(args[0]);
+		IFeatureExtractor extractor = new SimpleFeatureExtractor(new File("config/fwords.txt"));
+		IFeatureExtractor extractor2 = new AdvancedFeatureExtractor(new File("config/fwords.txt"));
 		
-		//zakomentirati jednu od metoda za bolju preglednost:
+		FeatureGenerator generator = new FeatureGenerator(extractor2);
 		
-		getVectorsOfAuthor("Nino Đula", littleChineseGuy);
-		createAllClasses(littleChineseGuy);
-
-	}
-
-	private static void createAllClasses(XMLMiner littleChineseGuy) {
+		Set<FeatureClass> r = generator.generateFeatureVectors(miner);
 		
-		FeatureGenerator fGen = new FeatureGenerator();
+		FeatureClass[] classArray = r.toArray(new FeatureClass[0]);
+		FeatureClass c = classArray[2];
 		
-		Set<FeatureClass> allClasses = fGen.generateFeatureVectors(littleChineseGuy);
-		
-		System.out.println("Stvoreno " + allClasses.size() + " klasa:");
-		
-		int i = 0;
-		int j = 0;
-		
-		for (FeatureClass vektori : allClasses) {
-			
-			System.out.print("Omega(" + i++ + ") = { ");
-			
-			for (int k = 0; k < vektori.size(); k++) {
-				System.out.print("x(" + j++ + "), ");
-			}
-			
-			System.out.println("}");
+		for (int i = 0; i < c.size(); ++i) {
+			System.out.println(c.get(i));
 		}
 		
 	}
-
-	private static void getVectorsOfAuthor(String a, XMLMiner littleChineseGuy) {
-		
-		FeatureGenerator fGen = new FeatureGenerator();
-		System.out.println(fGen.vectorRepresentation());
-		List<Article> lista = littleChineseGuy.getArticlesByAuthor(a);
-
-		int i = 0;
-		for (Article article : lista) {
-			
-			FeatureVector xi = fGen.vectorize(article);
-			System.out.println("\n(" + (i + 1) + ") " + xi.getAuthor()
-					+ ": \"" + xi.getTitle() + "\"");
-			System.out.println(xi.toString());
-			i++;
-			
-		}
-	}
-
+	
 }
