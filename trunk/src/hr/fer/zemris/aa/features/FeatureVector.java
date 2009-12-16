@@ -40,6 +40,10 @@ public class FeatureVector {
 		return this.rawVector[index];
 	}
 	
+	public int getFeaturesDimension() {
+		return this.rawVector.length;
+	}
+	
 	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
