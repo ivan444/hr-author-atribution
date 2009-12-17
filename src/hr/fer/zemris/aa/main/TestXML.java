@@ -16,9 +16,7 @@ public class TestXML {
 		}
 		
 		XMLMiner littleChineseGuy = new XMLMiner(args[0]);
-		
-		//zakomentirati jednu od metoda za bolju preglednost:
-		
+				
 		printAllAuthors(littleChineseGuy);
 		printArticlesByAuthor("Živko Kustić", littleChineseGuy);
 		
@@ -44,7 +42,7 @@ public class TestXML {
 		
 		for (Article a : lista){
 			System.out.println();
-			System.out.println(a.getAuthor() + ": \"" + a.getTitle() + "\" [" + a.getDate() + "]");
+			System.out.println(a.getAuthor() + ": \"" + a.getTitle() + "\" [" + a.getDateString() + "]");
 			System.out.println("---------------------------------------------");
 			System.out.println(a.getText());
 			System.out.println();

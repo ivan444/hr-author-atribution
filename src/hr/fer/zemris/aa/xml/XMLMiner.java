@@ -77,12 +77,15 @@ public class XMLMiner {
 				Element content = (Element)upperDoc.getChildren().get(0);
 				Element title = getChild(content, "title");
 				Element body = getChild(content, "body");
+				String date = getChild(extra, "date").getText();
+				
+				
 				
 				Article article = new Article(
 						author,
 						body.getText(),
 						title.getText(),
-						getChild(extra, "date").getText()
+						date
 				);
 		
 				index.add(article);
@@ -109,5 +112,6 @@ public class XMLMiner {
 		
 		return null; //no such element
 	}
+	
 
 }
