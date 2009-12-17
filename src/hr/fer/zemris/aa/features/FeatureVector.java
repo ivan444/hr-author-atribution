@@ -10,6 +10,7 @@ public class FeatureVector {
 	
 	private int[] rawVector;
 	private String author, title;
+	
 	/**
 	 * Konstruktor
 	 * @param size dimenzija vektora

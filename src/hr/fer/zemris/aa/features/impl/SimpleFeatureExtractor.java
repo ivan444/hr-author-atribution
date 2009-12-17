@@ -1,4 +1,7 @@
-package hr.fer.zemris.aa.features;
+package hr.fer.zemris.aa.features.impl;
+
+import hr.fer.zemris.aa.features.FeatureVector;
+import hr.fer.zemris.aa.features.IFeatureExtractor;
 
 import java.io.BufferedReader;
 import java.io.File;
