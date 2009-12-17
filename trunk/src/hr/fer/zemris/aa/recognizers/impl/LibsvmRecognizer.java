@@ -18,6 +18,12 @@ import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 
+/**
+ * Klasifikator temeljen na libsvm biblioteci.
+ * 
+ * @author Ivan Krišto
+ * 
+ */
 public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	private svm_model model;
 	private IFeatureExtractor featureExtractor;

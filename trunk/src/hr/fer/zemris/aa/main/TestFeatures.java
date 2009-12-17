@@ -3,11 +3,11 @@ package hr.fer.zemris.aa.main;
 import java.io.File;
 import java.util.Set;
 
-import hr.fer.zemris.aa.features.AdvancedFeatureExtractor;
 import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
-import hr.fer.zemris.aa.features.SimpleFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.AdvancedFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.SimpleFeatureExtractor;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
 public class TestFeatures {
