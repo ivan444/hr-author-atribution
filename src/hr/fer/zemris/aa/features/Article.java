@@ -9,7 +9,7 @@ import java.util.Date;
  * naslovom, tekstom i datumom.
  * @author igorbel
  */
-public class Article {
+public class Article implements Comparable<Article>{
 	
 	private final String author;
 	private final String text;
@@ -65,6 +65,13 @@ public class Article {
 	
 	public String getTitle() {
 		return title;
+	}
+
+	@Override
+	public int compareTo(Article other) {
+		
+		return this.date.compareTo(other.date);
+		
 	}
 
 }

@@ -3,6 +3,7 @@ package hr.fer.zemris.aa.xml;
 import hr.fer.zemris.aa.features.Article;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -111,6 +112,54 @@ public class XMLMiner {
 	    }
 		
 		return null; //no such element
+	}
+	
+	/**
+	 * Metoda za dohvat N najnovijih članaka
+	 * @param n broj najnovijih članaka
+	 * @param articles lista članaka, ne nužno sortirana
+	 * @return lista N najnovijih članaka
+	 */
+	public  List<Article> getNewest(int n,  List<Article> articles){
+		
+		if (n > articles.size()) throw new IllegalArgumentException("N veci od velicine liste!");
+		
+		Collections.sort(articles);
+		List<Article> newest = new LinkedList<Article>();
+		
+		int upperLimit = articles.size()-1;
+		int lowerLimit = upperLimit - n;
+		
+		for (int i = upperLimit; i > lowerLimit; i--) {
+			newest.add(articles.get(i));
+		}
+		
+		return newest;
+	}
+	
+	/**
+	 * Metoda za dohvat P posto najnovijih članaka
+	 * @param n postotak najnovijih članaka
+	 * @param articles lista članaka, ne nužno sortirana
+	 * @return lista P posto najnovijih članaka
+	 */
+	public  List<Article> getNewest(double P,  List<Article> articles){
+		
+		if ((P > 1)||(P < 0)) throw new IllegalArgumentException("P mora biti iz intervala [0,1]!");
+		
+		Collections.sort(articles);
+		List<Article> newest = new LinkedList<Article>();
+		
+		int upperLimit = articles.size()-1;
+		int n = (int) (P * articles.size());
+		if (n < 1) n = 1; //minimalno uzimamo 1 clanak
+		int lowerLimit = upperLimit - n;
+		
+		for (int i = upperLimit; i > lowerLimit; i--) {
+			newest.add(articles.get(i));
+		}
+		
+		return newest;
 	}
 	
 
