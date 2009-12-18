@@ -148,6 +148,9 @@ public class XMLMiner {
 		if ((P > 1)||(P < 0)) throw new IllegalArgumentException("P mora biti iz intervala [0,1]!");
 		
 		Collections.sort(articles);
+		
+		if (P == 1) return articles; // 100% clanaka, nema potrebe za daljnjim igranjem
+		
 		List<Article> newest = new LinkedList<Article>();
 		
 		int upperLimit = articles.size()-1;

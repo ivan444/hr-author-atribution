@@ -19,8 +19,25 @@ public class TestXML {
 				
 		//printAllAuthors(littleChineseGuy);
 		//printArticlesByAuthor("Živko Kustić", littleChineseGuy);
+		testNewest(littleChineseGuy);
 		
-		littleChineseGuy.getNewest(0.2, littleChineseGuy.getArticlesByAuthor("Živko Kustić"));
+	}
+
+	private static void testNewest(XMLMiner littleChineseGuy) {
+		
+		List<Article> svi = littleChineseGuy.getArticlesByAuthor("Živko Kustić");
+		
+		//Prvi parametar odreduje koja metoda se poziva (int ili double
+		List<Article> najnoviji = littleChineseGuy.getNewest(0.01, svi);
+		
+		for (Article article : najnoviji) {
+			System.out.println(article.getDateString());
+		}
+		
+		System.out.println("\nsvi:");
+		for (Article article : svi) {
+			System.out.print(article.getDateString()+ ", ");
+		}
 		
 	}
 
