@@ -17,10 +17,11 @@ public class TestXML {
 		
 		XMLMiner littleChineseGuy = new XMLMiner(args[0]);
 				
-		printAllAuthors(littleChineseGuy);
-		printArticlesByAuthor("Živko Kustić", littleChineseGuy);
+		//printAllAuthors(littleChineseGuy);
+		//printArticlesByAuthor("Živko Kustić", littleChineseGuy);
 		
-
+		littleChineseGuy.getNewest(0.2, littleChineseGuy.getArticlesByAuthor("Živko Kustić"));
+		
 	}
 
 	private static void printAllAuthors(XMLMiner littleChineseGuy) {
