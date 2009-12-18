@@ -31,9 +31,15 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	/** Mapiranje naziva klasa (libsvm radi sa brojčanim podatcima) */
 	private Map<Double, String> classNames;
 	
-	public LibsvmRecognizer() {
+	/**
+	 * Konstruktor za klasifikator bez postojećeg modela.
+	 * 
+	 * @param featureExtractor Izlučitelj značajki teksta.
+	 */
+	public LibsvmRecognizer(IFeatureExtractor featureExtractor) {
 		this.model = null;
 		this.classNames = null;
+		this.featureExtractor = featureExtractor;
 	}
 	
 	/**
@@ -110,14 +116,14 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 
 	@Override
 	public AuthorRecognizer train(List<FeatureClass> trainData) {
-		// TODO Auto-generated method stub
-		return new LibsvmRecognizer();
+		// TODO Napiši...
+		return new LibsvmRecognizer(featureExtractor);
 	}
 
 	@Override
 	public AuthorRecognizer train(List<FeatureClass> trainData, String savePath) {
 		LibsvmRecognizer recog = (LibsvmRecognizer) train(trainData);
-		// Spremi na disk
+		// TODO: Spremi na disk
 		return recog;
 	}
 
