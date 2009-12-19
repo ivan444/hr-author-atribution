@@ -39,7 +39,6 @@ public class TestXML {
 		System.out.println("\n\n----------------------------------");
 		System.out.println("Execution time: " + ((endTime - startTime)/1000.0) + " sec");
 		System.out.println("Memory used: " + (memAfter - memBefore) + " MB\n");
-		
 	}
 
 	private static void testSplit(XMLMiner littleChineseGuy) {

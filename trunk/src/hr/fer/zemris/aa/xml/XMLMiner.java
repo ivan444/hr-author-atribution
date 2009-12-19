@@ -80,6 +80,13 @@ public class XMLMiner {
 				Element body = getChild(content, "body");
 				String date = getChild(extra, "date").getText();
 				
+				//ovo je fix za "prije x sati":
+				if (date.startsWith("prije")){
+					String created = getChild(extra, "creation-date").getText();
+					String[] dateArray = created.split("-");
+					date = dateArray[2] + "." + dateArray[1] + "." + dateArray[0];
+				}
+				
 				Article article = new Article(
 						author,
 						body.getText(),
