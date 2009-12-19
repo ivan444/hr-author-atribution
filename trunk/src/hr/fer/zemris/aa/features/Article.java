@@ -15,8 +15,8 @@ public class Article implements Comparable<Article>{
 	private final String text;
 	private final String title;
 	private final Date date;
-	
-	private final String DATE_FORMAT = "dd.MM.yyyy";
+
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public Article(String auth, String text, String title, Date date){
 		this.author = auth;
@@ -31,12 +31,11 @@ public class Article implements Comparable<Article>{
 		this.text = text;
 		this.title = title;
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-		
 		Date tempDate;
 		try {
-			tempDate = dateFormat.parse(date);
+			tempDate = this.dateFormat.parse(date);
 		} catch (ParseException e) {
+			//silent fail - da program ne pukne stavlja se default datum
 			System.err.println("Greska kod parsiranja clanka: " + auth + " - \"" + title + "\"");
 			System.err.println("Pogresno zadan datum: " + date);
 			tempDate = new Date(1);
@@ -47,31 +46,32 @@ public class Article implements Comparable<Article>{
 	}
 
 	public String getAuthor() {
-		return author;
+		return this.author;
 	}
 
 	public String getText() {
-		return text;
+		return this.text;
 	}
-
-	public Date getDate() {
-		return date;
+	
+	public Date getDate(){
+		return this.date;
 	}
 	
 	public String getDateString() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-		return dateFormat.format(this.date);
+		return this.dateFormat.format(this.date);
 	}
 	
 	public String getTitle() {
 		return title;
 	}
-
+	
 	@Override
 	public int compareTo(Article other) {
 		
-		return this.date.compareTo(other.date);
+		return this.date.compareTo(other.getDate());
 		
 	}
+
+	
 
 }

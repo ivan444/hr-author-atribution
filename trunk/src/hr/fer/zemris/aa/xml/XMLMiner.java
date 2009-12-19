@@ -80,8 +80,6 @@ public class XMLMiner {
 				Element body = getChild(content, "body");
 				String date = getChild(extra, "date").getText();
 				
-				
-				
 				Article article = new Article(
 						author,
 						body.getText(),
@@ -115,11 +113,61 @@ public class XMLMiner {
 	}
 	
 	/**
+	 * Metoda razdvaja listu članaka na n najnovijih i ostatak starijih
+	 * @param n broj najnovijih clanaka
+	 * @param articles lista svih članaka
+	 * @return niz od dvije liste: na prvom mjestu lista starijih, a na drugom mjestu n najnovijih članaka
+	 */
+	public  List[] split(int n,  List<Article> articles){
+		
+		if (n > articles.size()) throw new IllegalArgumentException("n veci od velicine liste! To nije OK.");
+		
+		List<Article> newest = new LinkedList<Article>();
+		List<Article> older = new LinkedList<Article>();
+		Collections.sort(articles);
+		
+		int upperLimit = articles.size()-1;
+		int boundryLimit = upperLimit - n;
+		
+		for (int i = 0; i <= upperLimit; i++) {
+			
+			if (i <= boundryLimit){
+				older.add(articles.get(i));
+			} else {
+				newest.add(articles.get(i));
+			}
+			
+		}
+		
+		//FIXME: Ovdje mi neda da stavim generic list u array, ovo
+		//se vjerojatno moze lijepse
+		List[] ret = {older, newest}; 
+		return ret;
+	}
+	
+	/**
+	 * Metoda razdvaja listu članaka na P posto najnovijih i ostatak starijih
+	 * @param P postotak najnovijih clanaka
+	 * @param articles lista svih članaka
+	 * @return niz od dvije liste: na prvom mjestu lista starijih, a na drugom mjestu P posto najnovijih članaka
+	 */
+	public  List[] split(double P,  List<Article> articles){
+		
+		if ((P > 1.0)||(P < 0.0)) throw new IllegalArgumentException("P mora biti iz intervala [0,1]!");
+		
+		int n = (int) (P * articles.size());
+		if (n < 1) n = 1; //minimalno uzimamo 1 clanak
+		
+		return this.split(n, articles);
+	}
+	
+	/**
 	 * Metoda za dohvat N najnovijih članaka
 	 * @param n broj najnovijih članaka
 	 * @param articles lista članaka, ne nužno sortirana
 	 * @return lista N najnovijih članaka
 	 */
+	@Deprecated
 	public  List<Article> getNewest(int n,  List<Article> articles){
 		
 		if (n > articles.size()) throw new IllegalArgumentException("N veci od velicine liste!");
@@ -143,26 +191,16 @@ public class XMLMiner {
 	 * @param articles lista članaka, ne nužno sortirana
 	 * @return lista P posto najnovijih članaka
 	 */
+	@Deprecated
 	public  List<Article> getNewest(double P,  List<Article> articles){
 		
-		if ((P > 1)||(P < 0)) throw new IllegalArgumentException("P mora biti iz intervala [0,1]!");
-		
-		Collections.sort(articles);
-		
+		if ((P > 1.0)||(P < 0.0)) throw new IllegalArgumentException("P mora biti iz intervala [0,1]!");
 		if (P == 1) return articles; // 100% clanaka, nema potrebe za daljnjim igranjem
 		
-		List<Article> newest = new LinkedList<Article>();
-		
-		int upperLimit = articles.size()-1;
 		int n = (int) (P * articles.size());
 		if (n < 1) n = 1; //minimalno uzimamo 1 clanak
-		int lowerLimit = upperLimit - n;
 		
-		for (int i = upperLimit; i > lowerLimit; i--) {
-			newest.add(articles.get(i));
-		}
-		
-		return newest;
+		return this.getNewest(n, articles);
 	}
 	
 
