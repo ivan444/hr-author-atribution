@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import libsvm.svm;
 import libsvm.svm_model;
 import libsvm.svm_node;
+import libsvm.svm_parameter;
+import libsvm.svm_problem;
 
 import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureVector;
@@ -38,19 +41,19 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	 */
 	public LibsvmRecognizer(IFeatureExtractor featureExtractor) {
 		this.model = null;
-		this.classNames = null;
+		this.classNames = new HashMap<Double, String>();
 		this.featureExtractor = featureExtractor;
 	}
 	
 	/**
 	 * Konstruktor za klasifikator sa postojećim modelom.
 	 * 
-	 * @param modelPath Putanja do datoteke s modelom.
-	 * @param classNamesPath Putanja do datoteke sa mapiranjem razreda (brojčanaVrijednost<TAB>nazivRazreda)
+	 * @param modelPath Putanja do datoteke s modelom. Očekuje se da je u istom direktoriju
+	 * datoteka sa mapiranjem razreda (brojčanaVrijednost<TAB>nazivRazreda). Završava na ".cn".
 	 * @param featureExtractor Izlučitelj značajki teksta.
 	 * @throws IllegalArgumentException Ukoliko je došlo do problema sa učitavanjem SVM modela ili datoteke s mapiranjem razreda.
 	 */
-	public LibsvmRecognizer(String modelPath, String classNamesPath, IFeatureExtractor featureExtractor) {
+	public LibsvmRecognizer(String modelPath, IFeatureExtractor featureExtractor) {
 		try {
 			this.model = svm.svm_load_model(modelPath);
 		} catch (IOException e) {
@@ -58,6 +61,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		}
 		this.featureExtractor = featureExtractor;
 		
+		String classNamesPath = modelPath + ".cn";
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(classNamesPath));
@@ -116,15 +120,86 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 
 	@Override
 	public AuthorRecognizer train(List<FeatureClass> trainData) {
-		// TODO Napiši...
-		return new LibsvmRecognizer(featureExtractor);
+		// Set SVM parameters
+		svm_parameter param = new svm_parameter();
+		// default values
+		param.svm_type = svm_parameter.C_SVC;
+		param.kernel_type = svm_parameter.RBF;
+		param.degree = 3;
+		param.coef0 = 0;
+		param.nu = 0.5;
+		param.cache_size = 100;
+		param.C = 1;
+		param.eps = 1e-3;
+		param.p = 0.1;
+		param.shrinking = 1;
+		param.probability = 0;
+		param.nr_weight = 0;
+		param.weight_label = new int[0];
+		param.weight = new double[0];
+		param.gamma = 0; // 1/num_features
+		
+		param.gamma = 1.0/trainData.get(0).size();
+		
+		// Postavljanje uzoraka
+		Vector<Double> authors = new Vector<Double>();
+		Vector<svm_node[]> values = new Vector<svm_node[]>();
+		double authDbl = 0.0;
+		
+		for (FeatureClass fc : trainData) {
+			authDbl += 1.0;
+			
+			// TODO: Ovo će se možda mijenjati... Mislim da nije ok da feature vector ima autora
+			classNames.put(Double.valueOf(authDbl), fc.get(0).getAuthor());
+			
+			for (FeatureVector featureVector : fc) {
+				authors.add(Double.valueOf(authDbl));
+				int size = featureVector.getFeaturesDimension();
+				svm_node[] sample = new svm_node[size];
+				for (int i = 0; i < size; i++) {
+					sample[i] = new svm_node();
+					sample[i].index = i;
+					sample[i].value = featureVector.get(i)*1.0;
+				}
+				values.add(sample);
+			}
+		}
+		
+		// Postavljanje problema
+		svm_problem prob = new svm_problem();
+		prob.l = authors.size();
+		prob.x = new svm_node[prob.l][];
+		for (int i = 0; i < prob.l; i++) {
+			prob.x[i] = values.elementAt(i);
+		}
+		prob.y = new double[prob.l];
+		for (int i = 0; i < prob.l; i++) {
+			prob.y[i] = authors.elementAt(i);
+		}
+		
+		// Provjera
+		String errorMsg = svm.svm_check_parameter(prob, param);
+		if (errorMsg != null) {
+			throw new IllegalStateException("Neispravni parametri!");
+		}
+		
+		// Učenje
+		this.model = svm.svm_train(prob, param);
+		
+		return this;
 	}
 
 	@Override
 	public AuthorRecognizer train(List<FeatureClass> trainData, String savePath) {
-		LibsvmRecognizer recog = (LibsvmRecognizer) train(trainData);
-		// TODO: Spremi na disk
-		return recog;
+		train(trainData);
+		
+		try {
+			svm.svm_save_model(savePath, this.model);
+		} catch (IOException e) {
+			throw new IllegalArgumentException("Problem s zapisivanjem modela u datoteku!");
+		}
+		
+		return this;
 	}
 
 }
