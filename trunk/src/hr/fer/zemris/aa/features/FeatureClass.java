@@ -1,7 +1,9 @@
 package hr.fer.zemris.aa.features;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Razred predstavalja klasu vektora značajki.
@@ -9,7 +11,7 @@ import java.util.List;
  * @author igorbel
  *
  */
-public class FeatureClass {
+public class FeatureClass implements Iterable<FeatureVector> {
 	
 	private List<FeatureVector> featureVectors;
 	
@@ -45,5 +47,37 @@ public class FeatureClass {
 	 */
 	public int size(){
 		return this.featureVectors.size();
+	}
+
+	@Override
+	public Iterator<FeatureVector> iterator() {
+		return new Iterator<FeatureVector>() {
+			int current = -1;
+			boolean nextCalled = false;
+			
+			@Override
+			public void remove() {
+				if (nextCalled) {
+					throw new IllegalStateException("Još ni jednom nije pozvan next() nad ovim iteratorom!");
+				}
+				featureVectors.remove(current);
+				current--;
+			}
+			
+			@Override
+			public FeatureVector next() {
+				if (!hasNext()) {
+					throw new NoSuchElementException("Nema više elemenata!");
+				}
+				nextCalled = true;
+				current++;
+				return get(current);
+			}
+			
+			@Override
+			public boolean hasNext() {
+				return current+1 < size();
+			}
+		};
 	}
 }
