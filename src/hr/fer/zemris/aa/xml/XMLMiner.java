@@ -23,7 +23,6 @@ public class XMLMiner {
 	private Document document;
 	
 	public XMLMiner(String path){
-		
 		SAXBuilder builder = new SAXBuilder();
 	    
 		try {
@@ -51,6 +50,56 @@ public class XMLMiner {
 		}
 		
 		return authors;
+	}
+	
+	/**
+	 * Metoda za dohvaćanje svih članaka iz datoteke određene sa {@code filePath}.
+	 * @param filePath Putanja do datoteke sa člancima.
+	 * @return Lista svih članaka iz datoteke {@code filePath}.
+	 */
+	public static List<Article> getArticles(String filePath) throws JDOMException, IOException {
+		SAXBuilder builder = new SAXBuilder();
+		Document document = null;
+		
+		document = builder.build(filePath);
+		
+		Element root = document.getRootElement();
+		List<Element> children = root.getChildren();
+		List<Article> index = new LinkedList<Article>();
+	    
+		for (Element doc : children){
+
+			Element extra = getChild(doc, "extraInfo");
+			//if (extra == null) continue; 
+			
+			Element a = getChild(extra, "author");
+			//if (a == null) continue;
+			
+		
+			Element upperDoc = a.getParentElement().getParentElement();
+			Element content = (Element)upperDoc.getChildren().get(0);
+			Element title = getChild(content, "title");
+			Element body = getChild(content, "body");
+			String date = getChild(extra, "date").getText();
+			
+			//ovo je fix za "prije x sati":
+			if (date.startsWith("prije")){
+				String created = getChild(extra, "creation-date").getText();
+				String[] dateArray = created.split("-");
+				date = dateArray[2] + "." + dateArray[1] + "." + dateArray[0];
+			}
+			
+			Article article = new Article(
+					a.getText(),
+					body.getText(),
+					title.getText(),
+					date
+			);
+	
+			index.add(article);
+		}
+		
+		return index;
 	}
 	
 	/**
@@ -106,9 +155,10 @@ public class XMLMiner {
 	 * Custom metoda trenutno, optimizacija kasnije... Mozda i nepotrebna
 	 * ako XML bude const pa mozemo preko indeksa dohvacat
 	 */
-	private Element getChild(Element elem, String name){
+	@SuppressWarnings("unchecked")
+	private static Element getChild(Element elem, String name){
 		
-		List<Element> children = elem.getChildren();
+		List<Element> children = (List<Element>) elem.getChildren();
 		
 		for (Element c : children){
 	    	  if (c.getName().equals(name)){

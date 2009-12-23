@@ -1,17 +1,23 @@
 package hr.fer.zemris.aa.main;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jdom.JDOMException;
+
 import hr.fer.zemris.aa.features.Article;
 import hr.fer.zemris.aa.features.FeatureClass;
+import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.SimpleFeatureExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
+import hr.fer.zemris.aa.xml.XMLMiner;
 
 /**
  * Razred za eksperimentiranje s različitim parametrima.
@@ -21,7 +27,7 @@ import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
  */
 public class Experimenter {
 	
-	public static AuthorRecognizer trainRecognizer(RecognizerTrainer trainer, List<FeatureClass> trainData) {
+	private static AuthorRecognizer trainRecognizer(RecognizerTrainer trainer, List<FeatureClass> trainData) {
 		System.out.println("Započinje treniranje.");
 		System.out.println("Broj razreda: " + trainData.size());
 		
@@ -45,7 +51,7 @@ public class Experimenter {
 	 * @param testData Skup članaka nad kojim testiramo autora.
 	 * @return Postotak uspješno prepoznatih podataka.
 	 */
-	public static float testRecognizer(AuthorRecognizer recognizer, List<Article> testData) {
+	private static float testRecognizer(AuthorRecognizer recognizer, List<Article> testData) {
 		int hits = 0;
 		int misses = 0;
 		
@@ -81,17 +87,26 @@ public class Experimenter {
 		return precision;
 	}
 	
-	public static List<FeatureClass> loadTrainData(String trainDataXMLPath, IFeatureExtractor extractor) {
-		// TODO: Napiši.
+	private static List<FeatureClass> loadTrainData(String trainDataPath, IFeatureExtractor extractor) {
+		FeatureGenerator fg = new FeatureGenerator(extractor);
+		XMLMiner miner = new XMLMiner(trainDataPath);
+		
+		return fg.generateFeatureVectors(miner);
+	}
+	
+	private static List<Article> loadTestData(String testDataPath) {
+		try {
+			return XMLMiner.getArticles(testDataPath);
+		} catch (JDOMException e) {
+			System.err.println("Format datoteke " + testDataPath + " je neispravan!");
+		} catch (IOException e) {
+			System.err.println("Ne mogu otvoriti datoteku " + testDataPath);
+		}
+		
 		return null;
 	}
 	
-	public static List<Article> loadTestData(String testDataXMLPath) {
-		// TODO: Napiši.
-		return null;
-	}
-	
-	public static void preformExperiment(IFeatureExtractor featExtrac, RecognizerTrainer trainer, String trainDataPath, String testDataPath) {
+	private static void preformExperiment(IFeatureExtractor featExtrac, RecognizerTrainer trainer, String trainDataPath, String testDataPath) {
 		List<FeatureClass> trainData = loadTrainData(trainDataPath, featExtrac);
 		AuthorRecognizer recognizer = trainRecognizer(trainer, trainData);
 		
@@ -100,7 +115,7 @@ public class Experimenter {
 	}
 
 	public static void main(String[] args) {
-		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new SimpleFeatureExtractor(null));
+		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new SimpleFeatureExtractor(new File("config/fwords.txt")));
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac);
 		preformExperiment(featExtrac, trainer, "putanja do train korpusa; args?", "putanja do test korpusa; args?");
 	}
