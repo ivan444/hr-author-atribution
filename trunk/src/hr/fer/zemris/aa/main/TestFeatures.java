@@ -1,13 +1,12 @@
 package hr.fer.zemris.aa.main;
 
 import java.io.File;
-import java.util.Set;
+import java.util.List;
 
 import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.AdvancedFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.SimpleFeatureExtractor;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
 public class TestFeatures {
@@ -25,12 +24,12 @@ public class TestFeatures {
 		long startTime = System.currentTimeMillis();
 		
 		XMLMiner miner = new XMLMiner(args[0]);
-		IFeatureExtractor extractor = new SimpleFeatureExtractor(new File("config/fwords.txt"));
+		//IFeatureExtractor extractor = new SimpleFeatureExtractor(new File("config/fwords.txt"));
 		IFeatureExtractor extractor2 = new AdvancedFeatureExtractor(new File("config/fwords.txt"));
 		
 		FeatureGenerator generator = new FeatureGenerator(extractor2);
 		
-		Set<FeatureClass> r = generator.generateFeatureVectors(miner);
+		List<FeatureClass> r = generator.generateFeatureVectors(miner);
 		
 		FeatureClass[] classArray = r.toArray(new FeatureClass[0]);
 		FeatureClass c = classArray[2];
