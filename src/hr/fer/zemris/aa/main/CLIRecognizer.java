@@ -20,7 +20,6 @@ public class CLIRecognizer {
 		if (args.length != 2) {
 			System.out.println("Neispravni parametri! <putanja-do-teksta> <putanja-do-modela>");
 		}
-		
 		// TODO: Zasad je implementacija prepoznavatelja hardkodirana. Ako ih bude više, odkodira se.
 		// TODO: Staviti odgovarajući featureExt
 		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new SimpleFeatureExtractor(null));

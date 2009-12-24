@@ -1,0 +1,226 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[croatian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{booktabs}
+%\usepackage{hyperref}
+% Da bi se promjenio stil citiranja umjesto:
+% [authoryear, round]
+% staviti:
+% [numbers, square]
+\usepackage[authoryear, round]{natbib}
+\usepackage{amsmath}
+\usepackage{subfig}
+\usepackage{fixltx2e}
+\usepackage{url}
+\usepackage{textcomp}
+\usepackage{float}
+
+\newcommand{\engl}[1]{(engl.~\emph{#1})}
+
+\begin{document}
+
+\title{Automatizirano prepoznavanje autora teksta\\Projekt iz Strojnog učenja}
+\author{Igor Belša \and Tomislav Reicher \and Ivan Krišto}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\tableofcontents
+\newpage
+
+\section{Uvod}
+Problem automatiziranog prepoznavanja autora teksta \engl{Authorship Attribution}
+može se promatrati kao problem klasifikacije teksta na temelju njegovih
+lingvističkih značajki. Problemi slični prepoznavanju autora su prepoznavanje
+dobi autora, regije iz koje autor potječe ili spola \citep{luyckx2005shallow}.
+
+\citet{kukushkina2001using} navode da se problem prepoznavanja autora teksta
+obrađuje još od 1915.~godine u radu ``\emph{Izv.~otd.~russkogo jazyka i
+slovesnosti, Imp.~akad.~nauk.}'', Morozov, N., A.~kojem se već 1916.~pridružio
+utemeljitelj teorije Markovljevih lanaca, Markov, A., A.,~radom ``\emph{On some
+application of statistical method}''.
+
+Prepoznavanje autora može pomoći pri indeksiranju dokumenata, filtriranju ili
+hijerarhiskoj kategorizaciji web stranica i web pretraživača
+\citep{luyckx2005shallow}. Bitno je napomenuti da prepoznavanje autora i
+njegovih karakteristika se razlikuje od detekcije plagijata. Detekcija
+plagijata pokušava odrediti sličnost između dva u suštini različita
+djela, ali nije u mogućnosti otkriti jesu li proizvod istog autora
+\citep{de2001mining}.
+
+Problem prepoznavanja autora može se podijeliti u tri kategorije
+\citep{zhao2005effective}: binarnu, višerazrednu i jednorazrednu klasifikaciju.
+Binarna klasifikacija rješava problem kad je za skup tekstova poznato da
+pripadaju jednom od dva autora. Višerazredna klasifikacija je proširenje
+binarne na više autora. Jednorazredna se primjenjuje u situacijama kad je
+dio tekstova napisan od poznatog autora, a autori ostalih tekstova su
+nepoznati. Ta klasifikacija pokušava odgovoriti na pitanje pripada li neki
+tekst poznatom autoru ili ne.
+
+U ovom radu opisan je problem višerazredne klasifikacije za tekstove na
+Hrvatskom jeziku.
+
+U 2.~odjeljku opisane su metode koje su u drugim radovima korištene za
+problem prepoznavanja autora i srodne probleme. Odjeljak 3 daje kratki pregled
+sustava, način na koji su komponente u sustavu povezane i na koji način se
+sustav može koristiti. Slijedi 4.~odjeljak s opisom korištenih podataka. Možda
+za rad najbitniji odjeljak je 5. U njemu je dat opis korištenih metoda za
+izvlačenje značajki iz tekstova, popis svih korištenih značajki i njihove
+specifičnosti. Na 5.~odjeljak usko se veže 6.~sa evaluacijom navedenih metoda.
+Implementacija je opisana u 7.~odjeljku, a zaključak je dat u 8.
+ 
+\section{Srodna rješenja}
+% TODO: Napisati, ovdje ima puno.
+\emph{Iskoristiti ono sa google docsa.}
+
+\section{Model sustava}
+Namjena razvijenog sustava je prepoznati autora sustavu dosad neviđenog teksta.
+Autor se može prepoznati samo ako je sustav naučen nad skupom tekstova koji je
+sadržavao i tekstove tog autora. Sustav ima dva načina korištenja, učenje i
+određivanje autora. Da bi se sustav mogao koristiti za određivanje autora, prvo
+mora biti naučen. Apstraktni model je dat slikom \ref{fig:model-sustava}, a
+detalji o načinu korištenja se nalaze u \ref{sec:implementacija}.~odjeljku.
+
+\begin{figure}[htb]
+\begin{center}		
+\begin{picture}(470,90)		
+\put(5,70){\makebox(40,15){\texttt{XML}}}
+\put(38,77){\vector(1,0){15}}
+\put(55,70){\framebox(90,15){\textit{Izlučivanje značajki}}}		
+\put(145,77){\vector(1,0){15}}
+\put(160,70){\framebox(90,15){\textit{Učenje}}}		
+\put(250,77){\vector(1,0){15}}
+\put(285,70){\makebox(40,15){\texttt{prepoznavatelj}}}
+
+\put(1,30){\makebox(40,15){\texttt{tekst}}}
+\put(38,37){\vector(1,0){15}}
+\put(55,30){\framebox(90,15){\textit{Izlučivanje značajki}}}		
+\put(145,37){\vector(1,0){15}}
+\put(160,30){\framebox(90,15){\textit{Prepoznavanje}}}		
+\put(250,37){\vector(1,0){15}}
+\put(205,15){\vector(0,1){15}}
+\put(165,0){\makebox(80,15){\texttt{naučeni prepoznavatelj}}}
+\put(262,30){\makebox(40,15){\texttt{autor}}}
+\end{picture}		
+\caption{Model sustava}		
+\label{fig:model-sustava}
+\end{center}		
+\end{figure}
+
+\section{Korišteni podatci}
+\label{sec:podatci}
+Pri izradi sustava korištena je mrežna arhiva kolumni ``Jutarnjeg lista'' do
+14.~studenog, 2009.~-- ``\emph{Komentari i kolumne na aktualna događanja u
+Hrvatskoj - Jutarnji.hr}''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
+
+Arhiva je spremljena kao XML\footnote{Extensible Markup Language --
+\url{http://www.w3.org/XML/}} dokument po KTLab\footnote{Knowledge Technologies
+Lab, FER -- \url{http://ktlab.fer.hr}} \texttt{documentSet} shemi dostupnoj na
+\url{http://ktlab.fer.hr/download/documentSet.xsd}. Budući da se veliki broj
+članaka u mrežnoj arhivi našao u više kopija, one su pri izradi XML arhive
+preskočene.
+
+U arhivi se nalaze tekstovi 25 autora sa ukupno 4360 članaka koji zajedno broje
+3400813 riječi. Detaljne statistike arhive nalaze se na slikama
+\ref{fig:articlesPerAuthor}\footnote{Broj članaka za autora na mjestu 21 nije
+greška. Radi se o Živku Kustiću koji je imao ukupno 1285 objavljenih kolumni do
+datuma kada je napravljena arhiva.}, \ref{fig:wordsPerAuthor} i
+\ref{fig:avgWordsPerAuthorArticle}.
+
+\begin{figure}[!h]
+\begin{center}
+\input{figures/articlesPerAuthor}
+\end{center}
+\caption{Broj članaka po autoru.}
+\label{fig:articlesPerAuthor}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{center}
+\input{figures/wordsPerAuthor}
+\end{center}
+\caption{Broj riječi po autoru.}
+\label{fig:wordsPerAuthor}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{center}
+\input{figures/avgWordsPerAuthorArticle}
+\end{center}
+\caption{Prosječna duljina članka po autoru.}
+\label{fig:avgWordsPerAuthorArticle}
+\end{figure}
+
+%\subsection{Preprocesiranje}
+% Ako ovo uopće budemo imali, jer zasad imamo samo izvlačenje značajki
+
+\section{Izvlačenje značajki iz dokumenata}
+% Opisati problem i par riječi ukratko o svemu
+
+\subsection{Metoda1}
+\subsection{Metoda2}
+\subsection{Metoda3}
+
+\section{Evaluacija}
+
+\section{Implementacija}
+\label{sec:implementacija}
+Implementacija je napisana u programskim jezicima Javi (glavni sustav) te
+Pythonu (skripta \texttt{JutarnjiKolumneArhiver.py}). Navedena skripta služi za
+dohvat arhive tekstova sa ``\emph{Komentari i kolumne na aktualna događanja u Hrvatskoj -
+Jutarnji.hr}''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
+
+% TODO: UCD Dohvat članaka i izlučivanje značajki
+% TODO: UCD Učenje sustava
+% TODO: UCD Prepoznavanje autora.
+
+Za klasifikaciju iskorištena je biblioteka \emph{libsvm} \citep{CC01a}. Veza
+\emph{libsvm} biblioteke i sustava izvedena je \texttt{LibsvmRecognizer}
+razredom koji istovremeno implementira sučelja \texttt{RecognizerTrainer} i
+\texttt{AuthorRecognizer}.
+
+Korisnik sustavu može pristupiti iz komandne linije preko \texttt{CLITrainer}
+(učenje sustava) i \texttt{CLIRecognizer} (prepoznavatelj autora) ili preko
+grafičkog sučelja iz \texttt{GUI} razreda. Svi navedeni razredi nalaze se u
+\texttt{hr.fer.zemris.aa.main} paketu. Primjer pokretanja sustava iz
+komandne linije:
+\begin{verbatim}
+  java hr.fer.zemris.aa.main.CLITrainer \
+  skup_za_ucenje-skup_aa.xml \
+  skup_aa.model
+  
+  java hr.fer.zemris.aa.main.CLIRecognizer \
+  tekst_nepoznatog_autora.txt \
+  skup_aa.model
+\end{verbatim}
+
+
+\section{Zaključak}
+
+\bibliography{literatura}
+\bibliographystyle{plainnat}
+
+\newpage
+\appendix
+\section{Doprinos svakog člana tima}
+\begin{description}
+\item[Ivan Krišto:]
+\item[Igor Belša:]
+\item[Tomislav Reicher:]
+\end{description}
+
+\section{Raspodjela bodova}
+\begin{description}
+\item[Ivan Krišto:] p1\%
+\item[Igor Belša:] p2\%
+\item[Tomislav Reicher:] p3\%
+\end{description}
+
+\end{document}
