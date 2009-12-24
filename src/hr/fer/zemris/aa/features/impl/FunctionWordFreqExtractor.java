@@ -19,21 +19,21 @@ import java.util.Set;
  * @author TOMISLAV
  *
  */
-public class SimpleFeatureExtractor implements IFeatureExtractor {
+public class FunctionWordFreqExtractor implements IFeatureExtractor {
 
 	Map<String, Set<String>> fWords = new LinkedHashMap<String, Set<String>>();
 	
 	/**
 	 * Datoteka s funkcijskim rijecima. Format datoteke je sljedeci:
-	 * <list>
+	 * <ul>
 	 *  <li> Retci s komentarima zapocinju znakom #
 	 *  <li> Svaka grupa za novu vrstu rijeci mora zapoceti sa svojom oznakom predznacenom tockom
 	 *  <li> Datoteka mora zavrsiti s tockom
-	 * </list>
+	 * </ul>
 	 * 
 	 * @param inputFile
 	 */
-	public SimpleFeatureExtractor(File inputFile) {
+	public FunctionWordFreqExtractor(File inputFile) {
 		
 		try {
 			

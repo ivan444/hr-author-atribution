@@ -6,7 +6,7 @@ import java.util.List;
 import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.AdvancedFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
 public class TestFeatures {
@@ -25,7 +25,7 @@ public class TestFeatures {
 		
 		XMLMiner miner = new XMLMiner(args[0]);
 		//IFeatureExtractor extractor = new SimpleFeatureExtractor(new File("config/fwords.txt"));
-		IFeatureExtractor extractor2 = new AdvancedFeatureExtractor(new File("config/fwords.txt"));
+		IFeatureExtractor extractor2 = new FunctionWordOccurNumExtractor(new File("config/fwords.txt"));
 		
 		FeatureGenerator generator = new FeatureGenerator(extractor2);
 		

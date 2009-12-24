@@ -18,11 +18,11 @@ import java.util.Set;
  *
  */
 
-public class AdvancedFeatureExtractor implements IFeatureExtractor {
+public class FunctionWordOccurNumExtractor implements IFeatureExtractor {
 	
 	Set<String> fWords = new LinkedHashSet<String>();
 	
-	public AdvancedFeatureExtractor(File inputFile) {
+	public FunctionWordOccurNumExtractor(File inputFile) {
 		
 		try {
 			

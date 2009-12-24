@@ -6,7 +6,7 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.SimpleFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordFreqExtractor;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 import hr.fer.zemris.aa.xml.XMLMiner;
@@ -29,13 +29,14 @@ public class CLITrainer {
 	 * @param args <train-data-path> <save-model-path>
 	 */
 	public static void main(String[] args) {
+		if (args.length != 2) {
+			System.out.println("Neispravni parametri! <train-data-path> <save-model-path>");
+		}
 		// TODO: Zasad je implementacija prepoznavatelja hardkodirana. Ako ih bude više, odhardkodira se.
-		// TODO: Provjera argsa!
 		// TODO: Staviti odgovarajući featureExt
-		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new SimpleFeatureExtractor(null));
+		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new FunctionWordFreqExtractor(null));
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac);
 		List<FeatureClass> trainData = loadTrainData(args[0], featExtrac);
-		// TODO: Provjeriti je li savePath datoteka postoji (tj. može li se zapisivati tamo)
 		trainer.train(trainData, args[1]);
 	}
 }

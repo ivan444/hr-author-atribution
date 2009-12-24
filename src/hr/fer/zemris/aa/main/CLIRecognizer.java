@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.SimpleFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordFreqExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 
@@ -20,9 +20,9 @@ public class CLIRecognizer {
 		if (args.length != 2) {
 			System.out.println("Neispravni parametri! <putanja-do-teksta> <putanja-do-modela>");
 		}
-		// TODO: Zasad je implementacija prepoznavatelja hardkodirana. Ako ih bude više, odkodira se.
+		// TODO: Zasad je implementacija prepoznavatelja hardkodirana. Ako ih bude više, odhardkodira se.
 		// TODO: Staviti odgovarajući featureExt
-		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new SimpleFeatureExtractor(null));
+		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new FunctionWordFreqExtractor(null));
 		AuthorRecognizer recognizer = new LibsvmRecognizer(args[1], featExtrac);
 		
 		StringBuilder sb = new StringBuilder();
