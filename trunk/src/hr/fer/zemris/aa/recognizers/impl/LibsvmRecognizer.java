@@ -191,7 +191,6 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 
 	@Override
 	public AuthorRecognizer train(List<FeatureClass> trainData, String savePath) {
-		// TODO: Možda provjera može li se uopće tamo pisati?
 		train(trainData);
 		
 		try {

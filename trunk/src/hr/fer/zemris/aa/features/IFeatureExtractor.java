@@ -1,15 +1,16 @@
 package hr.fer.zemris.aa.features;
 
 /**
- * Izlucivanje znacajki.
+ * Izlučivanje značajki.
  * @author TOMISLAV
  *
  */
 public interface IFeatureExtractor {
 	
 	/**
-	 * Metoda koja sluzi za izlucivanje znacajki iz danog teksta.
-	 * @param text ulazni tekst iz kojeg se izlucuju znacajke.
+	 * Izlučivanje značajki iz danog teksta.
+	 * 
+	 * @param text ulazni tekst iz kojeg se izlučuju značajke.
 	 * @return Vektor značajki danog teksta.
 	 */
 	public FeatureVector getFeatures(String text);

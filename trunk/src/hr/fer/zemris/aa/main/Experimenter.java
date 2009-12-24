@@ -13,7 +13,7 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.SimpleFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordFreqExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
@@ -115,7 +115,7 @@ public class Experimenter {
 	}
 
 	public static void main(String[] args) {
-		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new SimpleFeatureExtractor(new File("config/fwords.txt")));
+		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new FunctionWordFreqExtractor(new File("config/fwords.txt")));
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac);
 		preformExperiment(featExtrac, trainer, "putanja do train korpusa; args?", "putanja do test korpusa; args?");
 	}
