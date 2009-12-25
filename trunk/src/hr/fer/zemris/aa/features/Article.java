@@ -15,6 +15,10 @@ public class Article implements Comparable<Article>{
 	private final String text;
 	private final String title;
 	private final Date date;
+	private String name;
+	private String url;
+	private String columnTitle;
+	private String creationDate;
 
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	
@@ -72,6 +76,61 @@ public class Article implements Comparable<Article>{
 		
 	}
 
-	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getColumnTitle() {
+		return columnTitle;
+	}
+
+	public void setColumnTitle(String columnTitle) {
+		this.columnTitle = columnTitle;
+	}
+
+	public String getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(String creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public SimpleDateFormat getDateFormat() {
+		return dateFormat;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("\t<doc name=\"").append(name).append("\">\n");
+		sb.append("\t\t<content language=\"hr\">\n");
+		sb.append("\t\t\t<title>").append(title.replace("&", "&amp;").replace("\"", "&quot;").replace("'", "&apos;")).append("</title>\n");
+		sb.append("\t\t\t<body>").append(text.replace("&", "&amp;").replace("\"", "&quot;").replace("'", "&apos;")).append("</body>\n");
+		sb.append("\t\t</content>\n\n");
+		sb.append("\t\t<extraInfo>\n");
+		sb.append("\t\t\t<author>").append(author).append("</author>\n");
+		sb.append("\t\t\t<date>").append(dateFormat.format(date)).append("</date>\n");
+		sb.append("\t\t\t<url>").append(url).append("</url>\n");
+		sb.append("\t\t\t<columntitle>").append(columnTitle).append("</columntitle>\n");
+		sb.append("\t\t\t<creation-date>").append(creationDate).append("</creation-date>\n");
+		sb.append("\t\t</extraInfo>\n\n");
+		sb.append("\t</doc>\n\n");
+		
+		return sb.toString();
+	}
 
 }

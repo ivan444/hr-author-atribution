@@ -44,7 +44,6 @@ public class ArhiveStatistics {
 			List<Article> articles = xml.getArticlesByAuthor(a);
 			index++;
 			System.out.println(index + "\t" + articles.size());
-			if (index == 21 && articles.size() > 1000) System.out.println(a);
 			articleNum += articles.size();
 			authorArticleNum.put(a, articles.size());
 			

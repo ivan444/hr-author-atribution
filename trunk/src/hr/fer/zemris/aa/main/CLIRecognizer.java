@@ -19,6 +19,7 @@ public class CLIRecognizer {
 	public static void main(String[] args) {
 		if (args.length != 2) {
 			System.out.println("Neispravni parametri! <putanja-do-teksta> <putanja-do-modela>");
+			System.exit(-1);
 		}
 		// TODO: Zasad je implementacija prepoznavatelja hardkodirana. Ako ih bude više, odhardkodira se.
 		// TODO: Staviti odgovarajući featureExt
@@ -31,6 +32,7 @@ public class CLIRecognizer {
 			reader = new BufferedReader(new FileReader(args[0]));
 		} catch (FileNotFoundException e) {
 			System.err.println("Ne postoji datoteka: " + args[0]);
+			System.exit(-1);
 		}
 		
 		try {

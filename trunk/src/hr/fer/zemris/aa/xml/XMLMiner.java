@@ -25,12 +25,11 @@ public class XMLMiner {
 	public XMLMiner(String path){
 		SAXBuilder builder = new SAXBuilder();
 	    
+		// TODO: Možda malo drugačije izvesti ovu obradu pogreške...
 		try {
-			
 			this.document = builder.build(path);
-			
 	    } catch (JDOMException e) {
-			e.printStackTrace();
+	    	System.err.println("Neispravan XML zapis datoteke: " + path);
 		} catch (IOException e) {
 			System.err.println("Neuspješno otvaranje datoteke: " + path);
 		}
@@ -107,7 +106,17 @@ public class XMLMiner {
 	 * @param author Ime autora
 	 * @return Lista svih članaka zadanog autora
 	 */
-	public List<Article> getArticlesByAuthor(String author){
+	public List<Article> getArticlesByAuthor(String author) {
+		return getArticlesByAuthor(author, false);
+	}
+	
+	/**
+	 * Metoda za dohvaćanje svih članaka određenog autora.
+	 * @param author Ime autora
+	 * @param allInfo True ako želimo staviti sve informacije XML-a u sam article.
+	 * @return Lista svih članaka zadanog autora
+	 */
+	public List<Article> getArticlesByAuthor(String author, boolean allInfo) {
 		
 		Element root = this.document.getRootElement();
 		List<Element> children = root.getChildren();
@@ -142,6 +151,13 @@ public class XMLMiner {
 						title.getText(),
 						date
 				);
+				
+				if (allInfo) {
+					article.setName(upperDoc.getAttributeValue("name"));
+					article.setUrl(getChild(extra, "url").getText());
+					article.setColumnTitle(getChild(extra, "columntitle").getText());
+					article.setCreationDate(getChild(extra, "creation-date").getText());
+				}
 		
 				index.add(article);
 			}

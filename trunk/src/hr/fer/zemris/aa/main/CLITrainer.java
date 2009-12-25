@@ -31,6 +31,7 @@ public class CLITrainer {
 	public static void main(String[] args) {
 		if (args.length != 2) {
 			System.out.println("Neispravni parametri! <train-data-path> <save-model-path>");
+			System.exit(-1);
 		}
 		// TODO: Zasad je implementacija prepoznavatelja hardkodirana. Ako ih bude više, odhardkodira se.
 		// TODO: Staviti odgovarajući featureExt
