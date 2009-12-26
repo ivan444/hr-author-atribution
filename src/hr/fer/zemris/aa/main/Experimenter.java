@@ -14,6 +14,7 @@ import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordFreqExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
@@ -72,19 +73,20 @@ public class Experimenter {
 		
 		for (Article article : testData) {
 			String recogAuthor = recognizer.classifyAutor(article.getText());
-			if (recogAuthor == null || recogAuthor.equals("")) {
+			if (recogAuthor == null || recogAuthor.equals("") || 
+					!recogAuthor.equals(article.getAuthor())) {
 				misses++;
 			} else {
 				hits++;
 			}
 		}
 		
-		float precision = hits*1.f/(hits+misses);
+		float accuracy = hits*1.f/(hits+misses);
 		
 		System.out.println("Testiranje je završilo!");
-		System.out.println("Preciznost: " + precision + " (" + hits + "/" + misses + ").");
+		System.out.println("Točnost: " + accuracy + " (" + hits + "/" + misses + ").");
 		
-		return precision;
+		return accuracy;
 	}
 	
 	private static List<FeatureClass> loadTrainData(String trainDataPath, IFeatureExtractor extractor) {
@@ -115,8 +117,10 @@ public class Experimenter {
 	}
 
 	public static void main(String[] args) {
-		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new FunctionWordFreqExtractor(new File("config/fwords.txt")));
+		IFeatureExtractor featExtrac = new ComboFeatureExtractor(
+				new FunctionWordOccurNumExtractor(new File("config/fwords.txt"))
+				);
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac);
-		preformExperiment(featExtrac, trainer, "putanja do train korpusa; args?", "putanja do test korpusa; args?");
+		preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml");
 	}
 }

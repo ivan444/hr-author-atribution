@@ -120,16 +120,17 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 
 	@Override
 	public AuthorRecognizer train(List<FeatureClass> trainData) {
+		
 		// Set SVM parameters
 		svm_parameter param = new svm_parameter();
 		// default values
 		param.svm_type = svm_parameter.C_SVC;
 		param.kernel_type = svm_parameter.RBF;
 		param.degree = 3;
-		param.coef0 = 0;
+		param.coef0 = 1;
 		param.nu = 0.5;
-		param.cache_size = 100;
-		param.C = 1;
+		param.cache_size = 400;
+		param.C = 16;
 		param.eps = 1e-3;
 		param.p = 0.1;
 		param.shrinking = 1;
@@ -139,7 +140,9 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		param.weight = new double[0];
 		param.gamma = 0; // 1/num_features
 		
-		param.gamma = 1.0/trainData.get(0).size();
+//		param.gamma = 1.0/trainData.get(0).size();
+		
+		param.gamma = 4.8828125E-4;
 		
 		// Postavljanje uzoraka
 		Vector<Double> authors = new Vector<Double>();
@@ -189,6 +192,99 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		return this;
 	}
 
+	public void gridSearch(List<FeatureClass> trainData) {
+		
+		// Postavljanje uzoraka
+		Vector<Double> authors = new Vector<Double>();
+		Vector<svm_node[]> values = new Vector<svm_node[]>();
+		double authDbl = 0.0;
+		
+		for (FeatureClass fc : trainData) {
+			authDbl += 1.0;
+			
+			// TODO: Ovo će se možda mijenjati... Mislim da nije ok da feature vector ima autora
+			classNames.put(Double.valueOf(authDbl), fc.get(0).getAuthor());
+			
+			for (FeatureVector featureVector : fc) {
+				authors.add(Double.valueOf(authDbl));
+				int size = featureVector.getFeaturesDimension();
+				svm_node[] sample = new svm_node[size];
+				for (int i = 0; i < size; i++) {
+					sample[i] = new svm_node();
+					sample[i].index = i;
+					sample[i].value = featureVector.get(i)*1.0;
+				}
+				values.add(sample);
+			}
+		}
+		
+		// Postavljanje problema
+		svm_problem prob = new svm_problem();
+		prob.l = authors.size();
+		prob.x = new svm_node[prob.l][];
+		for (int i = 0; i < prob.l; i++) {
+			prob.x[i] = values.elementAt(i);
+		}
+		prob.y = new double[prob.l];
+		for (int i = 0; i < prob.l; i++) {
+			prob.y[i] = authors.elementAt(i);
+		}
+		
+		// Set SVM parameters
+		svm_parameter param = new svm_parameter();
+		// default values
+		param.svm_type = svm_parameter.C_SVC;
+		param.kernel_type = svm_parameter.RBF;
+		param.cache_size = 400;
+		param.eps = 1e-3;
+		param.p = 0.1;
+		param.shrinking = 1;
+		param.probability = 0;
+		param.nr_weight = 0;
+		
+		double bestAcc = 0;
+		double bestC = 0;
+		double bestGamma = 0;
+		
+		for (int i = -5; i < 15; ++i) {
+			for (int j = -15; j < 15; ++j) {
+		
+				//setting additional params
+				if (i < 0)
+					param.C = 1./(1<<-i);
+				else
+					param.C = 1<<i;
+				
+				if (j < 0)
+					param.gamma = 1./(1<<-j);
+				else
+					param.gamma = 1<<i;
+		
+				String errorMsg = svm.svm_check_parameter(prob, param);
+				if (errorMsg != null) {
+					throw new IllegalStateException("Neispravni parametri!");
+				}
+				
+				double[] target = new double[prob.l];
+				svm.svm_cross_validation(prob, param, 5, target);
+				
+				int totalCorrect = 0;
+				for (i = 0; i < prob.l; i++)
+					if (target[i] == prob.y[i])
+						++totalCorrect;
+				
+				if (bestAcc < ((double)totalCorrect)/prob.l) {
+					bestAcc = ((double)totalCorrect)/prob.l;
+					bestGamma = param.gamma;
+					bestC = param.C;
+				}
+			}
+		}
+		
+		System.out.println(bestAcc+": C = "+bestC+", gamma = "+bestGamma);
+		
+	}
+	
 	@Override
 	public AuthorRecognizer train(List<FeatureClass> trainData, String savePath) {
 		train(trainData);
