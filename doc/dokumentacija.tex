@@ -117,8 +117,8 @@ postupka je dokumente za učenje podijeliti u skupove po autorima i svaki skup
 sažeti odabranim algoritmom te zabilježiti veličine arhiva. Tekst nepoznatog
 autora se dodaje svakom skupu za učenje te se primjenjuje isti algoritam
 kompresije. Arhiva koja bilježi najmanji porast veličine proglašava se
-pripadnom arhivom novog teksta, tj.~njen autor, autor tekst. Osvrt na sličan
-postupak spominje se u radu \citep{zhao2005effective}. Taj rad navodi
+pripadnom arhivom novog teksta, tj.~autor njenog sadržaja, autor teksta. Osvrt
+na sličan postupak spominje se u radu \citep{zhao2005effective}. Taj rad navodi
 da postupak ima očite propuste te navodi rad koji to potvrđuje.
 
 \citet{koppel2003exploiting} opisuju korištenje gramatičkih greški i
@@ -126,9 +126,6 @@ neformalnog stiliziranja (npr.~pisanje rečenica velikim slovima u svrhu
 naglašavanja i sl.) kao značajki dokumenta u svrhu prepoznavanja autora. Metoda
 je primjenjiva samo na neuređivane tekstove (npr.~blogovi, Internet forumi,
 \emph{news grupe}, e-mail poruke, i sl.).
-
-Razne vrste oznaka stila \engl{style markers} navode \citet{diri2003automatic}
-te \citet{luyckx2005shallow}.
 
 Uspješnost funkcijskih riječi nad kolokacijama\footnote{Dvije riječi koje se
 pojavljuju na određenoj udaljenosti jedna od druge.} navodi se u
@@ -145,6 +142,23 @@ Slična usporedba tipova značajki je napravljena u \citep{uzuner2005comparative
 pri čemu su se uspoređivale funkcijske riječi i sintaksni elementi dokumenata u
 svrhu prepoznavanja autora. Došli su do zaključka da sintaksni elementi izraza
 nisu korisni koliko funkcijske riječi pri rješavanju navedenog problema.
+
+% TODO: Sredi! Uredi citate! Malo ljepše napiši!
+Opis postupka prepoznavanja autora teksta pomoću sintaksnih elemenata jezika
+tj.~alata za obradu prirodnog jezika može se naći u izuzetno utjecajnom radu
+\citep{stamatatos2001computer}. Osim opisa navedenog postupka rad kao često
+korištenu značajku pri prepoznavanju autora navodi raznolikost riječnika autora.
+Ona se mjeri omjerom unikatnih riječi i ukupne veličine teksta ili brojanjem
+riječi koje se pojavljuju samo jednom (\emph{hapax legomena}), riječi koje se
+pojavljuju samo dva puta (\emph{dislegomena}) i sl. Te mjere su usko vezano uz
+dužinu teksta. Rad navodi funkcije (Yule--K (1944) i Honore--R (1979)) koje bi
+trebale biti konstantne s obzirom na dužinu teksta, no također se navodi rad
+(Tweedie and Baayen, 1998) koji tvrdi da većina takvih funkcija nije neovisna o
+duljini teksta. Navode da je raznolikost riječnika nestabilna značajka za
+tekstove kraće od 1000 riječi.
+
+Razne vrste oznaka stila \engl{style markers} također navode
+\citet{diri2003automatic} te \citet{luyckx2005shallow}.
 
 \section{Model sustava}
 Namjena razvijenog sustava je prepoznati autora sustavu dosad neviđenog teksta.
@@ -183,8 +197,8 @@ detalji o načinu korištenja se nalaze u \ref{sec:implementacija}.~odjeljku.
 \section{Korišteni podatci}
 \label{sec:podatci}
 Pri izradi sustava korištena je mrežna arhiva kolumni ``Jutarnjeg lista'' do
-14.~studenog, 2009.~-- ``\emph{Komentari i kolumne na aktualna događanja u
-Hrvatskoj - Jutarnji.hr}''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
+14.~studenog, 2009.~-- ``Komentari i kolumne na aktualna događanja u
+Hrvatskoj - Jutarnji.hr''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
 
 Arhiva je spremljena kao XML\footnote{Extensible Markup Language --
 \url{http://www.w3.org/XML/}} dokument po KTLab\footnote{Knowledge Technologies
