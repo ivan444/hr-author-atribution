@@ -40,6 +40,9 @@ Problem automatiziranog prepoznavanja autora teksta \engl{Authorship Attribution
 može se promatrati kao problem klasifikacije teksta na temelju njegovih
 lingvističkih značajki. Problemi slični prepoznavanju autora su prepoznavanje
 dobi autora, regije iz koje autor potječe ili spola \citep{luyckx2005shallow}.
+Glavni problem računalno potpomognutog prepoznavanja autora teksta je određivanje
+prikladnog skupa karakteristika dokumenta koje opisuju stil autora
+\citep{coyotl2006authorship}.
 
 \citet{kukushkina2001using} navode da se problem prepoznavanja autora teksta
 obrađuje još od 1915.~godine u radu ``\emph{Izv.~otd.~russkogo jazyka i
@@ -64,21 +67,84 @@ dio tekstova napisan od poznatog autora, a autori ostalih tekstova su
 nepoznati. Ta klasifikacija pokušava odgovoriti na pitanje pripada li neki
 tekst poznatom autoru ili ne.
 
-U ovom radu opisan je problem višerazredne klasifikacije za tekstove na
-Hrvatskom jeziku.
+U ovom radu obrađen je problem višerazredne klasifikacije za tekstove na
+Hrvatskom jeziku. Naglasak je stavljen na evaluiranje različitih skupova
+karakteristika.
 
-U 2.~odjeljku opisane su metode koje su u drugim radovima korištene za
-problem prepoznavanja autora i srodne probleme. Odjeljak 3 daje kratki pregled
-sustava, način na koji su komponente u sustavu povezane i na koji način se
-sustav može koristiti. Slijedi 4.~odjeljak s opisom korištenih podataka. Možda
-za rad najbitniji odjeljak je 5. U njemu je dat opis korištenih metoda za
-izvlačenje značajki iz tekstova, popis svih korištenih značajki i njihove
-specifičnosti. Na 5.~odjeljak usko se veže 6.~sa evaluacijom navedenih metoda.
-Implementacija je opisana u 7.~odjeljku, a zaključak je dat u 8.
+Rad je organiziran tako da su u 2.~odjeljku opisane metode koje su u drugim
+radovima korištene za problem prepoznavanja autora i srodne probleme. Odjeljak 3
+daje kratki pregled sustava, način na koji su komponente u sustavu povezane i na
+koji način se sustav može koristiti. Slijedi 4.~odjeljak s opisom korištenih
+podataka. Možda za rad najbitniji odjeljak je 5. U njemu je dat opis korištenih
+metoda za izvlačenje značajki iz tekstova, popis svih korištenih značajki i
+njihove specifičnosti. Na 5.~odjeljak usko se veže 6.~sa evaluacijom navedenih
+metoda. Implementacija je opisana u 7.~odjeljku, a zaključak je dat u 8.
  
 \section{Srodna rješenja}
-% TODO: Napisati, ovdje ima puno.
-\emph{Iskoristiti ono sa google docsa.}
+\citet{coyotl2006authorship} dijele postojeće metode prepoznavanja autora
+teksta na tri glavna pristupa:
+\begin{description}
+\item[Uzimanje mjera stila kao značajki dokumenta:] Za pristup su
+karakteristične značajke koje u obzir uzimaju duljinu riječi i rečenica te
+bogatstvo vokabulara. Navodi se da takve značajke nisu dovoljne za rješavanje
+problema, da ovise o žanru teksta te da gube smisao ako se primjenjuju nad
+kratkim tekstovima.
+\item[Korištenje sintaksnih obilježja kao značajki:] Korištenje oznaka stila
+autora \engl{style markers} kao značajki -- informacije vezane uz strukturu
+jezika koje su skupljene dubinskom analizom sintaksne analize dokumenta. Tekst se
+karakterizira pojavom i frekvencijom pojedinih sintaksnih struktura. Navedena
+karakterizacija je detaljna i relevantna. Nažalost, računalno je zahtjevna i
+treba alate za obradu teksta (npr.~POS označivači \engl{Part-Of-Speech taggers},
+sintaksni parseri i sl.). Očit je i utjecaj duljine teksta na rezultat klasifikacije.
+\item[Značajke dokumenta temeljene na riječima:] Pristup se grana na tri
+različite metode. \emph{Prva} karakterizira dokumente koristeći skup funkcijskih
+riječi\footnote{Riječi koje nemaju sadržajno značenje.} (njihovu pojavu i
+frekvenciju pojavljivanja), ignorirajući sadržajne riječi \engl{content words}
+jer su one usko vezane uz temu dokumenta. Metoda pokazuje dobre rezultate, ali na
+nju utječe veličina dokumenta. \emph{Druga} grana dokument promatra kao hrpu
+riječi \engl{bag-of-words} te koristi jedno sadržajne riječi \engl{single content
+words} kao značajke dokumenta. Metoda je vrlo robusna i daje odlične rezultate
+kad postoji primjetna korelacija između autora i teme o kojoj pišu. \emph{Treća}
+grana razmatra $n$-grame riječi kao značajke, npr.~značajke koje se sastoje od
+sekvenci $n$ uzastopnih riječi. Radi prebrzog rasta značajki koriste se samo
+$n$-grami do tri riječi.
+\end{description}
+
+\citet{kukushkina2001using} navode postupak koji koristi algoritme za kompresiju
+podataka u svrhu prepoznavanja autora. U dodatku svog rada navode eksperimentalne
+rezultate prepoznavanja autora sa različitim kompresijskim algoritmima. Ideja
+postupka je dokumente za učenje podijeliti u skupove po autorima i svaki skup
+sažeti odabranim algoritmom te zabilježiti veličine arhiva. Tekst nepoznatog
+autora se dodaje svakom skupu za učenje te se primjenjuje isti algoritam
+kompresije. Arhiva koja bilježi najmanji porast veličine proglašava se
+pripadnom arhivom novog teksta, tj.~njen autor, autor tekst. Osvrt na sličan
+postupak spominje se u radu \citep{zhao2005effective}. Taj rad navodi
+da postupak ima očite propuste te navodi rad koji to potvrđuje.
+
+\citet{koppel2003exploiting} opisuju korištenje gramatičkih greški i
+neformalnog stiliziranja (npr.~pisanje rečenica velikim slovima u svrhu
+naglašavanja i sl.) kao značajki dokumenta u svrhu prepoznavanja autora. Metoda
+je primjenjiva samo na neuređivane tekstove (npr.~blogovi, Internet forumi,
+\emph{news grupe}, e-mail poruke, i sl.).
+
+Razne vrste oznaka stila \engl{style markers} navode \citet{diri2003automatic}
+te \citet{luyckx2005shallow}.
+
+Uspješnost funkcijskih riječi nad kolokacijama\footnote{Dvije riječi koje se
+pojavljuju na određenoj udaljenosti jedna od druge.} navodi se u
+\citep{argamon2005measuring} -- iako, radi redukcije informacija pri uzimanju
+funkcijskih riječi kao značajki, intuitivno bi se moglo zaključiti suprotno.
+Također se navodi sumnja da zapravo diskriminatorna osobina kolokacija dolazi
+od frekventnih riječi koje one sadržavaju. Uz to, navedeno je da znatno veći
+broj dokumenata za učenje od broja značajki izuzetno dobro smanjuje
+vjerojatnost pretreniranosti klasifikatora. Slično je navedeno i u
+radu \citep{banko2001scaling} koji obrađuje značaj veličine korpusa pri
+općenitoj obradi prirodnog jezika.
+
+Slična usporedba tipova značajki je napravljena u \citep{uzuner2005comparative}
+pri čemu su se uspoređivale funkcijske riječi i sintaksni elementi dokumenata u
+svrhu prepoznavanja autora. Došli su do zaključka da sintaksni elementi izraza
+nisu korisni koliko funkcijske riječi pri rješavanju navedenog problema.
 
 \section{Model sustava}
 Namjena razvijenog sustava je prepoznati autora sustavu dosad neviđenog teksta.
@@ -133,6 +199,9 @@ U arhivi se nalaze tekstovi 25 autora sa ukupno 4359 članaka koji zajedno broje
 greška. Radi se o Živku Kustiću koji je imao ukupno 1285 objavljenih kolumni do
 datuma kada je napravljena arhiva.}, \ref{fig:wordsPerAuthor} i
 \ref{fig:avgWordsPerAuthorArticle}.
+
+Da bi se izbjeglo učenje teme, arhiva je podjeljena po razdobljima, tj.~za
+testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 
 \begin{figure}[!h]
 \begin{center}
@@ -203,6 +272,8 @@ komandne linije:
 
 
 \section{Zaključak}
+
+%\nocite{baayen2002experiment}
 
 \bibliography{literatura}
 \bibliographystyle{plainnat}
