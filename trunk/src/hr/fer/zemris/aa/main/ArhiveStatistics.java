@@ -68,7 +68,7 @@ public class ArhiveStatistics {
 		System.out.println();
 		
 		index = 0;
-		System.out.println("Prosječna duljina članka po autoru:");
+		System.out.println("Prosječan broj riječi u članku po autoru:");
 		for (String a : authors) {
 			index++;
 			float avg = authorArticleLenSum.get(a)*1.f/authorArticleNum.get(a);

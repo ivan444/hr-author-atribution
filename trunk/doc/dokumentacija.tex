@@ -143,22 +143,22 @@ pri čemu su se uspoređivale funkcijske riječi i sintaksni elementi dokumenata
 svrhu prepoznavanja autora. Došli su do zaključka da sintaksni elementi izraza
 nisu korisni koliko funkcijske riječi pri rješavanju navedenog problema.
 
-% TODO: Sredi! Uredi citate! Malo ljepše napiši!
 Opis postupka prepoznavanja autora teksta pomoću sintaksnih elemenata jezika
 tj.~alata za obradu prirodnog jezika može se naći u izuzetno utjecajnom radu
-\citep{stamatatos2001computer}. Osim opisa navedenog postupka rad kao često
-korištenu značajku pri prepoznavanju autora navodi raznolikost riječnika autora.
+\citep{stamatatos2001computer}. Razne vrste oznaka stila \engl{style markers}
+također navode \citet{diri2003automatic} te \citet{luyckx2005shallow}.
+
+Osim opisa navedenog postupka, \citet{stamatatos2001computer}, kao često
+korištenu značajku pri prepoznavanju autora navode raznolikost riječnika autora.
 Ona se mjeri omjerom unikatnih riječi i ukupne veličine teksta ili brojanjem
 riječi koje se pojavljuju samo jednom (\emph{hapax legomena}), riječi koje se
-pojavljuju samo dva puta (\emph{dislegomena}) i sl. Te mjere su usko vezano uz
-dužinu teksta. Rad navodi funkcije (Yule--K (1944) i Honore--R (1979)) koje bi
-trebale biti konstantne s obzirom na dužinu teksta, no također se navodi rad
-(Tweedie and Baayen, 1998) koji tvrdi da većina takvih funkcija nije neovisna o
-duljini teksta. Navode da je raznolikost riječnika nestabilna značajka za
-tekstove kraće od 1000 riječi.
-
-Razne vrste oznaka stila \engl{style markers} također navode
-\citet{diri2003automatic} te \citet{luyckx2005shallow}.
+pojavljuju samo dva puta (\emph{dis legomena}) i sl. Te mjere su usko vezano uz
+dužinu teksta. Rad navodi funkcije date u
+\citep{yule1944statistical,honore1979some} koje bi trebale riješiti taj problem,
+tj. trebale bi biti konstantne s obzirom na dužinu teksta. Analiza sličnih
+funkcija može se naći u radu \citep{tweedie1998variable} koji tvrdi da većina
+takvih funkcija nije neovisna o duljini teksta. Zaključuje se da je raznolikost
+riječnika nestabilna značajka za tekstove kraće od 1000 riječi.
 
 \section{Model sustava}
 Namjena razvijenog sustava je prepoznati autora sustavu dosad neviđenog teksta.
@@ -207,9 +207,9 @@ Lab, FER -- \url{http://ktlab.fer.hr}} \texttt{documentSet} shemi dostupnoj na
 članaka u mrežnoj arhivi našao u više kopija, one su pri izradi XML arhive
 preskočene.
 
-U arhivi se nalaze tekstovi 25 autora sa ukupno 4359 članaka koji zajedno broje
+U arhivi se nalaze tekstovi 25 autora sa ukupno 4359 tekstova koji zajedno broje
 3400558 riječi. Detaljne statistike arhive nalaze se na slikama
-\ref{fig:articlesPerAuthor}\footnote{Broj članaka za autora na mjestu 21 nije
+\ref{fig:articlesPerAuthor}\footnote{Broj tekstova za autora na mjestu 21 nije
 greška. Radi se o Živku Kustiću koji je imao ukupno 1285 objavljenih kolumni do
 datuma kada je napravljena arhiva.}, \ref{fig:wordsPerAuthor} i
 \ref{fig:avgWordsPerAuthorArticle}.
@@ -221,7 +221,7 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \begin{center}
 \input{figures/articlesPerAuthor}
 \end{center}
-\caption{Broj članaka po autoru.}
+\caption{Broj tekstova po autoru.}
 \label{fig:articlesPerAuthor}
 \end{figure}
 
@@ -237,7 +237,7 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \begin{center}
 \input{figures/avgWordsPerAuthorArticle}
 \end{center}
-\caption{Prosječna duljina članka po autoru.}
+\caption{Prosječan broj riječi u tekstu po autoru.}
 \label{fig:avgWordsPerAuthorArticle}
 \end{figure}
 
