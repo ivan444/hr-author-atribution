@@ -1,4 +1,4 @@
-package hr.fer.zemris.aa.main;
+package hr.fer.zemris.aa.tests;
 
 import java.io.File;
 import java.util.List;
