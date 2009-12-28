@@ -1,4 +1,4 @@
-package hr.fer.zemris.aa.main;
+package hr.fer.zemris.aa.tests;
 
 import hr.fer.zemris.aa.features.Article;
 import hr.fer.zemris.aa.xml.XMLMiner;
