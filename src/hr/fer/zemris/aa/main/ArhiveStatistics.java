@@ -18,10 +18,15 @@ import hr.fer.zemris.aa.xml.XMLMiner;
 public class ArhiveStatistics {
 
 	/**
-	 * @param args
+	 * @param args <putanja-do-arhive>
 	 */
 	public static void main(String[] args) {
-		String path = "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.xml";
+		if (args.length != 1) {
+			System.out.println("Neispravani parametri! <putanja-do-arhive>");
+			System.exit(-1);
+		}
+		
+		String path = args[0];
 		int authorsNum = 0;
 		int articleNum = 0;
 		long wordNumSum = 0;
@@ -37,7 +42,7 @@ public class ArhiveStatistics {
 		Map<String, Long> authorArticleLenSum = new HashMap<String, Long>();
 		Map<String, Integer> authorArticleNum = new HashMap<String, Integer>();
 		
-		Pattern wordSplit = Pattern.compile("[\\w]+");
+		Pattern wordSplit = Pattern.compile("[^a-zA-ZčćžšđČĆŽŠĐ]+");
 		int index = 0;
 		System.out.println("Članaka po autoru:");
 		for (String a : authors) {

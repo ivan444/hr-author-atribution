@@ -13,7 +13,10 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordFreqExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumL2NormalizedExtractor;
+import hr.fer.zemris.aa.features.impl.ShortWordsExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
@@ -28,7 +31,7 @@ import hr.fer.zemris.aa.xml.XMLMiner;
 public class Experimenter {
 	
 	private static AuthorRecognizer trainRecognizer(RecognizerTrainer trainer, List<FeatureClass> trainData) {
-		System.out.println("Započinje treniranje.");
+		System.out.println("Započinje učenje.");
 		System.out.println("Broj razreda: " + trainData.size());
 		
 		long trainSetSize = 0;
@@ -118,7 +121,11 @@ public class Experimenter {
 	public static void main(String[] args) {
 		IFeatureExtractor featExtrac = new ComboFeatureExtractor(
 				new FunctionWordOccurNumExtractor(new File("config/fwords.txt"))
-				);
+				//new FunctionWordOccurNumL2NormalizedExtractor("config/fwords.txt"),
+				//new FunctionWordFreqExtractor(new File("config/fwords.txt")),
+				//new ShortWordsExtractor()
+		);
+		
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac);
 		preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml");
 	}
