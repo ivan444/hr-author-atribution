@@ -13,6 +13,7 @@ import libsvm.svm;
 import libsvm.svm_model;
 import libsvm.svm_node;
 import libsvm.svm_parameter;
+import libsvm.svm_print_interface;
 import libsvm.svm_problem;
 
 import hr.fer.zemris.aa.features.FeatureClass;
@@ -110,7 +111,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		for (int i = 0; i < featuresDim; i++) {
 			svmFeatures[i] = new svm_node();
 			svmFeatures[i].index = i;
-			svmFeatures[i].value = features.get(i)*1.0;
+			svmFeatures[i].value = features.get(i);
 		}
 		
 		double recognizedCls = svm.svm_predict(model, svmFeatures);
@@ -179,6 +180,11 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		for (int i = 0; i < prob.l; i++) {
 			prob.y[i] = authors.elementAt(i);
 		}
+		
+		// Postavljanje 'quiet modea'
+		svm.svm_print_string = new svm_print_interface() { 
+			public void print(String s){}
+		};
 		
 		// Provjera
 		String errorMsg = svm.svm_check_parameter(prob, param);

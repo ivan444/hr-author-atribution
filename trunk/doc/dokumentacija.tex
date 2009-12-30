@@ -79,7 +79,9 @@ podataka. Možda za rad najbitniji odjeljak je 5. U njemu je dat opis korišteni
 metoda za izvlačenje značajki iz tekstova, popis svih korištenih značajki i
 njihove specifičnosti. Na 5.~odjeljak usko se veže 6.~sa evaluacijom navedenih
 metoda. Implementacija je opisana u 7.~odjeljku, a zaključak je dat u 8.
- 
+
+\newpage
+
 \section{Srodna rješenja}
 \citet{coyotl2006authorship} dijele postojeće metode prepoznavanja autora
 teksta na tri glavna pristupa:
@@ -102,8 +104,8 @@ riječi\footnote{Riječi koje nemaju sadržajno značenje.} (njihovu pojavu i
 frekvenciju pojavljivanja), ignorirajući sadržajne riječi \engl{content words}
 jer su one usko vezane uz temu dokumenta. Metoda pokazuje dobre rezultate, ali na
 nju utječe veličina dokumenta. \emph{Druga} grana dokument promatra kao hrpu
-riječi \engl{bag-of-words} te koristi jedno sadržajne riječi \engl{single content
-words} kao značajke dokumenta. Metoda je vrlo robusna i daje odlične rezultate
+riječi \engl{bag-of-words} te koristi jedno-sadržajne riječi \engl{single
+content words} kao značajke dokumenta. Metoda je vrlo robusna i daje odlične rezultate
 kad postoji primjetna korelacija između autora i teme o kojoj pišu. \emph{Treća}
 grana razmatra $n$-grame riječi kao značajke, npr.~značajke koje se sastoje od
 sekvenci $n$ uzastopnih riječi. Radi prebrzog rasta značajki koriste se samo
@@ -160,6 +162,31 @@ funkcija može se naći u radu \citep{tweedie1998variable} koji tvrdi da većina
 takvih funkcija nije neovisna o duljini teksta. Zaključuje se da je raznolikost
 riječnika nestabilna značajka za tekstove kraće od 1000 riječi.
 
+Problem ovisnosti mjera o dužini teksta radi što uspješnije klasifikacije pomoću
+SVM-a\footnote{Support Vector Machines} navode \citet{diederich2003authorship}.
+Za izbjegavanje ovisnosti koriste kombinaciju $L_p$ normalizacije duljine i
+transformacije frekvencija pojave termina kao što je
+\emph{idf}\footnote{Inverse document frequency} mjera ili redundancija.
+
+Idf mjera je definirana sa
+\begin{equation}
+F_{idf}(t_k) = \log \frac{n_d}{n_d(t_k)},
+\label{equ:idf}
+\end{equation}
+pri čemu je $n_d(t_k)$ broj dokumenata koji sadržavaju termin $t_k$ te $n_d$
+ukupan broj dokumenata. Navedena mjera daje niske vrijednosti za dokumente koji
+se pojavljuju u malom broju dokumenata te je time jako diskriminatorna. 
+
+Redundancija je mjera asimetričnosti razdiobe te se definira sa
+\begin{equation}
+R(t_k) = \log n_d + \sum_{i=1}^{n_d} \frac{f(t_k, d_i)}{f(t_k)} \cdot \log \frac{f(t_k, d_i)}{f(t_k)},
+\label{equ:redundancija}
+\end{equation}
+pri čemu je $f(t_k, d_i)$ frekvencija pojavljivanja termina $t_k$ u dokumentu
+$d_i$, $f(t_k)$ frekvencija pojavljivanja termina u svim dokumentima te $n_d$
+ukupan broj dokumenata. $R(t_k)$ je mjera koliko razdioba termina $t_k$ u raznim
+dokumentima odstupa od uniformne razdiobe.
+
 \section{Model sustava}
 Namjena razvijenog sustava je prepoznati autora sustavu dosad neviđenog teksta.
 Autor se može prepoznati samo ako je sustav naučen nad skupom tekstova koji je
@@ -208,7 +235,7 @@ Lab, FER -- \url{http://ktlab.fer.hr}} \texttt{documentSet} shemi dostupnoj na
 preskočene.
 
 U arhivi se nalaze tekstovi 25 autora sa ukupno 4359 tekstova koji zajedno broje
-3400558 riječi. Detaljne statistike arhive nalaze se na slikama
+2998766 riječi. Detaljne statistike arhive nalaze se na slikama
 \ref{fig:articlesPerAuthor}\footnote{Broj tekstova za autora na mjestu 21 nije
 greška. Radi se o Živku Kustiću koji je imao ukupno 1285 objavljenih kolumni do
 datuma kada je napravljena arhiva.}, \ref{fig:wordsPerAuthor} i
@@ -257,8 +284,8 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \label{sec:implementacija}
 Implementacija je napisana u programskim jezicima Javi (glavni sustav) te
 Pythonu (skripta \texttt{JutarnjiKolumneArhiver.py}). Navedena skripta služi za
-dohvat arhive tekstova sa ``\emph{Komentari i kolumne na aktualna događanja u Hrvatskoj -
-Jutarnji.hr}''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
+dohvat arhive tekstova sa ``Komentari i kolumne na aktualna događanja u
+Hrvatskoj -- Jutarnji.hr''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
 
 % TODO: UCD Dohvat članaka i izlučivanje značajki
 % TODO: UCD Učenje sustava

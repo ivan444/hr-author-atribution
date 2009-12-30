@@ -8,7 +8,7 @@ package hr.fer.zemris.aa.features;
  */
 public class FeatureVector {
 	
-	private int[] rawVector;
+	private float[] rawVector;
 	private String author, title;
 	
 	/**
@@ -16,7 +16,7 @@ public class FeatureVector {
 	 * @param size dimenzija vektora
 	 */
 	public FeatureVector(int size){
-		rawVector = new int[size];
+		rawVector = new float[size];
 	}
 	
 	/**
@@ -25,7 +25,7 @@ public class FeatureVector {
 	 * @param value Vrijednost komponente
 	 * @return true ako uspjesno
 	 */
-	public boolean put(int index, int value){
+	public boolean put(int index, float value){
 		
 		this.rawVector[index] = value;
 		
@@ -37,7 +37,7 @@ public class FeatureVector {
 	 * @param index Index komponente u vektoru
 	 * @return vrijednost komponente na zadanom indexu
 	 */
-	public int get(int index){
+	public float get(int index){
 		return this.rawVector[index];
 	}
 	
@@ -49,7 +49,7 @@ public class FeatureVector {
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("x = [ ");
-		for (int xi : this.rawVector) {
+		for (float xi : this.rawVector) {
 			sb.append(xi + " ");
 		}
 		sb.append("]");
