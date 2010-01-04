@@ -74,16 +74,20 @@ public class FunctionWordFreqExtractor implements IFeatureExtractor {
 	
 	@Override
 	public FeatureVector getFeatures(String text) {
-
+		
 		FeatureVector result = new FeatureVector(fWords.size());
 		int[] freq = new int[fWords.size()];
 		
 		String[] words = text.split(" " );
 		String tmp;
 		int j;
+		int wordsCount = 0;
 		
 		for (int i=0; i < words.length; ++i) {
 			tmp = clean(words[i]);
+			
+			if (tmp.length() != 0)
+				wordsCount++;
 		
 			j = 0;
 			for (Set<String> x : fWords.values()) {
@@ -96,7 +100,7 @@ public class FunctionWordFreqExtractor implements IFeatureExtractor {
 		}
 		
 		for (int i=0; i < freq.length; ++i) {
-			result.put(i, freq[i]);
+			result.put(i, freq[i]/(float)wordsCount);
 		}
 		
 		return result;
@@ -104,7 +108,7 @@ public class FunctionWordFreqExtractor implements IFeatureExtractor {
 	
 	public String clean(String x) {
 		
-		return x.replaceAll("[^a-zA-Z]", "").toLowerCase();
+		return x.replaceAll("[^a-zA-ZčćžšđČĆŽŠĐ]", "").toLowerCase();
 	}
 
 }

@@ -63,8 +63,13 @@ public class FunctionWordOccurNumExtractor implements IFeatureExtractor {
 		String[] words = text.split(" " );
 		String tmp;
 		
+		int wordsCount = 0;
+		
 		for (int i=0; i < words.length; ++i) {
 			tmp = clean(words[i]);
+			
+			if (tmp.length() != 0)
+				wordsCount++;
 		
 			if (fWords.contains(tmp)) {
 				Integer x = countMap.get(tmp);
@@ -81,7 +86,7 @@ public class FunctionWordOccurNumExtractor implements IFeatureExtractor {
 			Integer value = countMap.get(x);
 			
 			if (value != null)
-				result.put(i, value);
+				result.put(i, value/(float)wordsCount);
 			else
 				result.put(i, 0);
 			
@@ -94,7 +99,7 @@ public class FunctionWordOccurNumExtractor implements IFeatureExtractor {
 	
 	public String clean(String x) {
 		
-		return x.replaceAll("[^a-zA-Z]", "").toLowerCase();
+		return x.replaceAll("[^a-zA-ZčćžšđČĆŽŠĐ]", "").toLowerCase();
 	}
 
 }
