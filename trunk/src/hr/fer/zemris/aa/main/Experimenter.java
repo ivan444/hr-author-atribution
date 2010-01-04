@@ -2,8 +2,10 @@ package hr.fer.zemris.aa.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jdom.JDOMException;
@@ -16,6 +18,7 @@ import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordFreqExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumL2NormalizedExtractor;
+import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
 import hr.fer.zemris.aa.features.impl.ShortWordsExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
@@ -64,9 +67,19 @@ public class Experimenter {
 		
 		
 		Set<String> authors = new HashSet<String>();
+		Map<String, Integer> articleNumAuthor = new HashMap<String, Integer>();
+		
+		Integer tmp = null;
 		for (Article a : testData) {
 			authors.add(a.getAuthor());
+			tmp = articleNumAuthor.get(a.getAuthor());
+			if (tmp == null)
+				articleNumAuthor.put(a.getAuthor(), 1);
+			else
+				articleNumAuthor.put(a.getAuthor(), tmp+1);
 		}
+		
+		Map<String, Integer> hitsNumAuthor = new HashMap<String, Integer>();
 		
 		System.out.println("Započinje testiranje.");
 		System.out.println("Broj autora: " + authors.size());
@@ -79,11 +92,28 @@ public class Experimenter {
 					!recogAuthor.equals(article.getAuthor())) {
 				misses++;
 			} else {
+				
+				tmp = hitsNumAuthor.get(article.getAuthor());
+				if (tmp == null)
+					hitsNumAuthor.put(article.getAuthor(), 1);
+				else
+					hitsNumAuthor.put(article.getAuthor(), tmp+1);
+				
 				hits++;
 			}
 		}
 		
 		float accuracy = hits*1.f/(hits+misses);
+		
+		for (String author : authors) {
+		
+			tmp = hitsNumAuthor.get(author);
+			if (tmp != null)
+				System.out.format("%20s: %20f (%d/%d)%n",author,
+						tmp/(float)articleNumAuthor.get(author), tmp, articleNumAuthor.get(author) );
+			else
+				System.out.format("%20s: %20f (%d/%d)%n",author,0.,0,articleNumAuthor.get(author));
+		}
 		
 		System.out.println("Testiranje je završilo!");
 		System.out.println("Točnost: " + accuracy + " (" + hits + "/" + misses + ").");
@@ -120,10 +150,11 @@ public class Experimenter {
 
 	public static void main(String[] args) {
 		IFeatureExtractor featExtrac = new ComboFeatureExtractor(
+				new PunctuationMarksExtractor(new File("config/marks.txt")),
 				new FunctionWordOccurNumExtractor(new File("config/fwords.txt"))
-				//new FunctionWordOccurNumL2NormalizedExtractor("config/fwords.txt"),
-				//new FunctionWordFreqExtractor(new File("config/fwords.txt")),
-				//new ShortWordsExtractor()
+//				new FunctionWordOccurNumL2NormalizedExtractor("config/fwords.txt"),
+//				new FunctionWordFreqExtractor(new File("config/fwords.txt"))
+//				new ShortWordsExtractor()
 		);
 		
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac);
