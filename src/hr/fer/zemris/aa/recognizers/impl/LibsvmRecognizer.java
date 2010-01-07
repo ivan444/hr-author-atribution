@@ -1,10 +1,12 @@
 package hr.fer.zemris.aa.recognizers.impl;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -70,8 +72,9 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	public LibsvmRecognizer(String modelPath, IFeatureExtractor featureExtractor) {
 		try {
 			this.model = svm.svm_load_model(modelPath);
-			if (scale)
+			if (scale) {
 				loadScale(modelPath);
+			}
 		} catch (IOException e) {
 			throw new IllegalArgumentException("Problem pri učitavanju SVM modela iz datoteke " + modelPath + "!");
 		}
@@ -489,13 +492,23 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		
 		try {
 			svm.svm_save_model(savePath, this.model);
-			if (scale)
+			if (scale) {
 				saveScale(savePath);
+			}
+			saveClassNames(savePath+".cn");
 		} catch (IOException e) {
 			throw new IllegalArgumentException("Problem s zapisivanjem modela u datoteku!");
 		}
 		
 		return this;
+	}
+
+	private void saveClassNames(String path) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		for (Double cls : classNames.keySet()) {
+			writer.write(cls + "\t" + classNames.get(cls) + "\n");
+		}
+		writer.close();
 	}
 
 	/**
