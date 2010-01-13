@@ -19,7 +19,7 @@ import java.util.Set;
  * @author TOMISLAV
  *
  */
-public class FunctionWordFreqExtractor implements IFeatureExtractor {
+public class FunctionWordGroupFreqExtractor implements IFeatureExtractor {
 
 	Map<String, Set<String>> fWords = new LinkedHashMap<String, Set<String>>();
 	
@@ -33,7 +33,7 @@ public class FunctionWordFreqExtractor implements IFeatureExtractor {
 	 * 
 	 * @param inputFile
 	 */
-	public FunctionWordFreqExtractor(File inputFile) {
+	public FunctionWordGroupFreqExtractor(File inputFile) {
 		
 		try {
 			

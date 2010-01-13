@@ -5,9 +5,9 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import java.util.List;
 
 /**
+ * Razred za treniranje prepoznavatelja teksta.
  * 
  * @author Ivan Krišto
- *
  */
 public interface RecognizerTrainer {
 	

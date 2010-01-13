@@ -6,7 +6,7 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordFreqExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordGroupFreqExtractor;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 import hr.fer.zemris.aa.xml.XMLMiner;
@@ -35,7 +35,7 @@ public class CLITrainer {
 		}
 		// TODO: Zasad je implementacija prepoznavatelja hardkodirana. Ako ih bude više, odhardkodira se.
 		// TODO: Staviti odgovarajući featureExt
-		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new FunctionWordFreqExtractor(null));
+		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new FunctionWordGroupFreqExtractor(null));
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac);
 		List<FeatureClass> trainData = loadTrainData(args[0], featExtrac);
 		trainer.train(trainData, args[1]);

@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordFreqExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordGroupFreqExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 
@@ -23,7 +23,7 @@ public class CLIRecognizer {
 		}
 		// TODO: Zasad je implementacija prepoznavatelja hardkodirana. Ako ih bude više, odhardkodira se.
 		// TODO: Staviti odgovarajući featureExt
-		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new FunctionWordFreqExtractor(null));
+		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new FunctionWordGroupFreqExtractor(null));
 		AuthorRecognizer recognizer = new LibsvmRecognizer(args[1], featExtrac);
 		
 		StringBuilder sb = new StringBuilder();
