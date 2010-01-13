@@ -2,6 +2,7 @@ package hr.fer.zemris.aa.features.impl;
 
 import hr.fer.zemris.aa.features.FeatureVector;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
+import hr.fer.zemris.aa.features.TextStatistics;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -84,7 +85,7 @@ public class FunctionWordGroupFreqExtractor implements IFeatureExtractor {
 		int wordsCount = 0;
 		
 		for (int i=0; i < words.length; ++i) {
-			tmp = clean(words[i]);
+			tmp = TextStatistics.clean(words[i]);
 			
 			if (tmp.length() != 0)
 				wordsCount++;
@@ -105,10 +106,10 @@ public class FunctionWordGroupFreqExtractor implements IFeatureExtractor {
 		
 		return result;
 	}
-	
-	public String clean(String x) {
-		
-		return x.replaceAll("[^a-zA-ZčćžšđČĆŽŠĐ]", "").toLowerCase();
+
+	@Override
+	public String getName() {
+		return "FunctionWordGroupFreqExtractor";
 	}
 
 }
