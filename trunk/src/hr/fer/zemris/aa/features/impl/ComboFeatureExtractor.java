@@ -28,7 +28,7 @@ public class ComboFeatureExtractor implements IFeatureExtractor {
 		
 		FeatureVector comboFVector = new FeatureVector(sumVectorSizes);
 		comboFVector.describe(fVectors[0].getAuthor(), fVectors[0].getTitle());
-		
+
 		int cfvIndex = 0;
 		for (int i = 0; i < fVectors.length; i++) {
 			for (int j = 0; j < fVectors[i].getFeaturesDimension(); j++) {
@@ -38,6 +38,16 @@ public class ComboFeatureExtractor implements IFeatureExtractor {
 		}
 		
 		return comboFVector;
+	}
+
+	@Override
+	public String getName() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < extractors.length; i++) {
+			if (i != 0) sb.append(" + ");
+			sb.append(extractors[i].getName());
+		}
+		return sb.toString();
 	}
 
 }

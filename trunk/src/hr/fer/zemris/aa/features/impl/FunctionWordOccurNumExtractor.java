@@ -2,11 +2,9 @@ package hr.fer.zemris.aa.features.impl;
 
 import hr.fer.zemris.aa.features.FeatureVector;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
+import hr.fer.zemris.aa.features.TextStatistics;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,26 +20,12 @@ public class FunctionWordOccurNumExtractor implements IFeatureExtractor {
 	Set<String> fWordsSet; // Set nam služi samo radi brže provjere je li riječ funkcijska.
 	List<String> fWordsList;
 	
-	public FunctionWordOccurNumExtractor(File inputFile) {
+	public FunctionWordOccurNumExtractor(String inputFile) throws FileNotFoundException {
 		fWordsSet = new HashSet<String>();
-		fWordsList = new ArrayList<String>();
+		fWordsList = TextStatistics.listWords(inputFile);
 		
-		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
-			
-			String line = null;
-			while ((line = bufferedReader.readLine()) != null) {
-				line = line.trim().toLowerCase();
-				if (line.length() == 0 || line.startsWith("#"))
-					continue;
-				if (line.startsWith("."))
-					continue;
-				fWordsSet.add(line);
-				fWordsList.add(line);
-			}
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		for (String fw : fWordsList) {
+			fWordsSet.add(fw);
 		}
 	}
 	
@@ -58,7 +42,7 @@ public class FunctionWordOccurNumExtractor implements IFeatureExtractor {
 		int wordsCount = 0;
 		
 		for (int i=0; i < words.length; ++i) {
-			tmp = clean(words[i]);
+			tmp = TextStatistics.clean(words[i]);
 			
 			if (tmp.length() != 0) {
 				wordsCount++;
@@ -76,8 +60,9 @@ public class FunctionWordOccurNumExtractor implements IFeatureExtractor {
 		
 		return result;
 	}
-	
-	public String clean(String x) {
-		return x.replaceAll("[^a-zA-ZčćžšđČĆŽŠĐ]", "").toLowerCase();
+
+	@Override
+	public String getName() {
+		return "FunctionWordOccurNumExtractor";
 	}
 }

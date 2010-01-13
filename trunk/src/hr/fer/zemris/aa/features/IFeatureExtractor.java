@@ -13,6 +13,12 @@ public interface IFeatureExtractor {
 	 * @param text ulazni tekst iz kojeg se izlučuju značajke.
 	 * @return Vektor značajki danog teksta.
 	 */
-	public FeatureVector getFeatures(String text);
+	FeatureVector getFeatures(String text);
+	
+	/**
+	 * 
+	 * @return Naziv extractora.
+	 */
+	String getName();
 	
 }

@@ -26,4 +26,9 @@ public class VowelsExtractor implements IFeatureExtractor {
 		return fv;
 	}
 
+	@Override
+	public String getName() {
+		return "VowelsExtractor";
+	}
+
 }

@@ -5,7 +5,7 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordTFIDFExtractor;
 import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
 import hr.fer.zemris.aa.features.impl.VowelsExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
@@ -14,6 +14,7 @@ import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -139,7 +140,7 @@ public class Experimenter {
 		return null;
 	}
 	
-	private static void preformExperiment(IFeatureExtractor featExtrac, RecognizerTrainer trainer, String trainDataPath, String testDataPath) {
+	public static void preformExperiment(IFeatureExtractor featExtrac, RecognizerTrainer trainer, String trainDataPath, String testDataPath) {
 		System.out.println("Započeo eksperiment!");
 		List<FeatureClass> trainData = loadTrainData(trainDataPath, featExtrac);
 		AuthorRecognizer recognizer = trainRecognizer(trainer, trainData);
@@ -147,15 +148,65 @@ public class Experimenter {
 		List<Article> testData = loadTestData(testDataPath);
 		testRecognizer(recognizer, testData);
 	}
+	
+	public static void preformMultiExperiment(String trainDataPath, String testDataPath, IFeatureExtractor ... arrFeatExtrac) {
+		System.out.println("Započeo multieksperiment!");
+		
+		List<Article> testData = loadTestData(testDataPath);
+		for (int i = 0; i < arrFeatExtrac.length; i++) {
+			System.out.println("### FeatureExtractor: " + arrFeatExtrac[i].getName());
+			List<FeatureClass> trainData = loadTrainData(trainDataPath, arrFeatExtrac[i]);
+			
+			RecognizerTrainer trainer = new LibsvmRecognizer(arrFeatExtrac[i], true);
+			AuthorRecognizer recognizer = trainRecognizer(trainer, trainData);
+			testRecognizer(recognizer, testData);
+			System.out.println();
+			trainer = null;
+			recognizer = null;
+			trainData = null;
+			System.gc();
+		}
+	}
 
 	public static void main(String[] args) {
-		IFeatureExtractor featExtrac = new ComboFeatureExtractor(
-				new PunctuationMarksExtractor(new File("config/marks.txt")),
-				new FunctionWordOccurNumExtractor(new File("config/fwords.txt")),
-				new VowelsExtractor()
-		);
+		IFeatureExtractor featExtrac = null;
+		try {
+			featExtrac = new ComboFeatureExtractor(
+					new PunctuationMarksExtractor(new File("config/marks.txt")),
+//					new FunctionWordOccurNumExtractor("config/fwords.txt"),
+					new VowelsExtractor(),
+					new FunctionWordTFIDFExtractor("config/fw-idf.txt")
+			);
+		} catch (FileNotFoundException e) {
+			System.err.println("Greška! " + e.getMessage());
+			System.exit(-1);
+		}
 		
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac, true);
 		preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml");
+		
+		// Za koristiti ovaj test treba povećati java heap! VM params u runu, npr. -Xms512m -Xmx1024m 
+//		IFeatureExtractor fe1 = null;
+//		IFeatureExtractor fe2 = null;
+//		IFeatureExtractor fe3 = null;
+//		IFeatureExtractor fe4 = null;
+//		
+//		try {
+//			fe1 = new PunctuationMarksExtractor(new File("config/marks.txt"));
+//			fe2 = new FunctionWordOccurNumExtractor("config/fwords.txt");
+//			fe3 = new VowelsExtractor();
+//			fe4 = new FunctionWordTFIDFExtractor("config/fw-idf.txt");
+//		} catch (FileNotFoundException e) {
+//			System.err.println("Greška! " + e.getMessage());
+//			System.exit(-1);
+//		}
+//		preformMultiExperiment("podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml",
+//				new ComboFeatureExtractor(fe2,fe4),
+//				new ComboFeatureExtractor(fe3,fe4),
+//				new ComboFeatureExtractor(fe1, fe2,fe4),
+//				new ComboFeatureExtractor(fe3, fe2,fe4),
+//				new ComboFeatureExtractor(fe1, fe3,fe4),
+//				new ComboFeatureExtractor(fe1, fe2, fe3, fe4)
+//		);
 	}
 }

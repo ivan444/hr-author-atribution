@@ -1,5 +1,12 @@
 package hr.fer.zemris.aa.features;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +18,15 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.eaio.stringsearch.BoyerMooreHorspoolRaita;
+import com.eaio.stringsearch.StringSearch;
+
+
+/**
+ * Pomoćni razred. Razne statistike dokumenta.
+ * 
+ * @author Ivan Krišto
+ */
 public class TextStatistics implements Iterable<String> {
 	
 	private List<String> words;
@@ -60,6 +76,101 @@ public class TextStatistics implements Iterable<String> {
 		}
 		
 		calcWordsFrequencys();
+	}
+	
+	public static Map<String, Float> calcIdf(String wordsFilePath, List<Article> arhive) throws FileNotFoundException {
+		Map<String, Float> idf = new HashMap<String, Float>();
+		List<String> words = listWords(wordsFilePath);
+		int[] wordsOcc = new int[words.size()];
+		int documentsNum = 0;
+		StringSearch so = new BoyerMooreHorspoolRaita();
+		
+		for (Article art : arhive) {
+			documentsNum++;
+			String text = art.getText().toLowerCase();
+			for (int i = 0; i < wordsOcc.length; i++) {
+				if (so.searchString(text, words.get(i)) != -1) {
+					wordsOcc[i]++;
+				}
+			}
+		}
+		
+		for (int i = 0; i < wordsOcc.length; i++) {
+			float idfVal = (float) Math.log(documentsNum/(wordsOcc[i]+1.0));
+			idf.put(words.get(i), Float.valueOf(idfVal));
+		}
+		
+		return idf;
+	}
+	
+	public static Map<String, Float> calcIdf(String wordsFilePath, List<Article> arhive, String idfSavePath)
+			throws FileNotFoundException {
+		Map<String, Float> fwIdf = calcIdf(wordsFilePath, arhive);
+		
+		BufferedWriter writer;
+		try {
+			writer = new BufferedWriter(new FileWriter(idfSavePath));
+			for (String word : fwIdf.keySet()) {
+				writer.write(word + "\t" + fwIdf.get(word) + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return fwIdf;
+	}
+	
+	public static Map<String, Float> readIdf(String idfFilePath) throws FileNotFoundException {
+		Map<String, Float> idf = new HashMap<String, Float>();
+		BufferedReader reader = new BufferedReader(new FileReader(idfFilePath));
+		String line = null;
+		try {
+			while (true) {
+				line = reader.readLine();
+				if (line == null || line.equals("")) break;
+				String[] parts = line.trim().split("\t");
+				float idfVal = Float.parseFloat(parts[1]);
+				idf.put(parts[0], Float.valueOf(idfVal));
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return idf;
+	}
+	
+	public static String clean(String str) {
+		return str.replaceAll("[^a-zA-ZčćžšđČĆŽŠĐ]", "").toLowerCase();
+	}
+	
+	/**
+	 * Parsiranje liste riječi iz datoteke.
+	 * 
+	 * @param filePath Datoteka s popisom riječi.
+	 * @return Lista riječi iz datoteke.
+	 * @throws FileNotFoundException
+	 */
+	public static List<String> listWords(String filePath) throws FileNotFoundException {
+		List<String> wordsList = new ArrayList<String>();
+		BufferedReader reader = new BufferedReader(new FileReader(filePath));
+		try {
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				line = line.trim().toLowerCase();
+				if (line.length() == 0 || line.startsWith("#")) {
+					continue;
+				}
+				if (line.startsWith(".")) {
+					continue;
+				}
+				wordsList.add(line);
+			}
+			reader.close();
+		} catch (IOException ex) {
+		}
+		
+		return wordsList;
 	}
 	
 	private void extractWords(String text) {
@@ -211,4 +322,9 @@ public class TextStatistics implements Iterable<String> {
 			}
 		};
 	}
+	
+//	public static void main(String[] args) throws JDOMException, IOException {
+//		List<Article> arhive = XMLMiner.getArticles("podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml");
+//		calcIdf("config/fwords.txt", arhive, "config/fw-idf.txt");
+//	}
 }

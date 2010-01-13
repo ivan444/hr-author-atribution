@@ -1,17 +1,17 @@
 package hr.fer.zemris.aa.tests;
 
-import java.io.File;
-import java.util.List;
-
 import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
+import java.io.FileNotFoundException;
+import java.util.List;
+
 public class TestFeatures {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		
 		if (args.length != 1) {
 			System.err.println("arg[0] = put do xml datoteke!");
@@ -25,7 +25,7 @@ public class TestFeatures {
 		
 		XMLMiner miner = new XMLMiner(args[0]);
 		//IFeatureExtractor extractor = new SimpleFeatureExtractor(new File("config/fwords.txt"));
-		IFeatureExtractor extractor2 = new FunctionWordOccurNumExtractor(new File("config/fwords.txt"));
+		IFeatureExtractor extractor2 = new FunctionWordOccurNumExtractor("config/fwords.txt");
 		
 		FeatureGenerator generator = new FeatureGenerator(extractor2);
 		

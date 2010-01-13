@@ -8,6 +8,7 @@ import java.util.List;
 
 import hr.fer.zemris.aa.features.FeatureVector;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
+import hr.fer.zemris.aa.features.TextStatistics;
 
 public class PunctuationMarksExtractor implements IFeatureExtractor {
 	
@@ -15,20 +16,13 @@ public class PunctuationMarksExtractor implements IFeatureExtractor {
 	
 	public PunctuationMarksExtractor(File inputFile) {
 		try {
-			
-			BufferedReader bufferedReader = new BufferedReader(
-					new FileReader(inputFile));
-
+			BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
 			
 			String line = null;
-
 			while ((line = bufferedReader.readLine()) != null) {
-				
 				line = line.trim().toLowerCase();
-				
 				if (line.length() == 0 || line.startsWith("#"))
 					continue;
-				
 				marks.add(line);
 			}
 			
@@ -48,7 +42,6 @@ public class PunctuationMarksExtractor implements IFeatureExtractor {
 			for (int j=0; j < marks.size(); ++j) {
 				if (text.startsWith(marks.get(j), i))
 					freq[j]++;
-					
 			}
 			
 		}
@@ -57,7 +50,7 @@ public class PunctuationMarksExtractor implements IFeatureExtractor {
 		int wordsCount = 0;
 		
 		for (int i=0; i < words.length; ++i) {
-			tmp = clean(words[i]);
+			tmp = TextStatistics.clean(words[i]);
 			
 			if (tmp.length() != 0)
 				wordsCount++;
@@ -70,7 +63,8 @@ public class PunctuationMarksExtractor implements IFeatureExtractor {
 		return result;
 	}
 
-	public String clean(String x) {
-		return x.replaceAll("[^a-zA-ZčćžšđČĆŽŠĐ]", "").toLowerCase();
+	@Override
+	public String getName() {
+		return "PunctuationMarksExtractor";
 	}
 }

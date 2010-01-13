@@ -23,6 +23,7 @@ import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -275,10 +276,16 @@ public class GUI extends javax.swing.JFrame {
         
         // TODO: Staviti odgovarajući featureExt
         lblTrainingStatus.setText("Učenje je u tijeku!");
-        IFeatureExtractor featExtrac = new ComboFeatureExtractor(
-				new PunctuationMarksExtractor(new File("config/marks.txt")),
-				new FunctionWordOccurNumExtractor(new File("config/fwords.txt"))
-		);
+        IFeatureExtractor featExtrac = null;
+		try {
+			featExtrac = new ComboFeatureExtractor(
+					new PunctuationMarksExtractor(new File("config/marks.txt")),
+					new FunctionWordOccurNumExtractor("config/fwords.txt")
+			);
+		} catch (FileNotFoundException e1) {
+			lblTrainingStatus.setText("Greška! " + e1.getMessage());
+			return;
+		}
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac);
 		try {
 			List<FeatureClass> trainData = loadTrainData(txtTrainDataPath.getText(), featExtrac);
@@ -371,7 +378,7 @@ public class GUI extends javax.swing.JFrame {
     	try {
     		IFeatureExtractor featExtrac = new ComboFeatureExtractor(
     				new PunctuationMarksExtractor(new File("config/marks.txt")),
-    				new FunctionWordOccurNumExtractor(new File("config/fwords.txt"))
+    				new FunctionWordOccurNumExtractor("config/fwords.txt")
     		);
     		recognizer = new LibsvmRecognizer(txtLearnedModelPath.getText(), featExtrac);
     	} catch (Exception e) {
