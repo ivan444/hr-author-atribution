@@ -41,8 +41,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	
 	private float[] fmax = null;
 	private float[] fmin = null;
-	private boolean scale = true;
-	//TODO: scale kao parametar konstruktora razreda ili poziva metode train?
+	private boolean scale;
 	
 	private final static float eps = 1e-7F;
 	
@@ -53,11 +52,17 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	 * Konstruktor za klasifikator bez postojećeg modela.
 	 * 
 	 * @param featureExtractor Izlučitelj značajki teksta.
+	 * @param Skalirati ili ne.
 	 */
-	public LibsvmRecognizer(IFeatureExtractor featureExtractor) {
+	public LibsvmRecognizer(IFeatureExtractor featureExtractor, boolean scale) {
 		this.model = null;
+		this.scale = scale;
 		this.classNames = new HashMap<Double, String>();
 		this.featureExtractor = featureExtractor;
+	}
+	
+	public LibsvmRecognizer(IFeatureExtractor featureExtractor) {
+		this(featureExtractor, true);
 	}
 	
 	/**
@@ -233,14 +238,12 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	}
 	
 	private void scaleDistribution(List<FeatureClass> trainData) {
-		
 		int dim = trainData.get(0).get(0).getFeaturesDimension();
 		
 		this.fmax = new float[dim];
 		this.fmin = new float[dim];
 		
 		float tmp;
-		
 		
 		Arrays.fill(fmax, Float.MIN_VALUE);
 		Arrays.fill(fmin, Float.MAX_VALUE);
@@ -249,6 +252,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		for (FeatureClass fClass : trainData) {
 			for (FeatureVector x : fClass) {
 				for (int i=0; i < dim; ++i) {
+					if (x.getFeaturesDimension() <= i) break;
 					tmp = x.get(i);
 					if (fmax[i] < tmp)
 						fmax[i] = tmp;

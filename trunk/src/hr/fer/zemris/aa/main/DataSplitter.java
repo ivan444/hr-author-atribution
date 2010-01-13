@@ -71,7 +71,6 @@ public class DataSplitter {
 			
 			int testNum = (int) Math.round(size*OMJER);
 			if (testNum == 0) testNum = 1;
-			
 			testArticles.addAll(authorArticles.subList(0, testNum));
 			trainArticles.addAll(authorArticles.subList(testNum, size));
 		}

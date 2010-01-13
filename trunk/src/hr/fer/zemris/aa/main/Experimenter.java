@@ -1,5 +1,18 @@
 package hr.fer.zemris.aa.main;
 
+import hr.fer.zemris.aa.features.Article;
+import hr.fer.zemris.aa.features.FeatureClass;
+import hr.fer.zemris.aa.features.FeatureGenerator;
+import hr.fer.zemris.aa.features.IFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
+import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
+import hr.fer.zemris.aa.features.impl.VowelsExtractor;
+import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
+import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
+import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
+import hr.fer.zemris.aa.xml.XMLMiner;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,21 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jdom.JDOMException;
-
-import hr.fer.zemris.aa.features.Article;
-import hr.fer.zemris.aa.features.FeatureClass;
-import hr.fer.zemris.aa.features.FeatureGenerator;
-import hr.fer.zemris.aa.features.IFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordFreqExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumL2NormalizedExtractor;
-import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
-import hr.fer.zemris.aa.features.impl.ShortWordsExtractor;
-import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
-import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
-import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
-import hr.fer.zemris.aa.xml.XMLMiner;
 
 /**
  * Razred za eksperimentiranje s različitim parametrima.
@@ -106,13 +104,14 @@ public class Experimenter {
 		float accuracy = hits*1.f/(hits+misses);
 		
 		for (String author : authors) {
-		
 			tmp = hitsNumAuthor.get(author);
-			if (tmp != null)
+			if (tmp != null) {
 				System.out.format("%20s: %20f (%d/%d)%n",author,
-						tmp/(float)articleNumAuthor.get(author), tmp, articleNumAuthor.get(author) );
-			else
+						tmp/(float)articleNumAuthor.get(author),
+						tmp, articleNumAuthor.get(author) );
+			} else {
 				System.out.format("%20s: %20f (%d/%d)%n",author,0.,0,articleNumAuthor.get(author));
+			}
 		}
 		
 		System.out.println("Testiranje je završilo!");
@@ -141,6 +140,7 @@ public class Experimenter {
 	}
 	
 	private static void preformExperiment(IFeatureExtractor featExtrac, RecognizerTrainer trainer, String trainDataPath, String testDataPath) {
+		System.out.println("Započeo eksperiment!");
 		List<FeatureClass> trainData = loadTrainData(trainDataPath, featExtrac);
 		AuthorRecognizer recognizer = trainRecognizer(trainer, trainData);
 		
@@ -151,13 +151,11 @@ public class Experimenter {
 	public static void main(String[] args) {
 		IFeatureExtractor featExtrac = new ComboFeatureExtractor(
 				new PunctuationMarksExtractor(new File("config/marks.txt")),
-				new FunctionWordOccurNumExtractor(new File("config/fwords.txt"))
-//				new FunctionWordOccurNumL2NormalizedExtractor("config/fwords.txt"),
-//				new FunctionWordFreqExtractor(new File("config/fwords.txt"))
-//				new ShortWordsExtractor()
+				new FunctionWordOccurNumExtractor(new File("config/fwords.txt")),
+				new VowelsExtractor()
 		);
 		
-		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac);
+		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac, true);
 		preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml");
 	}
 }
