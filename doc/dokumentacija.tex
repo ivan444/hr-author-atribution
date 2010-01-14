@@ -303,20 +303,30 @@ algoritama (npr.~značajke dobivene sintaksnom analizom prirodnog jezika).
 
 
 \subsection{Frekvencije funkcijskih riječi}
-Funkcijske riječi su riječi poput priloga, prijedloga, veznika ili riječi koje opisuju količinu. To su riječi
-koje promatrane samostalno nemaju semantičko značenje. Obično ukazuju na gramatičke odnose ili općenita 
-svojstva \citep{zhao2005effective}. Privlačnost mjerenja frekvencije pojavljivanja funkcijskih riječi za prepoznavanje autora leži u činjenici
-da su one pokazatelj stila pisanja. Neke manje poznate funkcijske riječi - poput prijedloga onkraj, namjesto 
-ili zavrh - se rijeđe koriste i mogu vrlo dobro sugerirati autora. Međutim, čak se i frekvencija korištenja
-češćih funkcijskih riječi može vrlo dobro iskoristiti za razlikovanje autora. Pokazuje se kako zbog velike frekvencije
-korištenja funkcijskih riječi autor obično nema svjesnu kontrolu nad njihovom uporabom u pojedinom tekstu.
+Funkcijske riječi su riječi koje promatrane samostalno nemaju semantičko
+značenje, poput priloga, prijedloga, veznika, čestica, uzvika ili riječi koje
+opisuju količinu. Obično ukazuju na gramatičke odnose ili općenita svojstva
+\citep{zhao2005effective}.
 
-Velika prednost funkcijskih riječi je neovisnost o temi pisanja. Nevezano uz sadržaj, autori prilikom pisanja
-nesvjesno koriste funkcijske riječi indikativno njihovo vlastitom stilu. S druge strane, ovisnost o jeziku može biti veliki nedostatak. 
-Promjenom jezika dokumenata, potrebno je ažurirati i skup funkcijskih riječi 
-s kojima sustav radi. Teško je predvidjeti kako će se tako promijenjen sustav ponašati, i hoće li 
-funkcijske riječi dati jednako dobre rezultate za različite jezike. Iako postoji više istraživanja na ovu temu, 
-zbog različitih jezika, vrsta i veličine dokumenata teško je zaključiti koliko su ovakve metode općenito učinkovite \citep{zhao2005effective}.  
+Privlačnost mjerenja frekvencije pojavljivanja funkcijskih riječi za
+prepoznavanje autora leži u činjenici da su one pokazatelj stila pisanja. Neke
+manje poznate funkcijske riječi --- poput prijedloga \emph{onkraj},
+\emph{namjesto} ili \emph{zavrh} --- se rijeđe koriste i mogu vrlo dobro
+sugerirati autora. Međutim, čak se i frekvencija korištenja češćih funkcijskih
+riječi može vrlo dobro iskoristiti za razlikovanje autora. Pokazuje se kako zbog
+velike frekvencije korištenja funkcijskih riječi i njihove uloge u gramatici
+autor obično nema svjesnu kontrolu nad njihovom uporabom u pojedinom tekstu
+\citep{argamon2005measuring}.
+
+Velika prednost funkcijskih riječi je neovisnost o temi pisanja. Nevezano uz
+sadržaj, autori prilikom pisanja nesvjesno koriste funkcijske riječi indikativno
+njihovo vlastitom stilu. S druge strane, ovisnost o jeziku može biti veliki
+nedostatak. Promjenom jezika dokumenata, potrebno je ažurirati i skup funkcijskih
+riječi s kojima sustav radi. Teško je predvidjeti kako će se tako promijenjen
+sustav ponašati i hoće li funkcijske riječi dati jednako dobre rezultate za
+različite jezike. Iako postoji više istraživanja na ovu temu, zbog različitih
+jezika, vrsta i veličine dokumenata teško je zaključiti koliko su ovakve metode
+općenito učinkovite \citep{zhao2005effective}.
 
 \subsection{Frekvencije grupa tipova funkcijskih riječi}
 \subsection{Frekvencije funkcijskih riječi sa IDF težinama}
@@ -362,7 +372,7 @@ u skupu za učenje s ciljem bolje generalizacije nad još neviđenim skupom
 podataka. Parametri SVM--a koji utječu na moć generalizacije nad neviđenim skupom
 za ispitivanje su tako $C$ (parametar meke granice) i $\gamma$ (parametar
 radijalne bazne funkcije). Oni zajedno čine prostor parametara čijom je pretragom
-potrebno pronaći vrijednosti parametara, tj. odabrati onaj model, koji će dati
+potrebno pronaći vrijednosti parametara, tj.~odabrati onaj model, koji će dati
 SVM klasifikator s najmanjom pogreškom generalizacije.
 
 Pretraga parametra odvija se odabirom modela s parametrima $(C, \gamma)$ iz skupa
