@@ -361,7 +361,28 @@ k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2).
 Pokazano je da uz odabir ispravnih parametara \citep{keerthi2003asymptotic} linearni SVM
 predstavlja specijalni slučaj SVM--a s radijalnom baznom funkcijom čime
 se isključuje potreba za korištenjem linearnog SVM--a kao potencijalnog
-klasifikatora.
+klasifikatora. Prilikom korištenja radijalne bazne funkcije, a i općenito
+SVM--a, prije samog postupka učenja podatke je potrebno skalirati kako bi utjecaj svih
+atributa na klasifikaciju bio jednak. Svi se atributi pojedinog vektora unutar
+skupa za učenje skaliraju na interval $[0, 1]$ prema sljedećoj formuli:
+\begin{equation}
+x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
+- \min_{i}\; x_{i,j}}
+\end{equation}
+gdje je s $x^{s}_{i,j}$ označen skalirani atribut $j$ vektora $\mathbf{x_i}$, s
+$\min_{i}\; x_{i,j}$ označena minimalna vrijednost atributa $j$ između svih
+vektora $\mathbf{x_i}$, a s $\max_{i}\; x_{i,j}$ označena maksimalna vrijednost
+atributa $j$ između svih vektora. Ako dobivene minimalne i maksimalne vrijednosti označimo na sljedeći
+način:
+\begin{eqnarray}
+M_i & = \max_{i}\; x_{i,j} \\
+m_i & = \min_{i}\; x_{i,j}
+\end{eqnarray}
+tada se nepoznati vektor $\mathbf{x}$ prije klasifikacije skalira prema:
+\begin{equation}
+x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
+\end{equation}
+
 
 Učenjem SVM--a traže se parametri pretpostavljenog oblika decizijske funkcije,
 koja će ispravno klasificirati sve uzorke u skupu za učenje, što ponekad zbog
