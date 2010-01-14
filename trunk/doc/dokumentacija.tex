@@ -281,6 +281,19 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 % bla)
 % TODO: citirati rad koji kaže da se na ovome zasniva rješavanje problema, a ne
 % klasifikaciji.
+
+%i'll just put this here, pa refactor po volji:
+
+Vrlo bitna komponenta sustava za raspoznavanje autora teksta je komponenta za izlučivanje značajki.
+Potrebno je niz jezičnih znakova na prikladan način prilagoditi za klasifikaciju, primjerice
+prikazati značajke teksta u obliku vektora realnih brojeva. Nakon ove faze, vektori značajki se dalje
+mogu na standardni način bez problema koristiti u bilo kojem tipu poznatog klasifikatora.
+
+Ovisno o odabranom modelu značajki, analiza teksta i stvaranje vektora značajki može varirati od računski vrlo trivijalnih
+operacija pa do vrlo zahtjevnih algoritama. Iz ovog razloga odabir vrste značajki jedan je od ključnih dijelova 
+sustava.
+
+
 \subsection{Frekvencije funkcijskih riječi}
 
 Funkcijske riječi su riječi poput priloga, prijedloga, veznika ili riječi koje opisuju količinu. To su riječi
