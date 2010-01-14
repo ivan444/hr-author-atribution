@@ -68,10 +68,6 @@ dio tekstova napisan od poznatog autora, a autori ostalih tekstova su
 nepoznati. Ta klasifikacija pokušava odgovoriti na pitanje pripada li neki
 tekst poznatom autoru ili ne.
 
-\citet{keselj2003n} navode mogućnost izrade jezičnog modela pomoću $n$-grama te
-njegovog korištenja za prepoznavanje autora. Sličan postupak je opisan u
-\citep{coyotl2006authorship}.
-
 U ovom radu obrađen je problem višerazredne klasifikacije za tekstove na
 hrvatskom jeziku. Naglasak je stavljen na evaluiranje različitih skupova
 karakteristika.
@@ -135,6 +131,10 @@ naglašavanja i sl.) kao značajki dokumenta u svrhu prepoznavanja autora. Metod
 je primjenjiva samo na neuređivane tekstove (npr.~blogovi, Internet forumi,
 \emph{news grupe}, e-mail poruke, i sl.).
 
+\citet{keselj2003n} navode mogućnost izrade jezičnog modela pomoću $n$-grama te
+njegovog korištenja za prepoznavanje autora. Sličan postupak je opisan u
+\citep{coyotl2006authorship}.
+
 Uspješnost funkcijskih riječi nad kolokacijama\footnote{Dvije riječi koje se
 pojavljuju na određenoj udaljenosti jedna od druge.} navodi se u
 \citep{argamon2005measuring} -- iako, radi redukcije informacija pri uzimanju
@@ -169,7 +169,7 @@ takvih funkcija nije neovisna o duljini teksta. Zaključuje se da je raznolikost
 riječnika nestabilna značajka za tekstove kraće od 1000 riječi.
 
 Problem ovisnosti mjera o dužini teksta radi što uspješnije klasifikacije pomoću
-SVM-a\footnote{Support Vector Machines} navode \citet{diederich2003authorship}.
+SVM--a\footnote{Support Vector Machines} navode \citet{diederich2003authorship}.
 Za izbjegavanje ovisnosti koriste kombinaciju $L_p$ normalizacije duljine i
 transformacije frekvencija pojave termina kao što je
 \emph{idf}\footnote{Inverse document frequency} mjera.
@@ -247,7 +247,7 @@ greška. Radi se o Živku Kustiću koji je imao ukupno 1285 objavljenih kolumni 
 datuma kada je napravljena arhiva.}, \ref{fig:wordsPerAuthor} i
 \ref{fig:avgWordsPerAuthorArticle}.
 
-Da bi se izbjeglo učenje teme, arhiva je podjeljena po razdobljima, tj.~za
+Da bi se izbjeglo učenje teme, arhiva je podijeljena po razdobljima, tj.~za
 testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 
 \begin{figure}[htb]
@@ -275,27 +275,33 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \end{figure}
 
 \section{Izvlačenje značajki iz dokumenata i evaluacija}
-% TODO: Napisati!
-% TODO: O skaliranju!
-% TODO: Opisati problem i par riječi ukratko o svemu (traži se diskriminatorna
-% bla)
-% TODO: citirati rad koji kaže da se na ovome zasniva rješavanje problema, a ne
-% klasifikaciji.
+Glavni problem konstrukcije sustava za prepoznavanje autora je odabir dovoljno
+diskriminatornih značajki teksta. Značajka je diskriminatorna ako je česta kod
+jednog autora, a rijetka kod drugih. Zbog velikoga broja autora izuzetno su
+korisne složene značajke čija je razdioba karakteristična za svakog autora
+(npr.~razdioba nekih riječi).
 
-%i'll just put this here, pa refactor po volji:
+Značajke je moguće kombinirati. Na ovaj način, ako se koriste složene značajke,
+značajka može predstavljati više razdiobi i biti jače diskriminatorna.
 
-Vrlo bitna komponenta sustava za raspoznavanje autora teksta je komponenta za izlučivanje značajki.
-Potrebno je niz jezičnih znakova na prikladan način prilagoditi za klasifikaciju, primjerice
-prikazati značajke teksta u obliku vektora realnih brojeva. Nakon ove faze, vektori značajki se dalje
-mogu na standardni način bez problema koristiti u bilo kojem tipu poznatog klasifikatora.
+Prilikom stvaranja vektora značajki potrebno je voditi brigu da značajka ne
+ovisi o duljini i sadržaju teksta. Takav utjecaj smanjuje općenitost primjene
+sustava i može dovesti do smanjenja uspješnosti (npr.~povezivanje autora s
+konkretnom temom).
+
+Značajke se prikazuju u obliku vektora realnih brojeva što omogućava relativno
+jednostavnu klasifikaciju. Kombiniranje značajki je spajanje (nadovezivanje)
+vektora značajki.
+
+% Potrebno je niz jezičnih znakova na prikladan način prilagoditi za klasifikaciju, primjerice
+% prikazati značajke teksta u obliku vektora realnih brojeva. Nakon ove faze, vektori značajki se dalje
+% mogu na standardni način bez problema koristiti u bilo kojem tipu poznatog klasifikatora.
 
 Ovisno o odabranom modelu značajki, analiza teksta i stvaranje vektora značajki može varirati od računski vrlo trivijalnih
-operacija pa do vrlo zahtjevnih algoritama. Iz ovog razloga odabir vrste značajki jedan je od ključnih dijelova 
-sustava.
-
+operacija pa do vrlo zahtjevnih algoritama (npr.~značajke dobivene sintaksnom
+analizom prirodnog jezika). 
 
 \subsection{Frekvencije funkcijskih riječi}
-
 Funkcijske riječi su riječi poput priloga, prijedloga, veznika ili riječi koje opisuju količinu. To su riječi
 koje promatrane samostalno nemaju veliko semantičko značenje. Obično ukazuju na gramatičke odnose ili općenita 
 svojstva. \citep{zhao2005effective}. Privlačnost mjerenja frekvencije pojavljivanja funkcijskih riječi za prepoznavanje autora leži u činjenici
@@ -320,6 +326,7 @@ zbog različitih jezika, vrsta i veličine dokumenata teško je zaključiti koli
 \section{Klasifikacija}
 % TODO: O cross-validaciji, o parametrima, o skaliranju; neke dijelove izbaciti
 % ili prebaciti u dio o izlučivanju značajki. 
+-- realni brojevu tj vektori ite dimenzije
 Značajke korištene u ovom radu su frekvencije pojavljivanja određenih riječi i
 znakova te se njihovim grupiranjem one mogu predočiti pomoću vektora u
 vektorskome prostoru. Zbog navedene činjenice moguće je iskoristiti neki od

@@ -35,6 +35,7 @@ public class XMLMiner {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Set<String> getAuthors(){
 		Set<String> authors = new HashSet<String>();
 		
@@ -56,6 +57,7 @@ public class XMLMiner {
 	 * @param filePath Putanja do datoteke sa člancima.
 	 * @return Lista svih članaka iz datoteke {@code filePath}.
 	 */
+	@SuppressWarnings("unchecked")
 	public static List<Article> getArticles(String filePath) throws JDOMException, IOException {
 		SAXBuilder builder = new SAXBuilder();
 		Document document = null;
@@ -116,6 +118,7 @@ public class XMLMiner {
 	 * @param allInfo True ako želimo staviti sve informacije XML-a u sam article.
 	 * @return Lista svih članaka zadanog autora
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Article> getArticlesByAuthor(String author, boolean allInfo) {
 		
 		Element root = this.document.getRootElement();
@@ -191,6 +194,7 @@ public class XMLMiner {
 	 * @param articles lista svih članaka
 	 * @return niz od dvije liste: na prvom mjestu lista starijih, a na drugom mjestu n najnovijih članaka
 	 */
+	@SuppressWarnings("unchecked")
 	public  List[] split(int n,  List<Article> articles){
 		
 		if (n > articles.size()) throw new IllegalArgumentException("n veci od velicine liste! To nije OK.");
@@ -224,6 +228,7 @@ public class XMLMiner {
 	 * @param articles lista svih članaka
 	 * @return niz od dvije liste: na prvom mjestu lista starijih, a na drugom mjestu P posto najnovijih članaka
 	 */
+	@SuppressWarnings("unchecked")
 	public  List[] split(double P,  List<Article> articles){
 		
 		if ((P > 1.0)||(P < 0.0)) throw new IllegalArgumentException("P mora biti iz intervala [0,1]!");
