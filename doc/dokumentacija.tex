@@ -277,6 +277,36 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \subsection{Metoda2}
 \subsection{Metoda3}
 
+\section{Klasifikacija}
+
+Značajke korištene u ovom radu su frekvencije pojavljivanja određenih riječi i
+znakovate te se njihovim grupiranjem one mogu predočiti pomoću vektora u
+vektorskome prostoru. Zbog navedene činjenice moguće je iskoristiti neki od
+mnogo razvijenih klasifikatora koji traže decizijske funkcije, granice, u
+vektorskom prostoru. Jedan od takvih klasifikatora koji traži optimalnu granicu je upravo
+SVM klasifikator, koji se pokazao iznimno uspješnim prilikom rješavanja
+različitih problema klasifikacije, zbog čega je također korišten i u
+ovome radu.
+%mozda stavit neku referencu ovdje vezano za uspjesnost SVMa u radovima
+Izvorno SVM traži optimalnu linearnu granicu, odnosno hiperravninu, kako bi
+razdvojio razrede predstavljene skupom vektora u vektorskome prostoru.
+Iskorištavanjem jezgrenog trika \engl{Kernel Trick} isti klasifikator moguće je 
+primijeniti za traženje proizvoljne nelinearne granice između različitih
+razreda. Jezgra korištena u ovom radu je radijalna bazna funkcija: 
+\begin{equation}
+k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2)
+\end{equation}
+%Tu jos dodat da koristimo SVM s mekom granicom tako da je potrebno i odredit
+% parametar C
+%Takodjer parametre smo odredjivali pretrazivanjem diskretiziranog prostora
+% parametra (C, gamma) pomocu cross-validacije (velicina folda je 2) na skupu
+% za ucenje te odabrali one parametre koji su imali najvecu tocnost u
+% cross-validaciji
+
+%kod kernel tricka mozda stavit referencu na vapnikov rad iz 92
+Nakon što se iz zadanog teksta izluče značajke te ih se potom skalira one se
+prosljeđuju klasifikatoru koji donosi odluku o tome kojem autoru dani tekst pripada.
+%i tu opisat jos da onda on klasificira to pomocu modela bla bla
 \section{Evaluacija}
 % TODO: Napisati!
 

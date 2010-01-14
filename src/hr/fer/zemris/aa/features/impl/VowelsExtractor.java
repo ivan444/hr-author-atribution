@@ -10,8 +10,12 @@ public class VowelsExtractor implements IFeatureExtractor {
 		FeatureVector fv = new FeatureVector(5);
 		int[]vowelsNum = new int[5];
 		int textLen = text.length();
+		int charCount = 0;
 		for (int i = 0; i < textLen; i++) {
 			char ch = Character.toLowerCase(text.charAt(i));
+			//brojimo koliko ima znakova (koji nisu whitespace)
+			if (!Character.isWhitespace(ch))
+				charCount++;
 			if (ch == 'a') vowelsNum[0]++;
 			else if (ch == 'e') vowelsNum[1]++;
 			else if (ch == 'i') vowelsNum[2]++;
@@ -20,7 +24,7 @@ public class VowelsExtractor implements IFeatureExtractor {
 		}
 		
 		for (int i = 0; i < 5; i++) {
-			fv.put(i, 1.f*vowelsNum[i]);
+			fv.put(i, vowelsNum[i]/(float)charCount);
 		}
 		
 		return fv;
