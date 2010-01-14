@@ -15,8 +15,9 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordTFIDFExtractor;
 import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
+import hr.fer.zemris.aa.features.impl.VowelsExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
@@ -274,13 +275,13 @@ public class GUI extends javax.swing.JFrame {
         	return;
         }
         
-        // TODO: Staviti odgovarajući featureExt
         lblTrainingStatus.setText("Učenje je u tijeku!");
         IFeatureExtractor featExtrac = null;
 		try {
 			featExtrac = new ComboFeatureExtractor(
 					new PunctuationMarksExtractor(new File("config/marks.txt")),
-					new FunctionWordOccurNumExtractor("config/fwords.txt")
+					new VowelsExtractor(),
+					new FunctionWordTFIDFExtractor("config/fw-idf.txt")
 			);
 		} catch (FileNotFoundException e1) {
 			lblTrainingStatus.setText("Greška! " + e1.getMessage());
@@ -315,7 +316,7 @@ public class GUI extends javax.swing.JFrame {
         
         int returnVal = jfc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            txtTrainDataPath.setText(jfc.getSelectedFile().getAbsolutePath());
+            txtSaveModelPath.setText(jfc.getSelectedFile().getAbsolutePath());
         }
     }
 
@@ -373,13 +374,13 @@ public class GUI extends javax.swing.JFrame {
     		return;
     	}
     	
-    	// TODO: Staviti odgovarajući featureExt
     	AuthorRecognizer recognizer = null;
     	try {
     		IFeatureExtractor featExtrac = new ComboFeatureExtractor(
-    				new PunctuationMarksExtractor(new File("config/marks.txt")),
-    				new FunctionWordOccurNumExtractor("config/fwords.txt")
-    		);
+					new PunctuationMarksExtractor(new File("config/marks.txt")),
+					new VowelsExtractor(),
+					new FunctionWordTFIDFExtractor("config/fw-idf.txt")
+			);
     		recognizer = new LibsvmRecognizer(txtLearnedModelPath.getText(), featExtrac);
     	} catch (Exception e) {
     		lblRecogStatus.setText("Dogodila se greška pri klasifikaciji!");

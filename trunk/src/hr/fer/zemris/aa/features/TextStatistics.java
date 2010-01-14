@@ -82,11 +82,10 @@ public class TextStatistics implements Iterable<String> {
 		Map<String, Float> idf = new HashMap<String, Float>();
 		List<String> words = listWords(wordsFilePath);
 		int[] wordsOcc = new int[words.size()];
-		int documentsNum = 0;
+		int documentsNum = arhive.size();
 		StringSearch so = new BoyerMooreHorspoolRaita();
 		
 		for (Article art : arhive) {
-			documentsNum++;
 			String text = art.getText().toLowerCase();
 			for (int i = 0; i < wordsOcc.length; i++) {
 				if (so.searchString(text, words.get(i)) != -1) {

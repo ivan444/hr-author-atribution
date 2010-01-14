@@ -33,6 +33,7 @@
 \thispagestyle{empty}
 
 \tableofcontents
+
 \newpage
 
 \section{Uvod}
@@ -67,6 +68,10 @@ dio tekstova napisan od poznatog autora, a autori ostalih tekstova su
 nepoznati. Ta klasifikacija pokušava odgovoriti na pitanje pripada li neki
 tekst poznatom autoru ili ne.
 
+\citet{keselj2003n} navode mogućnost izrade jezičnog modela pomoću $n$-grama te
+njegovog korištenja za prepoznavanje autora. Sličan postupak je opisan u
+\citep{coyotl2006authorship}.
+
 U ovom radu obrađen je problem višerazredne klasifikacije za tekstove na
 Hrvatskom jeziku. Naglasak je stavljen na evaluiranje različitih skupova
 karakteristika.
@@ -77,8 +82,9 @@ daje kratki pregled sustava, način na koji su komponente u sustavu povezane i n
 koji način se sustav može koristiti. Slijedi 4.~odjeljak s opisom korištenih
 podataka. Možda za rad najbitniji odjeljak je 5. U njemu je dat opis korištenih
 metoda za izvlačenje značajki iz tekstova, popis svih korištenih značajki i
-njihove specifičnosti. Na 5.~odjeljak usko se veže 6.~sa evaluacijom navedenih
-metoda. Implementacija je opisana u 7.~odjeljku, a zaključak je dat u 8.
+njihove specifičnosti te evaluacija. Na 5.~odjeljak usko se veže 6.~sa
+opisom klasifikacije. Implementacija je opisana u 7., a zaključak je
+dat u 8. odjeljku.
 
 \newpage
 
@@ -166,7 +172,7 @@ Problem ovisnosti mjera o dužini teksta radi što uspješnije klasifikacije pom
 SVM-a\footnote{Support Vector Machines} navode \citet{diederich2003authorship}.
 Za izbjegavanje ovisnosti koriste kombinaciju $L_p$ normalizacije duljine i
 transformacije frekvencija pojave termina kao što je
-\emph{idf}\footnote{Inverse document frequency} mjera ili redundancija.
+\emph{idf}\footnote{Inverse document frequency} mjera.
 
 Idf mjera je definirana sa
 \begin{equation}
@@ -177,15 +183,15 @@ pri čemu je $n_d(t_k)$ broj dokumenata koji sadržavaju termin $t_k$ te $n_d$
 ukupan broj dokumenata. Navedena mjera daje visoke vrijednosti za dokumente koji
 se pojavljuju u malom broju dokumenata te je time jako diskriminatorna. 
 
-Redundancija je mjera asimetričnosti razdiobe te se definira sa
-\begin{equation}
-R(t_k) = \log n_d + \sum_{i=1}^{n_d} \frac{f(t_k, d_i)}{f(t_k)} \cdot \log \frac{f(t_k, d_i)}{f(t_k)},
-\label{equ:redundancija}
-\end{equation}
-pri čemu je $f(t_k, d_i)$ frekvencija pojavljivanja termina $t_k$ u dokumentu
-$d_i$, $f(t_k)$ frekvencija pojavljivanja termina u svim dokumentima te $n_d$
-ukupan broj dokumenata. $R(t_k)$ je mjera koliko razdioba termina $t_k$ u raznim
-dokumentima odstupa od uniformne razdiobe.
+% Redundancija je mjera asimetričnosti razdiobe te se definira sa
+% \begin{equation}
+% R(t_k) = \log n_d + \sum_{i=1}^{n_d} \frac{f(t_k, d_i)}{f(t_k)} \cdot \log \frac{f(t_k, d_i)}{f(t_k)},
+% \label{equ:redundancija}
+% \end{equation}
+% pri čemu je $f(t_k, d_i)$ frekvencija pojavljivanja termina $t_k$ u dokumentu
+% $d_i$, $f(t_k)$ frekvencija pojavljivanja termina u svim dokumentima te $n_d$
+% ukupan broj dokumenata. $R(t_k)$ je mjera koliko razdioba termina $t_k$ u raznim
+% dokumentima odstupa od uniformne razdiobe.
 
 \section{Model sustava}
 Namjena razvijenog sustava je prepoznati autora sustavu dosad neviđenog teksta.
@@ -244,7 +250,7 @@ datuma kada je napravljena arhiva.}, \ref{fig:wordsPerAuthor} i
 Da bi se izbjeglo učenje teme, arhiva je podjeljena po razdobljima, tj.~za
 testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 
-\begin{figure}[!h]
+\begin{figure}[htb]
 \begin{center}
 \input{figures/articlesPerAuthor}
 \end{center}
@@ -252,7 +258,7 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \label{fig:articlesPerAuthor}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[htb]
 \begin{center}
 \input{figures/wordsPerAuthor}
 \end{center}
@@ -260,7 +266,7 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \label{fig:wordsPerAuthor}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[htb]
 \begin{center}
 \input{figures/avgWordsPerAuthorArticle}
 \end{center}
@@ -268,19 +274,25 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \label{fig:avgWordsPerAuthorArticle}
 \end{figure}
 
-\section{Izvlačenje značajki iz dokumenata}
-% TODO: Napisati!¨
+\section{Izvlačenje značajki iz dokumenata i evaluacija}
+% TODO: Napisati!
 % TODO: O skaliranju!
-% Opisati problem i par riječi ukratko o svemu (traži se diskriminatorna bla\ldots)
-
-\subsection{Metoda1}
-\subsection{Metoda2}
-\subsection{Metoda3}
+% TODO: Opisati problem i par riječi ukratko o svemu (traži se diskriminatorna
+% bla)
+% TODO: citirati rad koji kaže da se na ovome zasniva rješavanje problema, a ne
+% klasifikaciji.
+\subsection{Frekvencije funkcijskih riječi}
+\subsection{Frekvencije grupa tipova funkcijskih riječi}
+\subsection{Frekvencije funkcijskih riječi sa IDF težinama}
+\subsection{Frekvencije interpunkcijskih znakova}
+\subsection{Frekvencije samoglasnika}
+\subsection{Prosječna duljina riječi}
 
 \section{Klasifikacija}
-
+% TODO: O cross-validaciji, o parametrima, o skaliranju; neke dijelove izbaciti
+% ili prebaciti u dio o izlučivanju značajki. 
 Značajke korištene u ovom radu su frekvencije pojavljivanja određenih riječi i
-znakovate te se njihovim grupiranjem one mogu predočiti pomoću vektora u
+znakova te se njihovim grupiranjem one mogu predočiti pomoću vektora u
 vektorskome prostoru. Zbog navedene činjenice moguće je iskoristiti neki od
 mnogo razvijenih klasifikatora koji traže decizijske funkcije, granice, u
 vektorskom prostoru. Jedan od takvih klasifikatora koji traži optimalnu granicu je upravo
@@ -307,8 +319,9 @@ k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2)
 Nakon što se iz zadanog teksta izluče značajke te ih se potom skalira one se
 prosljeđuju klasifikatoru koji donosi odluku o tome kojem autoru dani tekst pripada.
 %i tu opisat jos da onda on klasificira to pomocu modela bla bla
-\section{Evaluacija}
-% TODO: Napisati!
+
+% \section{Evaluacija}
+% % TODO: Napisati!1
 
 \section{Implementacija}
 \label{sec:implementacija}
@@ -343,7 +356,17 @@ komandne linije:
 
 
 \section{Zaključak}
-% TODO: Napisati!
+% TODO: Napisati! Zasad je naveden samo daljni rad..
+
+U daljnjem radu potrebno je evaluirati metode temeljene na $n$-gramima riječi i
+slova poput onih opisanih u \citep{keselj2003n,coyotl2006authorship} te
+korištenje oznaka stila autora (engl. style markers) kao znacajki – informacije
+vezane uz strukturu jezika koje su skupljene dubinskom analizom sintaksne analize
+dokumenta. \citep{stamatatos2001computer,diri2003automatic,luyckx2005shallow}.
+
+Uz navedeno, potrebno je provesti evaluaciju nad ispitnim korpusima različitih
+prosječnih duljina tekstova (npr.~pjesme, novinski članci, knjige).
+
 
 \bibliography{literatura}
 \bibliographystyle{plainnat}
@@ -352,12 +375,17 @@ komandne linije:
 \appendix
 \section{Doprinos svakog člana tima}
 \begin{description}
-\item[Ivan Krišto:]
-\item[Igor Belša:]
-\item[Tomislav Reicher:]
+\item[Ivan Krišto:] dokumentacija, nabavljanje uzoraka za učenje i testiranje,
+dizajn sustava, povezivanje libsvma, izrada izlučitelja značajki.
+\item[Igor Belša:] dokumentacija, izrada alata za pretvaranje XML dokumenata u
+značajke, dizajn sustava, testiranje, izrada izlučitelja značajki.
+\item[Tomislav Reicher:] dokumentacija, dizajn sustava, podrška za traženje
+parametara klasifikatora, podešavanje izlučitelja značajki, testiranje, izrada
+izlučitelja značajki.
 \end{description}
 
 \section{Raspodjela bodova}
+% TODO: Staviti!
 \begin{description}
 \item[Ivan Krišto:] p1\%
 \item[Igor Belša:] p2\%
