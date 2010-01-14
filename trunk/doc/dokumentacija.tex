@@ -68,6 +68,10 @@ dio tekstova napisan od poznatog autora, a autori ostalih tekstova su
 nepoznati. Ta klasifikacija pokušava odgovoriti na pitanje pripada li neki
 tekst poznatom autoru ili ne.
 
+\citet{keselj2003n} navode mogućnost izrade jezičnog modela pomoću $n$-grama te
+njegovog korištenja za prepoznavanje autora. Sličan postupak je opisan u
+\citep{coyotl2006authorship}.
+
 U ovom radu obrađen je problem višerazredne klasifikacije za tekstove na
 hrvatskom jeziku. Naglasak je stavljen na evaluiranje različitih skupova
 karakteristika.
@@ -169,7 +173,7 @@ takvih funkcija nije neovisna o duljini teksta. Zaključuje se da je raznolikost
 riječnika nestabilna značajka za tekstove kraće od 1000 riječi.
 
 Problem ovisnosti mjera o dužini teksta radi što uspješnije klasifikacije pomoću
-SVM--a\footnote{Support Vector Machines} navode \citet{diederich2003authorship}.
+SVM-a\footnote{Support Vector Machines} navode \citet{diederich2003authorship}.
 Za izbjegavanje ovisnosti koriste kombinaciju $L_p$ normalizacije duljine i
 transformacije frekvencija pojave termina kao što je
 \emph{idf}\footnote{Inverse document frequency} mjera.
@@ -247,7 +251,7 @@ greška. Radi se o Živku Kustiću koji je imao ukupno 1285 objavljenih kolumni 
 datuma kada je napravljena arhiva.}, \ref{fig:wordsPerAuthor} i
 \ref{fig:avgWordsPerAuthorArticle}.
 
-Da bi se izbjeglo učenje teme, arhiva je podijeljena po razdobljima, tj.~za
+Da bi se izbjeglo učenje teme, arhiva je podjeljena po razdobljima, tj.~za
 testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 
 \begin{figure}[htb]
@@ -275,36 +279,30 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \end{figure}
 
 \section{Izvlačenje značajki iz dokumenata i evaluacija}
-Glavni problem konstrukcije sustava za prepoznavanje autora je odabir dovoljno
-diskriminatornih značajki teksta. Značajka je diskriminatorna ako je česta kod
-jednog autora, a rijetka kod drugih. Zbog velikoga broja autora izuzetno su
-korisne složene značajke čija je razdioba karakteristična za svakog autora
-(npr.~razdioba nekih riječi).
+% TODO: Napisati!
+% TODO: O skaliranju!
+% TODO: Opisati problem i par riječi ukratko o svemu (traži se diskriminatorna
+% bla)
+% TODO: citirati rad koji kaže da se na ovome zasniva rješavanje problema, a ne
+% klasifikaciji.
 
-Značajke je moguće kombinirati. Na ovaj način, ako se koriste složene značajke,
-značajka može predstavljati više razdiobi i biti jače diskriminatorna.
+%i'll just put this here, pa refactor po volji:
 
-Prilikom stvaranja vektora značajki potrebno je voditi brigu da značajka ne
-ovisi o duljini i sadržaju teksta. Takav utjecaj smanjuje općenitost primjene
-sustava i može dovesti do smanjenja uspješnosti (npr.~povezivanje autora s
-konkretnom temom).
-
-Značajke se prikazuju u obliku vektora realnih brojeva što omogućava relativno
-jednostavnu klasifikaciju. Kombiniranje značajki je spajanje (nadovezivanje)
-vektora značajki.
-
-% Potrebno je niz jezičnih znakova na prikladan način prilagoditi za klasifikaciju, primjerice
-% prikazati značajke teksta u obliku vektora realnih brojeva. Nakon ove faze, vektori značajki se dalje
-% mogu na standardni način bez problema koristiti u bilo kojem tipu poznatog klasifikatora.
+Vrlo bitna komponenta sustava za raspoznavanje autora teksta je komponenta za izlučivanje značajki.
+Potrebno je niz jezičnih znakova na prikladan način prilagoditi za klasifikaciju, primjerice
+prikazati značajke teksta u obliku vektora realnih brojeva. Nakon ove faze, vektori značajki se dalje
+mogu na standardni način bez problema koristiti u bilo kojem tipu poznatog klasifikatora.
 
 Ovisno o odabranom modelu značajki, analiza teksta i stvaranje vektora značajki može varirati od računski vrlo trivijalnih
-operacija pa do vrlo zahtjevnih algoritama (npr.~značajke dobivene sintaksnom
-analizom prirodnog jezika). 
+operacija pa do vrlo zahtjevnih algoritama. Iz ovog razloga odabir vrste značajki jedan je od ključnih dijelova 
+sustava.
+
 
 \subsection{Frekvencije funkcijskih riječi}
+
 Funkcijske riječi su riječi poput priloga, prijedloga, veznika ili riječi koje opisuju količinu. To su riječi
-koje promatrane samostalno nemaju semantičko značenje. Obično ukazuju na gramatičke odnose ili općenita 
-svojstva \citep{zhao2005effective}. Privlačnost mjerenja frekvencije pojavljivanja funkcijskih riječi za prepoznavanje autora leži u činjenici
+koje promatrane samostalno nemaju veliko semantičko značenje. Obično ukazuju na gramatičke odnose ili općenita 
+svojstva. \citep{zhao2005effective}. Privlačnost mjerenja frekvencije pojavljivanja funkcijskih riječi za prepoznavanje autora leži u činjenici
 da su one pokazatelj stila pisanja. Neke manje poznate funkcijske riječi - poput prijedloga onkraj, namjesto 
 ili zavrh - se rijeđe koriste i mogu vrlo dobro sugerirati autora. Međutim, čak se i frekvencija korištenja
 češćih funkcijskih riječi može vrlo dobro iskoristiti za razlikovanje autora. Pokazuje se kako zbog velike frekvencije
@@ -321,40 +319,53 @@ zbog različitih jezika, vrsta i veličine dokumenata teško je zaključiti koli
 \subsection{Frekvencije funkcijskih riječi sa IDF težinama}
 \subsection{Frekvencije interpunkcijskih znakova}
 \subsection{Frekvencije samoglasnika}
-\subsection{Prosječna duljina riječi}
+\subsection{Frekvencije duljina riječi}
 
 \section{Klasifikacija}
 % TODO: O cross-validaciji, o parametrima, o skaliranju; neke dijelove izbaciti
 % ili prebaciti u dio o izlučivanju značajki. 
--- realni brojevu tj vektori ite dimenzije
-Značajke korištene u ovom radu su frekvencije pojavljivanja određenih riječi i
-znakova te se njihovim grupiranjem one mogu predočiti pomoću vektora u
-vektorskome prostoru. Zbog navedene činjenice moguće je iskoristiti neki od
-mnogo razvijenih klasifikatora koji traže decizijske funkcije, granice, u
-vektorskom prostoru. Jedan od takvih klasifikatora koji traži optimalnu granicu je upravo
-SVM klasifikator, koji se pokazao iznimno uspješnim prilikom rješavanja
-različitih problema klasifikacije, zbog čega je također korišten i u
-ovome radu.
-%mozda stavit neku referencu ovdje vezano za uspjesnost SVMa u radovima
+Značajke korištene u ovom radu su frekvencije pojavljivanja određenih
+događaja (riječi, znakova) te se grupiranjem frekvencija značajke mogu predočiti
+pomoću vektora u vektorskom prostoru. Zbog navedene činjenice moguće je iskoristiti neki od
+mnogih razvijenih klasifikatora koji traže decizijske funkcije, granice, u
+vektorskom prostoru. Jedan od klasifikatora koji traži optimalnu granicu između
+razreda predočenih u prostoru je stroj s potporenim vektorima
+\engl{Support vector machine}.
 Izvorno SVM traži optimalnu linearnu granicu, odnosno hiperravninu, kako bi
-razdvojio razrede predstavljene skupom vektora u vektorskome prostoru.
-Iskorištavanjem jezgrenog trika \engl{Kernel Trick} isti klasifikator moguće je 
-primijeniti za traženje proizvoljne nelinearne granice između različitih
-razreda. Jezgra korištena u ovom radu je radijalna bazna funkcija: 
+razdvojio različite razrede predstavljene skupom vektora u vektorskome prostoru.
+Iskorištavanjem jezgrenog trika \engl{Kernel trick} isti klasifikator moguće je 
+primijeniti za traženje proizvoljno nelinearne granice između različitih
+razreda. Pri tome često korištena jezgrena funkcija
+je radijalna bazna funkcija odnosno Gaussova jezgra:
 \begin{equation}
 k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2)
 \end{equation}
-%Tu jos dodat da koristimo SVM s mekom granicom tako da je potrebno i odredit
-% parametar C
-%Takodjer parametre smo odredjivali pretrazivanjem diskretiziranog prostora
-% parametra (C, gamma) pomocu cross-validacije (velicina folda je 2) na skupu
-% za ucenje te odabrali one parametre koji su imali najvecu tocnost u
-% cross-validaciji
-
-%kod kernel tricka mozda stavit referencu na vapnikov rad iz 92
-Nakon što se iz zadanog teksta izluče značajke te ih se potom skalira one se
-prosljeđuju klasifikatoru koji donosi odluku o tome kojem autoru dani tekst pripada.
-%i tu opisat jos da onda on klasificira to pomocu modela bla bla
+Pokazano je da uz odabir ispravnih parametara \citep{860154} linearni SVM
+predstavlja specijalni slučaj SVM-a s radijalnom baznom funkcijom čime
+se isključuje potreba za korištenjem linearnog SVM-a kao potencijalnog
+klasifikatora. Učenjem SVM-a traže se parametri pretpostavljenog oblika
+decizijske funkcije, koja će ispravno klasificirati sve uzorke u skupu za učenje, što ponekad zbog
+šuma u podacima ili njihove distribucije u prostoru nije moguće. Rješenje tog
+problema nalazi se u korištenju SVM klasifikatora s mekim granicama
+definiranima parametrom $C$ koji dozvoljava odstupanja od ispravne
+klasifikacije svih podataka u skupu za učenje s ciljem bolje generalizacije nad
+još neviđenim skupom podataka. Parametri SVM-a koji utječu na moć generalizacije
+nad neviđenim skupom za ispitivanje su tako $C$, parametar meke granice, i
+$\gamma$, parametar radijalne bazne funkcije, te oni zajedno čine prostor
+parametara čijom je pretragom potrebno pronaći vrijednosti parametara, tj.
+odabrati onaj model, koji će dati SVM klasifikator s najmanjom pogreškom generalizacije. Pretraga parametra odvija se odabirom modela s parametrima  $(C, \gamma)$ iz skupa ($C =
+{2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14}, \ldots, 2^3})$
+koji daju najveću točnost klasifikacije u procesu cross-validacije nad skupom za
+učenje. Točnost klasifikacije mjeri se formulom:
+\begin{equation}
+acc = \frac{n_c}{N}
+\end{equation}
+gdje je $n_c$ broj točno klasificiranih članaka, a $N$ ukupan broj članaka nad
+kojima je provedeno testiranje.
+Nakon što su pronađeni parametri modela $(C, \gamma)$, koji daju najveću
+točnost, klasifikator s navedenim parametrima ponovo se uči na potpunom skupu za
+učenje. Parametri SVM klasifikatora korišteni u ovom radu su $C = 16$ i $\gamma
+= 0.25$.
 
 % \section{Evaluacija}
 % % TODO: Napisati!1
@@ -394,15 +405,8 @@ komandne linije:
 \section{Zaključak}
 % TODO: Napisati! Zasad je naveden samo daljni rad..
 
-% TODO dodaj ovo iz komentara:
-% Navesti kako su naši rezultati izuzetno dobri u odnosu na prijavljene (one koje
-% spominju u člancima), no ne možemo reći da je metoda prvoklasna jer ne postoji
-% relevantan skup za usporedbu kao što navode \citep{zhao2005effective}, iako se
-% u literaturi često može naći pozivanje na rad \citep{stamatatos2001computer} i
-% njihov ``Grčki skup'' (npr.~\citep{keselj2003n}).
-
 U daljnjem radu potrebno je evaluirati metode temeljene na $n$-gramima riječi i
-slova poput onih opisanih u \citep{keselj2003n,peng2003language,coyotl2006authorship} te
+slova poput onih opisanih u \citep{keselj2003n,coyotl2006authorship} te
 korištenje oznaka stila autora (engl. style markers) kao znacajki – informacije
 vezane uz strukturu jezika koje su skupljene dubinskom analizom sintaksne analize
 dokumenta. \citep{stamatatos2001computer,diri2003automatic,luyckx2005shallow}.
