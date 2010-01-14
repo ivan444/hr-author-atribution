@@ -34,26 +34,26 @@ public class FunctionWordTFIDFExtractor implements IFeatureExtractor {
 		int[] freq = new int[fWordsNum];
 		
 		String[] words = text.split(" ");
-		String tmp;
+		String current;
 		int wordIdx;
 		
 		int wordsCount = 0;
 		
 		for (int i=0; i < words.length; ++i) {
-			tmp = TextStatistics.clean(words[i]);
+			current = TextStatistics.clean(words[i]);
 			
-			if (tmp.length() != 0) {
+			if (current.length() != 0) {
 				wordsCount++;
 			}
 		
-			if (fwIdf.containsKey(tmp)) {
-				wordIdx = fWordsList.indexOf(tmp);
+			if (fwIdf.containsKey(current)) {
+				wordIdx = fWordsList.indexOf(current);
 				freq[wordIdx]++;
 			}
 		}
 		
 		for (int j = 0; j < freq.length; j++) {
-			result.put(j, freq[j]*fwIdf.get(fWordsList.get(j)));
+			result.put(j, (freq[j]/(float)wordsCount)*fwIdf.get(fWordsList.get(j)));
 		}
 		
 		return result;

@@ -36,20 +36,20 @@ public class FunctionWordOccurNumExtractor implements IFeatureExtractor {
 		int[] freq = new int[fWordsList.size()];
 		
 		String[] words = text.split(" ");
-		String tmp;
+		String current;
 		int wordIdx;
 		
 		int wordsCount = 0;
 		
 		for (int i=0; i < words.length; ++i) {
-			tmp = TextStatistics.clean(words[i]);
+			current = TextStatistics.clean(words[i]);
 			
-			if (tmp.length() != 0) {
+			if (current.length() != 0) {
 				wordsCount++;
 			}
 		
-			if (fWordsSet.contains(tmp)) {
-				wordIdx = fWordsList.indexOf(tmp);
+			if (fWordsSet.contains(current)) {
+				wordIdx = fWordsList.indexOf(current);
 				freq[wordIdx]++;
 			}
 		}
