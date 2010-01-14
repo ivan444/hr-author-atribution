@@ -334,8 +334,8 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		
 		double[] target = null;
 		
-		for (int i = 15; i > -6; --i) {
-			for (int j = 3; j > -16; --j) {
+		for (int i = 15; i > -6; i-=2) {
+			for (int j = 3; j > -16; j-=2) {
 		
 				//setting additional params
 				if (i < 0)
@@ -355,7 +355,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		
 				target = new double[prob.l];
 				
-				svm.svm_cross_validation(prob, param, 5, target);
+				svm.svm_cross_validation(prob, param, 2, target);
 				
 				int totalCorrect = 0;
 				for (int k = 0; k < prob.l; k++)

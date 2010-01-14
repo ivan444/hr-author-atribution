@@ -5,9 +5,11 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordTFIDFExtractor;
 import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
 import hr.fer.zemris.aa.features.impl.VowelsExtractor;
+import hr.fer.zemris.aa.features.impl.WordLengthFeatureExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
@@ -79,6 +81,7 @@ public class Experimenter {
 		}
 		
 		Map<String, Integer> hitsNumAuthor = new HashMap<String, Integer>();
+		Map<String, Integer> failNumAuthor = new HashMap<String, Integer>();
 		
 		System.out.println("Započinje testiranje.");
 		System.out.println("Broj autora: " + authors.size());
@@ -90,6 +93,11 @@ public class Experimenter {
 			if (recogAuthor == null || recogAuthor.equals("") || 
 					!recogAuthor.equals(article.getAuthor())) {
 				misses++;
+				tmp = failNumAuthor.get(recogAuthor);
+				if (tmp == null)
+					failNumAuthor.put(recogAuthor, 1);
+				else
+					failNumAuthor.put(recogAuthor, tmp + 1);
 			} else {
 				
 				tmp = hitsNumAuthor.get(article.getAuthor());
@@ -104,15 +112,19 @@ public class Experimenter {
 		
 		float accuracy = hits*1.f/(hits+misses);
 		
+		Integer tmp2 = null;
+		
+		System.out.format("%20s  %20s %20s \tOmjer%n","Autor","Preciznost","Odziv");
 		for (String author : authors) {
 			tmp = hitsNumAuthor.get(author);
-			if (tmp != null) {
-				System.out.format("%20s: %20f (%d/%d)%n",author,
-						tmp/(float)articleNumAuthor.get(author),
-						tmp, articleNumAuthor.get(author) );
-			} else {
-				System.out.format("%20s: %20f (%d/%d)%n",author,0.,0,articleNumAuthor.get(author));
-			}
+			if (tmp == null) tmp = 0;
+			tmp2 = failNumAuthor.get(author);
+			if (tmp2 == null) tmp2 = 0;
+			
+			System.out.format("%20s: %20f %20f \t(%d/%d)%n",author,
+					tmp/(float)(tmp+tmp2),
+					tmp/(float)articleNumAuthor.get(author),
+					tmp, articleNumAuthor.get(author) );
 		}
 		
 		System.out.println("Testiranje je završilo!");
@@ -173,9 +185,10 @@ public class Experimenter {
 		try {
 			featExtrac = new ComboFeatureExtractor(
 					new PunctuationMarksExtractor(new File("config/marks.txt")),
-//					new FunctionWordOccurNumExtractor("config/fwords.txt"),
+					new FunctionWordOccurNumExtractor("config/fwords.txt"),
 					new VowelsExtractor(),
-					new FunctionWordTFIDFExtractor("config/fw-idf.txt")
+					new WordLengthFeatureExtractor()
+					//new FunctionWordTFIDFExtractor("config/fw-idf.txt")
 			);
 		} catch (FileNotFoundException e) {
 			System.err.println("Greška! " + e.getMessage());
