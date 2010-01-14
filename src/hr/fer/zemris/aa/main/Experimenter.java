@@ -5,7 +5,6 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordTFIDFExtractor;
 import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
 import hr.fer.zemris.aa.features.impl.VowelsExtractor;
@@ -180,15 +179,15 @@ public class Experimenter {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		IFeatureExtractor featExtrac = null;
 		try {
 			featExtrac = new ComboFeatureExtractor(
 					new PunctuationMarksExtractor(new File("config/marks.txt")),
-					new FunctionWordOccurNumExtractor("config/fwords.txt"),
+//					new FunctionWordOccurNumExtractor("config/fwords.txt"),
 					new VowelsExtractor(),
-					new WordLengthFeatureExtractor()
-					//new FunctionWordTFIDFExtractor("config/fw-idf.txt")
+					new WordLengthFeatureExtractor(),
+					new FunctionWordTFIDFExtractor("config/fw-idf.txt")
 			);
 		} catch (FileNotFoundException e) {
 			System.err.println("Greška! " + e.getMessage());
@@ -197,6 +196,7 @@ public class Experimenter {
 		
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac, true);
 		preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml");
+		
 		
 		// Za koristiti ovaj test treba povećati java heap! VM params u runu, npr. -Xms512m -Xmx1024m 
 //		IFeatureExtractor fe1 = null;

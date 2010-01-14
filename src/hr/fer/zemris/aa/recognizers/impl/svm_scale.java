@@ -134,7 +134,7 @@ class svm_scale {
 		max_index = 0;
 
 		if (restore_filename != null) {
-			int idx, c;
+			int idx;
 
 			try {
 				fp_restore = new BufferedReader(
@@ -143,7 +143,7 @@ class svm_scale {
 				System.err.println("can't open file " + restore_filename);
 				System.exit(1);
 			}
-			if ((c = fp_restore.read()) == 'y') {
+			if (fp_restore.read() == 'y') {
 				fp_restore.readLine();
 				fp_restore.readLine();
 				fp_restore.readLine();
@@ -222,11 +222,11 @@ class svm_scale {
 		/* pass 2.5: save/restore feature_min/feature_max */
 		if (restore_filename != null) {
 			// fp_restore rewinded in finding max_index
-			int idx, c;
+			int idx;
 			double fmin, fmax;
 
 			fp_restore.mark(2); // for reset
-			if ((c = fp_restore.read()) == 'y') {
+			if (fp_restore.read() == 'y') {
 				fp_restore.readLine(); // pass the '\n' after 'y'
 				StringTokenizer st = new StringTokenizer(fp_restore.readLine());
 				y_lower = Double.parseDouble(st.nextToken());

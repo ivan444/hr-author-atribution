@@ -1,15 +1,19 @@
 package hr.fer.zemris.aa.main;
 
-import java.util.List;
-
 import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordGroupFreqExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordTFIDFExtractor;
+import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
+import hr.fer.zemris.aa.features.impl.VowelsExtractor;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 import hr.fer.zemris.aa.xml.XMLMiner;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
 
 /**
  * Command line interface za treniranje prepoznavatelja.
@@ -33,9 +37,19 @@ public class CLITrainer {
 			System.out.println("Neispravni parametri! <train-data-path> <save-model-path>");
 			System.exit(-1);
 		}
-		// TODO: Zasad je implementacija prepoznavatelja hardkodirana. Ako ih bude više, odhardkodira se.
-		// TODO: Staviti odgovarajući featureExt
-		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new FunctionWordGroupFreqExtractor(null));
+		
+		IFeatureExtractor featExtrac = null;
+		try {
+			featExtrac = new ComboFeatureExtractor(
+					new PunctuationMarksExtractor(new File("config/marks.txt")),
+					new VowelsExtractor(),
+					new FunctionWordTFIDFExtractor("config/fw-idf.txt")
+			);
+		} catch (FileNotFoundException e) {
+			System.err.println("Greška! " + e.getMessage());
+			System.exit(-1);
+		}
+		
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac);
 		List<FeatureClass> trainData = loadTrainData(args[0], featExtrac);
 		trainer.train(trainData, args[1]);

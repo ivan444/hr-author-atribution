@@ -1,15 +1,18 @@
 package hr.fer.zemris.aa.main;
 
+import hr.fer.zemris.aa.features.IFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordTFIDFExtractor;
+import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
+import hr.fer.zemris.aa.features.impl.VowelsExtractor;
+import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
+import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
-import hr.fer.zemris.aa.features.IFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordGroupFreqExtractor;
-import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
-import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 
 public class CLIRecognizer {
 
@@ -21,9 +24,19 @@ public class CLIRecognizer {
 			System.out.println("Neispravni parametri! <putanja-do-teksta> <putanja-do-modela>");
 			System.exit(-1);
 		}
-		// TODO: Zasad je implementacija prepoznavatelja hardkodirana. Ako ih bude više, odhardkodira se.
-		// TODO: Staviti odgovarajući featureExt
-		IFeatureExtractor featExtrac = new ComboFeatureExtractor(new FunctionWordGroupFreqExtractor(null));
+		
+		IFeatureExtractor featExtrac = null;
+		try {
+			featExtrac = new ComboFeatureExtractor(
+					new PunctuationMarksExtractor(new File("config/marks.txt")),
+					new VowelsExtractor(),
+					new FunctionWordTFIDFExtractor("config/fw-idf.txt")
+			);
+		} catch (FileNotFoundException e) {
+			System.err.println("Greška! " + e.getMessage());
+			System.exit(-1);
+		}
+		
 		AuthorRecognizer recognizer = new LibsvmRecognizer(args[1], featExtrac);
 		
 		StringBuilder sb = new StringBuilder();
