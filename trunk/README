@@ -1,42 +1,43 @@
-Automatizirano prepoznavanje autora teksta
-------------------------------------------------------------------------------------
+Automatizirano prepoznavanje autora teksta README
+=================================================
 
-ivan.kristo@fer.hr
-igor.belsa@fer.hr
-tomislav.reicher@fer.hr
-------------------------------------------------------------------------------------
-Pokretanje programa iz komandne linije:
 
-	Ucenje:
+Pokretanje programa iz komandne linije
+======================================
+Iz bin direktorija sa class datotekama:
+* Učenje:
+	java hr.fer.zemris.aa.main.CLITrainer skup_za_ucenje.xml skup_aa.model
 
-		java hr.fer.zemris.aa.main.CLITrainer skup_za_ucenje.xml skup_aa.model
+* Prepoznavanje autora:
+	java hr.fer.zemris.aa.main.CLIRecognizer tekst_nepoznatog_autora.txt skup_aa.model
 	
-	Prepoznavanje teksta:
+ili preko gotovih jar arhiva:
+* Učenje:
+	java -jar su-aa-1.0-trainer.jar skup_za_ucenje-skup_aa.xml skup_aa.model
 
-		java hr.fer.zemris.aa.main.CLIRecognizer tekst_nepoznatog_autora.txt skup_aa.model
+* Prepoznavanje autora:
+	java -jar su-aa-1.0-recognizer.jar tekst_nepoznatog_autora.txt skup_aa.model
 
-------------------------------------------------------------------------------------
-Pokretanja iz grafičkog korisničkog sučelja:
+Učenje stvara datoteke skup_aa.model, skup_aa.model.cn i skup_aa.model.scale.
+Pri prepoznavanju autora datoteke ".model.cn" i ".model.scale" moraju biti u
+direktoriju ".model" datoteke.
 
-		java -jar su-aa-1.0-gui.jar
-
-------------------------------------------------------------------------------------
-
-
-Za ispravan rad programa potrebne su konfiguracijske datoteke, ovisno o odabiru
-načina izlučivanja značajki:
+Ovisnosti
+=========
+Za ispravan rad programa potrebne su konfiguracijske datoteke:
 
 config/
 	fw-idf.txt
 	fwords.txt
 	marks.txt
 
-------------------------------------------------------------------------------------
+Skup za učenje
+==============
+Kao skup za učenje, potrebno je predati tekstove pohranjene kao XML dokument po KTLab
+documentSet shemi dostupnoj na http://ktlab.fer.hr/download/documentSet.xsd
 
-Kao skup za učenje, potrebno je predati tekstove pohranjene kao XML6 dokument po KTLab7 documentSet shemi
-dostupnoj na http://ktlab.fer.hr/download/documentSet.xsd
-
-TODO: 	mozda bolje opisati config?
-	sadrzaj medija popisati?
-	dodati windows newline :)	
-
+Autori
+======
+ivan.kristo@fer.hr
+igor.belsa@fer.hr
+tomislav.reicher@fer.hr
