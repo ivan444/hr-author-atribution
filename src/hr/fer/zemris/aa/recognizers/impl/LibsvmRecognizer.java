@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -125,7 +126,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	}
 
 	@Override
-	public String classifyAutor(String text) {
+	public String classifyAuthor(String text) {
 		if (model == null) throw new IllegalStateException("SVM model nije definiran!");
 		
 		FeatureVector features = featureExtractor.getFeatures(text);
@@ -268,7 +269,10 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	 * @param trainData
 	 */
 	public void gridSearch(List<FeatureClass> trainData) {
-		
+		gridSearch(trainData, null);
+	}
+	
+	public void gridSearch(List<FeatureClass> trainData, Writer writer) {
 		scaleDistribution(trainData);
 		
 		// Postavljanje uzoraka
@@ -334,8 +338,8 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		
 		double[] target = null;
 		
-		for (int i = 15; i > -6; i-=2) {
-			for (int j = 3; j > -16; j-=2) {
+		for (int i = 15; i > -6; i-=1) {
+			for (int j = 3; j > -16; j-=1) {
 		
 				//setting additional params
 				if (i < 0)
@@ -368,12 +372,27 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 					bestC = param.C;
 				}
 				
-				System.out.println("C == "+i+", g == "+j+": "+((double)totalCorrect)/prob.l);
+				if (writer == null) {
+					System.out.println("C == "+i+", g == "+j+": "+((double)totalCorrect)/prob.l);
+				} else {
+					try {
+						writer.write("C == "+i+", g == "+j+": "+((double)totalCorrect)/prob.l + "\n");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
-		
-		System.out.println(bestAcc+": C = "+bestC+", gamma = "+bestGamma);
-		
+		if (writer == null) {
+			System.out.println(bestAcc+": C = "+bestC+", gamma = "+bestGamma);
+		} else {
+			try {
+				writer.write(bestAcc+": C = "+bestC+", gamma = "+bestGamma + "\n");
+				writer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

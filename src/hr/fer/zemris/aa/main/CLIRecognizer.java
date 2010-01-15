@@ -58,7 +58,7 @@ public class CLIRecognizer {
 			reader.close();
 		} catch (IOException e) {}
 		
-		System.out.println(recognizer.classifyAutor(sb.toString())); 
+		System.out.println(recognizer.classifyAuthor(sb.toString())); 
 	}
 
 }

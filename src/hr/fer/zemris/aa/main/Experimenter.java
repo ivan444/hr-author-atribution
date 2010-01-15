@@ -5,6 +5,8 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordGroupFreqExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordTFIDFExtractor;
 import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
 import hr.fer.zemris.aa.features.impl.VowelsExtractor;
@@ -14,8 +16,10 @@ import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -88,7 +92,7 @@ public class Experimenter {
 		System.out.println("Ukupno clanaka: " + testData.size());
 		
 		for (Article article : testData) {
-			String recogAuthor = recognizer.classifyAutor(article.getText());
+			String recogAuthor = recognizer.classifyAuthor(article.getText());
 			if (recogAuthor == null || recogAuthor.equals("") || 
 					!recogAuthor.equals(article.getAuthor())) {
 				misses++;
@@ -109,7 +113,7 @@ public class Experimenter {
 			}
 		}
 		
-		float accuracy = hits*1.f/(hits+misses);
+		float precision = hits*1.f/(hits+misses);
 		
 		Integer tmp2 = null;
 		
@@ -127,9 +131,9 @@ public class Experimenter {
 		}
 		
 		System.out.println("Testiranje je završilo!");
-		System.out.println("Točnost: " + accuracy + " (" + hits + "/" + misses + ").");
+		System.out.println("Preciznost: " + precision + " (" + hits + "/" + misses + ").");
 		
-		return accuracy;
+		return precision;
 	}
 	
 	private static List<FeatureClass> loadTrainData(String trainDataPath, IFeatureExtractor extractor) {
@@ -178,48 +182,75 @@ public class Experimenter {
 			System.gc();
 		}
 	}
-
-	public static void main(String[] args) throws FileNotFoundException {
-		IFeatureExtractor featExtrac = null;
-		try {
-			featExtrac = new ComboFeatureExtractor(
-					new PunctuationMarksExtractor(new File("config/marks.txt")),
-//					new FunctionWordOccurNumExtractor("config/fwords.txt"),
-					new VowelsExtractor(),
-					new WordLengthFeatureExtractor(),
-					new FunctionWordTFIDFExtractor("config/fw-idf.txt")
-			);
-		} catch (FileNotFoundException e) {
-			System.err.println("Greška! " + e.getMessage());
-			System.exit(-1);
+	
+	public static void findParams(String prefix, String trainDataPath, IFeatureExtractor ... arrFeatExtrac) throws IOException {
+		System.out.println("Započelo traženje parametara!");
+		for (int i = 0; i < arrFeatExtrac.length; i++) {
+			System.out.println("### FeatureExtractor: " + arrFeatExtrac[i].getName());
+			List<FeatureClass> trainData = loadTrainData(trainDataPath, arrFeatExtrac[i]);
+			LibsvmRecognizer svm = new LibsvmRecognizer(arrFeatExtrac[i], true);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(prefix+arrFeatExtrac[i].getName()));
+			svm.gridSearch(trainData, writer);
+			writer.close();
+			System.out.println();
+			svm = null;
+			trainData = null;
+			System.gc();
 		}
-		
-		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac, true);
-		preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml");
-		
-		
-		// Za koristiti ovaj test treba povećati java heap! VM params u runu, npr. -Xms512m -Xmx1024m 
-//		IFeatureExtractor fe1 = null;
-//		IFeatureExtractor fe2 = null;
-//		IFeatureExtractor fe3 = null;
-//		IFeatureExtractor fe4 = null;
-//		
+	}
+
+	public static void main(String[] args) throws IOException {
+//		IFeatureExtractor featExtrac = null;
 //		try {
-//			fe1 = new PunctuationMarksExtractor(new File("config/marks.txt"));
-//			fe2 = new FunctionWordOccurNumExtractor("config/fwords.txt");
-//			fe3 = new VowelsExtractor();
-//			fe4 = new FunctionWordTFIDFExtractor("config/fw-idf.txt");
+//			featExtrac = new ComboFeatureExtractor(
+//					new PunctuationMarksExtractor(new File("config/marks.txt")),
+////					new FunctionWordOccurNumExtractor("config/fwords.txt"),
+//					new VowelsExtractor(),
+//					new WordLengthFeatureExtractor(),
+//					new FunctionWordTFIDFExtractor("config/fw-idf.txt")
+//			);
 //		} catch (FileNotFoundException e) {
 //			System.err.println("Greška! " + e.getMessage());
 //			System.exit(-1);
 //		}
-//		preformMultiExperiment("podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml",
-//				new ComboFeatureExtractor(fe2,fe4),
-//				new ComboFeatureExtractor(fe3,fe4),
-//				new ComboFeatureExtractor(fe1, fe2,fe4),
-//				new ComboFeatureExtractor(fe3, fe2,fe4),
-//				new ComboFeatureExtractor(fe1, fe3,fe4),
-//				new ComboFeatureExtractor(fe1, fe2, fe3, fe4)
-//		);
+//		
+//		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac, true);
+//		preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml");
+		
+		// Za koristiti ovaj test treba povećati java heap! VM params u runu, npr. -Xms512m -Xmx1024m 
+		IFeatureExtractor fe1 = null;
+		IFeatureExtractor fe2 = null;
+		IFeatureExtractor fe3 = null;
+		IFeatureExtractor fe4 = null;
+		IFeatureExtractor fe5 = null;
+		IFeatureExtractor fe6 = null;
+		
+		try {
+			fe1 = new PunctuationMarksExtractor(new File("config/marks.txt"));
+			fe2 = new FunctionWordOccurNumExtractor("config/fwords.txt");
+			fe3 = new VowelsExtractor();
+			fe4 = new FunctionWordTFIDFExtractor("config/fw-idf.txt");
+			fe5 = new WordLengthFeatureExtractor();
+			fe6 = new FunctionWordGroupFreqExtractor(new File("config/fwords.txt"));
+		} catch (FileNotFoundException e) {
+			System.err.println("Greška! " + e.getMessage());
+			System.exit(-1);
+		}
+		preformMultiExperiment("podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml",
+				fe1,fe2,fe3,fe4,fe5,fe6,
+				new ComboFeatureExtractor(fe2, fe4),
+				new ComboFeatureExtractor(fe3, fe4),
+				new ComboFeatureExtractor(fe1, fe2, fe4),
+				new ComboFeatureExtractor(fe1, fe2, fe3, fe4),
+				new ComboFeatureExtractor(fe1, fe2, fe5),
+				new ComboFeatureExtractor(fe1, fe3, fe5, fe4),
+				new ComboFeatureExtractor(fe1, fe2, fe3, fe5),
+				new ComboFeatureExtractor(fe1, fe2, fe3, fe4, fe5)
+		);
+		
+		
+//		IFeatureExtractor feCom1 = new ComboFeatureExtractor(fe1, fe3, fe5, fe2);
+//		IFeatureExtractor feCom2 = new ComboFeatureExtractor(fe1, fe3, fe5, fe4);
+//		findParams("params_", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", feCom1, feCom2);
 	}
 }
