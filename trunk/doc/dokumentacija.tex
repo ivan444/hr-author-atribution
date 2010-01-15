@@ -467,8 +467,12 @@ radu su $C = 16$ i $\gamma = 0.25$.
 
 \section{Evaluacija}
 \label{sec:evaluacija}
-Mjera uspješnosti prepoznavanja dana je omjerom broja točno prepoznatih autora
-i ukupnog broja tekstova, tj.~točnošću \engl{accuracy}.
+Sustav klasificira tekstove 25 različitih autora čiji korpus sadrži ukupno 4359
+tekstova. Izvorni skup tekstova podijeljen je na skup za učenje i skup za testiranje
+tako da je $20\%$ tekstova svakog autora odvojeno za testiranje, a na
+ostalih $80\%$ tekstova provedeno je učenje. Skup za testiranje sadrži
+ukupno 1092 teksta. Mjera uspješnosti klasifikacije dana je omjerom broja točno
+prepoznatih autora i ukupnog broja tekstova, tj.~točnošću \engl{accuracy}.
 
 Rezultati evaluacije prikazani su u tablici \ref{tbl:eval}. Radi kraćeg zapisa,
 metoda opisana u \ref{sec:funkcijske-rijeci} nazvana je ``funkcijske'', metoda
@@ -482,6 +486,29 @@ Najveću točnost, 88\% postiže kombinacija svih metoda opisanih u
 \ref{sec:znacajke-manje} i metode iz \ref{sec:funkcijske-rijeci}. Detalji
 evaluacije navedene kombinacije značajki nalaze se u dodatku
 \ref{sec:detalji-evaluacije}.
+
+Kako ukupna točnost ne objašnjava ponašanje klasifikatora na svakom razredu
+pojedinačno, za svaki razred računaju se preciznost i odziv te pomoću njih
+ukupna težinska F mjera. Za dani razred $c$ preciznost je omjer broja točno
+klasificiranih primjera u $c$ s brojem svih primjera koji su klasificirani u
+razred $c$. Odziv je omjer broja točno klasificiranih primjera u $c$ s brojem
+svih primjera koji se stvarno nalaze u razredu $c$. F mjera računa se za svaki
+razred $c_i$ prema sljedećoj formuli:
+\begin{equation}
+F_i = \frac{2 \cdot preciznost_i \cdot odziv_i}{preciznost_i + odziv_i}
+\end{equation}
+gdje su $preciznost_i$ i $odziv_i$ mjere preciznosti i odziva za razred $c_i$
+
+Ukupna težinska mjera računa se tada prema formuli:
+\begin{equation}
+F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
+\end{equation}
+
+gdje je $n$ ukupan broj razreda, $|c_i|$ broj primjera u razredu $c_i$, a $F_i$
+je F mjera za razred $c_i$.
+
+Težinska F mjera na danom skupu za testiranje sa spomenutim metodama
+izlučivanja značajki iznosi 87\%.
 
 \begin{table}[ht]
 \caption{Rezultati evaluacije različitih značajki}
@@ -599,7 +626,7 @@ prosječnih duljina tekstova (npr.~pjesme, novinski članci, knjige).
   \item ukupno uzoraka za učenje: 3267,
   \item ukupno uzoraka za testiranje: 1092,
   \item točnost: 0.88003665 (961/131),
-  \item F1 mjera: 0.8712441.
+  \item F mjera: 0.8712441.
 \end{itemize}
 \begin{table}[ht]
 \caption{Detalji evaluacije}
