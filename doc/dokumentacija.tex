@@ -534,8 +534,7 @@ klasifikacija se vrši metodom \texttt{classifyAuthor()}, a cross--validacija je
 pokreće metodom \texttt{gridSearch()}.
 
 Korisnik sustavu može pristupiti iz komandne linije preko \texttt{CLITrainer}
-(učenje sustava) i \texttt{CLIRecognizer} (prepoznavatelj autora) ili preko
-grafičkog sučelja iz \texttt{GUI} razreda. Svi navedeni razredi nalaze se u
+(učenje sustava) i \texttt{CLIRecognizer} (prepoznavatelj autora) razreda. Navedeni razredi nalaze se u
 \texttt{hr.fer.zemris.aa.main} paketu. Primjer pokretanja sustava iz
 komandne linije:
 \begin{verbatim}
@@ -547,11 +546,14 @@ komandne linije:
   tekst_nepoznatog_autora.txt \
   skup_aa.model
 \end{verbatim}
-Primjer pokretanja korisničkog sučelja:
+ili preko gotovih jar arhiva:
 \begin{verbatim}
-java -jar su-aa-1.0-gui.jar
-\end{verbatim}
+  java -jar su-aa-1.0-trainer.jar skup_za_ucenje-skup_aa.xml \
+  skup_aa.model
 
+  java -jar su-aa-1.0-recognizer.jar tekst_nepoznatog_autora.txt \
+  skup_aa.model
+\end{verbatim}
 \section{Zaključak}
 Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
 uspješno riješiti relativno jednostavnim metodama. U usporedbi s prijavljenim
