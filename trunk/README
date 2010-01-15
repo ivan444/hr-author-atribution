@@ -1,0 +1,42 @@
+Automatizirano prepoznavanje autora teksta
+------------------------------------------------------------------------------------
+
+ivan.kristo@fer.hr
+igor.belsa@fer.hr
+tomislav.reicher@fer.hr
+------------------------------------------------------------------------------------
+Pokretanje programa iz komandne linije:
+
+	Ucenje:
+
+		java hr.fer.zemris.aa.main.CLITrainer skup_za_ucenje.xml skup_aa.model
+	
+	Prepoznavanje teksta:
+
+		java hr.fer.zemris.aa.main.CLIRecognizer tekst_nepoznatog_autora.txt skup_aa.model
+
+------------------------------------------------------------------------------------
+Pokretanja iz grafičkog korisničkog sučelja:
+
+		java -jar su-aa-1.0-gui.jar
+
+------------------------------------------------------------------------------------
+
+
+Za ispravan rad programa potrebne su konfiguracijske datoteke, ovisno o odabiru
+načina izlučivanja značajki:
+
+config/
+	fw-idf.txt
+	fwords.txt
+	marks.txt
+
+------------------------------------------------------------------------------------
+
+Kao skup za učenje, potrebno je predati tekstove pohranjene kao XML6 dokument po KTLab7 documentSet shemi
+dostupnoj na http://ktlab.fer.hr/download/documentSet.xsd
+
+TODO: 	mozda bolje opisati config?
+	sadrzaj medija popisati?
+	dodati windows newline :)	
+
