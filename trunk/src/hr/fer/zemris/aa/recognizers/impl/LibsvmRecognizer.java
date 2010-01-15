@@ -76,6 +76,11 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	 * @throws IllegalArgumentException Ukoliko je došlo do problema sa učitavanjem SVM modela ili datoteke s mapiranjem razreda.
 	 */
 	public LibsvmRecognizer(String modelPath, IFeatureExtractor featureExtractor) {
+		this(modelPath, featureExtractor, true);
+	}
+	
+	public LibsvmRecognizer(String modelPath, IFeatureExtractor featureExtractor, boolean scale) {
+		this.scale = scale;
 		try {
 			this.model = svm.svm_load_model(modelPath);
 			if (scale) {

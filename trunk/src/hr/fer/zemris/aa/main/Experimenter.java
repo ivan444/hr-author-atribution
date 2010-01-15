@@ -114,6 +114,7 @@ public class Experimenter {
 		float precision = hits*1.f/(hits+misses);
 		
 		Integer tmp2 = null;
+		float f1 = 0;
 		
 		System.out.format("%20s  %20s %20s \tOmjer%n","Autor","Preciznost","Odziv");
 		for (String author : authors) {
@@ -121,6 +122,9 @@ public class Experimenter {
 			if (tmp == null) tmp = 0;
 			tmp2 = failNumAuthor.get(author);
 			if (tmp2 == null) tmp2 = 0;
+		
+			if (tmp != 0 || tmp2 != 0)
+				f1 += 2*(tmp/(float)(tmp+tmp2)*tmp/(float)articleNumAuthor.get(author)) / (tmp/(float)(tmp+tmp2)+tmp/(float)articleNumAuthor.get(author))*articleNumAuthor.get(author);
 			
 			System.out.format("%20s: %20f %20f \t(%d/%d)%n",author,
 					tmp/(float)(tmp+tmp2),
@@ -130,6 +134,7 @@ public class Experimenter {
 		
 		System.out.println("Testiranje je završilo!");
 		System.out.println("Uspješnost: " + precision + " (" + hits + "/" + misses + ").");
+		System.out.println(f1/testData.size());
 		
 		return precision;
 	}

@@ -468,7 +468,7 @@ radu su $C = 16$ i $\gamma = 0.25$.
 \section{Evaluacija}
 \label{sec:evaluacija}
 Mjera uspješnosti prepoznavanja dana je omjerom broja točno prepoznatih autora
-i ukupnog broja tekstova.
+i ukupnog broja tekstova, tj.~točnošću \engl{accuracy}.
 
 Rezultati evaluacije prikazani su u tablici \ref{tbl:eval}. Radi kraćeg zapisa,
 metoda opisana u \ref{sec:funkcijske-rijeci} nazvana je ``funkcijske'', metoda
@@ -478,7 +478,7 @@ metoda iz \ref{sec:funkcijske-rijeci-idf} ``idf'', a metode iz
 ``duljine''. Stupac ``Točni'' označava broj točno prepoznatih autora,
 ``Netočni'' --- netočno prepoznatih.
 
-Najveću uspješnost, 88\% postiže kombinacija svih metoda opisanih u
+Najveću točnost, 88\% postiže kombinacija svih metoda opisanih u
 \ref{sec:znacajke-manje} i metode iz \ref{sec:funkcijske-rijeci}. Detalji
 evaluacije navedene kombinacije značajki nalaze se u dodatku
 \ref{sec:detalji-evaluacije}.
@@ -488,7 +488,7 @@ evaluacije navedene kombinacije značajki nalaze se u dodatku
 \centering
 \begin{tabular}{p{6cm} c c c}
 \hline\hline
-Metoda & Točni & Netočni & Uspješnost \\
+Metoda & Točni & Netočni & Točnost \\
 [0.5ex]
 \hline
 interpunkcija & 603 & 489 & 55.2\% \\
@@ -598,7 +598,8 @@ prosječnih duljina tekstova (npr.~pjesme, novinski članci, knjige).
   \item broj autora	u skupu: 25,
   \item ukupno uzoraka za učenje: 3267,
   \item ukupno uzoraka za testiranje: 1092,
-  \item uspješnost: 0.88003665 (961/131).
+  \item točnost: 0.88003665 (961/131),
+  \item F1 mjera: 0.8712441.
 \end{itemize}
 \begin{table}[ht]
 \caption{Detalji evaluacije}
