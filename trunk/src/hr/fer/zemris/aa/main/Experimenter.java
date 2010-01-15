@@ -131,7 +131,7 @@ public class Experimenter {
 		}
 		
 		System.out.println("Testiranje je završilo!");
-		System.out.println("Preciznost: " + precision + " (" + hits + "/" + misses + ").");
+		System.out.println("Uspješnost: " + precision + " (" + hits + "/" + misses + ").");
 		
 		return precision;
 	}

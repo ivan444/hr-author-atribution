@@ -338,6 +338,7 @@ Izlučitelj je implementiran razredom \texttt{FunctionWordOccurNumExtractor.java
 a popis korištenih funkcijskih riječi se nalazi u dodatku \ref{sec:koristene-fw}.
 
 \subsection{Frekvencije grupa tipova funkcijskih riječi}
+\label{sec:funkcijske-rijeci-grupe}
 Ulazni skup funkcijskih riječi podijeljen je na: priloge, prijedloge, veznike,
 čestice i uzvike.
 
@@ -347,6 +348,7 @@ komponenta vektora se podijeli brojem riječi u dokumentu. Implementacija se
 nalazi u razredu \texttt{FunctionWordGroupFreqExtractor.java}.
 
 \subsection{Frekvencije funkcijskih riječi pomnoženih idf težinama}
+\label{sec:funkcijske-rijeci-idf}
 Stvaranje vektora značajki se vrši množenjem komponenti vektora dobivenih metodom
 opisanom u odjeljku \ref{sec:funkcijske-rijeci} i pripadne \emph{idf} \engl{inverse
 document frequency} težine. \emph{Idf} težina dana je formulom (\ref{equ:idf})
@@ -366,6 +368,7 @@ implementirano je u \texttt{TextStatistics.java} razredu.
 
 
 \subsection{Frekvencije interpunkcijskih znakova, samoglasnika i duljina riječi}
+\label{sec:znacajke-manje}
 Za računanje frekvencija interpunkcijskih znakova odabran je skup znakova (``.'',
 ``,'', ``!'', ``?'', ``''', ``"'', ``-'', ``:``, ``;'', ``+'', ``*'') te je
 prebrojano njihovo pojavljivanje u tekstu. Rezultat je zapisan kao
@@ -464,7 +467,53 @@ radu su $C = 16$ i $\gamma = 0.25$.
 
 \section{Evaluacija}
 \label{sec:evaluacija}
+Mjera uspješnosti prepoznavanja dana je omjerom broja točno prepoznatih autora
+i ukupnog broja tekstova.
 
+Rezultati evaluacije prikazani su u tablici \ref{tbl:eval}. Radi kraćeg zapisa,
+metoda opisana u \ref{sec:funkcijske-rijeci} nazvana je ``funkcijske'', metoda
+opisana u \ref{sec:funkcijske-rijeci-grupe} nazvana ``grupe'',
+metoda iz \ref{sec:funkcijske-rijeci-idf} ``idf'', a metode iz
+\ref{sec:znacajke-manje} redom ``interpunkcija'', ``samoglasnici'' i
+``duljine''. Stupac ``Točni'' označava broj točno prepoznatih autora,
+``Netočni'' --- netočno prepoznatih.
+
+Najveću uspješnost, 88\% postiže kombinacija svih metoda opisanih u
+\ref{sec:znacajke-manje} i metode iz \ref{sec:funkcijske-rijeci}. Detalji
+evaluacije navedene kombinacije značajki nalaze se u dodatku
+\ref{sec:detalji-evaluacije}.
+
+\begin{table}[ht]
+\caption{Rezultati evaluacije različitih značajki}
+\centering
+\begin{tabular}{p{6cm} c c c}
+\hline\hline
+Metoda & Točni & Netočni & Uspješnost \\
+[0.5ex]
+\hline
+interpunkcija & 603 & 489 & 55.2\% \\
+funkcijske & 870 & 222 & 79.6\% \\
+idf & 872 & 220 & 79.8\% \\
+grupe & 379 & 713 & 34.7\% \\
+samoglasnici & 326 & 766 & 29.8\% \\
+duljine & 463 & 629 & 42.3\% \\
+samoglasnici, idf & 887 & 205 & 81.2\% \\
+funkcijske, idf & 848 & 244 & 77.6\% \\
+interpunkcija, samoglasnici, idf & 948 & 144 & 86.8\% \\
+interpunkcija, samoglasnici, duljine, idf & 955 & 137 & 87.4\% \\
+interpunkcija, funkcijske, samoglasnici, idf & 905 & 187 & 82.8\% \\
+interpunkcija, funkcijske, idf & 900 & 192 & 82.4\% \\
+interpunkcija, funkcijske, duljine & 956 & 136 & 87.5\% \\
+\textbf{interpunkcija, funkcijske, samoglasnici, duljine} & \textbf{961} & \textbf{131} & \textbf{88.0\%} \\
+interpunkcija, funkcijske, samoglasnici, idf, duljine & 913 & 179 & 83.6\% \\
+%funkcijske, grupe & 872 & 220 & 79.8\% \\
+%grupe, idf & 874 & 218 & 80.0\% \\
+interpunkcija, grupe, samoglasnici, idf & 943 & 149 & 86.3\% \\
+interpunkcija, funkcijske, samoglasnici, idf, duljine, grupe & 912 & 180 & 83.5\% \\ [1ex]
+\hline
+\end{tabular}
+\label{tbl:eval}
+\end{table}
 
 \section{Implementacija}
 \label{sec:implementacija}
@@ -504,13 +553,18 @@ komandne linije:
 Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
 uspješno riješiti relativno jednostavnim metodama. U usporedbi s prijavljenim
 rezultatima (od 70\% do 97\%
-\citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}),
-dobiveni rezultati (88\%) su izuzetno dobri.
+\citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer,stamatatos1999automatic}),
+dobiveni rezultat (88\%) je izuzetno dobar. U obzir se mora uzeti variranje
+rezultata zbog razlika u načinu evaluacije, podatcima nad kojima se evaluacija
+vršila te samom problemu (binarna, višerazredna ili jednorazredna
+klasifikacija).
 
 Nažalost, ispravna usporedba s drugim radovima zasad nije moguća jer ne postoji
 relevantan skup za usporedbu kao što navode \citep{zhao2005effective}. U
-literaturi često može naći pozivanje na rad \citep{stamatatos2001computer} i
-``Grčki skup'' (npr.~\citep{keselj2003n}).
+literaturi često može naći pozivanje na rad
+\citep{stamatatos2001computer,stamatatos1999automatic} i ``Grčki skup''
+(npr.~\citep{keselj2003n}). Na složenost problema bitno utječe broj autora i
+raznolikost skupa uzoraka.
 
 U daljnjem radu potrebno je evaluirati metode temeljene na $n$-gramima riječi i
 slova poput onih opisanih u
@@ -529,6 +583,55 @@ prosječnih duljina tekstova (npr.~pjesme, novinski članci, knjige).
 \newpage
 
 \appendix
+
+\section{Detalji evaluacije najbolje značajke}
+\label{sec:detalji-evaluacije}
+\begin{itemize}
+  \item Kombinacija svih metoda iz \ref{sec:znacajke-manje} i metode iz
+     \ref{sec:funkcijske-rijeci},
+  \item broj autora	u skupu: 25,
+  \item ukupno uzoraka za učenje: 3267,
+  \item ukupno uzoraka za testiranje: 1092,
+  \item uspješnost: 0.88003665 (961/131).
+\end{itemize}
+\begin{table}[ht]
+\caption{Detalji evaluacije}
+\centering
+\begin{tabular}{c c c c}
+\hline\hline
+Autor & Preciznost & Odziv & Omjer \\
+[0.5ex]
+\hline
+Tomislav Židak & 0,961165 & 1,000000 & (99/99) \\
+Ivan Zvonimir Čičak & 0,846154 & 0,942857 & (33/35) \\
+Orlando Rivetti & 0,888889 & 0,960000 & (24/25) \\
+Zoran Čutura & 0,833333 & 0,312500 & (5/16) \\
+William Montgomery & 0,909091 & 0,909091 & (10/11) \\
+Jelena Lovrić & 0,857143 & 0,929577 & (66/71) \\
+Jovan Hovan & 0,750000 & 0,750000 & (6/8) \\
+Sanja Modrić & 0,809524 & 0,548387 & (17/31) \\
+Boris Vlašić & 0,833333 & 0,862069 & (25/29) \\
+Tomislav Ivić & 1,000000 & 0,666667 & (4/6) \\
+rabin Kotel Da Don & 1,000000 & 0,777778 & (7/9) \\
+Nikica Vukašin & 1,000000 & 0,727273 & (8/11) \\
+Alan Srčnik/Epeha & 0,555556 & 0,454545 & (5/11) \\
+Dražen Krušelj & 0,727273 & 0,533333 & (8/15) \\
+Miljenko Jergović & 0,896552 & 0,764706 & (26/34) \\
+Nino Đula & 0,894737 & 0,809524 & (17/21) \\
+Branimir Pofuk & 0,769231 & 0,666667 & (20/30) \\
+Darko Pavičić & 0,695652 & 0,500000 & (16/32) \\
+Radovan Stipetić & - & 0,000000 & (0/4) \\
+Ante Tomić & 0,870968 & 0,900000 & (54/60) \\
+Živko Kustić & 0,891061 & 0,993769 & (319/321) \\
+Inoslav Bešker & 0,942857 & 0,785714 & (33/42) \\
+Jurica Pavičić & 0,839286 & 0,940000 & (47/50) \\
+Zvonimir Milčec & 0,800000 & 0,780488 & (32/41) \\
+Davor Butković & 0,963855 & 1,000000 & (80/80) \\ [1ex]
+\hline
+\end{tabular}
+\label{tbl:eval-detalji}
+\end{table}
+
 
 \section{Korištene funkcijske riječi}
 \label{sec:koristene-fw}
