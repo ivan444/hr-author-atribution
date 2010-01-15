@@ -76,11 +76,12 @@ Rad je organiziran tako da su u 2.~odjeljku opisane metode koje su u drugim
 radovima korištene za problem prepoznavanja autora i srodne probleme. Odjeljak 3
 daje kratki pregled sustava, način na koji su komponente u sustavu povezane i na
 koji način se sustav može koristiti. Slijedi 4.~odjeljak s opisom korištenih
-podataka. Najbitniji za rad je odijeljak 5. U njemu je dan opis korištenih
-metoda za izvlačenje značajki iz tekstova, popis svih korištenih značajki i
-njihove specifičnosti te evaluacija. Na 5.~odjeljak usko se veže 6.~sa
-opisom klasifikacije. Implementacija je opisana u 7., a zaključak je
-dan u 8. odjeljku.
+podataka. Najbitniji za rad je odijeljak 5. U njemu je dan opis korištenih metoda
+za izvlačenje značajki iz tekstova, popis svih korištenih značajki i njihove
+specifičnosti te evaluacija. Na 5.~odjeljak usko se veže 6.~sa opisom
+klasifikacije. Rezultati evaluacije metoda navedenih u 5.~odjeljku te njihovih
+kombinacija uz klasifikator opisan u 6.~odjeljku navedeni su u 7.~odjeljku.
+Implementacija je opisana u 8., a zaključak je dan u 9.~odjeljku.
 
 \newpage
 
@@ -274,7 +275,7 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \label{fig:avgWordsPerAuthorArticle}
 \end{figure}
 
-\section{Izvlačenje značajki iz dokumenata i evaluacija}
+\section{Izvlačenje značajki iz dokumenata}
 Glavni problem konstrukcije sustava za prepoznavanje autora je odabir dovoljno
 diskriminatornih značajki teksta. Značajka je diskriminatorna ako je česta kod
 jednog autora, a rijetka kod drugih. Zbog velikoga broja autora izuzetno su
@@ -303,6 +304,7 @@ algoritama (npr.~značajke dobivene sintaksnom analizom prirodnog jezika).
 
 
 \subsection{Frekvencije funkcijskih riječi}
+\label{sec:funkcijske-rijeci}
 Funkcijske riječi su riječi koje promatrane samostalno nemaju semantičko
 značenje, poput priloga, prijedloga, veznika, čestica, uzvika ili riječi koje
 opisuju količinu. Obično ukazuju na gramatičke odnose ili općenita svojstva
@@ -330,13 +332,10 @@ općenito učinkovite \citep{zhao2005effective}.
 
 Pretvorba dokumenta u vektor značajki se vrši brojanjem pojave svake funkcijske
 riječi unutar dokumenta. Dobiveni brojevi se zapišu kao vektor (za funkcijske
-riječi koje se nisu pojavile u dokumentu piše se 0) te se svaki posebno
-podijeli ukupnim brojem riječi u dokumentu (uklanjanje ovisnosti o dužini
-dokumenta). Izlučitelj značajki na temelju frekvencije funkcijskih riječi
-implementiran je razredom \texttt{FunctionWordOccurNumExtractor.java}, a popis
-korištenih funkcijskih riječi se nalazi u dodatku \ref{sec:koristene-fw}.
-
-% TODO: navesti evaluaciju
+riječi koje se nisu pojavile u dokumentu piše se 0) te se svaki posebno podijeli
+ukupnim brojem riječi u dokumentu (uklanjanje ovisnosti o dužini dokumenta).
+Izlučitelj je implementiran razredom \texttt{FunctionWordOccurNumExtractor.java},
+a popis korištenih funkcijskih riječi se nalazi u dodatku \ref{sec:koristene-fw}.
 
 \subsection{Frekvencije grupa tipova funkcijskih riječi}
 Ulazni skup funkcijskih riječi podijeljen je na: priloge, prijedloge, veznike,
@@ -347,9 +346,24 @@ se zapiše kao vektor (u ovom slučaju vektor će imati pet dimenzija) i svaka
 komponenta vektora se podijeli brojem riječi u dokumentu. Implementacija se
 nalazi u razredu \texttt{FunctionWordGroupFreqExtractor.java}.
 
-% TODO: navesti evaluaciju
+\subsection{Frekvencije funkcijskih riječi pomnoženih idf težinama}
+Stvaranje vektora značajki se vrši množenjem komponenti vektora dobivenih metodom
+opisanom u odjeljku \ref{sec:funkcijske-rijeci} i pripadne \emph{idf} \engl{inverse
+document frequency} težine. \emph{Idf} težina dana je formulom (\ref{equ:idf})
+\citep{diederich2003authorship}.
 
-\subsection{Frekvencije funkcijskih riječi sa IDF težinama}
+Navedena mjera diskriminira tekstove koji sadrže funkcijske riječi koje su
+korištene u relativno malo korištene u drugim tekstovima. Nedostatak \emph{idf}
+mjere je što gleda samo je li se riječ pojavila u nekom dokumentu, ne i koliko
+puta se pojavila. Na ovaj način riječ koja se pojavi puno puta u jednom
+tekstu i jednom u svim ostalima dobiva jednaku mjeru kao riječ koja se jednom
+pojavi u svim tekstovima --- zanemaruje se riječ koja bi izuzetno dobro
+odvojila tekst od ostatka skupa.
+
+Implementacija metode se nalazi u razredu
+\texttt{FunctionWordTFIDFExtractor .java}, a računanje idf težina riječi
+implementirano je u \texttt{TextStatistics.java} razredu.
+
 
 \subsection{Frekvencije interpunkcijskih znakova, samoglasnika i duljina riječi}
 Za računanje frekvencija interpunkcijskih znakova odabran je skup znakova (``.'',
@@ -359,24 +373,20 @@ prebrojano njihovo pojavljivanje u tekstu. Rezultat je zapisan kao
 brojem znakova u dokumentu. Implementacija se nalazi u razredu
 \texttt{PunctuationMarksExtractor.java}.
 
-Vektor značajki koje se temelje na frekvencijama pojavljivanja
-samoglasnika se dobiva analogno postupku za interpunkcijske znakove.
+Vektor značajki koje se temelje na frekvencijama pojavljivanja samoglasnika se
+dobiva analogno postupku za interpunkcijske znakove. Implementacija je dana u
+\texttt{VowelsExtractor.java}.
 
-Frekvencije duljina riječi se dobiju brojanjem riječi koje imaju jednaku
-duljinu. Bitno je primjetiti da se ovim postupkom mogu dobiti vektori
-značajki različitih dimenzija (npr.~jedan dokument ima riječi duljine 11 i 17,
-drugi nema). Problem je riješen ograničavanjem maksimalne duljine riječi na 10.
-Sve riječi dulje od 10 znakova pribrajaju se 10.~grupi. Dobivene frekvencije
-potrebno je podijeliti ukupnim brojem riječi (uklanjanje ovisnosti o duljini
-teksta).
+Frekvencije duljina riječi se dobiju brojanjem riječi koje imaju jednaku duljinu.
+Bitno je primjetiti da se ovim postupkom mogu dobiti vektori značajki različitih
+dimenzija (npr.~jedan dokument ima riječi duljine 11 i 17, drugi nema). Problem
+je riješen ograničavanjem maksimalne duljine riječi na 10. Sve riječi dulje od 10
+znakova pribrajaju se 10.~grupi. Dobivene frekvencije potrebno je podijeliti
+ukupnim brojem riječi (uklanjanje ovisnosti o duljini teksta). Implementacija se
+nalazi u razredu \texttt{WordLengthFeatureExtractor.java}.
 
-% TODO: navesti evaluacije
-
-Navedene značajke samostalno imaju slabu diskriminacijsku moć, no vrlo su
-korisne za kombiniranje s drugim značajkama (vidi: \ref{sec:usporedba-uspjesnosti}).
-
-\subsection{Usporedba uspješnosti}
-\label{sec:usporedba-uspjesnosti}
+Navedene značajke samostalno imaju slabu diskriminacijsku moć, no vrlo su korisne
+za kombiniranje s drugim značajkama (vidi odjeljak \ref{sec:evaluacija}).
 
 \section{Klasifikacija}
 Prikaz dokumenata vektorima realnih brojeva omogućava jednostavno korištenje
@@ -427,7 +437,6 @@ tada se nepoznati vektor $\mathbf{x}$ prije klasifikacije skalira prema:
 x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
 \end{equation}
 
-
 Učenjem SVM--a traže se parametri pretpostavljenog oblika decizijske funkcije,
 koja će ispravno klasificirati sve uzorke u skupu za učenje, što ponekad zbog
 šuma u podacima ili njihove distribucije u prostoru nije moguće. Rješenje tog
@@ -453,8 +462,9 @@ nad kojima je provedeno testiranje. Nakon što su pronađeni parametri modela $(
 se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u ovom
 radu su $C = 16$ i $\gamma = 0.25$.
 
-% \section{Evaluacija}
-% % TODO: Napisati!1
+\section{Evaluacija}
+\label{sec:evaluacija}
+
 
 \section{Implementacija}
 \label{sec:implementacija}
@@ -470,7 +480,9 @@ Hrvatskoj -- Jutarnji.hr''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
 Za klasifikaciju iskorištena je biblioteka \emph{libsvm} \citep{CC01a}. Veza
 \emph{libsvm} biblioteke i sustava izvedena je \texttt{LibsvmRecognizer}
 razredom koji istovremeno implementira sučelja \texttt{RecognizerTrainer} i
-\texttt{AuthorRecognizer}.
+\texttt{AuthorRecognizer}. Model se uči pozivom metode \texttt{train()},
+klasifikacija se vrši metodom \texttt{classifyAuthor()}, a cross--validacija je
+pokreće metodom \texttt{gridSearch()}.
 
 Korisnik sustavu može pristupiti iz komandne linije preko \texttt{CLITrainer}
 (učenje sustava) i \texttt{CLIRecognizer} (prepoznavatelj autora) ili preko
@@ -489,14 +501,16 @@ komandne linije:
 
 
 \section{Zaključak}
-% TODO: Napisati! Zasad je naveden samo daljni rad..
+Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
+uspješno riješiti relativno jednostavnim metodama. U usporedbi s prijavljenim
+rezultatima (od 70\% do 97\%
+\citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}),
+dobiveni rezultati (88\%) su izuzetno dobri.
 
-% TODO dodaj ovo iz komentara:
-% Navesti kako su naši rezultati izuzetno dobri u odnosu na prijavljene (one koje
-% spominju u člancima), no ne možemo reći da je metoda prvoklasna jer ne postoji
-% relevantan skup za usporedbu kao što navode \citep{zhao2005effective}, iako se
-% u literaturi često može naći pozivanje na rad \citep{stamatatos2001computer} i
-% njihov ``Grčki skup'' (npr.~\citep{keselj2003n}).
+Nažalost, ispravna usporedba s drugim radovima zasad nije moguća jer ne postoji
+relevantan skup za usporedbu kao što navode \citep{zhao2005effective}. U
+literaturi često može naći pozivanje na rad \citep{stamatatos2001computer} i
+``Grčki skup'' (npr.~\citep{keselj2003n}).
 
 U daljnjem radu potrebno je evaluirati metode temeljene na $n$-gramima riječi i
 slova poput onih opisanih u
@@ -563,7 +577,6 @@ izlučitelja značajki.
 \end{description}
 
 \section{Raspodjela bodova}
-% TODO: Staviti!
 \begin{description}
 \item[Ivan Krišto:] 33.3\%
 \item[Igor Belša:] 33.3\%

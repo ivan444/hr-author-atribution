@@ -13,5 +13,5 @@ public interface AuthorRecognizer {
 	 * @param text Tekst kojem određujemo autora.
 	 * @return Određeni autor teksta.
 	 */
-	String classifyAutor(String text);
+	String classifyAuthor(String text);
 }

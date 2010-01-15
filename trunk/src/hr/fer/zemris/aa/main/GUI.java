@@ -387,7 +387,7 @@ public class GUI extends javax.swing.JFrame {
     		return;
     	}
 		
-		lblRecogStatus.setText("Autor teksta je: " + recognizer.classifyAutor(txtTextToClassify.getText()));
+		lblRecogStatus.setText("Autor teksta je: " + recognizer.classifyAuthor(txtTextToClassify.getText()));
     }
 
     private void txtLearnedModelPathInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
