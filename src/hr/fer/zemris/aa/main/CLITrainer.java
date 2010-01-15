@@ -4,9 +4,10 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordTFIDFExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
 import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
 import hr.fer.zemris.aa.features.impl.VowelsExtractor;
+import hr.fer.zemris.aa.features.impl.WordLengthFeatureExtractor;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 import hr.fer.zemris.aa.xml.XMLMiner;
@@ -42,8 +43,9 @@ public class CLITrainer {
 		try {
 			featExtrac = new ComboFeatureExtractor(
 					new PunctuationMarksExtractor(new File("config/marks.txt")),
+					new FunctionWordOccurNumExtractor("config/fwords.txt"),
 					new VowelsExtractor(),
-					new FunctionWordTFIDFExtractor("config/fw-idf.txt")
+					new WordLengthFeatureExtractor()
 			);
 		} catch (FileNotFoundException e) {
 			System.err.println("Greška! " + e.getMessage());
