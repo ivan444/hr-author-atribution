@@ -1,0 +1,729 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[croatian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{booktabs}
+%\usepackage{hyperref}
+% Da bi se promjenio stil citiranja umjesto:
+% [authoryear, round]
+% staviti:
+% [numbers, square]
+\usepackage[authoryear, round]{natbib}
+\usepackage{amsmath}
+\usepackage{subfig}
+\usepackage{fixltx2e}
+\usepackage{url}
+\usepackage{textcomp}
+\usepackage{float}
+
+\newcommand{\engl}[1]{(engl.~\emph{#1})}
+
+\begin{document}
+
+\title{Automatizirano prepoznavanje autora teksta\\Projekt iz Strojnog učenja}
+\author{Igor Belša \and Tomislav Reicher \and Ivan Krišto}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\tableofcontents
+
+\newpage
+
+\section{Uvod}
+Problem automatiziranog prepoznavanja autora teksta \engl{Authorship Attribution}
+može se promatrati kao problem klasifikacije teksta na temelju njegovih
+lingvističkih značajki. Problemi slični prepoznavanju autora su prepoznavanje
+dobi autora, regije iz koje autor potječe ili spola \citep{luyckx2005shallow}.
+Glavni problem računalno potpomognutog prepoznavanja autora teksta je određivanje
+prikladnog skupa karakteristika dokumenta koje opisuju stil autora
+\citep{coyotl2006authorship}.
+
+\citet{kukushkina2001using} navode da se problem prepoznavanja autora teksta
+obrađuje još od 1915.~godine u radu ``\emph{Izv.~otd.~russkogo jazyka i
+slovesnosti, Imp.~akad.~nauk.}'', Morozov, N., A.~kojem se već 1916.~pridružio
+utemeljitelj teorije Markovljevih lanaca, Markov, A., A.,~radom ``\emph{On some
+application of statistical method}''.
+
+Prepoznavanje autora može pomoći pri indeksiranju dokumenata, filtriranju ili
+hijerarhiskoj kategorizaciji web stranica i web pretraživača
+\citep{luyckx2005shallow}. Bitno je napomenuti kako se prepoznavanje autora i
+njegovih karakteristika razlikuje od detekcije plagijata. Detekcija
+plagijata pokušava odrediti sličnost između dva u suštini različita
+djela, ali nije u mogućnosti otkriti jesu li proizvod istog autora
+\citep{de2001mining}.
+
+Problem prepoznavanja autora može se podijeliti u tri kategorije
+\citep{zhao2005effective}: binarnu, višerazrednu i jednorazrednu klasifikaciju.
+Binarna klasifikacija rješava problem kad je za skup tekstova poznato da
+pripadaju jednom od dva autora. Višerazredna klasifikacija je proširenje
+binarne na više autora. Jednorazredna se primjenjuje u situacijama kad je
+dio tekstova napisan od poznatog autora, a autori ostalih tekstova su
+nepoznati. Ta klasifikacija pokušava odgovoriti na pitanje pripada li neki
+tekst poznatom autoru ili ne.
+
+U ovom radu obrađen je problem višerazredne klasifikacije za tekstove na
+hrvatskom jeziku. Naglasak je stavljen na evaluiranje različitih skupova
+karakteristika.
+
+Rad je organiziran tako da su u 2.~odjeljku opisane metode koje su u drugim
+radovima korištene za problem prepoznavanja autora i srodne probleme. Odjeljak 3
+daje kratki pregled sustava, način na koji su komponente u sustavu povezane i na
+koji način se sustav može koristiti. Slijedi 4.~odjeljak s opisom korištenih
+podataka. Najbitniji za rad je odijeljak 5. U njemu je dan opis korištenih metoda
+za izvlačenje značajki iz tekstova, popis svih korištenih značajki i njihove
+specifičnosti te evaluacija. Na 5.~odjeljak usko se veže 6.~sa opisom
+klasifikacije. Rezultati evaluacije metoda navedenih u 5.~odjeljku te njihovih
+kombinacija uz klasifikator opisan u 6.~odjeljku navedeni su u 7.~odjeljku.
+Implementacija je opisana u 8., a zaključak je dan u 9.~odjeljku.
+
+\newpage
+
+\section{Srodna rješenja}
+\citet{coyotl2006authorship} dijele postojeće metode prepoznavanja autora
+teksta na tri glavna pristupa:
+\begin{description}
+\item[Uzimanje mjera stila kao značajki dokumenta:] Za pristup su
+karakteristične značajke koje u obzir uzimaju duljinu riječi i rečenica te
+bogatstvo vokabulara. Navodi se da takve značajke nisu dovoljne za rješavanje
+problema, da ovise o žanru teksta te da gube smisao ako se primjenjuju nad
+kratkim tekstovima.
+\item[Korištenje sintaksnih obilježja kao značajki:] Korištenje oznaka stila
+autora \engl{style markers} kao značajki -- informacije vezane uz strukturu
+jezika koje su skupljene dubinskom analizom sintaksne analize dokumenta. Tekst se
+karakterizira pojavom i frekvencijom pojedinih sintaksnih struktura. Navedena
+karakterizacija je detaljna i relevantna. Nažalost, računalno je zahtjevna i
+zahtjeva alate za obradu teksta (npr.~POS označivači \engl{Part-Of-Speech taggers},
+sintaksni parseri i sl.). Očit je i utjecaj duljine teksta na rezultat klasifikacije.
+\item[Značajke dokumenta temeljene na riječima:] Pristup se grana na tri
+različite metode. \emph{Prva} karakterizira dokumente koristeći skup funkcijskih
+riječi\footnote{Riječi koje nemaju sadržajno značenje.} (njihovu pojavu i
+frekvenciju pojavljivanja), ignorirajući sadržajne riječi \engl{content words}
+jer su one usko vezane uz temu dokumenta. Metoda pokazuje dobre rezultate, ali na
+nju utječe veličina dokumenta. \emph{Druga} grana dokument promatra kao hrpu
+riječi \engl{bag-of-words} te koristi jedno-sadržajne riječi \engl{single
+content words} kao značajke dokumenta. Metoda je vrlo robusna i daje odlične rezultate
+kad postoji primjetna korelacija između autora i teme o kojoj pišu. \emph{Treća}
+grana razmatra $n$-grame riječi kao značajke, npr.~značajke koje se sastoje od
+sekvenci $n$ uzastopnih riječi. Radi prebrzog rasta značajki koriste se samo
+$n$-grami do tri riječi.
+\end{description}
+
+\citet{kukushkina2001using} navode postupak koji koristi algoritme za kompresiju
+podataka u svrhu prepoznavanja autora. U dodatku svog rada navode eksperimentalne
+rezultate prepoznavanja autora sa različitim kompresijskim algoritmima. Ideja
+postupka je dokumente za učenje podijeliti u skupove po autorima i svaki skup
+sažeti odabranim algoritmom te zabilježiti veličine arhiva. Tekst nepoznatog
+autora se dodaje svakom skupu za učenje te se primjenjuje isti algoritam
+kompresije. Arhiva koja bilježi najmanji porast veličine proglašava se
+pripadnom arhivom novog teksta, tj.~autor njenog sadržaja, autor teksta. Osvrt
+na sličan postupak spominje se u radu \citep{zhao2005effective}. Taj rad navodi
+da postupak ima očite propuste te navodi rad koji to potvrđuje.
+
+\citet{koppel2003exploiting} opisuju korištenje gramatičkih greški i
+neformalnog stiliziranja (npr.~pisanje rečenica velikim slovima u svrhu
+naglašavanja i sl.) kao značajki dokumenta u svrhu prepoznavanja autora. Metoda
+je primjenjiva samo na neuređivane tekstove (npr.~blogovi, Internet forumi,
+\emph{news grupe}, e-mail poruke, i sl.).
+
+\citet{peng2003language} navode mogućnost izrade jezičnog modela pomoću $n$-grama te
+njegovog korištenja za prepoznavanje autora. Sličan postupak je opisan u
+\citep{coyotl2006authorship}.
+
+Uspješnost funkcijskih riječi nad kolokacijama\footnote{Dvije riječi koje se
+pojavljuju na određenoj udaljenosti jedna od druge.} navodi se u
+\citep{argamon2005measuring} -- iako, radi redukcije informacija pri uzimanju
+funkcijskih riječi kao značajki, intuitivno bi se moglo zaključiti suprotno,
+odnosno pogrešno. Također se navodi sumnja da zapravo diskriminatorna osobina
+kolokacija dolazi od frekventnih riječi koje one sadržavaju. Uz to, navedeno je da znatno veći
+broj dokumenata za učenje od broja značajki izuzetno dobro smanjuje
+vjerojatnost pretreniranosti klasifikatora. Slično je navedeno i u
+radu \citep{banko2001scaling} koji obrađuje značaj veličine korpusa pri
+općenitoj obradi prirodnog jezika.
+
+Slična usporedba tipova značajki je napravljena u \citep{uzuner2005comparative}
+pri čemu su se uspoređivale funkcijske riječi i sintaksni elementi dokumenata u
+svrhu prepoznavanja autora. Došli su do zaključka da sintaksni elementi izraza
+nisu korisni koliko funkcijske riječi pri rješavanju navedenog problema.
+
+Opis postupka prepoznavanja autora teksta pomoću sintaksnih elemenata jezika
+tj.~alata za obradu prirodnog jezika može se naći u izuzetno utjecajnom radu
+\citep{stamatatos2001computer}. Razne vrste oznaka stila \engl{style markers}
+također navode \citet{diri2003automatic} te \citet{luyckx2005shallow}.
+
+Osim opisa navedenog postupka, \citet{stamatatos2001computer}, kao često
+korištenu značajku pri prepoznavanju autora navode raznolikost riječnika autora.
+Ona se mjeri omjerom unikatnih riječi i ukupne veličine teksta ili brojanjem
+riječi koje se pojavljuju samo jednom (\emph{hapax legomena}), riječi koje se
+pojavljuju samo dva puta (\emph{dis legomena}) i sl. Te mjere su usko vezano uz
+dužinu teksta. Rad navodi funkcije date u
+\citep{yule1944statistical,honore1979some} koje bi trebale riješiti taj problem,
+tj. trebale bi biti konstantne s obzirom na dužinu teksta. Analiza sličnih
+funkcija može se naći u radu \citep{tweedie1998variable} koji tvrdi da većina
+takvih funkcija nije neovisna o duljini teksta. Zaključuje se da je raznolikost
+riječnika nestabilna značajka za tekstove kraće od 1000 riječi.
+
+Problem ovisnosti mjera o dužini teksta radi što uspješnije klasifikacije pomoću
+SVM-a\footnote{Support Vector Machines} navode \citet{diederich2003authorship}.
+Za izbjegavanje ovisnosti koriste kombinaciju $L_p$ normalizacije duljine i
+transformacije frekvencija pojave termina kao što je
+\emph{idf}\footnote{Inverse document frequency} mjera.
+
+Idf mjera je definirana sa
+\begin{equation}
+F_{idf}(t_k) = \log \frac{n_d}{n_d(t_k)},
+\label{equ:idf}
+\end{equation}
+pri čemu je $n_d(t_k)$ broj dokumenata koji sadržavaju termin $t_k$ te $n_d$
+ukupan broj dokumenata. Navedena mjera daje visoke vrijednosti za dokumente koji
+se pojavljuju u malom broju dokumenata te je time jako diskriminatorna. 
+
+% Redundancija je mjera asimetričnosti razdiobe te se definira sa
+% \begin{equation}
+% R(t_k) = \log n_d + \sum_{i=1}^{n_d} \frac{f(t_k, d_i)}{f(t_k)} \cdot \log \frac{f(t_k, d_i)}{f(t_k)},
+% \label{equ:redundancija}
+% \end{equation}
+% pri čemu je $f(t_k, d_i)$ frekvencija pojavljivanja termina $t_k$ u dokumentu
+% $d_i$, $f(t_k)$ frekvencija pojavljivanja termina u svim dokumentima te $n_d$
+% ukupan broj dokumenata. $R(t_k)$ je mjera koliko razdioba termina $t_k$ u raznim
+% dokumentima odstupa od uniformne razdiobe.
+
+\section{Model sustava}
+Namjena razvijenog sustava je prepoznati autora sustavu dosad neviđenog teksta.
+Autor se može prepoznati samo ako je sustav naučen nad skupom tekstova koji je
+sadržavao i tekstove tog autora. Sustav ima dva načina korištenja, učenje i
+određivanje autora. Da bi se sustav mogao koristiti za određivanje autora, prvo
+mora biti naučen. Apstraktni model dan je slikom \ref{fig:model-sustava}, a
+detalji o načinu korištenja se nalaze u \ref{sec:implementacija}.~odjeljku.
+
+\begin{figure}[htb]
+\begin{center}		
+\begin{picture}(470,90)		
+\put(5,70){\makebox(40,15){\texttt{XML}}}
+\put(38,77){\vector(1,0){15}}
+\put(55,70){\framebox(90,15){\textit{Izlučivanje značajki}}}		
+\put(145,77){\vector(1,0){15}}
+\put(160,70){\framebox(90,15){\textit{Učenje}}}		
+\put(250,77){\vector(1,0){15}}
+\put(285,70){\makebox(40,15){\texttt{prepoznavatelj}}}
+
+\put(1,30){\makebox(40,15){\texttt{tekst}}}
+\put(38,37){\vector(1,0){15}}
+\put(55,30){\framebox(90,15){\textit{Izlučivanje značajki}}}		
+\put(145,37){\vector(1,0){15}}
+\put(160,30){\framebox(90,15){\textit{Prepoznavanje}}}		
+\put(250,37){\vector(1,0){15}}
+\put(205,15){\vector(0,1){15}}
+\put(165,0){\makebox(80,15){\texttt{naučeni prepoznavatelj}}}
+\put(262,30){\makebox(40,15){\texttt{autor}}}
+\end{picture}		
+\caption{Model sustava}		
+\label{fig:model-sustava}
+\end{center}		
+\end{figure}
+
+\section{Korišteni podatci}
+\label{sec:podatci}
+Pri izradi sustava korištena je mrežna arhiva kolumni ``Jutarnjeg lista'' do
+14.~studenog, 2009.~-- ``Komentari i kolumne na aktualna događanja u
+Hrvatskoj - Jutarnji.hr''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
+
+Arhiva je pohranjena kao XML\footnote{Extensible Markup Language --
+\url{http://www.w3.org/XML/}} dokument po KTLab\footnote{Knowledge Technologies
+Lab, FER -- \url{http://ktlab.fer.hr}} \texttt{documentSet} shemi dostupnoj na
+\url{http://ktlab.fer.hr/download/documentSet.xsd}. Budući da se veliki broj
+članaka u mrežnoj arhivi našao u više kopija, one su pri izradi XML arhive
+preskočene.
+
+U arhivi se nalaze tekstovi 25 autora sa ukupno 4359 tekstova koji zajedno broje
+2998766 riječi. Detaljne statistike arhive nalaze se na slikama
+\ref{fig:articlesPerAuthor}\footnote{Broj tekstova za autora na mjestu 21 nije
+greška. Radi se o Živku Kustiću koji je imao ukupno 1285 objavljenih kolumni do
+datuma kada je napravljena arhiva.}, \ref{fig:wordsPerAuthor} i
+\ref{fig:avgWordsPerAuthorArticle}.
+
+Da bi se izbjeglo učenje teme, arhiva je podijeljena po razdobljima, tj.~za
+testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
+
+\begin{figure}[htb]
+\begin{center}
+\input{figures/articlesPerAuthor}
+\end{center}
+\caption{Broj tekstova po autoru.}
+\label{fig:articlesPerAuthor}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\input{figures/wordsPerAuthor}
+\end{center}
+\caption{Broj riječi po autoru.}
+\label{fig:wordsPerAuthor}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\input{figures/avgWordsPerAuthorArticle}
+\end{center}
+\caption{Prosječan broj riječi u tekstu po autoru.}
+\label{fig:avgWordsPerAuthorArticle}
+\end{figure}
+
+\section{Izvlačenje značajki iz dokumenata}
+Glavni problem konstrukcije sustava za prepoznavanje autora je odabir dovoljno
+diskriminatornih značajki teksta. Značajka je diskriminatorna ako je česta kod
+jednog autora, a rijetka kod drugih. Zbog velikoga broja autora izuzetno su
+korisne složene značajke čija je razdioba karakteristična za svakog autora
+(npr.~razdioba nekih riječi).
+
+Značajke je moguće kombinirati. Na ovaj način, ako se koriste složene značajke,
+značajka može predstavljati više razdiobi i biti jače diskriminatorna.
+
+Prilikom stvaranja vektora značajki potrebno je voditi brigu da značajka ne
+ovisi o duljini i sadržaju teksta. Takav utjecaj smanjuje općenitost primjene
+sustava i može dovesti do smanjenja uspješnosti (npr.~povezivanje autora s
+konkretnom temom).
+
+Značajke se prikazuju u obliku vektora realnih brojeva što omogućava relativno
+jednostavnu klasifikaciju. Skup dokumenata se prikazuje kao skup vektora jednakih
+dimenzija. Kombiniranje značajki je spajanje (nadovezivanje) vektora značajki.
+
+% Potrebno je niz jezičnih znakova na prikladan način prilagoditi za klasifikaciju, primjerice
+% prikazati značajke teksta u obliku vektora realnih brojeva. Nakon ove faze, vektori značajki se dalje
+% mogu na standardni način bez problema koristiti u bilo kojem tipu poznatog klasifikatora.
+
+Ovisno o odabranom modelu značajki, analiza teksta i stvaranje vektora značajki
+može varirati od računski vrlo trivijalnih operacija pa do vrlo zahtjevnih
+algoritama (npr.~značajke dobivene sintaksnom analizom prirodnog jezika).
+
+
+\subsection{Frekvencije funkcijskih riječi}
+\label{sec:funkcijske-rijeci}
+Funkcijske riječi su riječi koje promatrane samostalno nemaju semantičko
+značenje, poput priloga, prijedloga, veznika, čestica, uzvika ili riječi koje
+opisuju količinu. Obično ukazuju na gramatičke odnose ili općenita svojstva
+\citep{zhao2005effective}.
+
+Privlačnost mjerenja frekvencije pojavljivanja funkcijskih riječi za
+prepoznavanje autora leži u činjenici da su one pokazatelj stila pisanja. Neke
+manje poznate funkcijske riječi --- poput prijedloga \emph{onkraj},
+\emph{namjesto} ili \emph{zavrh} --- se rijeđe koriste i mogu vrlo dobro
+sugerirati autora. Međutim, čak se i frekvencija korištenja češćih funkcijskih
+riječi može vrlo dobro iskoristiti za razlikovanje autora. Pokazuje se kako zbog
+velike frekvencije korištenja funkcijskih riječi i njihove uloge u gramatici
+autor obično nema svjesnu kontrolu nad njihovom uporabom u pojedinom tekstu
+\citep{argamon2005measuring}.
+
+Velika prednost funkcijskih riječi je neovisnost o temi pisanja. Nevezano uz
+sadržaj, autori prilikom pisanja nesvjesno koriste funkcijske riječi indikativno
+njihovo vlastitom stilu. S druge strane, ovisnost o jeziku može biti veliki
+nedostatak. Promjenom jezika dokumenata, potrebno je ažurirati i skup funkcijskih
+riječi s kojima sustav radi. Teško je predvidjeti kako će se tako promijenjen
+sustav ponašati i hoće li funkcijske riječi dati jednako dobre rezultate za
+različite jezike. Iako postoji više istraživanja na ovu temu, zbog različitih
+jezika, vrsta i veličine dokumenata teško je zaključiti koliko su ovakve metode
+općenito učinkovite \citep{zhao2005effective}.
+
+Pretvorba dokumenta u vektor značajki se vrši brojanjem pojave svake funkcijske
+riječi unutar dokumenta. Dobiveni brojevi se zapišu kao vektor (za funkcijske
+riječi koje se nisu pojavile u dokumentu piše se 0) te se svaki posebno podijeli
+ukupnim brojem riječi u dokumentu (uklanjanje ovisnosti o dužini dokumenta).
+Izlučitelj je implementiran razredom \texttt{FunctionWordOccurNumExtractor.java},
+a popis korištenih funkcijskih riječi se nalazi u dodatku \ref{sec:koristene-fw}.
+
+\subsection{Frekvencije grupa tipova funkcijskih riječi}
+\label{sec:funkcijske-rijeci-grupe}
+Ulazni skup funkcijskih riječi podijeljen je na: priloge, prijedloge, veznike,
+čestice i uzvike.
+
+Vektor značajki se dobiva brojanjem pojava vrste funkcijskih riječi. Rezultat
+se zapiše kao vektor (u ovom slučaju vektor će imati pet dimenzija) i svaka
+komponenta vektora se podijeli brojem riječi u dokumentu. Implementacija se
+nalazi u razredu \texttt{FunctionWordGroupFreqExtractor.java}.
+
+\subsection{Frekvencije funkcijskih riječi pomnoženih idf težinama}
+\label{sec:funkcijske-rijeci-idf}
+Stvaranje vektora značajki se vrši množenjem komponenti vektora dobivenih metodom
+opisanom u odjeljku \ref{sec:funkcijske-rijeci} i pripadne \emph{idf} \engl{inverse
+document frequency} težine. \emph{Idf} težina dana je formulom (\ref{equ:idf})
+\citep{diederich2003authorship}.
+
+Navedena mjera diskriminira tekstove koji sadrže funkcijske riječi koje su
+korištene u relativno malo korištene u drugim tekstovima. Nedostatak \emph{idf}
+mjere je što gleda samo je li se riječ pojavila u nekom dokumentu, ne i koliko
+puta se pojavila. Na ovaj način riječ koja se pojavi puno puta u jednom
+tekstu i jednom u svim ostalima dobiva jednaku mjeru kao riječ koja se jednom
+pojavi u svim tekstovima --- zanemaruje se riječ koja bi izuzetno dobro
+odvojila tekst od ostatka skupa.
+
+Implementacija metode se nalazi u razredu
+\texttt{FunctionWordTFIDFExtractor .java}, a računanje idf težina riječi
+implementirano je u \texttt{TextStatistics.java}.
+
+
+\subsection{Frekvencije interpunkcijskih znakova, samoglasnika i duljina riječi}
+\label{sec:znacajke-manje}
+Za računanje frekvencija interpunkcijskih znakova odabran je skup znakova (``.'',
+``,'', ``!'', ``?'', ``''', ``"'', ``-'', ``:``, ``;'', ``+'', ``*'') te je
+prebrojano njihovo pojavljivanje u tekstu. Rezultat je zapisan kao
+11--dimenzionalni vektor te je svaka komponenta vektora podijeljena ukupnim
+brojem znakova u dokumentu. Implementacija se nalazi u razredu
+\texttt{PunctuationMarksExtractor.java}.
+
+Vektor značajki koje se temelje na frekvencijama pojavljivanja samoglasnika se
+dobiva analogno postupku za interpunkcijske znakove. Implementacija je dana u
+\texttt{VowelsExtractor.java}.
+
+Frekvencije duljina riječi se dobiju brojanjem riječi koje imaju jednaku duljinu.
+Bitno je primjetiti da se ovim postupkom mogu dobiti vektori značajki različitih
+dimenzija (npr.~jedan dokument ima riječi duljine 11 i 17, drugi nema). Problem
+je riješen ograničavanjem maksimalne duljine riječi na 10. Sve riječi dulje od 10
+znakova pribrajaju se 10.~grupi. Dobivene frekvencije potrebno je podijeliti
+ukupnim brojem riječi (uklanjanje ovisnosti o duljini teksta). Implementacija se
+nalazi u razredu \texttt{WordLengthFeatureExtractor.java}.
+
+Navedene značajke samostalno imaju slabu diskriminacijsku moć, no vrlo su korisne
+za kombiniranje s drugim značajkama (vidi odjeljak \ref{sec:evaluacija}).
+
+\section{Klasifikacija}
+Prikaz dokumenata vektorima realnih brojeva omogućava jednostavno korištenje
+klasifikatora koji traže decizijske funkcije, tj.~granice u vektorskom
+prostoru.
+
+% Značajke korištene u ovom radu su frekvencije pojavljivanja određenih događaja
+% (riječi, znakova) te se grupiranjem frekvencija značajke mogu predočiti pomoću
+% vektora u vektorskom prostoru. Zbog navedene činjenice moguće je iskoristiti neki
+% od mnogih razvijenih klasifikatora koji traže decizijske funkcije, granice u
+% vektorskom prostoru. Jedan od klasifikatora koji traži optimalnu granicu između
+% razreda predočenih u prostoru je stroj s potporenim vektorima \engl{Support
+% vector machine}. 
+
+U radu je za klasifikaciju korišten stroj s potpornim vektorima \engl{Support
+vector machine}. Izvorno, SVM traži optimalnu linearnu granicu, odnosno
+hiperravninu, kako bi razdvojio različite razrede predstavljene skupom vektora u
+vektorskome prostoru. Iskorištavanjem jezgrenog trika \engl{kernel trick} isti
+klasifikator moguće je primijeniti za traženje proizvoljno nelinearne granice
+između različitih razreda. Pri tome često korištena jezgrena funkcija je
+radijalna bazna funkcija odnosno Gaussova jezgra:
+\begin{equation}
+k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2).
+\end{equation}
+
+Pokazano je da uz odabir ispravnih parametara \citep{keerthi2003asymptotic} linearni SVM
+predstavlja specijalni slučaj SVM--a s radijalnom baznom funkcijom čime
+se isključuje potreba za korištenjem linearnog SVM--a kao potencijalnog
+klasifikatora. Prilikom korištenja radijalne bazne funkcije, a i općenito
+SVM--a, prije samog postupka učenja podatke je potrebno skalirati kako bi utjecaj svih
+atributa na klasifikaciju bio jednak. Svi se atributi pojedinog vektora unutar
+skupa za učenje skaliraju na interval $[0, 1]$ prema sljedećoj formuli:
+\begin{equation}
+x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
+- \min_{i}\; x_{i,j}}
+\end{equation}
+gdje je s $x^{s}_{i,j}$ označen skalirani atribut $j$ vektora $\mathbf{x_i}$, s
+$\min_{i}\; x_{i,j}$ označena minimalna vrijednost atributa $j$ između svih
+vektora $\mathbf{x_i}$, a s $\max_{i}\; x_{i,j}$ označena maksimalna vrijednost
+atributa $j$ između svih vektora. Ako dobivene minimalne i maksimalne vrijednosti označimo na sljedeći
+način:
+\begin{eqnarray}
+M_i & = \max_{i}\; x_{i,j} \\
+m_i & = \min_{i}\; x_{i,j}
+\end{eqnarray}
+tada se nepoznati vektor $\mathbf{x}$ prije klasifikacije skalira prema:
+\begin{equation}
+x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
+\end{equation}
+
+Učenjem SVM--a traže se parametri pretpostavljenog oblika decizijske funkcije,
+koja će ispravno klasificirati sve uzorke u skupu za učenje, što ponekad zbog
+šuma u podacima ili njihove distribucije u prostoru nije moguće. Rješenje tog
+problema nalazi se u korištenju SVM klasifikatora s mekim granicama definiranima
+parametrom $C$ koji dozvoljava odstupanja od ispravne klasifikacije svih podataka
+u skupu za učenje s ciljem bolje generalizacije nad još neviđenim skupom
+podataka. Parametri SVM--a koji utječu na moć generalizacije nad neviđenim skupom
+za ispitivanje su tako $C$ (parametar meke granice) i $\gamma$ (parametar
+radijalne bazne funkcije). Oni zajedno čine prostor parametara čijom je pretragom
+potrebno pronaći vrijednosti parametara, tj.~odabrati onaj model, koji će dati
+SVM klasifikator s najmanjom pogreškom generalizacije.
+
+Pretraga parametra odvija se odabirom modela s parametrima $(C, \gamma)$ iz skupa
+$\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
+\ldots, 2^3} \right )$ \citep{CC01a} koji daju najveću točnost klasifikacije u
+procesu cross--validacije nad skupom za učenje. Točnost klasifikacije mjeri se formulom:
+\begin{equation}
+acc = \frac{n_c}{N},
+\end{equation}
+pri čemu je $n_c$ broj točno klasificiranih članaka, a $N$ ukupan broj članaka
+nad kojima je provedeno testiranje. Nakon što su pronađeni parametri modela $(C,
+\gamma)$, koji daju najveću točnost, klasifikator s navedenim parametrima ponovo
+se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u ovom
+radu su $C = 16$ i $\gamma = 0.25$.
+
+\section{Evaluacija}
+\label{sec:evaluacija}
+Sustav klasificira tekstove 25 različitih autora čiji korpus sadrži ukupno 4359
+tekstova. Izvorni skup tekstova podijeljen je na skup za učenje i skup za testiranje
+tako da je $20\%$ tekstova svakog autora odvojeno za testiranje, a na
+ostalih $80\%$ tekstova provedeno je učenje. Skup za testiranje sadrži
+ukupno 1092 teksta. Mjera uspješnosti klasifikacije dana je omjerom broja točno
+prepoznatih autora i ukupnog broja tekstova, tj.~točnošću \engl{accuracy}.
+
+Rezultati evaluacije prikazani su u tablici \ref{tbl:eval}. Radi kraćeg zapisa,
+metoda opisana u \ref{sec:funkcijske-rijeci} nazvana je ``funkcijske'', metoda
+opisana u \ref{sec:funkcijske-rijeci-grupe} nazvana ``grupe'',
+metoda iz \ref{sec:funkcijske-rijeci-idf} ``idf'', a metode iz
+\ref{sec:znacajke-manje} redom ``interpunkcija'', ``samoglasnici'' i
+``duljine''. Stupac ``Točni'' označava broj točno prepoznatih autora,
+``Netočni'' --- netočno prepoznatih.
+
+Najveću točnost, 88\% postiže kombinacija svih metoda opisanih u
+\ref{sec:znacajke-manje} i metode iz \ref{sec:funkcijske-rijeci}. Detalji
+evaluacije navedene kombinacije značajki nalaze se u dodatku
+\ref{sec:detalji-evaluacije}.
+
+Kako ukupna točnost ne objašnjava ponašanje klasifikatora na svakom razredu
+pojedinačno, za svaki razred računaju se preciznost i odziv te pomoću njih
+ukupna težinska F mjera. Za dani razred $c$ preciznost je omjer broja točno
+klasificiranih primjera u $c$ s brojem svih primjera koji su klasificirani u
+razred $c$. Odziv je omjer broja točno klasificiranih primjera u $c$ s brojem
+svih primjera koji se stvarno nalaze u razredu $c$. F mjera računa se za svaki
+razred $c_i$ prema sljedećoj formuli:
+\begin{equation}
+F_i = \frac{2 \cdot preciznost_i \cdot odziv_i}{preciznost_i + odziv_i}
+\end{equation}
+gdje su $preciznost_i$ i $odziv_i$ mjere preciznosti i odziva za razred $c_i$
+
+Ukupna težinska mjera računa se tada prema formuli:
+\begin{equation}
+F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
+\end{equation}
+
+gdje je $n$ ukupan broj razreda, $|c_i|$ broj primjera u razredu $c_i$, a $F_i$
+je F mjera za razred $c_i$.
+
+Težinska F mjera na danom skupu za testiranje sa spomenutim metodama
+izlučivanja značajki iznosi 87\%.
+
+\begin{table}[ht]
+\caption{Rezultati evaluacije različitih značajki}
+\centering
+\begin{tabular}{p{6cm} c c c}
+\hline\hline
+Metoda & Točni & Netočni & Točnost \\
+[0.5ex]
+\hline
+interpunkcija & 603 & 489 & 55.2\% \\
+funkcijske & 870 & 222 & 79.6\% \\
+idf & 872 & 220 & 79.8\% \\
+grupe & 379 & 713 & 34.7\% \\
+samoglasnici & 326 & 766 & 29.8\% \\
+duljine & 463 & 629 & 42.3\% \\
+samoglasnici, idf & 887 & 205 & 81.2\% \\
+funkcijske, idf & 848 & 244 & 77.6\% \\
+interpunkcija, samoglasnici, idf & 948 & 144 & 86.8\% \\
+interpunkcija, samoglasnici, duljine, idf & 955 & 137 & 87.4\% \\
+interpunkcija, funkcijske, samoglasnici, idf & 905 & 187 & 82.8\% \\
+interpunkcija, funkcijske, idf & 900 & 192 & 82.4\% \\
+interpunkcija, funkcijske, duljine & 956 & 136 & 87.5\% \\
+\textbf{interpunkcija, funkcijske, samoglasnici, duljine} & \textbf{961} & \textbf{131} & \textbf{88.0\%} \\
+interpunkcija, funkcijske, samoglasnici, idf, duljine & 913 & 179 & 83.6\% \\
+%funkcijske, grupe & 872 & 220 & 79.8\% \\
+%grupe, idf & 874 & 218 & 80.0\% \\
+interpunkcija, grupe, samoglasnici, idf & 943 & 149 & 86.3\% \\
+interpunkcija, funkcijske, samoglasnici, idf, duljine, grupe & 912 & 180 & 83.5\% \\ [1ex]
+\hline
+\end{tabular}
+\label{tbl:eval}
+\end{table}
+
+\section{Implementacija}
+\label{sec:implementacija}
+Implementacija je napisana u programskim jezicima Javi (glavni sustav) te
+Pythonu (skripta \texttt{JutarnjiKolumneArhiver.py}). Navedena skripta služi za
+dohvat arhive tekstova sa ``Komentari i kolumne na aktualna događanja u
+Hrvatskoj -- Jutarnji.hr''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
+
+% TODO: UCD Dohvat članaka i izlučivanje značajki
+% TODO: UCD Učenje sustava
+% TODO: UCD Prepoznavanje autora.
+
+Za klasifikaciju iskorištena je biblioteka \emph{libsvm} \citep{CC01a}. Veza
+\emph{libsvm} biblioteke i sustava izvedena je \texttt{LibsvmRecognizer}
+razredom koji istovremeno implementira sučelja \texttt{RecognizerTrainer} i
+\texttt{AuthorRecognizer}. Model se uči pozivom metode \texttt{train()},
+klasifikacija se vrši metodom \texttt{classifyAuthor()}, a cross--validacija je
+pokreće metodom \texttt{gridSearch()}.
+
+Korisnik sustavu može pristupiti iz komandne linije preko \texttt{CLITrainer}
+(učenje sustava) i \texttt{CLIRecognizer} (prepoznavatelj autora) razreda. Navedeni razredi nalaze se u
+\texttt{hr.fer.zemris.aa.main} paketu. Primjer pokretanja sustava iz
+komandne linije:
+\begin{verbatim}
+  java hr.fer.zemris.aa.main.CLITrainer \
+  skup_za_ucenje-skup_aa.xml \
+  skup_aa.model
+  
+  java hr.fer.zemris.aa.main.CLIRecognizer \
+  tekst_nepoznatog_autora.txt \
+  skup_aa.model
+\end{verbatim}
+ili preko gotovih jar arhiva:
+\begin{verbatim}
+  java -jar su-aa-1.0-trainer.jar skup_za_ucenje-skup_aa.xml \
+  skup_aa.model
+
+  java -jar su-aa-1.0-recognizer.jar tekst_nepoznatog_autora.txt \
+  skup_aa.model
+\end{verbatim}
+
+\newpage
+
+\section{Zaključak}
+Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
+uspješno riješiti relativno jednostavnim metodama. U usporedbi s prijavljenim
+rezultatima (od 70\% do 97\%
+\citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer,stamatatos1999automatic}),
+dobiveni rezultat (88\%) je izuzetno dobar. U obzir se mora uzeti variranje
+rezultata zbog razlika u načinu evaluacije, podatcima nad kojima se evaluacija
+vršila te samom problemu (binarna, višerazredna ili jednorazredna
+klasifikacija).
+
+Nažalost, ispravna usporedba s drugim radovima zasad nije moguća jer ne postoji
+relevantan skup za usporedbu kao što navode \citep{zhao2005effective}, no u
+literaturi se može naći pozivanje na rad
+\citep{stamatatos2001computer,stamatatos1999automatic} i ``Grčki skup''
+(npr.~\citep{keselj2003n}). Na složenost problema bitno utječe broj autora i
+raznolikost skupa uzoraka.
+
+U daljnjem radu potrebno je evaluirati metode temeljene na $n$-gramima riječi i
+slova poput onih opisanih u
+\citep{keselj2003n,peng2003language,coyotl2006authorship} te korištenje oznaka
+stila autora \engl{style markers} kao značajki – informacije vezane uz strukturu
+jezika koje su skupljene dubinskom analizom sintaksne analize dokumenta
+\citep{stamatatos2001computer,diri2003automatic,luyckx2005shallow}.
+
+Uz navedeno, potrebno je provesti evaluaciju nad ispitnim korpusima različitih
+prosječnih duljina tekstova (npr.~pjesme, novinski članci, knjige).
+
+\newpage
+
+\bibliography{literatura}
+\bibliographystyle{plainnat}
+
+\newpage
+
+\appendix
+
+\section{Detalji evaluacije najbolje značajke}
+\label{sec:detalji-evaluacije}
+\begin{itemize}
+  \item Kombinacija svih metoda iz \ref{sec:znacajke-manje} i metode iz
+     \ref{sec:funkcijske-rijeci},
+  \item broj autora	u skupu: 25,
+  \item ukupno uzoraka za učenje: 3267,
+  \item ukupno uzoraka za testiranje: 1092,
+  \item točnost: 0.88003665 (961/131),
+  \item F mjera: 0.8712441.
+\end{itemize}
+\begin{table}[ht]
+\caption{Detalji evaluacije}
+\centering
+\begin{tabular}{c c c c}
+\hline\hline
+Autor & Preciznost & Odziv & Omjer \\
+[0.5ex]
+\hline
+Tomislav Židak & 0,961165 & 1,000000 & (99/99) \\
+Ivan Zvonimir Čičak & 0,846154 & 0,942857 & (33/35) \\
+Orlando Rivetti & 0,888889 & 0,960000 & (24/25) \\
+Zoran Čutura & 0,833333 & 0,312500 & (5/16) \\
+William Montgomery & 0,909091 & 0,909091 & (10/11) \\
+Jelena Lovrić & 0,857143 & 0,929577 & (66/71) \\
+Jovan Hovan & 0,750000 & 0,750000 & (6/8) \\
+Sanja Modrić & 0,809524 & 0,548387 & (17/31) \\
+Boris Vlašić & 0,833333 & 0,862069 & (25/29) \\
+Tomislav Ivić & 1,000000 & 0,666667 & (4/6) \\
+rabin Kotel Da Don & 1,000000 & 0,777778 & (7/9) \\
+Nikica Vukašin & 1,000000 & 0,727273 & (8/11) \\
+Alan Srčnik/Epeha & 0,555556 & 0,454545 & (5/11) \\
+Dražen Krušelj & 0,727273 & 0,533333 & (8/15) \\
+Miljenko Jergović & 0,896552 & 0,764706 & (26/34) \\
+Nino Đula & 0,894737 & 0,809524 & (17/21) \\
+Branimir Pofuk & 0,769231 & 0,666667 & (20/30) \\
+Darko Pavičić & 0,695652 & 0,500000 & (16/32) \\
+Radovan Stipetić & - & 0,000000 & (0/4) \\
+Ante Tomić & 0,870968 & 0,900000 & (54/60) \\
+Živko Kustić & 0,891061 & 0,993769 & (319/321) \\
+Inoslav Bešker & 0,942857 & 0,785714 & (33/42) \\
+Jurica Pavičić & 0,839286 & 0,940000 & (47/50) \\
+Zvonimir Milčec & 0,800000 & 0,780488 & (32/41) \\
+Davor Butković & 0,963855 & 1,000000 & (80/80) \\ [1ex]
+\hline
+\end{tabular}
+\label{tbl:eval-detalji}
+\end{table}
+
+\newpage
+
+\section{Korištene funkcijske riječi}
+\label{sec:koristene-fw}
+\texttt{danas, večeras, jučer, sinoć, preksinoć, danas, sutra, preksutra, ljetos,
+proljetos, jesenas, zimus, preklani, obdan, obnoć, odmah, smjesta, sada, tada,
+onda, ikada, nikada, nekada, ponekad, katkad, uvijek, svagda, često, rijetko,
+rano, kasno, prije, poslije, potom, nedavno, skoro, uskoro, napokon, odsad, otad,
+oduvijek, odavna, odmalena, dosad, dotad, dogodine, dovečer, ovdje, tu, ondje,
+negdje, igdje, nigdje, onegdje, gore, dolje, unutra, vani, sprijeda, straga,
+ovamo, onamo, tamo, nekamo, nikamo, ikamo, naprijed, natrag, ovuda, onuda, tuda,
+nikuda, nekuda, ikuda, kojekuda, odavde, otud, odatle, odonud, niotkuda, odozgo,
+odozdo, odostrana, izdaleka, izvana, izbliza, donekle, dovle, dotle, donle,
+uzalud, uzaman, utaman, ovoliko, toliko, onoliko, nekoliko, malo, premalo, više,
+manje, dosta, odveć, opet, još, sasvim, potpuno, previše, jedanput, dvaput,
+triput, stoput, ovako, onako, tako, nikako, nekako, ikako, svakojako, jedva,
+svejedno, odjednom, sjedećke, ležećke, potrbuške, naglas, napamet, nabolje,
+kriomice, brzo, brže, najbrže, više, najviše, lijepo, veselo, najveselije,
+bratski, sestrinski, gospodski, ljudski, puno, od, do, iz, s, sa, ispred, iza,
+izvan, van, unutar, iznad, ispod, poviše, niže, uoči, nakon, za, tijekom, tokom,
+dno, podno, nadno, odno, vrh, povrh, navrh, uvrh, zavrh, čelo, nakraj, onkraj,
+krajem, potkraj, sred, nasred, posred, usred, oko, okolo, blizu, kod, kraj,
+pokraj, pored, nadohvat, u, mimo, duž, uzduž, širom, diljem, preko, bez, osim,
+mjesto, umjesto, namjesto, uime, putem, pomoću, posredstvom, između, spram, put,
+protiv, nasuprot, usuprot, usprkos, unatoč, zbog, uslijed, radi, zaradi, poradi,
+glede, prigodom, prilikom, povodom, k, ka, prema, naprama, nadomak, nadohvat,
+nasuprot, usuprot, usprkos, protiv, na, o, po, prema, pri, u, pred, za, nad, pod,
+poda, među, i, pa, te, ni, niti, ili, samo, samo što, jedino, jedino što, tek,
+tek što, dakle, zato, stoga, a, ali, nego, no, već, iako, makar, premda, mada,
+li, zar, da, kamoli, negoli, mnogo, vrlo, veoma, gotovo, posve, osobito,
+prilično, odviše, naročito, neka, ne, daj, dede, deder, evo, eto, eno,
+vjerojatno, doista, zaista, stvarno, uistinu, sigurno, zasigurno, nasreću,
+nažalost, eventualno, uglavnom, nesumnjivo, ah, oh, hehe, he, hura, jao, joj,
+oho, uh, uf, ijuju, haj, eh, ehe, iš, đija, mic, ej, de, hej, oj, ej, hej, hajde,
+halo, bum, tras, pljus, hop, mljac, zum, klik, krc, škljoc, kukuriku, vau, bla,
+mu, mjau, kva-kva.}
+
+\newpage
+
+\section{Doprinos svakog člana tima}
+\begin{description}
+\item[Ivan Krišto:] dokumentacija, nabavljanje uzoraka za učenje i testiranje,
+dizajn sustava, povezivanje libsvma, izrada izlučitelja značajki.
+\item[Igor Belša:] dokumentacija, izrada alata za pretvaranje XML dokumenata u
+značajke, dizajn sustava, testiranje, izrada izlučitelja značajki.
+\item[Tomislav Reicher:] dokumentacija, dizajn sustava, podrška za traženje
+parametara klasifikatora, podešavanje izlučitelja značajki, testiranje, izrada
+izlučitelja značajki.
+\end{description}
+
+\section{Raspodjela bodova}
+\begin{description}
+\item[Ivan Krišto:] 33.3\%
+\item[Igor Belša:] 33.3\%
+\item[Tomislav Reicher:] 33.3\%
+\end{description}
+
+\end{document}
