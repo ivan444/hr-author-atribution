@@ -190,7 +190,9 @@ def nbspToSpace(text):
 	return text
 
 def bigReplace(text):
-	return text.replace("&apos;", "'").replace("&quot;", "\"").replace(u"‘", "'").replace(u"’", "'").replace(u"“", "\"").replace(u"”", "\"").replace("&amp;", "&")
+	text = text.replace("&apos;", "'").replace("&quot;", "\"").replace(u"‘", "'").replace(u"’", "'")
+	text = text.replace(u"„", "&quot;").replace(u"…", "...").replace(u"#8225;", "").replace(u"#8226;", "")
+	return text.replace(u"“", "\"").replace(u"”", "\"").replace("&amp;", "&").replace("&amp;#8226;", "").replace("&amp;amp;", "&amp;")
 
 def cleanContent(page):
 	rawMG = patternRawContent.search(page)
