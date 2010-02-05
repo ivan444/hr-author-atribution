@@ -189,6 +189,9 @@ def nbspToSpace(text):
 	text = patternAmpNbspToSpace.sub(" ", text)
 	return text
 
+def bigReplace(text):
+	return text.replace("&apos;", "'").replace("&quot;", "\"").replace(u"‘", "'").replace(u"’", "'").replace(u"“", "\"").replace(u"”", "\"").replace("&amp;", "&")
+
 def cleanContent(page):
 	rawMG = patternRawContent.search(page)
 	rawContent = brToNl(rawMG.group(1))
@@ -196,9 +199,12 @@ def cleanContent(page):
 	rawContent = patternFindScript.sub("", rawContent)
 	rawContent = patternFindTag.sub("", rawContent)
 	rawContent = patternExtraNl.sub("\n", rawContent)
-	content = rawContent.replace("&apos;", "'").replace("&quot;", "\"")
+	content = bigReplace(rawContent)
 	
 	return content.strip()
+
+def wrapClean(text):
+	return bigReplace(nbspToSpace(text))
 
 def cleanPage(url):
 	try:
@@ -218,10 +224,10 @@ def cleanPage(url):
 			columnTitleMG = extractColumnTitlePattern.search(page)
 			columnTitle = columnTitleMG.group(1)
 			
-			cleaned["title"] = nbspToSpace(title).replace("&apos;", "'").replace("&quot;", "\"")
+			cleaned["title"] = wrapClean(title)
 			cleaned["date"] = date
-			cleaned["author"] = nbspToSpace(author).replace("&apos;", "'").replace("&quot;", "\"")
-			cleaned["columnTitle"] = nbspToSpace(columnTitle).replace("&apos;", "'").replace("&quot;", "\"")
+			cleaned["author"] = wrapClean(author)
+			cleaned["columnTitle"] = wrapClean(columnTitle)
 			cleaned["content"] = cleanContent(page)
 			
 			#cleaning("".group(1).decode("cp1250"), "")
@@ -241,14 +247,21 @@ def downloader():
 #	textLinks.append("http://www.jutarnji.hr/mafiji-je-ime-sotona--a-kako-zvati-one-koji-toj-sotoni-novace-vojsku-/346239/")
 	
 	id = 1
-#	linksLen = len(textLinks)
+	linksLen = len(textLinks)
 #	linkNum = 0
+
+	# Prethodni naslov (za potrebe izbacivanja duplikata)
+	prevTitle = None
 	for l in textLinks:
 		cleaned = cleanPage(l)
 #		linkNum += 1
 #		if linkNum % 10 == 0:
 #			log("Dovršeno: " + str("%02f" % linkNum*1.0/linksLen) + "%")
 		if cleaned == None: continue
+		if prevTitle == cleaned["title"]:
+			# Preskačemo duplikat
+			logWarning(u"Preskačem: " + l)
+			continue
 		
 		if multithread: writeCondition.acquire()
 		print >>cleaningOut, u'\t<doc name="jutarnji-kolumne-'+str(id)+'">'
@@ -274,9 +287,11 @@ def downloader():
 		
 		print >>cleaningOut, u'\t</doc>\n'
 		
+		prevTitle = cleaned["title"]
 		# sync end
 		if multithread: writeCondition.release()
 		
+		log(u"Obrađeno (" + str(id-1) + "/" + str(linksLen) + ") stranica - " + ("%2.2f" % ((id-1)*100.0/linksLen)) + "%")
 						
 if __name__ == '__main__':
 	
