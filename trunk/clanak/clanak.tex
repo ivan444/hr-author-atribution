@@ -90,7 +90,7 @@ Hrvatska}
 % - Izbaciti sve vezano uz implementaciju
 % - Izbaciti sve fusnote
 % - Srediti literaturu (prilagoditi je ITI pravilima)
-% - Ubaciti tablicu
+% - Doraditi tablicu (skratiti nazive, možda ubaciti u samo jedan stupac)
 % - Ubaciti grafove
 % - Još malo popraviti predložak
 
@@ -582,7 +582,8 @@ je F mjera za razred $c_i$.
 Težinska F mjera na danom skupu za testiranje sa spomenutim metodama
 izlučivanja značajki iznosi 87\%.
 
-\begin{table}[ht]
+\end{multicols}
+\begin{table}[htb]
 \caption{Rezultati evaluacije različitih značajki}
 \centering
 \begin{tabular}{p{6cm} c c c}
@@ -614,6 +615,7 @@ interpunkcija, funkcijske, samoglasnici, idf, duljine, grupe & 912 & 180 & 83.5\
 \label{tbl:eval}
 \end{table}
 
+\begin{multicols}{2}
 \section{Zaključak}
 Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
 uspješno riješiti relativno jednostavnim metodama. U usporedbi s prijavljenim
