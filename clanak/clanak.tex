@@ -2,7 +2,7 @@
 
 \usepackage[a4paper, hmargin=2.5cm, vmargin=2.5cm, columnsep=0.6cm]{geometry}
 \usepackage[utf8]{inputenc}
-\usepackage[croatian]{babel}
+\usepackage{babel}
 \usepackage[T1]{fontenc}
 \usepackage{algorithmic}
 \usepackage{algorithm}
@@ -29,6 +29,7 @@
 \usepackage{fixltx2e}
 \usepackage{textcomp}
 \usepackage{float}
+\usepackage{floatflt}
 
 \pagestyle{empty}
 
@@ -88,10 +89,7 @@ Hrvatska}
 % TODO:
 % - Napisati abstract
 % - Izbaciti sve vezano uz implementaciju
-% - Izbaciti sve fusnote
 % - Srediti literaturu (prilagoditi je ITI pravilima)
-% - Doraditi tablicu (skratiti nazive, možda ubaciti u samo jedan stupac)
-% - Ubaciti grafove
 % - Još malo popraviti predložak
 
 \begin{abstract}
@@ -150,6 +148,7 @@ U ovom radu obrađen je problem višerazredne klasifikacije za tekstove na
 hrvatskom jeziku. Naglasak je stavljen na evaluiranje različitih skupova
 karakteristika.
 
+% TODO: Srediti (neke stvari su izbačene). 
 Rad je organiziran tako da su u 2.~odjeljku opisane metode koje su u drugim
 radovima korištene za problem prepoznavanja autora i srodne probleme. Odjeljak 3
 daje kratki pregled sustava, način na koji su komponente u sustavu povezane i na
@@ -179,7 +178,7 @@ zahtjeva alate za obradu teksta (npr.~POS označivači \engl{Part-Of-Speech tagg
 sintaksni parseri i sl.). Očit je i utjecaj duljine teksta na rezultat klasifikacije.
 \item[Značajke dokumenta temeljene na riječima:] Pristup se grana na tri
 različite metode. \emph{Prva} karakterizira dokumente koristeći skup funkcijskih
-riječi\footnote{Riječi koje nemaju sadržajno značenje.} (njihovu pojavu i
+riječi --- riječi koje nemaju sadržajno značenje (njihovu pojavu i
 frekvenciju pojavljivanja), ignorirajući sadržajne riječi \engl{content words}
 jer su one usko vezane uz temu dokumenta. Metoda pokazuje dobre rezultate, ali na
 nju utječe veličina dokumenta. \emph{Druga} grana dokument promatra kao hrpu
@@ -212,8 +211,8 @@ je primjenjiva samo na neuređivane tekstove (npr.~blogovi, Internet forumi,
 njegovog korištenja za prepoznavanje autora. Sličan postupak je opisan u
 \citep{coyotl2006authorship}.
 
-Uspješnost funkcijskih riječi nad kolokacijama\footnote{Dvije riječi koje se
-pojavljuju na određenoj udaljenosti jedna od druge.} navodi se u
+Uspješnost funkcijskih riječi nad kolokacijama (riječi koje se
+pojavljuju na određenoj udaljenosti jedna od druge) navodi se u
 \citep{argamon2005measuring} -- iako, radi redukcije informacija pri uzimanju
 funkcijskih riječi kao značajki, intuitivno bi se moglo zaključiti suprotno,
 odnosno pogrešno. Također se navodi sumnja da zapravo diskriminatorna osobina
@@ -246,10 +245,10 @@ takvih funkcija nije neovisna o duljini teksta. Zaključuje se da je raznolikost
 riječnika nestabilna značajka za tekstove kraće od 1000 riječi.
 
 Problem ovisnosti mjera o dužini teksta radi što uspješnije klasifikacije pomoću
-SVM-a\footnote{Support Vector Machines} navode \citet{diederich2003authorship}.
+SVM-a (Support Vector Machines) navode \citet{diederich2003authorship}.
 Za izbjegavanje ovisnosti koriste kombinaciju $L_p$ normalizacije duljine i
 transformacije frekvencija pojave termina kao što je
-\emph{idf}\footnote{Inverse document frequency} mjera.
+\emph{idf} (Inverse document frequency) mjera.
 
 Idf mjera je definirana sa
 \begin{equation}
@@ -309,56 +308,43 @@ detalji o načinu korištenja se nalaze u \ref{sec:implementacija}.~odjeljku.
 \label{sec:podatci}
 Pri izradi sustava korištena je mrežna arhiva kolumni ``Jutarnjeg lista'' do
 14.~studenog, 2009.~-- ``Komentari i kolumne na aktualna događanja u
-Hrvatskoj - Jutarnji.hr''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
+Hrvatskoj - Jutarnji.hr'' (\url{http://www.jutarnji.hr/komentari/}).
 
-Arhiva je pohranjena kao XML\footnote{Extensible Markup Language --
-\url{http://www.w3.org/XML/}} dokument po KTLab\footnote{Knowledge Technologies
-Lab, FER -- \url{http://ktlab.fer.hr}} \texttt{documentSet} shemi dostupnoj na
+Arhiva je pohranjena kao XML (Extensible Markup Language) dokument po KTLab
+(Knowledge Technologies Lab, FER -- \url{http://ktlab.fer.hr})
+\texttt{documentSet} shemi dostupnoj na
 \url{http://ktlab.fer.hr/download/documentSet.xsd}. Budući da se veliki broj
 članaka u mrežnoj arhivi našao u više kopija, one su pri izradi XML arhive
 preskočene.
 
 U arhivi se nalaze tekstovi 25 autora sa ukupno 4359 tekstova koji zajedno broje
 2998766 riječi. Detaljne statistike arhive nalaze se na slikama
-\ref{fig:articlesPerAuthor}\footnote{Broj tekstova za autora na mjestu 21 nije
-greška. Radi se o Živku Kustiću koji je imao ukupno 1285 objavljenih kolumni do
-datuma kada je napravljena arhiva.}, \ref{fig:wordsPerAuthor} i
+\ref{fig:articlesPerAuthor}, \ref{fig:wordsPerAuthor} i
 \ref{fig:avgWordsPerAuthorArticle}.
 
 Da bi se izbjeglo učenje teme, arhiva je podijeljena po razdobljima, tj.~za
 testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 
-% \begin{minipage}{\linewidth} 
-% \vspace{10pt}
-% \centering% 
-% \input[width=0.8\linewidth,clip=]{sample-fig.jpg}% 
-% \figcaption{\small \textbf{\textsf{Helvetica, 10 points, boldface}}}% 
-% \label{fig:sample-fig}% 
-% \end{minipage}
-
-\begin{figure}[htb]
-\begin{center}
-\input{figures/articlesPerAuthor}
-\end{center}
-\caption{Broj tekstova po autoru.}
+\begin{minipage}{0.8\linewidth}
+\vspace{10pt}
+\centerline{\resizebox{1.4\linewidth}{!}{\input{figures/articlesPerAuthor}}}%
+\figcaption{\small \textbf{\textsf{Broj tekstova po autoru.}}}%
 \label{fig:articlesPerAuthor}
-\end{figure}
+\end{minipage}
 
-\begin{figure}[htb]
-\begin{center}
-\input{figures/wordsPerAuthor}
-\end{center}
-\caption{Broj riječi po autoru.}
+\begin{minipage}{0.8\linewidth}
+\vspace{10pt}
+\centerline{\resizebox{1.4\linewidth}{!}{\input{figures/wordsPerAuthor}}}%
+\figcaption{\small \textbf{\textsf{Broj riječi po autoru.}}}%
 \label{fig:wordsPerAuthor}
-\end{figure}
+\end{minipage}
 
-\begin{figure}[htb]
-\begin{center}
-\input{figures/avgWordsPerAuthorArticle}
-\end{center}
-\caption{Prosječan broj riječi u tekstu po autoru.}
+\begin{minipage}{0.8\linewidth}
+\vspace{10pt}
+\centerline{\resizebox{1.4\linewidth}{!}{\input{figures/avgWordsPerAuthorArticle}}}%
+\figcaption{\small \textbf{\textsf{Prosječan broj riječi u tekstu po autoru.}}}%
 \label{fig:avgWordsPerAuthorArticle}
-\end{figure}
+\end{minipage}
 
 \section{Izvlačenje značajki iz dokumenata}
 Glavni problem konstrukcije sustava za prepoznavanje autora je odabir dovoljno
@@ -549,11 +535,11 @@ ukupno 1092 teksta. Mjera uspješnosti klasifikacije dana je omjerom broja točn
 prepoznatih autora i ukupnog broja tekstova, tj.~točnošću \engl{accuracy}.
 
 Rezultati evaluacije prikazani su u tablici \ref{tbl:eval}. Radi kraćeg zapisa,
-metoda opisana u \ref{sec:funkcijske-rijeci} nazvana je ``funkcijske'', metoda
-opisana u \ref{sec:funkcijske-rijeci-grupe} nazvana ``grupe'',
-metoda iz \ref{sec:funkcijske-rijeci-idf} ``idf'', a metode iz
-\ref{sec:znacajke-manje} redom ``interpunkcija'', ``samoglasnici'' i
-``duljine''. Stupac ``Točni'' označava broj točno prepoznatih autora,
+metoda opisana u \ref{sec:funkcijske-rijeci} nazvana je ``$\mathcal{F}$'', metoda
+opisana u \ref{sec:funkcijske-rijeci-grupe} nazvana ``$\mathcal{G}$'',
+metoda iz \ref{sec:funkcijske-rijeci-idf} ``\emph{idf}'', a metode iz
+\ref{sec:znacajke-manje} redom ``$\mathcal{P}$'', ``$\mathcal{V}$'' i
+``$\mathcal{L}$''. Stupac ``Točni'' označava broj točno prepoznatih autora,
 ``Netočni'' --- netočno prepoznatih.
 
 Najveću točnost, 88\% postiže kombinacija svih metoda opisanih u
@@ -582,40 +568,38 @@ je F mjera za razred $c_i$.
 Težinska F mjera na danom skupu za testiranje sa spomenutim metodama
 izlučivanja značajki iznosi 87\%.
 
-\end{multicols}
-\begin{table}[htb]
+\begin{table*}[htb]
 \caption{Rezultati evaluacije različitih značajki}
 \centering
-\begin{tabular}{p{6cm} c c c}
+\begin{tabular}{l c c c}
 \hline\hline
 Metoda & Točni & Netočni & Točnost \\
 [0.5ex]
 \hline
-interpunkcija & 603 & 489 & 55.2\% \\
-funkcijske & 870 & 222 & 79.6\% \\
-idf & 872 & 220 & 79.8\% \\
-grupe & 379 & 713 & 34.7\% \\
-samoglasnici & 326 & 766 & 29.8\% \\
-duljine & 463 & 629 & 42.3\% \\
-samoglasnici, idf & 887 & 205 & 81.2\% \\
-funkcijske, idf & 848 & 244 & 77.6\% \\
-interpunkcija, samoglasnici, idf & 948 & 144 & 86.8\% \\
-interpunkcija, samoglasnici, duljine, idf & 955 & 137 & 87.4\% \\
-interpunkcija, funkcijske, samoglasnici, idf & 905 & 187 & 82.8\% \\
-interpunkcija, funkcijske, idf & 900 & 192 & 82.4\% \\
-interpunkcija, funkcijske, duljine & 956 & 136 & 87.5\% \\
-\textbf{interpunkcija, funkcijske, samoglasnici, duljine} & \textbf{961} & \textbf{131} & \textbf{88.0\%} \\
-interpunkcija, funkcijske, samoglasnici, idf, duljine & 913 & 179 & 83.6\% \\
+$\mathcal{P}$ & 603 & 489 & 55.2\% \\
+$\mathcal{F}$ & 870 & 222 & 79.6\% \\
+\emph{idf} & 872 & 220 & 79.8\% \\
+$\mathcal{G}$ & 379 & 713 & 34.7\% \\
+$\mathcal{V}$ & 326 & 766 & 29.8\% \\
+$\mathcal{L}$ & 463 & 629 & 42.3\% \\
+$\mathcal{V}$, \emph{idf} & 887 & 205 & 81.2\% \\
+$\mathcal{F}$, \emph{idf} & 848 & 244 & 77.6\% \\
+$\mathcal{P}$, $\mathcal{V}$, \emph{idf} & 948 & 144 & 86.8\% \\
+$\mathcal{P}$, $\mathcal{V}$, $\mathcal{L}$, \emph{idf} & 955 & 137 & 87.4\% \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf} & 905 & 187 & 82.8\% \\
+$\mathcal{P}$, $\mathcal{F}$, \emph{idf} & 900 & 192 & 82.4\% \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 956 & 136 & 87.5\% \\
+\textbf{$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$} & \textbf{961} & \textbf{131} & \textbf{88.0\%} \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$ & 913 & 179 & 83.6\% \\
 %funkcijske, grupe & 872 & 220 & 79.8\% \\
 %grupe, idf & 874 & 218 & 80.0\% \\
-interpunkcija, grupe, samoglasnici, idf & 943 & 149 & 86.3\% \\
-interpunkcija, funkcijske, samoglasnici, idf, duljine, grupe & 912 & 180 & 83.5\% \\ [1ex]
+$\mathcal{P}$, $\mathcal{G}$, $\mathcal{V}$, \emph{idf} & 943 & 149 & 86.3\% \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$, $\mathcal{G}$ & 912 & 180 & 83.5\% \\ [1ex]
 \hline
 \end{tabular}
-\label{tbl:eval}
-\end{table}
+\label{tbl:eval}%
+\end{table*}
 
-\begin{multicols}{2}
 \section{Zaključak}
 Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
 uspješno riješiti relativno jednostavnim metodama. U usporedbi s prijavljenim
