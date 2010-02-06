@@ -1,42 +1,120 @@
-\documentclass{article}
+\documentclass[11pt,english]{article}
+
+\usepackage[a4paper, hmargin=2.5cm, vmargin=2.5cm, columnsep=0.6cm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[croatian]{babel}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
 \usepackage{algorithmic}
 \usepackage{algorithm}
 \usepackage{longtable}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{times}
+\usepackage{titlesec}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{nonfloat}
+\usepackage{url}
+% Package used for \author{} command. Feel free to remove
+% if it doesn't suits your needs.
+\usepackage[affil-it]{authblk}
 %\usepackage{hyperref}
 % Da bi se promjenio stil citiranja umjesto:
 % [authoryear, round]
 % staviti:
 % [numbers, square]
-\usepackage[authoryear, round]{natbib}
-\usepackage{amsmath}
+\usepackage[numbers, square]{natbib}
 \usepackage{subfig}
 \usepackage{fixltx2e}
-\usepackage{url}
 \usepackage{textcomp}
 \usepackage{float}
 
+\pagestyle{empty}
+
 \newcommand{\engl}[1]{(engl.~\emph{#1})}
+
+% Changeing list spaceing.
+\renewcommand{\labelitemi}{\textendash}
+\renewcommand{\labelitemii}{\textbullet}
+\renewenvironment{itemize}{%
+\begin{list}{\labelitemi}{%
+\setlength{\topsep}{0mm}
+\setlength{\itemsep}{-1mm}
+\setlength{\labelindent}{\parindent}
+\setlength{\leftmargin}{6mm}}}
+{\end{list}}
+
+% Setting right title format.
+\let\LaTeXtitle\title
+\renewcommand{\title}[1]{\LaTeXtitle{\Large \textbf{#1}}}
+\renewenvironment{abstract}
+{\noindent \large \bf Abstract. \normalsize \begin{it}}
+{\end{it}\\}
+
+% Adding dots after {sub}secions.
+\titleformat{\section}{\large\bfseries}{\thesection.}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection.}{1em}{}
+\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection.}{1em}{}
+
+\newenvironment{keywords}
+{\noindent {\large {\bf Keywords}}.~}{}
+
+% Putting space between authors-(authblk package)
+\renewcommand\Authsep{ \quad }
+\renewcommand\Authand{ \quad }
+\renewcommand\Authands{ \quad }
 
 \begin{document}
 
 \title{Automatizirano prepoznavanje autora teksta\\Projekt iz Strojnog učenja}
-\author{Igor Belša \and Tomislav Reicher \and Ivan Krišto}
+\author{Igor Belša}
+\author{Tomislav Reicher}
+\author{Ivan Krišto}
+\author{Artur Šilić}
+\affil{Fakultet elektrotehnike i računarstva\\Unska 3, 10000 Zagreb,
+Hrvatska}
+\affil{\{igor.belsa, tomislav.reicher, ivan.kristo, artur.silic\}@fer.hr}
+
+% Removal of date. Don't change.
+\date{}
 
 \maketitle
 
 \thispagestyle{empty}
+\pagestyle{empty}
+\begin{multicols}{2}
 
-\tableofcontents
+% TODO:
+% - Napisati abstract
+% - Izbaciti sve vezano uz implementaciju
+% - Izbaciti sve fusnote
+% - Srediti literaturu (prilagoditi je ITI pravilima)
+% - Ubaciti tablicu
+% - Ubaciti grafove
+% - Još malo popraviti predložak
 
-\newpage
+\begin{abstract}
+The abstract is to be in fully-justified italicized text, at the top of the
+left-hand column as it is here, below the author information. Use the word
+``Abstract.'' in 12--point Times, boldface type, left positioned, initially
+capitalized, followed by the abstract in 11--point, single--spaced type, up to
+100 words long.
 
-\section{Uvod}
+Leave one blank line after the abstract, then begin the keywords. Use
+the word ``Keywords.'' in 12--point Times, boldface type, left positioned,
+initially capitalized, followed by up to ten keywords in 11--point, separated
+by comma, as below.
+
+Leave one blank line after the keywords, then begin the main text.
+\end{abstract}
+
+% Please, insert keywords:
+\begin{keywords}
+Times New Roman, 11 pt.
+\end{keywords}
+
+\section{Introduction}
 Problem automatiziranog prepoznavanja autora teksta \engl{Authorship Attribution}
 može se promatrati kao problem klasifikacije teksta na temelju njegovih
 lingvističkih značajki. Problemi slični prepoznavanju autora su prepoznavanje
@@ -82,8 +160,6 @@ specifičnosti te evaluacija. Na 5.~odjeljak usko se veže 6.~sa opisom
 klasifikacije. Rezultati evaluacije metoda navedenih u 5.~odjeljku te njihovih
 kombinacija uz klasifikator opisan u 6.~odjeljku navedeni su u 7.~odjeljku.
 Implementacija je opisana u 8., a zaključak je dan u 9.~odjeljku.
-
-\newpage
 
 \section{Srodna rješenja}
 \citet{coyotl2006authorship} dijele postojeće metode prepoznavanja autora
@@ -202,31 +278,32 @@ određivanje autora. Da bi se sustav mogao koristiti za određivanje autora, prv
 mora biti naučen. Apstraktni model dan je slikom \ref{fig:model-sustava}, a
 detalji o načinu korištenja se nalaze u \ref{sec:implementacija}.~odjeljku.
 
-\begin{figure}[htb]
-\begin{center}		
-\begin{picture}(470,90)		
-\put(5,70){\makebox(40,15){\texttt{XML}}}
-\put(38,77){\vector(1,0){15}}
-\put(55,70){\framebox(90,15){\textit{Izlučivanje značajki}}}		
-\put(145,77){\vector(1,0){15}}
-\put(160,70){\framebox(90,15){\textit{Učenje}}}		
-\put(250,77){\vector(1,0){15}}
-\put(285,70){\makebox(40,15){\texttt{prepoznavatelj}}}
-
-\put(1,30){\makebox(40,15){\texttt{tekst}}}
-\put(38,37){\vector(1,0){15}}
-\put(55,30){\framebox(90,15){\textit{Izlučivanje značajki}}}		
-\put(145,37){\vector(1,0){15}}
-\put(160,30){\framebox(90,15){\textit{Prepoznavanje}}}		
-\put(250,37){\vector(1,0){15}}
-\put(205,15){\vector(0,1){15}}
-\put(165,0){\makebox(80,15){\texttt{naučeni prepoznavatelj}}}
-\put(262,30){\makebox(40,15){\texttt{autor}}}
-\end{picture}		
-\caption{Model sustava}		
-\label{fig:model-sustava}
-\end{center}		
-\end{figure}
+% TODO: Izbaciti?
+% \begin{figure}[htb]
+% \begin{center}		
+% \begin{picture}(470,90)		
+% \put(5,70){\makebox(40,15){\texttt{XML}}}
+% \put(38,77){\vector(1,0){15}}
+% \put(55,70){\framebox(90,15){\textit{Izlučivanje značajki}}}		
+% \put(145,77){\vector(1,0){15}}
+% \put(160,70){\framebox(90,15){\textit{Učenje}}}		
+% \put(250,77){\vector(1,0){15}}
+% \put(285,70){\makebox(40,15){\texttt{prepoznavatelj}}}
+% 
+% \put(1,30){\makebox(40,15){\texttt{tekst}}}
+% \put(38,37){\vector(1,0){15}}
+% \put(55,30){\framebox(90,15){\textit{Izlučivanje značajki}}}		
+% \put(145,37){\vector(1,0){15}}
+% \put(160,30){\framebox(90,15){\textit{Prepoznavanje}}}		
+% \put(250,37){\vector(1,0){15}}
+% \put(205,15){\vector(0,1){15}}
+% \put(165,0){\makebox(80,15){\texttt{naučeni prepoznavatelj}}}
+% \put(262,30){\makebox(40,15){\texttt{autor}}}
+% \end{picture}		
+% \caption{Model sustava}		
+% \label{fig:model-sustava}
+% \end{center}		
+% \end{figure}
 
 \section{Korišteni podatci}
 \label{sec:podatci}
@@ -250,6 +327,14 @@ datuma kada je napravljena arhiva.}, \ref{fig:wordsPerAuthor} i
 
 Da bi se izbjeglo učenje teme, arhiva je podijeljena po razdobljima, tj.~za
 testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
+
+% \begin{minipage}{\linewidth} 
+% \vspace{10pt}
+% \centering% 
+% \input[width=0.8\linewidth,clip=]{sample-fig.jpg}% 
+% \figcaption{\small \textbf{\textsf{Helvetica, 10 points, boldface}}}% 
+% \label{fig:sample-fig}% 
+% \end{minipage}
 
 \begin{figure}[htb]
 \begin{center}
@@ -334,8 +419,6 @@ Pretvorba dokumenta u vektor značajki se vrši brojanjem pojave svake funkcijsk
 riječi unutar dokumenta. Dobiveni brojevi se zapišu kao vektor (za funkcijske
 riječi koje se nisu pojavile u dokumentu piše se 0) te se svaki posebno podijeli
 ukupnim brojem riječi u dokumentu (uklanjanje ovisnosti o dužini dokumenta).
-Izlučitelj je implementiran razredom \texttt{FunctionWordOccurNumExtractor.java},
-a popis korištenih funkcijskih riječi se nalazi u dodatku \ref{sec:koristene-fw}.
 
 \subsection{Frekvencije grupa tipova funkcijskih riječi}
 \label{sec:funkcijske-rijeci-grupe}
@@ -344,8 +427,7 @@ Ulazni skup funkcijskih riječi podijeljen je na: priloge, prijedloge, veznike,
 
 Vektor značajki se dobiva brojanjem pojava vrste funkcijskih riječi. Rezultat
 se zapiše kao vektor (u ovom slučaju vektor će imati pet dimenzija) i svaka
-komponenta vektora se podijeli brojem riječi u dokumentu. Implementacija se
-nalazi u razredu \texttt{FunctionWordGroupFreqExtractor.java}.
+komponenta vektora se podijeli brojem riječi u dokumentu.
 
 \subsection{Frekvencije funkcijskih riječi pomnoženih idf težinama}
 \label{sec:funkcijske-rijeci-idf}
@@ -362,31 +444,23 @@ tekstu i jednom u svim ostalima dobiva jednaku mjeru kao riječ koja se jednom
 pojavi u svim tekstovima --- zanemaruje se riječ koja bi izuzetno dobro
 odvojila tekst od ostatka skupa.
 
-Implementacija metode se nalazi u razredu
-\texttt{FunctionWordTFIDFExtractor .java}, a računanje idf težina riječi
-implementirano je u \texttt{TextStatistics.java}.
-
-
 \subsection{Frekvencije interpunkcijskih znakova, samoglasnika i duljina riječi}
 \label{sec:znacajke-manje}
 Za računanje frekvencija interpunkcijskih znakova odabran je skup znakova (``.'',
 ``,'', ``!'', ``?'', ``''', ``"'', ``-'', ``:``, ``;'', ``+'', ``*'') te je
 prebrojano njihovo pojavljivanje u tekstu. Rezultat je zapisan kao
 11--dimenzionalni vektor te je svaka komponenta vektora podijeljena ukupnim
-brojem znakova u dokumentu. Implementacija se nalazi u razredu
-\texttt{PunctuationMarksExtractor.java}.
+brojem znakova u dokumentu.
 
 Vektor značajki koje se temelje na frekvencijama pojavljivanja samoglasnika se
-dobiva analogno postupku za interpunkcijske znakove. Implementacija je dana u
-\texttt{VowelsExtractor.java}.
+dobiva analogno postupku za interpunkcijske znakove.
 
 Frekvencije duljina riječi se dobiju brojanjem riječi koje imaju jednaku duljinu.
 Bitno je primjetiti da se ovim postupkom mogu dobiti vektori značajki različitih
 dimenzija (npr.~jedan dokument ima riječi duljine 11 i 17, drugi nema). Problem
 je riješen ograničavanjem maksimalne duljine riječi na 10. Sve riječi dulje od 10
 znakova pribrajaju se 10.~grupi. Dobivene frekvencije potrebno je podijeliti
-ukupnim brojem riječi (uklanjanje ovisnosti o duljini teksta). Implementacija se
-nalazi u razredu \texttt{WordLengthFeatureExtractor.java}.
+ukupnim brojem riječi (uklanjanje ovisnosti o duljini teksta).
 
 Navedene značajke samostalno imaju slabu diskriminacijsku moć, no vrlo su korisne
 za kombiniranje s drugim značajkama (vidi odjeljak \ref{sec:evaluacija}).
@@ -483,9 +557,7 @@ metoda iz \ref{sec:funkcijske-rijeci-idf} ``idf'', a metode iz
 ``Netočni'' --- netočno prepoznatih.
 
 Najveću točnost, 88\% postiže kombinacija svih metoda opisanih u
-\ref{sec:znacajke-manje} i metode iz \ref{sec:funkcijske-rijeci}. Detalji
-evaluacije navedene kombinacije značajki nalaze se u dodatku
-\ref{sec:detalji-evaluacije}.
+\ref{sec:znacajke-manje} i metode iz \ref{sec:funkcijske-rijeci}.
 
 Kako ukupna točnost ne objašnjava ponašanje klasifikatora na svakom razredu
 pojedinačno, za svaki razred računaju se preciznost i odziv te pomoću njih
@@ -542,48 +614,6 @@ interpunkcija, funkcijske, samoglasnici, idf, duljine, grupe & 912 & 180 & 83.5\
 \label{tbl:eval}
 \end{table}
 
-\section{Implementacija}
-\label{sec:implementacija}
-Implementacija je napisana u programskim jezicima Javi (glavni sustav) te
-Pythonu (skripta \texttt{JutarnjiKolumneArhiver.py}). Navedena skripta služi za
-dohvat arhive tekstova sa ``Komentari i kolumne na aktualna događanja u
-Hrvatskoj -- Jutarnji.hr''.\footnote{\url{http://www.jutarnji.hr/komentari/}}
-
-% TODO: UCD Dohvat članaka i izlučivanje značajki
-% TODO: UCD Učenje sustava
-% TODO: UCD Prepoznavanje autora.
-
-Za klasifikaciju iskorištena je biblioteka \emph{libsvm} \citep{CC01a}. Veza
-\emph{libsvm} biblioteke i sustava izvedena je \texttt{LibsvmRecognizer}
-razredom koji istovremeno implementira sučelja \texttt{RecognizerTrainer} i
-\texttt{AuthorRecognizer}. Model se uči pozivom metode \texttt{train()},
-klasifikacija se vrši metodom \texttt{classifyAuthor()}, a cross--validacija je
-pokreće metodom \texttt{gridSearch()}.
-
-Korisnik sustavu može pristupiti iz komandne linije preko \texttt{CLITrainer}
-(učenje sustava) i \texttt{CLIRecognizer} (prepoznavatelj autora) razreda. Navedeni razredi nalaze se u
-\texttt{hr.fer.zemris.aa.main} paketu. Primjer pokretanja sustava iz
-komandne linije:
-\begin{verbatim}
-  java hr.fer.zemris.aa.main.CLITrainer \
-  skup_za_ucenje-skup_aa.xml \
-  skup_aa.model
-  
-  java hr.fer.zemris.aa.main.CLIRecognizer \
-  tekst_nepoznatog_autora.txt \
-  skup_aa.model
-\end{verbatim}
-ili preko gotovih jar arhiva:
-\begin{verbatim}
-  java -jar su-aa-1.0-trainer.jar skup_za_ucenje-skup_aa.xml \
-  skup_aa.model
-
-  java -jar su-aa-1.0-recognizer.jar tekst_nepoznatog_autora.txt \
-  skup_aa.model
-\end{verbatim}
-
-\newpage
-
 \section{Zaključak}
 Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
 uspješno riješiti relativno jednostavnim metodama. U usporedbi s prijavljenim
@@ -611,119 +641,22 @@ jezika koje su skupljene dubinskom analizom sintaksne analize dokumenta
 Uz navedeno, potrebno je provesti evaluaciju nad ispitnim korpusima različitih
 prosječnih duljina tekstova (npr.~pjesme, novinski članci, knjige).
 
-\newpage
-
+% TODO: Prilagoditi ITI stilu
 \bibliography{literatura}
 \bibliographystyle{plainnat}
 
-\newpage
+% \section{Detalji evaluacije najbolje značajke}
+% \label{sec:detalji-evaluacije}
+% \begin{itemize}
+%   \item Kombinacija svih metoda iz \ref{sec:znacajke-manje} i metode iz
+%      \ref{sec:funkcijske-rijeci},
+%   \item broj autora	u skupu: 25,
+%   \item ukupno uzoraka za učenje: 3267,
+%   \item ukupno uzoraka za testiranje: 1092,
+%   \item točnost: 0.88003665 (961/131),
+%   \item F mjera: 0.8712441.
+% \end{itemize}
 
-\appendix
-
-\section{Detalji evaluacije najbolje značajke}
-\label{sec:detalji-evaluacije}
-\begin{itemize}
-  \item Kombinacija svih metoda iz \ref{sec:znacajke-manje} i metode iz
-     \ref{sec:funkcijske-rijeci},
-  \item broj autora	u skupu: 25,
-  \item ukupno uzoraka za učenje: 3267,
-  \item ukupno uzoraka za testiranje: 1092,
-  \item točnost: 0.88003665 (961/131),
-  \item F mjera: 0.8712441.
-\end{itemize}
-\begin{table}[ht]
-\caption{Detalji evaluacije}
-\centering
-\begin{tabular}{c c c c}
-\hline\hline
-Autor & Preciznost & Odziv & Omjer \\
-[0.5ex]
-\hline
-Tomislav Židak & 0,961165 & 1,000000 & (99/99) \\
-Ivan Zvonimir Čičak & 0,846154 & 0,942857 & (33/35) \\
-Orlando Rivetti & 0,888889 & 0,960000 & (24/25) \\
-Zoran Čutura & 0,833333 & 0,312500 & (5/16) \\
-William Montgomery & 0,909091 & 0,909091 & (10/11) \\
-Jelena Lovrić & 0,857143 & 0,929577 & (66/71) \\
-Jovan Hovan & 0,750000 & 0,750000 & (6/8) \\
-Sanja Modrić & 0,809524 & 0,548387 & (17/31) \\
-Boris Vlašić & 0,833333 & 0,862069 & (25/29) \\
-Tomislav Ivić & 1,000000 & 0,666667 & (4/6) \\
-rabin Kotel Da Don & 1,000000 & 0,777778 & (7/9) \\
-Nikica Vukašin & 1,000000 & 0,727273 & (8/11) \\
-Alan Srčnik/Epeha & 0,555556 & 0,454545 & (5/11) \\
-Dražen Krušelj & 0,727273 & 0,533333 & (8/15) \\
-Miljenko Jergović & 0,896552 & 0,764706 & (26/34) \\
-Nino Đula & 0,894737 & 0,809524 & (17/21) \\
-Branimir Pofuk & 0,769231 & 0,666667 & (20/30) \\
-Darko Pavičić & 0,695652 & 0,500000 & (16/32) \\
-Radovan Stipetić & - & 0,000000 & (0/4) \\
-Ante Tomić & 0,870968 & 0,900000 & (54/60) \\
-Živko Kustić & 0,891061 & 0,993769 & (319/321) \\
-Inoslav Bešker & 0,942857 & 0,785714 & (33/42) \\
-Jurica Pavičić & 0,839286 & 0,940000 & (47/50) \\
-Zvonimir Milčec & 0,800000 & 0,780488 & (32/41) \\
-Davor Butković & 0,963855 & 1,000000 & (80/80) \\ [1ex]
-\hline
-\end{tabular}
-\label{tbl:eval-detalji}
-\end{table}
-
-\newpage
-
-\section{Korištene funkcijske riječi}
-\label{sec:koristene-fw}
-\texttt{danas, večeras, jučer, sinoć, preksinoć, danas, sutra, preksutra, ljetos,
-proljetos, jesenas, zimus, preklani, obdan, obnoć, odmah, smjesta, sada, tada,
-onda, ikada, nikada, nekada, ponekad, katkad, uvijek, svagda, često, rijetko,
-rano, kasno, prije, poslije, potom, nedavno, skoro, uskoro, napokon, odsad, otad,
-oduvijek, odavna, odmalena, dosad, dotad, dogodine, dovečer, ovdje, tu, ondje,
-negdje, igdje, nigdje, onegdje, gore, dolje, unutra, vani, sprijeda, straga,
-ovamo, onamo, tamo, nekamo, nikamo, ikamo, naprijed, natrag, ovuda, onuda, tuda,
-nikuda, nekuda, ikuda, kojekuda, odavde, otud, odatle, odonud, niotkuda, odozgo,
-odozdo, odostrana, izdaleka, izvana, izbliza, donekle, dovle, dotle, donle,
-uzalud, uzaman, utaman, ovoliko, toliko, onoliko, nekoliko, malo, premalo, više,
-manje, dosta, odveć, opet, još, sasvim, potpuno, previše, jedanput, dvaput,
-triput, stoput, ovako, onako, tako, nikako, nekako, ikako, svakojako, jedva,
-svejedno, odjednom, sjedećke, ležećke, potrbuške, naglas, napamet, nabolje,
-kriomice, brzo, brže, najbrže, više, najviše, lijepo, veselo, najveselije,
-bratski, sestrinski, gospodski, ljudski, puno, od, do, iz, s, sa, ispred, iza,
-izvan, van, unutar, iznad, ispod, poviše, niže, uoči, nakon, za, tijekom, tokom,
-dno, podno, nadno, odno, vrh, povrh, navrh, uvrh, zavrh, čelo, nakraj, onkraj,
-krajem, potkraj, sred, nasred, posred, usred, oko, okolo, blizu, kod, kraj,
-pokraj, pored, nadohvat, u, mimo, duž, uzduž, širom, diljem, preko, bez, osim,
-mjesto, umjesto, namjesto, uime, putem, pomoću, posredstvom, između, spram, put,
-protiv, nasuprot, usuprot, usprkos, unatoč, zbog, uslijed, radi, zaradi, poradi,
-glede, prigodom, prilikom, povodom, k, ka, prema, naprama, nadomak, nadohvat,
-nasuprot, usuprot, usprkos, protiv, na, o, po, prema, pri, u, pred, za, nad, pod,
-poda, među, i, pa, te, ni, niti, ili, samo, samo što, jedino, jedino što, tek,
-tek što, dakle, zato, stoga, a, ali, nego, no, već, iako, makar, premda, mada,
-li, zar, da, kamoli, negoli, mnogo, vrlo, veoma, gotovo, posve, osobito,
-prilično, odviše, naročito, neka, ne, daj, dede, deder, evo, eto, eno,
-vjerojatno, doista, zaista, stvarno, uistinu, sigurno, zasigurno, nasreću,
-nažalost, eventualno, uglavnom, nesumnjivo, ah, oh, hehe, he, hura, jao, joj,
-oho, uh, uf, ijuju, haj, eh, ehe, iš, đija, mic, ej, de, hej, oj, ej, hej, hajde,
-halo, bum, tras, pljus, hop, mljac, zum, klik, krc, škljoc, kukuriku, vau, bla,
-mu, mjau, kva-kva.}
-
-\newpage
-
-\section{Doprinos svakog člana tima}
-\begin{description}
-\item[Ivan Krišto:] dokumentacija, nabavljanje uzoraka za učenje i testiranje,
-dizajn sustava, povezivanje libsvma, izrada izlučitelja značajki.
-\item[Igor Belša:] dokumentacija, izrada alata za pretvaranje XML dokumenata u
-značajke, dizajn sustava, testiranje, izrada izlučitelja značajki.
-\item[Tomislav Reicher:] dokumentacija, dizajn sustava, podrška za traženje
-parametara klasifikatora, podešavanje izlučitelja značajki, testiranje, izrada
-izlučitelja značajki.
-\end{description}
-
-\section{Raspodjela bodova}
-\begin{description}
-\item[Ivan Krišto:] 33.3\%
-\item[Igor Belša:] 33.3\%
-\item[Tomislav Reicher:] 33.3\%
-\end{description}
+\end{multicols}
 
 \end{document}
