@@ -16,6 +16,7 @@
 \usepackage{enumitem}
 \usepackage{nonfloat}
 \usepackage{url}
+\usepackage{indentfirst}
 % Package used for \author{} command. Feel free to remove
 % if it doesn't suits your needs.
 \usepackage[affil-it]{authblk}
@@ -66,15 +67,18 @@
 \renewcommand\Authand{ \quad }
 \renewcommand\Authands{ \quad }
 
+% Removal of space between affils.
+\setlength{\affilsep}{0em}
+
 \begin{document}
 
-\title{Automatizirano prepoznavanje autora teksta\\Projekt iz Strojnog učenja}
+\title{Automatic authorship attribution for Croatian texts}
 \author{Igor Belša}
 \author{Tomislav Reicher}
 \author{Ivan Krišto}
 \author{Artur Šilić}
-\affil{Fakultet elektrotehnike i računarstva\\Unska 3, 10000 Zagreb,
-Hrvatska}
+\affil{Faculty of Electrical and Computing Engineering, University of
+Zagreb\\Unska 3, 10000 Zagreb, Croatia}
 \affil{\{igor.belsa, tomislav.reicher, ivan.kristo, artur.silic\}@fer.hr}
 
 % Removal of date. Don't change.
@@ -91,6 +95,10 @@ Hrvatska}
 % - Izbaciti sve vezano uz implementaciju
 % - Srediti literaturu (prilagoditi je ITI pravilima)
 % - Još malo popraviti predložak
+
+% Jedna _vrlo kratka_ lista glagola koje je poželjno koristiti pri pisanju članka:
+% {notes, explains, references, shows, proves, defines, believe, convince,
+% suggest}.
 
 \begin{abstract}
 The abstract is to be in fully-justified italicized text, at the top of the
@@ -113,54 +121,87 @@ Times New Roman, 11 pt.
 \end{keywords}
 
 \section{Introduction}
-Problem automatiziranog prepoznavanja autora teksta \engl{Authorship Attribution}
-može se promatrati kao problem klasifikacije teksta na temelju njegovih
-lingvističkih značajki. Problemi slični prepoznavanju autora su prepoznavanje
-dobi autora, regije iz koje autor potječe ili spola \citep{luyckx2005shallow}.
-Glavni problem računalno potpomognutog prepoznavanja autora teksta je određivanje
-prikladnog skupa karakteristika dokumenta koje opisuju stil autora
-\citep{coyotl2006authorship}.
+% Problem automatiziranog prepoznavanja autora teksta \engl{Authorship Attribution}
+% može se promatrati kao problem klasifikacije teksta na temelju njegovih
+% lingvističkih značajki. Problemi slični prepoznavanju autora su prepoznavanje
+% dobi autora, regije iz koje autor potječe ili spola \citep{luyckx2005shallow}.
+% Glavni problem računalno potpomognutog prepoznavanja autora teksta je određivanje
+% prikladnog skupa karakteristika dokumenta koje opisuju stil autora
+% \citep{coyotl2006authorship}.
+Automatic authorship attribution can be interpret as problem of text
+classification based on its lingvistic features. Problems similar to authorship
+attribution are detection of age, region and gender of the author
+\citep{luyckx2005shallow}. Main concern of computer--assisted authorship
+attribution is to define an appropriate characterization of documents that
+captures the writing style of authors \citep{coyotl2006authorship}.
 
-\citet{kukushkina2001using} navode da se problem prepoznavanja autora teksta
-obrađuje još od 1915.~godine u radu ``\emph{Izv.~otd.~russkogo jazyka i
-slovesnosti, Imp.~akad.~nauk.}'', Morozov, N., A.~kojem se već 1916.~pridružio
-utemeljitelj teorije Markovljevih lanaca, Markov, A., A.,~radom ``\emph{On some
-application of statistical method}''.
+% \citet{kukushkina2001using} navode da se problem prepoznavanja autora teksta
+% obrađuje još od 1915.~godine u radu ``\emph{Izv.~otd.~russkogo jazyka i
+% slovesnosti, Imp.~akad.~nauk.}'', Morozov, N., A.~kojem se već 1916.~pridružio
+% utemeljitelj teorije Markovljevih lanaca, Markov, A., A.,~radom ``\emph{On some
+% application of statistical method}''.
+\citet{kukushkina2001using} notes that first works on authorship attribution
+problem are ``\emph{Izv.~otd.~russkogo jazyka i slovesnosti, Imp.~akad.~nauk.}'',
+Morozov, N., A.\ from 1915.\  and ``\emph{On some application of statistical
+method}'' from 1916.\ by Markov, A., A., founder of Theory of Markov chains.
 
-Prepoznavanje autora može pomoći pri indeksiranju dokumenata, filtriranju ili
-hijerarhiskoj kategorizaciji web stranica i web pretraživača
-\citep{luyckx2005shallow}. Bitno je napomenuti kako se prepoznavanje autora i
-njegovih karakteristika razlikuje od detekcije plagijata. Detekcija
-plagijata pokušava odrediti sličnost između dva u suštini različita
-djela, ali nije u mogućnosti otkriti jesu li proizvod istog autora
-\citep{de2001mining}.
+% Prepoznavanje autora može pomoći pri indeksiranju dokumenata, filtriranju ili
+% hijerarhiskoj kategorizaciji web stranica i web pretraživača
+% \citep{luyckx2005shallow}. Bitno je napomenuti kako se prepoznavanje autora i
+% njegovih karakteristika razlikuje od detekcije plagijata. Detekcija
+% plagijata pokušava odrediti sličnost između dva u suštini različita
+% djela, ali nije u mogućnosti otkriti jesu li proizvod istog autora
+% \citep{de2001mining}.
+Authorship attribution can help in document indexing, document filtering and the
+hierarchical categorization of web pages and web search engines
+\citep{luyckx2005shallow}. It is important to note that authorship attribution is
+different from plagiarism detection. Plagiarism detection attempts to detect the
+similarity between two substantially different pieces of work but is unable to
+determine if they were produced by the same author \citep{de2001mining}.
 
-Problem prepoznavanja autora može se podijeliti u tri kategorije
-\citep{zhao2005effective}: binarnu, višerazrednu i jednorazrednu klasifikaciju.
-Binarna klasifikacija rješava problem kad je za skup tekstova poznato da
-pripadaju jednom od dva autora. Višerazredna klasifikacija je proširenje
-binarne na više autora. Jednorazredna se primjenjuje u situacijama kad je
-dio tekstova napisan od poznatog autora, a autori ostalih tekstova su
-nepoznati. Ta klasifikacija pokušava odgovoriti na pitanje pripada li neki
-tekst poznatom autoru ili ne.
+% Problem prepoznavanja autora može se podijeliti u tri kategorije
+% \citep{zhao2005effective}: binarnu, višerazrednu i jednorazrednu klasifikaciju.
+% Binarna klasifikacija rješava problem kad je za skup tekstova poznato da
+% pripadaju jednom od dva autora. Višerazredna klasifikacija je proširenje
+% binarne na više autora. Jednorazredna se primjenjuje u situacijama kad je
+% dio tekstova napisan od poznatog autora, a autori ostalih tekstova su
+% nepoznati. Ta klasifikacija pokušava odgovoriti na pitanje pripada li neki
+% tekst poznatom autoru ili ne.
+The problem can be devided in three categories \citep{zhao2005effective}: binary,
+multi--class and single--class (or one--class) classification. Binary
+classification solves problem when each document from data set is written by one
+of two authors. Multi--class classification is generalization of binary
+classification in which we have more than two authors. Single--class
+classification is applied when we have some documents written by a particular
+author while the authorship of the other documents is unspecified. This
+classification answers the question does goven document belongs to single known
+author or not.
 
-U ovom radu obrađen je problem višerazredne klasifikacije za tekstove na
-hrvatskom jeziku. Naglasak je stavljen na evaluiranje različitih skupova
-karakteristika.
+% U ovom radu obrađen je problem višerazredne klasifikacije za tekstove na
+% hrvatskom jeziku. Naglasak je stavljen na evaluiranje različitih skupova
+% karakteristika.
+In this paper we have studied the problem of multi--class classification for
+documents in Croatian language. We have oriented on evaluation of different sets
+of documents features.
 
-% TODO: Srediti (neke stvari su izbačene). 
-Rad je organiziran tako da su u 2.~odjeljku opisane metode koje su u drugim
-radovima korištene za problem prepoznavanja autora i srodne probleme. Odjeljak 3
-daje kratki pregled sustava, način na koji su komponente u sustavu povezane i na
-koji način se sustav može koristiti. Slijedi 4.~odjeljak s opisom korištenih
-podataka. Najbitniji za rad je odijeljak 5. U njemu je dan opis korištenih metoda
-za izvlačenje značajki iz tekstova, popis svih korištenih značajki i njihove
-specifičnosti te evaluacija. Na 5.~odjeljak usko se veže 6.~sa opisom
-klasifikacije. Rezultati evaluacije metoda navedenih u 5.~odjeljku te njihovih
-kombinacija uz klasifikator opisan u 6.~odjeljku navedeni su u 7.~odjeljku.
-Implementacija je opisana u 8., a zaključak je dan u 9.~odjeljku.
+% Neke stvari su izbačene
+% Rad je organiziran tako da su u 2.~odjeljku opisane metode koje su u drugim
+% radovima korištene za problem prepoznavanja autora i srodne probleme. Odjeljak 3
+% daje kratki pregled sustava, način na koji su komponente u sustavu povezane i na
+% koji način se sustav može koristiti. Slijedi 4.~odjeljak s opisom korištenih
+% podataka. Najbitniji za rad je odijeljak 5. U njemu je dan opis korištenih metoda
+% za izvlačenje značajki iz tekstova, popis svih korištenih značajki i njihove
+% specifičnosti te evaluacija. Na 5.~odjeljak usko se veže 6.~sa opisom
+% klasifikacije. Rezultati evaluacije metoda navedenih u 5.~odjeljku te njihovih
+% kombinacija uz klasifikator opisan u 6.~odjeljku navedeni su u 7.~odjeljku.
+% Implementacija je opisana u 8., a zaključak je dan u 9.~odjeljku.
+The rest of the paper is organized as follows. Section 2 discusses some previous
+works on authorship attribution and similar problems. Section 3 describes used
+data set. The most important is 5th section which introduces used methods.
+Section 6 describes classification and 7th section discusses evaluation and
+gives evaluation results. Conclusion and future work is given in 8th section.
 
-\section{Srodna rješenja}
+\section{Related work}
 \citet{coyotl2006authorship} dijele postojeće metode prepoznavanja autora
 teksta na tri glavna pristupa:
 \begin{description}
@@ -269,42 +310,7 @@ se pojavljuju u malom broju dokumenata te je time jako diskriminatorna.
 % ukupan broj dokumenata. $R(t_k)$ je mjera koliko razdioba termina $t_k$ u raznim
 % dokumentima odstupa od uniformne razdiobe.
 
-\section{Model sustava}
-Namjena razvijenog sustava je prepoznati autora sustavu dosad neviđenog teksta.
-Autor se može prepoznati samo ako je sustav naučen nad skupom tekstova koji je
-sadržavao i tekstove tog autora. Sustav ima dva načina korištenja, učenje i
-određivanje autora. Da bi se sustav mogao koristiti za određivanje autora, prvo
-mora biti naučen. Apstraktni model dan je slikom \ref{fig:model-sustava}, a
-detalji o načinu korištenja se nalaze u \ref{sec:implementacija}.~odjeljku.
-
-% TODO: Izbaciti?
-% \begin{figure}[htb]
-% \begin{center}		
-% \begin{picture}(470,90)		
-% \put(5,70){\makebox(40,15){\texttt{XML}}}
-% \put(38,77){\vector(1,0){15}}
-% \put(55,70){\framebox(90,15){\textit{Izlučivanje značajki}}}		
-% \put(145,77){\vector(1,0){15}}
-% \put(160,70){\framebox(90,15){\textit{Učenje}}}		
-% \put(250,77){\vector(1,0){15}}
-% \put(285,70){\makebox(40,15){\texttt{prepoznavatelj}}}
-% 
-% \put(1,30){\makebox(40,15){\texttt{tekst}}}
-% \put(38,37){\vector(1,0){15}}
-% \put(55,30){\framebox(90,15){\textit{Izlučivanje značajki}}}		
-% \put(145,37){\vector(1,0){15}}
-% \put(160,30){\framebox(90,15){\textit{Prepoznavanje}}}		
-% \put(250,37){\vector(1,0){15}}
-% \put(205,15){\vector(0,1){15}}
-% \put(165,0){\makebox(80,15){\texttt{naučeni prepoznavatelj}}}
-% \put(262,30){\makebox(40,15){\texttt{autor}}}
-% \end{picture}		
-% \caption{Model sustava}		
-% \label{fig:model-sustava}
-% \end{center}		
-% \end{figure}
-
-\section{Korišteni podatci}
+\section{Used data set}
 \label{sec:podatci}
 Pri izradi sustava korištena je mrežna arhiva kolumni ``Jutarnjeg lista'' do
 14.~studenog, 2009.~-- ``Komentari i kolumne na aktualna događanja u
@@ -346,7 +352,7 @@ testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 \label{fig:avgWordsPerAuthorArticle}
 \end{minipage}
 
-\section{Izvlačenje značajki iz dokumenata}
+\section{Document features}
 Glavni problem konstrukcije sustava za prepoznavanje autora je odabir dovoljno
 diskriminatornih značajki teksta. Značajka je diskriminatorna ako je česta kod
 jednog autora, a rijetka kod drugih. Zbog velikoga broja autora izuzetno su
@@ -374,7 +380,7 @@ može varirati od računski vrlo trivijalnih operacija pa do vrlo zahtjevnih
 algoritama (npr.~značajke dobivene sintaksnom analizom prirodnog jezika).
 
 
-\subsection{Frekvencije funkcijskih riječi}
+\subsection{Function words frequency}
 \label{sec:funkcijske-rijeci}
 Funkcijske riječi su riječi koje promatrane samostalno nemaju semantičko
 značenje, poput priloga, prijedloga, veznika, čestica, uzvika ili riječi koje
@@ -406,7 +412,7 @@ riječi unutar dokumenta. Dobiveni brojevi se zapišu kao vektor (za funkcijske
 riječi koje se nisu pojavile u dokumentu piše se 0) te se svaki posebno podijeli
 ukupnim brojem riječi u dokumentu (uklanjanje ovisnosti o dužini dokumenta).
 
-\subsection{Frekvencije grupa tipova funkcijskih riječi}
+\subsection{Function words types frequency}
 \label{sec:funkcijske-rijeci-grupe}
 Ulazni skup funkcijskih riječi podijeljen je na: priloge, prijedloge, veznike,
 čestice i uzvike.
@@ -415,7 +421,7 @@ Vektor značajki se dobiva brojanjem pojava vrste funkcijskih riječi. Rezultat
 se zapiše kao vektor (u ovom slučaju vektor će imati pet dimenzija) i svaka
 komponenta vektora se podijeli brojem riječi u dokumentu.
 
-\subsection{Frekvencije funkcijskih riječi pomnoženih idf težinama}
+\subsection{Idf weighted function words frequency}
 \label{sec:funkcijske-rijeci-idf}
 Stvaranje vektora značajki se vrši množenjem komponenti vektora dobivenih metodom
 opisanom u odjeljku \ref{sec:funkcijske-rijeci} i pripadne \emph{idf} \engl{inverse
@@ -430,7 +436,7 @@ tekstu i jednom u svim ostalima dobiva jednaku mjeru kao riječ koja se jednom
 pojavi u svim tekstovima --- zanemaruje se riječ koja bi izuzetno dobro
 odvojila tekst od ostatka skupa.
 
-\subsection{Frekvencije interpunkcijskih znakova, samoglasnika i duljina riječi}
+\subsection{Punctation marks, vowels and words length frequency}
 \label{sec:znacajke-manje}
 Za računanje frekvencija interpunkcijskih znakova odabran je skup znakova (``.'',
 ``,'', ``!'', ``?'', ``''', ``"'', ``-'', ``:``, ``;'', ``+'', ``*'') te je
@@ -451,7 +457,7 @@ ukupnim brojem riječi (uklanjanje ovisnosti o duljini teksta).
 Navedene značajke samostalno imaju slabu diskriminacijsku moć, no vrlo su korisne
 za kombiniranje s drugim značajkama (vidi odjeljak \ref{sec:evaluacija}).
 
-\section{Klasifikacija}
+\section{Classification}
 Prikaz dokumenata vektorima realnih brojeva omogućava jednostavno korištenje
 klasifikatora koji traže decizijske funkcije, tj.~granice u vektorskom
 prostoru.
@@ -525,7 +531,7 @@ nad kojima je provedeno testiranje. Nakon što su pronađeni parametri modela $(
 se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u ovom
 radu su $C = 16$ i $\gamma = 0.25$.
 
-\section{Evaluacija}
+\section{Evaluation}
 \label{sec:evaluacija}
 Sustav klasificira tekstove 25 različitih autora čiji korpus sadrži ukupno 4359
 tekstova. Izvorni skup tekstova podijeljen je na skup za učenje i skup za testiranje
@@ -600,7 +606,7 @@ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$, $\mathca
 \label{tbl:eval}%
 \end{table*}
 
-\section{Zaključak}
+\section{Conclusion}
 Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
 uspješno riješiti relativno jednostavnim metodama. U usporedbi s prijavljenim
 rezultatima (od 70\% do 97\%
