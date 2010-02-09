@@ -148,7 +148,7 @@ captures the writing style of authors \citep{coyotl2006authorship}.
 % utemeljitelj teorije Markovljevih lanaca, Markov, A., A.,~radom ``\emph{On some
 % application of statistical method}''.
 \citet{kukushkina2001using} notes that first works on authorship attribution
-problem are ``\emph{Izv.~otd.~russkogo jazyka i slovesnosti, Imp.~akad.~nauk.}'',
+problem are ``\emph{Izv.\ otd.\ russkogo jazyka i slovesnosti, Imp.\ akad.\ nauk.}'',
 Morozov, N., A.\ from 1915.\  and ``\emph{On some application of statistical
 method}'' from 1916.\ by Markov, A., A., founder of Theory of Markov chains.
 
@@ -459,64 +459,109 @@ To make sure that learning of topic is avoided, data set is splitted by dates
 \end{minipage}
 
 \section{Document features}
-Glavni problem konstrukcije sustava za prepoznavanje autora je odabir dovoljno
-diskriminatornih značajki teksta. Značajka je diskriminatorna ako je česta kod
-jednog autora, a rijetka kod drugih. Zbog velikoga broja autora izuzetno su
-korisne složene značajke čija je razdioba karakteristična za svakog autora
-(npr.~razdioba nekih riječi).
+% Glavni problem konstrukcije sustava za prepoznavanje autora je odabir dovoljno
+% diskriminatornih značajki teksta. Značajka je diskriminatorna ako je česta kod
+% jednog autora, a rijetka kod drugih. Zbog velikoga broja autora izuzetno su
+% korisne složene značajke čija je razdioba karakteristična za svakog autora
+% (npr.\ razdioba nekih riječi).
+The main problem of the construction of authorship attribution systems is the
+selection of the sufficienty discriminatory features of the text. Feature is
+discriminatory if it is common at one author, and rare at others. Due to the
+large number of authors complex features are extremely useful if their
+distribution is characteristic for each author (e.g.\ the frequency distribution
+of some words).
 
-Značajke je moguće kombinirati. Na ovaj način, ako se koriste složene značajke,
-značajka može predstavljati više razdiobi i biti jače diskriminatorna.
+% Značajke je moguće kombinirati. Na ovaj način, ako se koriste složene značajke,
+% značajka može predstavljati više razdiobi i biti jače diskriminatorna.
+Features can be combined. If we combine complex features, new feature can
+represent more distributions and have greater discriminatory power.
 
-Prilikom stvaranja vektora značajki potrebno je voditi brigu da značajka ne
-ovisi o duljini i sadržaju teksta. Takav utjecaj smanjuje općenitost primjene
-sustava i može dovesti do smanjenja uspješnosti (npr.~povezivanje autora s
-konkretnom temom).
+% Prilikom stvaranja vektora značajki potrebno je voditi brigu da značajka ne
+% ovisi o duljini i sadržaju teksta. Takav utjecaj smanjuje općenitost primjene
+% sustava i može dovesti do smanjenja uspješnosti (npr.\ povezivanje autora s
+% konkretnom temom).
+At creation of feature vector we need to take care that feature doesn't depend
+on length or content of document. That dependency reduces generality of
+systems application and can lead to decrease of accurancy (e.g.\ relateing
+author with concrete topic or terms).
 
-Značajke se prikazuju u obliku vektora realnih brojeva što omogućava relativno
-jednostavnu klasifikaciju. Skup dokumenata se prikazuje kao skup vektora jednakih
-dimenzija. Kombiniranje značajki je spajanje (nadovezivanje) vektora značajki.
+% Značajke se prikazuju u obliku vektora realnih brojeva što omogućava relativno
+% jednostavnu klasifikaciju. Skup dokumenata se prikazuje kao skup vektora jednakih
+% dimenzija. Kombiniranje značajki je spajanje (nadovezivanje) vektora značajki.
+Features can be expressed as vector of real numbers which makes classification
+very easy. Set of documents is expressed as set of vectors of equal dimensions.
+Combining of features is connecting (appending) of their feature vectors.
 
+% Izbačeno iz originalnog teksta.
 % Potrebno je niz jezičnih znakova na prikladan način prilagoditi za klasifikaciju, primjerice
 % prikazati značajke teksta u obliku vektora realnih brojeva. Nakon ove faze, vektori značajki se dalje
 % mogu na standardni način bez problema koristiti u bilo kojem tipu poznatog klasifikatora.
 
-Ovisno o odabranom modelu značajki, analiza teksta i stvaranje vektora značajki
-može varirati od računski vrlo trivijalnih operacija pa do vrlo zahtjevnih
-algoritama (npr.~značajke dobivene sintaksnom analizom prirodnog jezika).
+% Ovisno o odabranom modelu značajki, analiza teksta i stvaranje vektora značajki
+% može varirati od računski vrlo trivijalnih operacija pa do vrlo zahtjevnih
+% algoritama (npr.\ značajke dobivene sintaksnom analizom prirodnog jezika).
+Depending of selected feature model, text analysis and the creation of vector
+features can vary from computationally, very trivial operation to a very complex
+algorithms (such as obtaining syntactic features by analyzing natural language).
 
 
 \subsection{Function words frequency}
 \label{sec:funkcijske-rijeci}
-Funkcijske riječi su riječi koje promatrane samostalno nemaju semantičko
-značenje, poput priloga, prijedloga, veznika, čestica, uzvika ili riječi koje
-opisuju količinu. Obično ukazuju na gramatičke odnose ili općenita svojstva
-\citep{zhao2005effective}.
+% Funkcijske riječi su riječi koje promatrane samostalno nemaju semantičko
+% značenje, poput priloga, prijedloga, veznika, čestica, uzvika ili riječi koje
+% opisuju količinu. Obično ukazuju na gramatičke odnose ili općenita svojstva
+% \citep{zhao2005effective}.
+Function words are words that have little (or none) semantic content of their
+own, they are words such as prepositions, conjunctions, or articles, or elements
+such as words describing quantities. They usually indicate a grammatical
+relationship or generic property \citep{zhao2005effective}.
 
-Privlačnost mjerenja frekvencije pojavljivanja funkcijskih riječi za
-prepoznavanje autora leži u činjenici da su one pokazatelj stila pisanja. Neke
-manje poznate funkcijske riječi, poput prijedloga \emph{onkraj},
-\emph{namjesto} ili \emph{zavrh}, rijeđe se koriste i mogu vrlo dobro
-sugerirati autora. Međutim, čak se i frekvencija korištenja češćih funkcijskih
-riječi može vrlo dobro iskoristiti za razlikovanje autora. Pokazuje se kako zbog
-velike frekvencije korištenja funkcijskih riječi i njihove uloge u gramatici
-autor obično nema svjesnu kontrolu nad njihovom uporabom u pojedinom tekstu
+% Privlačnost mjerenja frekvencije pojavljivanja funkcijskih riječi za
+% prepoznavanje autora leži u činjenici da su one pokazatelj stila pisanja. Neke
+% manje poznate funkcijske riječi, poput prijedloga \emph{onkraj},
+% \emph{namjesto} ili \emph{zavrh}, rijeđe se koriste i mogu vrlo dobro
+% sugerirati autora. Međutim, čak se i frekvencija korištenja češćih funkcijskih
+% riječi može vrlo dobro iskoristiti za razlikovanje autora. Pokazuje se kako zbog
+% velike frekvencije korištenja funkcijskih riječi i njihove uloge u gramatici
+% autor obično nema svjesnu kontrolu nad njihovom uporabom u pojedinom tekstu
+% \citep{argamon2005measuring}.
+Usefulness of function words occurrence frequency for authorship attribution
+lies in the fact that they are an indicators of writing style. Some
+less well--known function words, such as proposals \emph{onkraj},
+\emph{namjesto} and \emph{zavrh} are rarely used, and may very well
+suggest the authors. However, even the frequency of use of frequent
+functional words can be very well used to distinguish the author. It is shown
+that the high frequency of use of function words and their roles in the grammar
+the author usually has no conscious control over their use in a particular text
 \citep{argamon2005measuring}.
 
-Velika prednost funkcijskih riječi je neovisnost o temi pisanja. Nevezano uz
-sadržaj, autori prilikom pisanja nesvjesno koriste funkcijske riječi indikativno
-njihovo vlastitom stilu. S druge strane, ovisnost o jeziku može biti veliki
-nedostatak. Promjenom jezika dokumenata, potrebno je ažurirati i skup funkcijskih
-riječi s kojima sustav radi. Teško je predvidjeti kako će se tako promijenjen
-sustav ponašati i hoće li funkcijske riječi dati jednako dobre rezultate za
-različite jezike. Iako postoji više istraživanja na ovu temu, zbog različitih
-jezika, vrsta i veličine dokumenata teško je zaključiti koliko su ovakve metode
-općenito učinkovite \citep{zhao2005effective}.
+% Velika prednost funkcijskih riječi je neovisnost o temi pisanja. Nevezano uz
+% sadržaj, autori prilikom pisanja nesvjesno koriste funkcijske riječi indikativno
+% njihovo vlastitom stilu. S druge strane, ovisnost o jeziku može biti veliki
+% nedostatak. Promjenom jezika dokumenata, potrebno je ažurirati i skup funkcijskih
+% riječi s kojima sustav radi. Teško je predvidjeti kako će se tako promijenjen
+% sustav ponašati i hoće li funkcijske riječi dati jednako dobre rezultate za
+% različite jezike. Iako postoji više istraživanja na ovu temu, zbog različitih
+% jezika, vrsta i veličine dokumenata teško je zaključiti koliko su ovakve metode
+% općenito učinkovite \citep{zhao2005effective}.
+Functional words are topic independent, authors automatically (with out conscious
+control) use functional words which indicate their own style. Changing the
+language of documents, it is necessary to update and set of functional words with
+which the system works. It is difficult to predict how will changed system
+behave, and whether the function word may give equally good results for different
+languages. Although there are more research of this topic, due to various
+language, type and size of documents it is difficult to conclude are these
+methods generally effective \citep{zhao2005effective}.
 
-Pretvorba dokumenta u vektor značajki se vrši brojanjem pojave svake funkcijske
-riječi unutar dokumenta. Dobiveni brojevi se zapišu kao vektor (za funkcijske
-riječi koje se nisu pojavile u dokumentu piše se 0) te se svaki posebno podijeli
-ukupnim brojem riječi u dokumentu (uklanjanje ovisnosti o dužini dokumenta).
+% Pretvorba dokumenta u vektor značajki se vrši brojanjem pojave svake funkcijske
+% riječi unutar dokumenta. Dobiveni brojevi se zapišu kao vektor (za funkcijske
+% riječi koje se nisu pojavile u dokumentu piše se 0) te se svaki posebno podijeli
+% ukupnim brojem riječi u dokumentu (uklanjanje ovisnosti o dužini dokumenta).
+Building the document feature vector is done by counting the appearance of any
+functional words in the document. The resulting numbers are written as vector
+(for the function words that have not appeared in a document we write 0). After
+counting each frequency is devided with the total number of words in the document
+(to remove dependency of the length of the document).
 
 \subsection{Function words types frequency}
 \label{sec:funkcijske-rijeci-grupe}
@@ -555,9 +600,9 @@ dobiva analogno postupku za interpunkcijske znakove.
 
 Frekvencije duljina riječi se dobiju brojanjem riječi koje imaju jednaku duljinu.
 Bitno je primjetiti da se ovim postupkom mogu dobiti vektori značajki različitih
-dimenzija (npr.~jedan dokument ima riječi duljine 11 i 17, drugi nema). Problem
+dimenzija (npr.\ jedan dokument ima riječi duljine 11 i 17, drugi nema). Problem
 je riješen ograničavanjem maksimalne duljine riječi na 10. Sve riječi dulje od 10
-znakova pribrajaju se 10.~grupi. Dobivene frekvencije potrebno je podijeliti
+znakova pribrajaju se 10.\ grupi. Dobivene frekvencije potrebno je podijeliti
 ukupnim brojem riječi (uklanjanje ovisnosti o duljini teksta).
 
 Navedene značajke samostalno imaju slabu diskriminacijsku moć, no vrlo su korisne
@@ -565,7 +610,7 @@ za kombiniranje s drugim značajkama (vidi odjeljak \ref{sec:evaluacija}).
 
 \section{Classification}
 Prikaz dokumenata vektorima realnih brojeva omogućava jednostavno korištenje
-klasifikatora koji traže decizijske funkcije, tj.~granice u vektorskom
+klasifikatora koji traže decizijske funkcije, tj.\ granice u vektorskom
 prostoru.
 
 % Značajke korištene u ovom radu su frekvencije pojavljivanja određenih događaja
@@ -621,7 +666,7 @@ u skupu za učenje s ciljem bolje generalizacije nad još neviđenim skupom
 podataka. Parametri SVM--a koji utječu na moć generalizacije nad neviđenim skupom
 za ispitivanje su tako $C$ (parametar meke granice) i $\gamma$ (parametar
 radijalne bazne funkcije). Oni zajedno čine prostor parametara čijom je pretragom
-potrebno pronaći vrijednosti parametara, tj.~odabrati onaj model, koji će dati
+potrebno pronaći vrijednosti parametara, tj.\ odabrati onaj model, koji će dati
 SVM klasifikator s najmanjom pogreškom generalizacije.
 
 Pretraga parametra odvija se odabirom modela s parametrima $(C, \gamma)$ iz skupa
@@ -644,7 +689,7 @@ tekstova. Izvorni skup tekstova podijeljen je na skup za učenje i skup za testi
 tako da je $20\%$ tekstova svakog autora odvojeno za testiranje, a na
 ostalih $80\%$ tekstova provedeno je učenje. Skup za testiranje sadrži
 ukupno 1092 teksta. Mjera uspješnosti klasifikacije dana je omjerom broja točno
-prepoznatih autora i ukupnog broja tekstova, tj.~točnošću \engl{accuracy}.
+prepoznatih autora i ukupnog broja tekstova, tj.\ točnošću \engl{accuracy}.
 
 Rezultati evaluacije prikazani su u tablici \ref{tbl:eval}. Radi kraćeg zapisa,
 metoda opisana u \ref{sec:funkcijske-rijeci} nazvana je ``$\mathcal{F}$'', metoda
@@ -659,10 +704,10 @@ Najveću točnost, 88\% postiže kombinacija svih metoda opisanih u
 
 Kako ukupna točnost ne objašnjava ponašanje klasifikatora na svakom razredu
 pojedinačno, za svaki razred računaju se preciznost i odziv te pomoću njih
-ukupna težinska F mjera. Za dani razred $c$ preciznost je omjer broja točno
+ukupna težinska $F$ mjera. Za dani razred $c$ preciznost je omjer broja točno
 klasificiranih primjera u $c$ s brojem svih primjera koji su klasificirani u
 razred $c$. Odziv je omjer broja točno klasificiranih primjera u $c$ s brojem
-svih primjera koji se stvarno nalaze u razredu $c$. F mjera računa se za svaki
+svih primjera koji se stvarno nalaze u razredu $c$. $F$ mjera računa se za svaki
 razred $c_i$ prema sljedećoj formuli:
 \begin{equation}
 F_i = \frac{2 \cdot preciznost_i \cdot odziv_i}{preciznost_i + odziv_i}
@@ -675,19 +720,19 @@ F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
 \end{equation}
 
 gdje je $n$ ukupan broj razreda, $|c_i|$ broj primjera u razredu $c_i$, a $F_i$
-je F mjera za razred $c_i$.
+je $F$ mjera za razred $c_i$.
 
-Težinska F mjera na danom skupu za testiranje sa spomenutim metodama
+Težinska $F$ mjera na danom skupu za testiranje sa spomenutim metodama
 izlučivanja značajki iznosi 87\%.
 
 % TODO: Smisliti kako srediti da je naslov tablice uvijek iznad tablice..
 % \begin{minipage}{\linewidth}
 \begin{tablehere}
 \centering%
-\caption{Rezultati evaluacije različitih značajki}%
+\caption{Results of evaluation for different features}%
 \begin{tabular}{l c c c}
 \hline\hline
-Metoda & Točni & Netočni & Točnost \\
+Method & Correct & Incorrect & Accuracy \\
 [0.5ex]
 \hline
 $\mathcal{P}$ & 603 & 489 & 55.2\% \\
@@ -729,7 +774,7 @@ Nažalost, ispravna usporedba s drugim radovima zasad nije moguća jer ne postoj
 relevantan skup za usporedbu kao što navode \citep{zhao2005effective}, no u
 literaturi se može naći pozivanje na rad
 \citep{stamatatos2001computer,stamatatos1999automatic} i ``Grčki skup''
-(npr.~\citep{keselj2003n}). Na složenost problema bitno utječe broj autora i
+(npr.\ \citep{keselj2003n}). Na složenost problema bitno utječe broj autora i
 raznolikost skupa uzoraka.
 
 U daljnjem radu potrebno je evaluirati metode temeljene na $n$-gramima riječi i
@@ -740,7 +785,7 @@ jezika koje su skupljene dubinskom analizom sintaksne analize dokumenta
 \citep{stamatatos2001computer,diri2003automatic,luyckx2005shallow}.
 
 Uz navedeno, potrebno je provesti evaluaciju nad ispitnim korpusima različitih
-prosječnih duljina tekstova (npr.~pjesme, novinski članci, knjige).
+prosječnih duljina tekstova (npr.\ pjesme, novinski članci, knjige).
 
 % TODO: Prilagoditi ITI stilu
 \bibliography{literatura}
