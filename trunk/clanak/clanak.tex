@@ -407,26 +407,35 @@ appear in a small number of documents and thus it is very discriminatory.
 % ukupan broj dokumenata. $R(t_k)$ je mjera koliko razdioba termina $t_k$ u raznim
 % dokumentima odstupa od uniformne razdiobe.
 
-\section{Used data set}
+\section{Data set}
 \label{sec:podatci}
-Pri izradi sustava korištena je mrežna arhiva kolumni ``Jutarnjeg lista'' do
-14.~studenog, 2009.~-- ``Komentari i kolumne na aktualna događanja u
-Hrvatskoj - Jutarnji.hr'' (\url{http://www.jutarnji.hr/komentari/}).
-
-Arhiva je pohranjena kao XML (Extensible Markup Language) dokument po KTLab
-(Knowledge Technologies Lab, FER -- \url{http://ktlab.fer.hr})
-\texttt{documentSet} shemi dostupnoj na
-\url{http://ktlab.fer.hr/download/documentSet.xsd}. Budući da se veliki broj
-članaka u mrežnoj arhivi našao u više kopija, one su pri izradi XML arhive
-preskočene.
-
-U arhivi se nalaze tekstovi 25 autora sa ukupno 4359 tekstova koji zajedno broje
-2998766 riječi. Detaljne statistike arhive nalaze se na slikama
-\ref{fig:articlesPerAuthor}, \ref{fig:wordsPerAuthor} i
+% Pri izradi sustava korištena je mrežna arhiva kolumni ``Jutarnjeg lista'' do
+% 14.~studenog, 2009.~-- ``Komentari i kolumne na aktualna događanja u
+% Hrvatskoj - Jutarnji.hr'' (\url{http://www.jutarnji.hr/komentari/}).
+Used data set is online archive of ``Jutarnji list'' newspaper columns
+available at \url{http://www.jutarnji.hr/komentari/}. Data set consists of
+4359 texts written by 25 authors. Detailed statistics can be found at figures
+\ref{fig:articlesPerAuthor}, \ref{fig:wordsPerAuthor} and
 \ref{fig:avgWordsPerAuthorArticle}.
+% TODO: Navesti novi broj tekstova!!! I generirati nove grafove (neke izbaciti)
 
-Da bi se izbjeglo učenje teme, arhiva je podijeljena po razdobljima, tj.~za
-testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
+% U arhivi se nalaze tekstovi 25 autora sa ukupno 4359 tekstova koji zajedno broje
+% 2998766 riječi. Detaljne statistike arhive nalaze se na slikama
+% \ref{fig:articlesPerAuthor}, \ref{fig:wordsPerAuthor} i
+% \ref{fig:avgWordsPerAuthorArticle}.
+
+% Da bi se izbjeglo učenje teme, arhiva je podijeljena po razdobljima, tj.~za
+% testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
+To make sure that learning of topic is avoided, data set is splitted by dates
+-- 20\% of newest texts of every author is taken for testing (hold--out method).
+
+% Nepotrebno za članak
+% Arhiva je pohranjena kao XML (Extensible Markup Language) dokument po KTLab
+% (Knowledge Technologies Lab, FER -- \url{http://ktlab.fer.hr})
+% \texttt{documentSet} shemi dostupnoj na
+% \url{http://ktlab.fer.hr/download/documentSet.xsd}. Budući da se veliki broj
+% članaka u mrežnoj arhivi našao u više kopija, one su pri izradi XML arhive
+% preskočene.
 
 \begin{minipage}{0.8\linewidth}
 \vspace{10pt}
