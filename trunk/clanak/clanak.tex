@@ -70,6 +70,13 @@
 % Removal of space between affils.
 \setlength{\affilsep}{0em}
 
+\makeatletter
+\newenvironment{tablehere}
+  {\def\@captype{table}}
+  {}
+\makeatother
+
+
 \begin{document}
 
 \title{Automatic authorship attribution for Croatian texts}
@@ -202,104 +209,194 @@ Section 6 describes classification and 7th section discusses evaluation and
 gives evaluation results. Conclusion and future work is given in 8th section.
 
 \section{Related work}
-\citet{coyotl2006authorship} dijele postojeće metode prepoznavanja autora
-teksta na tri glavna pristupa:
+% \citet{coyotl2006authorship} dijele postojeće metode prepoznavanja autora
+% teksta na tri glavna pristupa:
+\citet{coyotl2006authorship} clusters methods of authorship attribution in
+three main approaches:
 \begin{description}
-\item[Uzimanje mjera stila kao značajki dokumenta:] Za pristup su
-karakteristične značajke koje u obzir uzimaju duljinu riječi i rečenica te
-bogatstvo vokabulara. Navodi se da takve značajke nisu dovoljne za rješavanje
-problema, da ovise o žanru teksta te da gube smisao ako se primjenjuju nad
-kratkim tekstovima.
-\item[Korištenje sintaksnih obilježja kao značajki:] Korištenje oznaka stila
-autora \engl{style markers} kao značajki -- informacije vezane uz strukturu
-jezika koje su skupljene dubinskom analizom sintaksne analize dokumenta. Tekst se
-karakterizira pojavom i frekvencijom pojedinih sintaksnih struktura. Navedena
-karakterizacija je detaljna i relevantna. Nažalost, računalno je zahtjevna i
-zahtjeva alate za obradu teksta (npr.~POS označivači \engl{Part-Of-Speech taggers},
-sintaksni parseri i sl.). Očit je i utjecaj duljine teksta na rezultat klasifikacije.
-\item[Značajke dokumenta temeljene na riječima:] Pristup se grana na tri
-različite metode. \emph{Prva} karakterizira dokumente koristeći skup funkcijskih
-riječi --- riječi koje nemaju sadržajno značenje (njihovu pojavu i
-frekvenciju pojavljivanja), ignorirajući sadržajne riječi \engl{content words}
-jer su one usko vezane uz temu dokumenta. Metoda pokazuje dobre rezultate, ali na
-nju utječe veličina dokumenta. \emph{Druga} grana dokument promatra kao hrpu
-riječi \engl{bag-of-words} te koristi jedno-sadržajne riječi \engl{single
-content words} kao značajke dokumenta. Metoda je vrlo robusna i daje odlične rezultate
-kad postoji primjetna korelacija između autora i teme o kojoj pišu. \emph{Treća}
-grana razmatra $n$-grame riječi kao značajke, npr.~značajke koje se sastoje od
-sekvenci $n$ uzastopnih riječi. Radi prebrzog rasta značajki koriste se samo
-$n$-grami do tri riječi.
+% \item[Stylistic measures as document features:] Za pristup su
+% karakteristične značajke koje u obzir uzimaju duljinu riječi i rečenica te
+% bogatstvo vokabulara. Navodi se da takve značajke nisu dovoljne za rješavanje
+% problema, da ovise o žanru teksta te da gube smisao ako se primjenjuju nad
+% kratkim tekstovima.
+\item[Stylistic measures as document features:] Features characteristic for this
+approach take into account length of words and sentences and the richness of the
+vocabulary. \citet{coyotl2006authorship} notes that such features are not
+sufficient to resolve problems that depend on the genre of the text and to lose
+their meaning when applied over short texts.
+
+% \item[Syntactic cues as document features:] Korištenje oznaka stila
+% autora \engl{style markers} kao značajki -- informacije vezane uz strukturu
+% jezika koje su skupljene dubinskom analizom sintaksne analize dokumenta. Tekst se
+% karakterizira pojavom i frekvencijom pojedinih sintaksnih struktura. Navedena
+% karakterizacija je detaljna i relevantna. Nažalost, računalno je zahtjevna i
+% zahtjeva alate za obradu teksta (npr.~POS označivači \engl{Part-Of-Speech taggers},
+% sintaksni parseri i sl.). Očit je i utjecaj duljine teksta na rezultat klasifikacije.
+\item[Syntactic cues as document features:] Using the author style markers as
+features -- informations related to structure of the language which are obtained
+by an in depth syntactic analysis of documents. Text is characterized by the
+presence and frequency of certain syntactic structures. This characterization is
+detailed and relevant. Unfortunately, it is computationally expensive and even
+impossible to build for languages lacking of text--processing resources (e.g.\
+POS tagger, syntactic parser, etc.). It is clearly influenced by the length of
+documents.
+
+% \item[Word--based document features:] Pristup se grana na tri
+% različite metode. \emph{Prva} karakterizira dokumente koristeći skup funkcijskih
+% riječi---riječi koje nemaju sadržajno značenje (njihovu pojavu i
+% frekvenciju pojavljivanja), ignorirajući sadržajne riječi \engl{content words}
+% jer su one usko vezane uz temu dokumenta. Metoda pokazuje dobre rezultate, ali na
+% nju utječe veličina dokumenta. \emph{Druga} grana dokument promatra kao hrpu
+% riječi \engl{bag-of-words} te koristi jedno-sadržajne riječi \engl{single
+% content words} kao značajke dokumenta. Metoda je vrlo robusna i daje odlične rezultate
+% kad postoji primjetna korelacija između autora i teme o kojoj pišu. \emph{Treća}
+% grana razmatra $n$-grame riječi kao značajke, npr.~značajke koje se sastoje od
+% sekvenci $n$ uzastopnih riječi. Radi prebrzog rasta značajki koriste se samo
+% $n$-grami do tri riječi.
+\item[Word--based document features:] This approach branches in three different
+methods. \emph{The first one} characterizes documents using a set of functional
+words (their presence and frequency), ignoring the content words since they tend
+to be highly correlated with the document topics. The method shows good results,
+but it is affected by the size of the document. \emph{Second branch} of methods
+observes document as a bag--of--words and uses single content words as document
+features. Mathod is very robust and produces excellent results when there is a
+noticeable correlation between the authors and the topics. The \emph{third
+branch} considers word $n$--grams as features, i.e.\ features consisting od
+sequences of consecutive words. Nevertheless, due to the feature explosion, it
+tends to use only $n$--grams up to three words.
 \end{description}
 
-\citet{kukushkina2001using} navode postupak koji koristi algoritme za kompresiju
-podataka u svrhu prepoznavanja autora. U dodatku svog rada navode eksperimentalne
-rezultate prepoznavanja autora sa različitim kompresijskim algoritmima. Ideja
-postupka je dokumente za učenje podijeliti u skupove po autorima i svaki skup
-sažeti odabranim algoritmom te zabilježiti veličine arhiva. Tekst nepoznatog
-autora se dodaje svakom skupu za učenje te se primjenjuje isti algoritam
-kompresije. Arhiva koja bilježi najmanji porast veličine proglašava se
-pripadnom arhivom novog teksta, tj.~autor njenog sadržaja, autor teksta. Osvrt
-na sličan postupak spominje se u radu \citep{zhao2005effective}. Taj rad navodi
-da postupak ima očite propuste te navodi rad koji to potvrđuje.
+% \citet{kukushkina2001using} navode postupak koji koristi algoritme za kompresiju
+% podataka u svrhu prepoznavanja autora. U dodatku svog rada navode eksperimentalne
+% rezultate prepoznavanja autora sa različitim kompresijskim algoritmima. Ideja
+% postupka je dokumente za učenje podijeliti u skupove po autorima i svaki skup
+% sažeti odabranim algoritmom te zabilježiti veličine arhiva. Tekst nepoznatog
+% autora se dodaje svakom skupu za učenje te se primjenjuje isti algoritam
+% kompresije. Arhiva koja bilježi najmanji porast veličine proglašava se
+% pripadnom arhivom novog teksta, tj.~autor njenog sadržaja, autor teksta. Osvrt
+% na sličan postupak spominje se u radu \citep{zhao2005effective}. Taj rad navodi
+% da postupak ima očite propuste te navodi rad koji to potvrđuje.
+\citet{kukushkina2001using} explains method which uses algorithms for the data
+compression to identify the author. Appendix of paper shows evaluation results
+for authorship attribution with different compression algorithms. The idea behind
+the method is to devide documents by authors and compress every set with selected
+algorithm and write size of archive. To classify text of unknown author, text is
+added to each set and applied the same data compression algorithm. Author of
+documents in archive which records the smallest increase of the size is declared
+as author of the new document. Review of a similar method can be found in the
+paper \citep{zhao2005effective}. Paper notes that the method has obvious
+omissions and cites paper which proves it.
 
-\citet{koppel2003exploiting} opisuju korištenje gramatičkih greški i
-neformalnog stiliziranja (npr.~pisanje rečenica velikim slovima u svrhu
-naglašavanja i sl.) kao značajki dokumenta u svrhu prepoznavanja autora. Metoda
-je primjenjiva samo na neuređivane tekstove (npr.~blogovi, Internet forumi,
-\emph{news grupe}, e-mail poruke, i sl.).
+% \citet{koppel2003exploiting} opisuju korištenje gramatičkih greški i
+% neformalnog stiliziranja (npr.~pisanje rečenica velikim slovima u svrhu
+% naglašavanja i sl.) kao značajki dokumenta u svrhu prepoznavanja autora. Metoda
+% je primjenjiva samo na neuređivane tekstove (npr.~blogovi, Internet forumi,
+% \emph{news grupe}, e-mail poruke, i sl.).
+\citet{koppel2003exploiting} shows the use of gramatical errors and informal
+styling (e.g.\ writing sentences in capital letters) as document features in
+order to identify the author. Method is applicable only to unedited texts (blogs,
+Internet forums, newsgroups, e--mail messages, etc.).
 
-\citet{peng2003language} navode mogućnost izrade jezičnog modela pomoću $n$-grama te
-njegovog korištenja za prepoznavanje autora. Sličan postupak je opisan u
-\citep{coyotl2006authorship}.
+% \citet{peng2003language} navode mogućnost izrade jezičnog modela pomoću $n$-grama te
+% njegovog korištenja za prepoznavanje autora. Sličan postupak je opisan u
+% \citep{coyotl2006authorship}.
+\citet{peng2003language} suggests the use of $n$--gram language model to identify
+the author. A similar method is shown in \citep{coyotl2006authorship}.
 
-Uspješnost funkcijskih riječi nad kolokacijama (riječi koje se
-pojavljuju na određenoj udaljenosti jedna od druge) navodi se u
-\citep{argamon2005measuring} -- iako, radi redukcije informacija pri uzimanju
-funkcijskih riječi kao značajki, intuitivno bi se moglo zaključiti suprotno,
-odnosno pogrešno. Također se navodi sumnja da zapravo diskriminatorna osobina
-kolokacija dolazi od frekventnih riječi koje one sadržavaju. Uz to, navedeno je da znatno veći
-broj dokumenata za učenje od broja značajki izuzetno dobro smanjuje
-vjerojatnost pretreniranosti klasifikatora. Slično je navedeno i u
-radu \citep{banko2001scaling} koji obrađuje značaj veličine korpusa pri
-općenitoj obradi prirodnog jezika.
+% Uspješnost funkcijskih riječi nad kolokacijama (riječi koje se
+% pojavljuju na određenoj udaljenosti jedna od druge) navodi se u
+% \citep{argamon2005measuring} -- iako, radi redukcije informacija pri uzimanju
+% funkcijskih riječi kao značajki, intuitivno bi se moglo zaključiti suprotno,
+% odnosno pogrešno. Također se navodi sumnja da zapravo diskriminatorna osobina
+% kolokacija dolazi od frekventnih riječi koje one sadržavaju. Uz to, navedeno je da znatno veći
+% broj dokumenata za učenje od broja značajki izuzetno dobro smanjuje
+% vjerojatnost pretreniranosti klasifikatora. Slično je navedeno i u
+% radu \citep{banko2001scaling} koji obrađuje značaj veličine korpusa pri
+% općenitoj obradi prirodnog jezika.
+The success of functional words over collocation (certain pair of words occurring
+within a given threshold distance of each other) is shown in
+\citep{argamon2005measuring} -- although, becouse of information reduction at
+using function words as features, one would might conclude the opposite -- which
+is wrong. \citet{argamon2005measuring} believes that most of the discriminating
+power of collocations is due to the frequent words they contain (and not the
+collocations themselves). They also note that using more training texts than
+features seriously reduces the likelihood of overfitting the model to the
+training data, improving the reliability of results. Similar claim can be found
+in \citep{banko2001scaling} which deals with influence of the corpus size in
+general natural language processing.
 
-Slična usporedba tipova značajki je napravljena u \citep{uzuner2005comparative}
-pri čemu su se uspoređivale funkcijske riječi i sintaksni elementi dokumenata u
-svrhu prepoznavanja autora. Došli su do zaključka da sintaksni elementi izraza
-nisu korisni koliko funkcijske riječi pri rješavanju navedenog problema.
+% Slična usporedba tipova značajki je napravljena u \citep{uzuner2005comparative}
+% pri čemu su se uspoređivale funkcijske riječi i sintaksni elementi dokumenata u
+% svrhu prepoznavanja autora. Došli su do zaključka da sintaksni elementi izraza
+% nisu korisni koliko funkcijske riječi pri rješavanju navedenog problema.
+A similar comparison of the feature types is shown in
+\citep{uzuner2005comparative} where are compared the function words and syntactic
+elements in order to identify the author of document. It is conclouded that the
+syntactic elements of expression are useful as functional words in solving the
+problem.
 
-Opis postupka prepoznavanja autora teksta pomoću sintaksnih elemenata jezika
-tj.~alata za obradu prirodnog jezika može se naći u izuzetno utjecajnom radu
-\citep{stamatatos2001computer}. Razne vrste oznaka stila \engl{style markers}
-također navode \citet{diri2003automatic} te \citet{luyckx2005shallow}.
+% Opis postupka prepoznavanja autora teksta pomoću sintaksnih elemenata jezika
+% tj.~alata za obradu prirodnog jezika može se naći u izuzetno utjecajnom radu
+% \citep{stamatatos2001computer}. Razne vrste oznaka stila \engl{style markers}
+% također navode \citet{diri2003automatic} te \citet{luyckx2005shallow}.
+Description of the authorship attribution process by using syntactic elements
+of language can be found in the extremely influential work
+\citep{stamatatos2001computer}. Various types of style markers can be found in
+\citep{diri2003automatic,luyckx2005shallow}.
 
-Osim opisa navedenog postupka, \citet{stamatatos2001computer}, kao često
-korištenu značajku pri prepoznavanju autora navode raznolikost riječnika autora.
-Ona se mjeri omjerom unikatnih riječi i ukupne veličine teksta ili brojanjem
-riječi koje se pojavljuju samo jednom (\emph{hapax legomena}), riječi koje se
-pojavljuju samo dva puta (\emph{dis legomena}) i sl. Te mjere su usko vezano uz
-dužinu teksta. Rad navodi funkcije date u
-\citep{yule1944statistical,honore1979some} koje bi trebale riješiti taj problem,
-tj. trebale bi biti konstantne s obzirom na dužinu teksta. Analiza sličnih
-funkcija može se naći u radu \citep{tweedie1998variable} koji tvrdi da većina
-takvih funkcija nije neovisna o duljini teksta. Zaključuje se da je raznolikost
-riječnika nestabilna značajka za tekstove kraće od 1000 riječi.
+% Osim opisa navedenog postupka, \citet{stamatatos2001computer}, kao često
+% korištenu značajku pri prepoznavanju autora navode raznolikost riječnika autora.
+% Ona se mjeri omjerom unikatnih riječi i ukupne veličine teksta ili brojanjem
+% riječi koje se pojavljuju samo jednom (\emph{hapax legomena}), riječi koje se
+% pojavljuju samo dva puta (\emph{dis legomena}) i sl. Te mjere su usko vezano uz
+% dužinu teksta. Rad navodi funkcije date u
+% \citep{yule1944statistical,honore1979some} koje bi trebale riješiti taj problem,
+% tj. trebale bi biti konstantne s obzirom na dužinu teksta. Analiza sličnih
+% funkcija može se naći u radu \citep{tweedie1998variable} koji tvrdi da većina
+% takvih funkcija nije neovisna o duljini teksta. Zaključuje se da je raznolikost
+% riječnika nestabilna značajka za tekstove kraće od 1000 riječi.
+\citet{stamatatos2001computer} as feature for identifying the author suggests
+vocabulary diversity of the authors. It is measured by the ratio of unique words
+and the total size of the text or counting words which occur only once
+(\emph{Hapax legomena}), words which occur only twice (\emph{dis legomena}), etc.
+These measures are closely related to length of the text. They also note that
+functions defined in \citep{yule1944statistical,honore1979some}
+should solve this problem, i.e.\ they should be constant regarding the length of
+the text. Analysis of similar function can be found in the
+\citep{tweedie1998variable} who claims that most these functions are not
+independent regarding the length of the text. It is concluded that the diversity
+vocabulary is unstable feature for texts shorter than 1000 words.
 
-Problem ovisnosti mjera o dužini teksta radi što uspješnije klasifikacije pomoću
-SVM-a (Support Vector Machines) navode \citet{diederich2003authorship}.
-Za izbjegavanje ovisnosti koriste kombinaciju $L_p$ normalizacije duljine i
-transformacije frekvencija pojave termina kao što je
-\emph{idf} (Inverse document frequency) mjera.
+% Problem ovisnosti mjera o dužini teksta radi što uspješnije klasifikacije pomoću
+% SVM-a (Support Vector Machines) navode \citet{diederich2003authorship}.
+% Za izbjegavanje ovisnosti koriste kombinaciju $L_p$ normalizacije duljine i
+% transformacije frekvencija pojave termina kao što je
+% \emph{idf} (Inverse document frequency) mjera.
+The problem of dependency on the length of the text for the classification using
+a SVM (Support Vector Machines) is explained in \citep{diederich2003authorship}.
+To avoid of dependency it was used a combination of $L_p$ normalization of the
+length and transformation of terms occurrence frequency such as \emph{idf}
+(inverse document frequency) measure.
 
-Idf mjera je definirana sa
+% Idf mjera je definirana sa
+% \begin{equation}
+% F_{idf}(t_k) = \log \frac{n_d}{n_d(t_k)},
+% \label{equ:idf}
+% \end{equation}
+% pri čemu je $n_d(t_k)$ broj dokumenata koji sadržavaju termin $t_k$ te $n_d$
+% ukupan broj dokumenata. Navedena mjera daje visoke vrijednosti za dokumente
+% koji se pojavljuju u malom broju dokumenata te je time jako diskriminatorna. 
+%% Ovdje je tipfeler, trebalo je pisati ``vrijednosti za termine.''
+Idf measure is defined as
 \begin{equation}
 F_{idf}(t_k) = \log \frac{n_d}{n_d(t_k)},
 \label{equ:idf}
 \end{equation}
-pri čemu je $n_d(t_k)$ broj dokumenata koji sadržavaju termin $t_k$ te $n_d$
-ukupan broj dokumenata. Navedena mjera daje visoke vrijednosti za dokumente koji
-se pojavljuju u malom broju dokumenata te je time jako diskriminatorna. 
+where $n_d(t_k)$ is number of documents which contain term $t_k$ and $n_d$
+total number of documents. Shown measure gives high values for terms which
+appear in a small number of documents and thus it is very discriminatory.
 
+% Ovo je izbačeno iz originalnog teksta.
 % Redundancija je mjera asimetričnosti razdiobe te se definira sa
 % \begin{equation}
 % R(t_k) = \log n_d + \sum_{i=1}^{n_d} \frac{f(t_k, d_i)}{f(t_k)} \cdot \log \frac{f(t_k, d_i)}{f(t_k)},
@@ -389,8 +486,8 @@ opisuju količinu. Obično ukazuju na gramatičke odnose ili općenita svojstva
 
 Privlačnost mjerenja frekvencije pojavljivanja funkcijskih riječi za
 prepoznavanje autora leži u činjenici da su one pokazatelj stila pisanja. Neke
-manje poznate funkcijske riječi --- poput prijedloga \emph{onkraj},
-\emph{namjesto} ili \emph{zavrh} --- se rijeđe koriste i mogu vrlo dobro
+manje poznate funkcijske riječi, poput prijedloga \emph{onkraj},
+\emph{namjesto} ili \emph{zavrh}, rijeđe se koriste i mogu vrlo dobro
 sugerirati autora. Međutim, čak se i frekvencija korištenja češćih funkcijskih
 riječi može vrlo dobro iskoristiti za razlikovanje autora. Pokazuje se kako zbog
 velike frekvencije korištenja funkcijskih riječi i njihove uloge u gramatici
@@ -433,7 +530,7 @@ korištene u relativno malo korištene u drugim tekstovima. Nedostatak \emph{idf
 mjere je što gleda samo je li se riječ pojavila u nekom dokumentu, ne i koliko
 puta se pojavila. Na ovaj način riječ koja se pojavi puno puta u jednom
 tekstu i jednom u svim ostalima dobiva jednaku mjeru kao riječ koja se jednom
-pojavi u svim tekstovima --- zanemaruje se riječ koja bi izuzetno dobro
+pojavi u svim tekstovima---zanemaruje se riječ koja bi izuzetno dobro
 odvojila tekst od ostatka skupa.
 
 \subsection{Punctation marks, vowels and words length frequency}
@@ -546,7 +643,7 @@ opisana u \ref{sec:funkcijske-rijeci-grupe} nazvana ``$\mathcal{G}$'',
 metoda iz \ref{sec:funkcijske-rijeci-idf} ``\emph{idf}'', a metode iz
 \ref{sec:znacajke-manje} redom ``$\mathcal{P}$'', ``$\mathcal{V}$'' i
 ``$\mathcal{L}$''. Stupac ``Točni'' označava broj točno prepoznatih autora,
-``Netočni'' --- netočno prepoznatih.
+``Netočni'' -- netočno prepoznatih.
 
 Najveću točnost, 88\% postiže kombinacija svih metoda opisanih u
 \ref{sec:znacajke-manje} i metode iz \ref{sec:funkcijske-rijeci}.
@@ -574,9 +671,11 @@ je F mjera za razred $c_i$.
 Težinska F mjera na danom skupu za testiranje sa spomenutim metodama
 izlučivanja značajki iznosi 87\%.
 
-\begin{table*}[htb]
-\caption{Rezultati evaluacije različitih značajki}
-\centering
+% TODO: Smisliti kako srediti da je naslov tablice uvijek iznad tablice..
+% \begin{minipage}{\linewidth}
+\begin{tablehere}
+\centering%
+\caption{Rezultati evaluacije različitih značajki}%
 \begin{tabular}{l c c c}
 \hline\hline
 Metoda & Točni & Netočni & Točnost \\
@@ -604,7 +703,8 @@ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$, $\mathca
 \hline
 \end{tabular}
 \label{tbl:eval}%
-\end{table*}
+\end{tablehere}%
+% \end{minipage}
 
 \section{Conclusion}
 Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
