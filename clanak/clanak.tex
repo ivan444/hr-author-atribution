@@ -128,13 +128,6 @@ Times New Roman, 11 pt.
 \end{keywords}
 
 \section{Introduction}
-% Problem automatiziranog prepoznavanja autora teksta \engl{Authorship Attribution}
-% može se promatrati kao problem klasifikacije teksta na temelju njegovih
-% lingvističkih značajki. Problemi slični prepoznavanju autora su prepoznavanje
-% dobi autora, regije iz koje autor potječe ili spola \citep{luyckx2005shallow}.
-% Glavni problem računalno potpomognutog prepoznavanja autora teksta je određivanje
-% prikladnog skupa karakteristika dokumenta koje opisuju stil autora
-% \citep{coyotl2006authorship}.
 Automatic authorship attribution can be interpret as problem of text
 classification based on its lingvistic features. Problems similar to authorship
 attribution are detection of age, region and gender of the author
@@ -142,23 +135,11 @@ attribution are detection of age, region and gender of the author
 attribution is to define an appropriate characterization of documents that
 captures the writing style of authors \citep{coyotl2006authorship}.
 
-% \citet{kukushkina2001using} navode da se problem prepoznavanja autora teksta
-% obrađuje još od 1915.~godine u radu ``\emph{Izv.~otd.~russkogo jazyka i
-% slovesnosti, Imp.~akad.~nauk.}'', Morozov, N., A.~kojem se već 1916.~pridružio
-% utemeljitelj teorije Markovljevih lanaca, Markov, A., A.,~radom ``\emph{On some
-% application of statistical method}''.
 \citet{kukushkina2001using} notes that first works on authorship attribution
 problem are ``\emph{Izv.\ otd.\ russkogo jazyka i slovesnosti, Imp.\ akad.\ nauk.}'',
 Morozov, N., A.\ from 1915.\  and ``\emph{On some application of statistical
 method}'' from 1916.\ by Markov, A., A., founder of Theory of Markov chains.
 
-% Prepoznavanje autora može pomoći pri indeksiranju dokumenata, filtriranju ili
-% hijerarhiskoj kategorizaciji web stranica i web pretraživača
-% \citep{luyckx2005shallow}. Bitno je napomenuti kako se prepoznavanje autora i
-% njegovih karakteristika razlikuje od detekcije plagijata. Detekcija
-% plagijata pokušava odrediti sličnost između dva u suštini različita
-% djela, ali nije u mogućnosti otkriti jesu li proizvod istog autora
-% \citep{de2001mining}.
 Authorship attribution can help in document indexing, document filtering and the
 hierarchical categorization of web pages and web search engines
 \citep{luyckx2005shallow}. It is important to note that authorship attribution is
@@ -166,14 +147,6 @@ different from plagiarism detection. Plagiarism detection attempts to detect the
 similarity between two substantially different pieces of work but is unable to
 determine if they were produced by the same author \citep{de2001mining}.
 
-% Problem prepoznavanja autora može se podijeliti u tri kategorije
-% \citep{zhao2005effective}: binarnu, višerazrednu i jednorazrednu klasifikaciju.
-% Binarna klasifikacija rješava problem kad je za skup tekstova poznato da
-% pripadaju jednom od dva autora. Višerazredna klasifikacija je proširenje
-% binarne na više autora. Jednorazredna se primjenjuje u situacijama kad je
-% dio tekstova napisan od poznatog autora, a autori ostalih tekstova su
-% nepoznati. Ta klasifikacija pokušava odgovoriti na pitanje pripada li neki
-% tekst poznatom autoru ili ne.
 The problem can be devided in three categories \citep{zhao2005effective}: binary,
 multi--class and single--class (or one--class) classification. Binary
 classification solves problem when each document from data set is written by one
@@ -184,24 +157,10 @@ author while the authorship of the other documents is unspecified. This
 classification answers the question does goven document belongs to single known
 author or not.
 
-% U ovom radu obrađen je problem višerazredne klasifikacije za tekstove na
-% hrvatskom jeziku. Naglasak je stavljen na evaluiranje različitih skupova
-% karakteristika.
 In this paper we have studied the problem of multi--class classification for
 documents in Croatian language. We have oriented on evaluation of different sets
 of documents features.
 
-% Neke stvari su izbačene
-% Rad je organiziran tako da su u 2.~odjeljku opisane metode koje su u drugim
-% radovima korištene za problem prepoznavanja autora i srodne probleme. Odjeljak 3
-% daje kratki pregled sustava, način na koji su komponente u sustavu povezane i na
-% koji način se sustav može koristiti. Slijedi 4.~odjeljak s opisom korištenih
-% podataka. Najbitniji za rad je odijeljak 5. U njemu je dan opis korištenih metoda
-% za izvlačenje značajki iz tekstova, popis svih korištenih značajki i njihove
-% specifičnosti te evaluacija. Na 5.~odjeljak usko se veže 6.~sa opisom
-% klasifikacije. Rezultati evaluacije metoda navedenih u 5.~odjeljku te njihovih
-% kombinacija uz klasifikator opisan u 6.~odjeljku navedeni su u 7.~odjeljku.
-% Implementacija je opisana u 8., a zaključak je dan u 9.~odjeljku.
 The rest of the paper is organized as follows. Section 2 discusses some previous
 works on authorship attribution and similar problems. Section 3 describes used
 data set. The most important is 5th section which introduces used methods.
@@ -209,29 +168,15 @@ Section 6 describes classification and 7th section discusses evaluation and
 gives evaluation results. Conclusion and future work is given in 8th section.
 
 \section{Related work}
-% \citet{coyotl2006authorship} dijele postojeće metode prepoznavanja autora
-% teksta na tri glavna pristupa:
 \citet{coyotl2006authorship} clusters methods of authorship attribution in
 three main approaches:
 \begin{description}
-% \item[Stylistic measures as document features:] Za pristup su
-% karakteristične značajke koje u obzir uzimaju duljinu riječi i rečenica te
-% bogatstvo vokabulara. Navodi se da takve značajke nisu dovoljne za rješavanje
-% problema, da ovise o žanru teksta te da gube smisao ako se primjenjuju nad
-% kratkim tekstovima.
 \item[Stylistic measures as document features:] Features characteristic for this
 approach take into account length of words and sentences and the richness of the
 vocabulary. \citet{coyotl2006authorship} notes that such features are not
 sufficient to resolve problems that depend on the genre of the text and to lose
 their meaning when applied over short texts.
 
-% \item[Syntactic cues as document features:] Korištenje oznaka stila
-% autora \engl{style markers} kao značajki -- informacije vezane uz strukturu
-% jezika koje su skupljene dubinskom analizom sintaksne analize dokumenta. Tekst se
-% karakterizira pojavom i frekvencijom pojedinih sintaksnih struktura. Navedena
-% karakterizacija je detaljna i relevantna. Nažalost, računalno je zahtjevna i
-% zahtjeva alate za obradu teksta (npr.~POS označivači \engl{Part-Of-Speech taggers},
-% sintaksni parseri i sl.). Očit je i utjecaj duljine teksta na rezultat klasifikacije.
 \item[Syntactic cues as document features:] Using the author style markers as
 features -- informations related to structure of the language which are obtained
 by an in depth syntactic analysis of documents. Text is characterized by the
@@ -241,18 +186,6 @@ impossible to build for languages lacking of text--processing resources (e.g.\
 POS tagger, syntactic parser, etc.). It is clearly influenced by the length of
 documents.
 
-% \item[Word--based document features:] Pristup se grana na tri
-% različite metode. \emph{Prva} karakterizira dokumente koristeći skup funkcijskih
-% riječi---riječi koje nemaju sadržajno značenje (njihovu pojavu i
-% frekvenciju pojavljivanja), ignorirajući sadržajne riječi \engl{content words}
-% jer su one usko vezane uz temu dokumenta. Metoda pokazuje dobre rezultate, ali na
-% nju utječe veličina dokumenta. \emph{Druga} grana dokument promatra kao hrpu
-% riječi \engl{bag-of-words} te koristi jedno-sadržajne riječi \engl{single
-% content words} kao značajke dokumenta. Metoda je vrlo robusna i daje odlične rezultate
-% kad postoji primjetna korelacija između autora i teme o kojoj pišu. \emph{Treća}
-% grana razmatra $n$-grame riječi kao značajke, npr.~značajke koje se sastoje od
-% sekvenci $n$ uzastopnih riječi. Radi prebrzog rasta značajki koriste se samo
-% $n$-grami do tri riječi.
 \item[Word--based document features:] This approach branches in three different
 methods. \emph{The first one} characterizes documents using a set of functional
 words (their presence and frequency), ignoring the content words since they tend
@@ -266,16 +199,6 @@ sequences of consecutive words. Nevertheless, due to the feature explosion, it
 tends to use only $n$--grams up to three words.
 \end{description}
 
-% \citet{kukushkina2001using} navode postupak koji koristi algoritme za kompresiju
-% podataka u svrhu prepoznavanja autora. U dodatku svog rada navode eksperimentalne
-% rezultate prepoznavanja autora sa različitim kompresijskim algoritmima. Ideja
-% postupka je dokumente za učenje podijeliti u skupove po autorima i svaki skup
-% sažeti odabranim algoritmom te zabilježiti veličine arhiva. Tekst nepoznatog
-% autora se dodaje svakom skupu za učenje te se primjenjuje isti algoritam
-% kompresije. Arhiva koja bilježi najmanji porast veličine proglašava se
-% pripadnom arhivom novog teksta, tj.~autor njenog sadržaja, autor teksta. Osvrt
-% na sličan postupak spominje se u radu \citep{zhao2005effective}. Taj rad navodi
-% da postupak ima očite propuste te navodi rad koji to potvrđuje.
 \citet{kukushkina2001using} explains method which uses algorithms for the data
 compression to identify the author. Appendix of paper shows evaluation results
 for authorship attribution with different compression algorithms. The idea behind
@@ -287,32 +210,14 @@ as author of the new document. Review of a similar method can be found in the
 paper \citep{zhao2005effective}. Paper notes that the method has obvious
 omissions and cites paper which proves it.
 
-% \citet{koppel2003exploiting} opisuju korištenje gramatičkih greški i
-% neformalnog stiliziranja (npr.~pisanje rečenica velikim slovima u svrhu
-% naglašavanja i sl.) kao značajki dokumenta u svrhu prepoznavanja autora. Metoda
-% je primjenjiva samo na neuređivane tekstove (npr.~blogovi, Internet forumi,
-% \emph{news grupe}, e-mail poruke, i sl.).
 \citet{koppel2003exploiting} shows the use of gramatical errors and informal
 styling (e.g.\ writing sentences in capital letters) as document features in
 order to identify the author. Method is applicable only to unedited texts (blogs,
 Internet forums, newsgroups, e--mail messages, etc.).
 
-% \citet{peng2003language} navode mogućnost izrade jezičnog modela pomoću $n$-grama te
-% njegovog korištenja za prepoznavanje autora. Sličan postupak je opisan u
-% \citep{coyotl2006authorship}.
 \citet{peng2003language} suggests the use of $n$--gram language model to identify
 the author. A similar method is shown in \citep{coyotl2006authorship}.
 
-% Uspješnost funkcijskih riječi nad kolokacijama (riječi koje se
-% pojavljuju na određenoj udaljenosti jedna od druge) navodi se u
-% \citep{argamon2005measuring} -- iako, radi redukcije informacija pri uzimanju
-% funkcijskih riječi kao značajki, intuitivno bi se moglo zaključiti suprotno,
-% odnosno pogrešno. Također se navodi sumnja da zapravo diskriminatorna osobina
-% kolokacija dolazi od frekventnih riječi koje one sadržavaju. Uz to, navedeno je da znatno veći
-% broj dokumenata za učenje od broja značajki izuzetno dobro smanjuje
-% vjerojatnost pretreniranosti klasifikatora. Slično je navedeno i u
-% radu \citep{banko2001scaling} koji obrađuje značaj veličine korpusa pri
-% općenitoj obradi prirodnog jezika.
 The success of functional words over collocation (certain pair of words occurring
 within a given threshold distance of each other) is shown in
 \citep{argamon2005measuring} -- although, becouse of information reduction at
@@ -325,36 +230,17 @@ training data, improving the reliability of results. Similar claim can be found
 in \citep{banko2001scaling} which deals with influence of the corpus size in
 general natural language processing.
 
-% Slična usporedba tipova značajki je napravljena u \citep{uzuner2005comparative}
-% pri čemu su se uspoređivale funkcijske riječi i sintaksni elementi dokumenata u
-% svrhu prepoznavanja autora. Došli su do zaključka da sintaksni elementi izraza
-% nisu korisni koliko funkcijske riječi pri rješavanju navedenog problema.
 A similar comparison of the feature types is shown in
 \citep{uzuner2005comparative} where are compared the function words and syntactic
 elements in order to identify the author of document. It is conclouded that the
 syntactic elements of expression are useful as functional words in solving the
 problem.
 
-% Opis postupka prepoznavanja autora teksta pomoću sintaksnih elemenata jezika
-% tj.~alata za obradu prirodnog jezika može se naći u izuzetno utjecajnom radu
-% \citep{stamatatos2001computer}. Razne vrste oznaka stila \engl{style markers}
-% također navode \citet{diri2003automatic} te \citet{luyckx2005shallow}.
 Description of the authorship attribution process by using syntactic elements
 of language can be found in the extremely influential work
 \citep{stamatatos2001computer}. Various types of style markers can be found in
 \citep{diri2003automatic,luyckx2005shallow}.
 
-% Osim opisa navedenog postupka, \citet{stamatatos2001computer}, kao često
-% korištenu značajku pri prepoznavanju autora navode raznolikost riječnika autora.
-% Ona se mjeri omjerom unikatnih riječi i ukupne veličine teksta ili brojanjem
-% riječi koje se pojavljuju samo jednom (\emph{hapax legomena}), riječi koje se
-% pojavljuju samo dva puta (\emph{dis legomena}) i sl. Te mjere su usko vezano uz
-% dužinu teksta. Rad navodi funkcije date u
-% \citep{yule1944statistical,honore1979some} koje bi trebale riješiti taj problem,
-% tj. trebale bi biti konstantne s obzirom na dužinu teksta. Analiza sličnih
-% funkcija može se naći u radu \citep{tweedie1998variable} koji tvrdi da većina
-% takvih funkcija nije neovisna o duljini teksta. Zaključuje se da je raznolikost
-% riječnika nestabilna značajka za tekstove kraće od 1000 riječi.
 \citet{stamatatos2001computer} as feature for identifying the author suggests
 vocabulary diversity of the authors. It is measured by the ratio of unique words
 and the total size of the text or counting words which occur only once
@@ -367,26 +253,12 @@ the text. Analysis of similar function can be found in the
 independent regarding the length of the text. It is concluded that the diversity
 vocabulary is unstable feature for texts shorter than 1000 words.
 
-% Problem ovisnosti mjera o dužini teksta radi što uspješnije klasifikacije pomoću
-% SVM-a (Support Vector Machines) navode \citet{diederich2003authorship}.
-% Za izbjegavanje ovisnosti koriste kombinaciju $L_p$ normalizacije duljine i
-% transformacije frekvencija pojave termina kao što je
-% \emph{idf} (Inverse document frequency) mjera.
 The problem of dependency on the length of the text for the classification using
 a SVM (Support Vector Machines) is explained in \citep{diederich2003authorship}.
 To avoid of dependency it was used a combination of $L_p$ normalization of the
 length and transformation of terms occurrence frequency such as \emph{idf}
 (inverse document frequency) measure.
 
-% Idf mjera je definirana sa
-% \begin{equation}
-% F_{idf}(t_k) = \log \frac{n_d}{n_d(t_k)},
-% \label{equ:idf}
-% \end{equation}
-% pri čemu je $n_d(t_k)$ broj dokumenata koji sadržavaju termin $t_k$ te $n_d$
-% ukupan broj dokumenata. Navedena mjera daje visoke vrijednosti za dokumente
-% koji se pojavljuju u malom broju dokumenata te je time jako diskriminatorna. 
-%% Ovdje je tipfeler, trebalo je pisati ``vrijednosti za termine.''
 Idf measure is defined as
 \begin{equation}
 F_{idf}(t_k) = \log \frac{n_d}{n_d(t_k)},
@@ -396,22 +268,8 @@ where $n_d(t_k)$ is number of documents which contain term $t_k$ and $n_d$
 total number of documents. Shown measure gives high values for terms which
 appear in a small number of documents and thus it is very discriminatory.
 
-% Ovo je izbačeno iz originalnog teksta.
-% Redundancija je mjera asimetričnosti razdiobe te se definira sa
-% \begin{equation}
-% R(t_k) = \log n_d + \sum_{i=1}^{n_d} \frac{f(t_k, d_i)}{f(t_k)} \cdot \log \frac{f(t_k, d_i)}{f(t_k)},
-% \label{equ:redundancija}
-% \end{equation}
-% pri čemu je $f(t_k, d_i)$ frekvencija pojavljivanja termina $t_k$ u dokumentu
-% $d_i$, $f(t_k)$ frekvencija pojavljivanja termina u svim dokumentima te $n_d$
-% ukupan broj dokumenata. $R(t_k)$ je mjera koliko razdioba termina $t_k$ u raznim
-% dokumentima odstupa od uniformne razdiobe.
-
 \section{Data set}
 \label{sec:podatci}
-% Pri izradi sustava korištena je mrežna arhiva kolumni ``Jutarnjeg lista'' do
-% 14.~studenog, 2009.~-- ``Komentari i kolumne na aktualna događanja u
-% Hrvatskoj - Jutarnji.hr'' (\url{http://www.jutarnji.hr/komentari/}).
 Used data set is online archive of ``Jutarnji list'' newspaper columns
 available at \url{http://www.jutarnji.hr/komentari/}. Data set consists of
 4571 texts written by 25 authors. The lowest average number of words in
@@ -419,23 +277,8 @@ document per author is 315 word, highest is 1347. Standard average number
 of words in document per author for data set is 717 words. Number of document
 per author in data set is shown at figure \ref{fig:articlesPerAuthor}.
 
-% U arhivi se nalaze tekstovi 25 autora sa ukupno 4359 tekstova koji zajedno broje
-% 2998766 riječi. Detaljne statistike arhive nalaze se na slikama
-% \ref{fig:articlesPerAuthor}, \ref{fig:wordsPerAuthor} i
-% \ref{fig:avgWordsPerAuthorArticle}.
-
-% Da bi se izbjeglo učenje teme, arhiva je podijeljena po razdobljima, tj.~za
-% testiranje je odvojeno $20\%$ najnovijih tekstova svakog autora.
 To make sure that learning of topic is avoided, data set is splitted by dates
 -- 20\% of newest texts of every author is taken for testing (hold--out method).
-
-% Nepotrebno za članak
-% Arhiva je pohranjena kao XML (Extensible Markup Language) dokument po KTLab
-% (Knowledge Technologies Lab, FER -- \url{http://ktlab.fer.hr})
-% \texttt{documentSet} shemi dostupnoj na
-% \url{http://ktlab.fer.hr/download/documentSet.xsd}. Budući da se veliki broj
-% članaka u mrežnoj arhivi našao u više kopija, one su pri izradi XML arhive
-% preskočene.
 
 \begin{minipage}{0.8\linewidth}
 \vspace{10pt}
@@ -444,27 +287,7 @@ To make sure that learning of topic is avoided, data set is splitted by dates
 \label{fig:articlesPerAuthor}
 \end{minipage}
 
-% \begin{minipage}{0.8\linewidth}
-% \vspace{10pt}
-% \centerline{\resizebox{1.4\linewidth}{!}{\input{figures/wordsPerAuthor}}}%
-% \figcaption{\small \textbf{\textsf{Broj riječi po autoru.}}}%
-% \label{fig:wordsPerAuthor}
-% \end{minipage}
-
-% \begin{minipage}{0.8\linewidth}
-% \vspace{10pt}
-% \centerline{\resizebox{1.4\linewidth}{!}{\input{figures/avgWordsPerAuthorArticle}}}%
-% \figcaption{\small \textbf{\textsf{Average number of words in document per
-% author.}}}%
-% \label{fig:avgWordsPerAuthorArticle}
-% \end{minipage}
-
 \section{Document features}
-% Glavni problem konstrukcije sustava za prepoznavanje autora je odabir dovoljno
-% diskriminatornih značajki teksta. Značajka je diskriminatorna ako je česta kod
-% jednog autora, a rijetka kod drugih. Zbog velikoga broja autora izuzetno su
-% korisne složene značajke čija je razdioba karakteristična za svakog autora
-% (npr.\ razdioba nekih riječi).
 The main problem of the construction of authorship attribution systems is the
 selection of the sufficienty discriminatory features of the text. Feature is
 discriminatory if it is common at one author, and rare at others. Due to the
@@ -472,35 +295,18 @@ large number of authors complex features are extremely useful if their
 distribution is characteristic for each author (e.g.\ the frequency distribution
 of some words).
 
-% Značajke je moguće kombinirati. Na ovaj način, ako se koriste složene značajke,
-% značajka može predstavljati više razdiobi i biti jače diskriminatorna.
 Features can be combined. If we combine complex features, new feature can
 represent more distributions and have greater discriminatory power.
 
-% Prilikom stvaranja vektora značajki potrebno je voditi brigu da značajka ne
-% ovisi o duljini i sadržaju teksta. Takav utjecaj smanjuje općenitost primjene
-% sustava i može dovesti do smanjenja uspješnosti (npr.\ povezivanje autora s
-% konkretnom temom).
 At creation of feature vector we need to take care that feature doesn't depend
 on length or content of document. That dependency reduces generality of
 systems application and can lead to decrease of accurancy (e.g.\ relateing
 author with concrete topic or terms).
 
-% Značajke se prikazuju u obliku vektora realnih brojeva što omogućava relativno
-% jednostavnu klasifikaciju. Skup dokumenata se prikazuje kao skup vektora jednakih
-% dimenzija. Kombiniranje značajki je spajanje (nadovezivanje) vektora značajki.
 Features can be expressed as vector of real numbers which makes classification
 very easy. Set of documents is expressed as set of vectors of equal dimensions.
 Combining of features is connecting (appending) of their feature vectors.
 
-% Izbačeno iz originalnog teksta.
-% Potrebno je niz jezičnih znakova na prikladan način prilagoditi za klasifikaciju, primjerice
-% prikazati značajke teksta u obliku vektora realnih brojeva. Nakon ove faze, vektori značajki se dalje
-% mogu na standardni način bez problema koristiti u bilo kojem tipu poznatog klasifikatora.
-
-% Ovisno o odabranom modelu značajki, analiza teksta i stvaranje vektora značajki
-% može varirati od računski vrlo trivijalnih operacija pa do vrlo zahtjevnih
-% algoritama (npr.\ značajke dobivene sintaksnom analizom prirodnog jezika).
 Depending of selected feature model, text analysis and the creation of vector
 features can vary from computationally, very trivial operation to a very complex
 algorithms (such as obtaining syntactic features by analyzing natural language).
@@ -508,26 +314,13 @@ algorithms (such as obtaining syntactic features by analyzing natural language).
 
 \subsection{Function words frequency}
 \label{sec:funkcijske-rijeci}
-% Funkcijske riječi su riječi koje promatrane samostalno nemaju semantičko
 % značenje, poput priloga, prijedloga, veznika, čestica, uzvika ili riječi koje
-% opisuju količinu. Obično ukazuju na gramatičke odnose ili općenita svojstva
-% \citep{zhao2005effective}.
-
 % TODO: Mislim da sam krivo preveo vrste riječi!
 Function words are words that have little (or none) semantic content of their
 own, they are words such as prepositions, conjunctions, or articles, or elements
 such as words describing quantities. They usually indicate a grammatical
 relationship or generic property \citep{zhao2005effective}.
 
-% Privlačnost mjerenja frekvencije pojavljivanja funkcijskih riječi za
-% prepoznavanje autora leži u činjenici da su one pokazatelj stila pisanja. Neke
-% manje poznate funkcijske riječi, poput prijedloga \emph{onkraj},
-% \emph{namjesto} ili \emph{zavrh}, rijeđe se koriste i mogu vrlo dobro
-% sugerirati autora. Međutim, čak se i frekvencija korištenja češćih funkcijskih
-% riječi može vrlo dobro iskoristiti za razlikovanje autora. Pokazuje se kako zbog
-% velike frekvencije korištenja funkcijskih riječi i njihove uloge u gramatici
-% autor obično nema svjesnu kontrolu nad njihovom uporabom u pojedinom tekstu
-% \citep{argamon2005measuring}.
 Usefulness of function words occurrence frequency for authorship attribution
 lies in the fact that they are an indicators of writing style. Some
 less well--known function words, such as proposals \emph{onkraj},
@@ -538,15 +331,6 @@ that the high frequency of use of function words and their roles in the grammar
 the author usually has no conscious control over their use in a particular text
 \citep{argamon2005measuring}.
 
-% Velika prednost funkcijskih riječi je neovisnost o temi pisanja. Nevezano uz
-% sadržaj, autori prilikom pisanja nesvjesno koriste funkcijske riječi indikativno
-% njihovo vlastitom stilu. S druge strane, ovisnost o jeziku može biti veliki
-% nedostatak. Promjenom jezika dokumenata, potrebno je ažurirati i skup funkcijskih
-% riječi s kojima sustav radi. Teško je predvidjeti kako će se tako promijenjen
-% sustav ponašati i hoće li funkcijske riječi dati jednako dobre rezultate za
-% različite jezike. Iako postoji više istraživanja na ovu temu, zbog različitih
-% jezika, vrsta i veličine dokumenata teško je zaključiti koliko su ovakve metode
-% općenito učinkovite \citep{zhao2005effective}.
 Functional words are topic independent, authors automatically (with out conscious
 control) use functional words which indicate their own style. Changing the
 language of documents, it is necessary to update and set of functional words with
@@ -556,10 +340,6 @@ languages. Although there are more research of this topic, due to various
 language, type and size of documents it is difficult to conclude are these
 methods generally effective \citep{zhao2005effective}.
 
-% Pretvorba dokumenta u vektor značajki se vrši brojanjem pojave svake funkcijske
-% riječi unutar dokumenta. Dobiveni brojevi se zapišu kao vektor (za funkcijske
-% riječi koje se nisu pojavile u dokumentu piše se 0) te se svaki posebno podijeli
-% ukupnim brojem riječi u dokumentu (uklanjanje ovisnosti o dužini dokumenta).
 Building the document feature vector is done by counting the appearance of any
 functional words in the document. The resulting numbers are written as vector
 (for the function words that have not appeared in a document we write 0). After
@@ -570,11 +350,6 @@ counting each frequency is devided with the total number of words in the documen
 \label{sec:funkcijske-rijeci-grupe}
 % Ulazni skup funkcijskih riječi podijeljen je na: priloge, prijedloge, veznike,
 % čestice i uzvike.
-% 
-% Vektor značajki se dobiva brojanjem pojava vrste funkcijskih riječi. Rezultat
-% se zapiše kao vektor (u ovom slučaju vektor će imati pet dimenzija) i svaka
-% komponenta vektora se podijeli brojem riječi u dokumentu.
-
 % TODO: U zagradama navesti tipove riječi!
 Building of the feature vector is done by counting the appearance of
 types of functional words. Result is written as a vector (five--dimensional
@@ -584,22 +359,11 @@ the document.
 
 \subsection{Idf weighted function words frequency}
 \label{sec:funkcijske-rijeci-idf}
-% Stvaranje vektora značajki se vrši množenjem komponenti vektora dobivenih metodom
-% opisanom u odjeljku \ref{sec:funkcijske-rijeci} i pripadne \emph{idf} \engl{inverse
-% document frequency} težine. \emph{Idf} težina dana je formulom (\ref{equ:idf})
-% \citep{diederich2003authorship}.
 The feature vector is build by multiplying components of vector got by method
 defined in \ref{sec:funkcijske-rijeci} and belonging \emph{idf} \engl{inverse
 document frequency} weight. \emph{Idf} weight is defined by expression
 (\ref{equ:idf}) \citep{diederich2003authorship}.
 
-% Navedena mjera diskriminira tekstove koji sadrže funkcijske riječi koje su
-% korištene u relativno malo korištene u drugim tekstovima. Nedostatak \emph{idf}
-% mjere je što gleda samo je li se riječ pojavila u nekom dokumentu, ne i koliko
-% puta se pojavila. Na ovaj način riječ koja se pojavi puno puta u jednom
-% tekstu i jednom u svim ostalima dobiva jednaku mjeru kao riječ koja se jednom
-% pojavi u svim tekstovima---zanemaruje se riječ koja bi izuzetno dobro
-% odvojila tekst od ostatka skupa.
 Shown measure discriminate documents that contain functional words that are
 used in small number of other documents. \emph{Idf} measure makes record only
 of presence of certain termin in document, term count in document is ignored.
@@ -610,27 +374,14 @@ document from others.
 
 \subsection{Punctation marks, vowels and words length frequency}
 \label{sec:znacajke-manje}
-% Za računanje frekvencija interpunkcijskih znakova odabran je skup znakova (``.'',
-% ``,'', ``!'', ``?'', ``''', ``"'', ``-'', ``:``, ``;'', ``+'', ``*'') te je
-% prebrojano njihovo pojavljivanje u tekstu. Rezultat je zapisan kao
-% 11--dimenzionalni vektor te je svaka komponenta vektora podijeljena ukupnim
-% brojem znakova u dokumentu.
 We use set of punctuation marks: ``.'', ``,'', ``!'', ``?'', ``''',
 ``"'', ``-'', ``:``, ``;'', ``+'', ``*'' and count their appearance in document.
 Result is written as vector with eleven dimensions and every component is devided
 by total sum od characters in document.
 
-% Vektor značajki koje se temelje na frekvencijama pojavljivanja samoglasnika se
-% dobiva analogno postupku za interpunkcijske znakove.
 Feature vector based on the occurrence frequency of vowels (a, e, i, o, u) are
 obtained in equal procedure as for the punctuation marks.
 
-% Frekvencije duljina riječi se dobiju brojanjem riječi koje imaju jednaku duljinu.
-% Bitno je primjetiti da se ovim postupkom mogu dobiti vektori značajki različitih
-% dimenzija (npr.\ jedan dokument ima riječi duljine 11 i 17, drugi nema). Problem
-% je riješen ograničavanjem maksimalne duljine riječi na 10. Sve riječi dulje od 10
-% znakova pribrajaju se 10.\ grupi. Dobivene frekvencije potrebno je podijeliti
-% ukupnim brojem riječi (uklanjanje ovisnosti o duljini teksta).
 Frequency of word lengths are obtained by counting the words that have equal
 length. It is important to note that this procedure can lead to vectors of
 different features dimensions (e.g.\ a document has a word with length of 11,
@@ -639,8 +390,6 @@ of words at length of 10. All words longer than 10 are counted to
 the 10th group. It is necessary to devide components of resulting feature
 vector with number of words in document (to remove dependency of text length).
 
-% Navedene značajke samostalno imaju slabu diskriminacijsku moć, no vrlo su korisne
-% za kombiniranje s drugim značajkama (vidi odjeljak \ref{sec:evaluacija}).
 Suggested features have weak discriminatory power on their own, but they are
 very usefull in combination with other features (see \ref{sec:evaluacija}).
 
@@ -649,24 +398,6 @@ Prikaz dokumenata vektorima realnih brojeva omogućava jednostavno korištenje
 klasifikatora koji traže decizijske funkcije, tj.\ granice u vektorskom
 prostoru.
 
-% Značajke korištene u ovom radu su frekvencije pojavljivanja određenih događaja
-% (riječi, znakova) te se grupiranjem frekvencija značajke mogu predočiti pomoću
-% vektora u vektorskom prostoru. Zbog navedene činjenice moguće je iskoristiti neki
-% od mnogih razvijenih klasifikatora koji traže decizijske funkcije, granice u
-% vektorskom prostoru. Jedan od klasifikatora koji traži optimalnu granicu između
-% razreda predočenih u prostoru je stroj s potporenim vektorima \engl{Support
-% vector machine}. 
-
-% U radu je za klasifikaciju korišten stroj s potpornim vektorima \engl{Support
-% vector machine}. Izvorno, SVM traži optimalnu linearnu granicu, odnosno
-% hiperravninu, kako bi razdvojio različite razrede predstavljene skupom vektora u
-% vektorskome prostoru. Iskorištavanjem jezgrenog trika \engl{kernel trick} isti
-% klasifikator moguće je primijeniti za traženje proizvoljno nelinearne granice
-% između različitih razreda. Pri tome često korištena jezgrena funkcija je
-% radijalna bazna funkcija odnosno Gaussova jezgra:
-% \begin{equation}
-% k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2).
-% \end{equation}
 For classification we have used SVM (Support Vector Machine) with radial basis
 function as kernel. It is shown that, with selection of right parameters, linear
 SVM is special case of SVM with RBF kernel \citep{keerthi2003asymptotic} which
@@ -692,56 +423,6 @@ then, the unknown vector $\mathbf{x}$ before classification is scaled as:
 x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
 \end{equation}
 
-% Pokazano je da uz odabir ispravnih parametara \citep{keerthi2003asymptotic} linearni SVM
-% predstavlja specijalni slučaj SVM--a s radijalnom baznom funkcijom čime
-% se isključuje potreba za korištenjem linearnog SVM--a kao potencijalnog
-% klasifikatora. Prilikom korištenja radijalne bazne funkcije, a i općenito
-% SVM--a, prije samog postupka učenja podatke je potrebno skalirati kako bi utjecaj svih
-% atributa na klasifikaciju bio jednak. Svi se atributi pojedinog vektora unutar
-% skupa za učenje skaliraju na interval $[0, 1]$ prema sljedećoj formuli:
-% \begin{equation}
-% x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
-% - \min_{i}\; x_{i,j}}
-% \end{equation}
-% gdje je s $x^{s}_{i,j}$ označen skalirani atribut $j$ vektora $\mathbf{x_i}$, s
-% $\min_{i}\; x_{i,j}$ označena minimalna vrijednost atributa $j$ između svih
-% vektora $\mathbf{x_i}$, a s $\max_{i}\; x_{i,j}$ označena maksimalna vrijednost
-% atributa $j$ između svih vektora. Ako dobivene minimalne i maksimalne vrijednosti označimo na sljedeći
-% način:
-% \begin{eqnarray}
-% M_i & = \max_{i}\; x_{i,j} \\
-% m_i & = \min_{i}\; x_{i,j}
-% \end{eqnarray}
-% tada se nepoznati vektor $\mathbf{x}$ prije klasifikacije skalira prema:
-% \begin{equation}
-% x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
-% \end{equation}
-
-%% Mislim da se ovo može izbaciti za članak..
-% Učenjem SVM--a traže se parametri pretpostavljenog oblika decizijske funkcije,
-% koja će ispravno klasificirati sve uzorke u skupu za učenje, što ponekad zbog
-% šuma u podacima ili njihove distribucije u prostoru nije moguće. Rješenje tog
-% problema nalazi se u korištenju SVM klasifikatora s mekim granicama definiranima
-% parametrom $C$ koji dozvoljava odstupanja od ispravne klasifikacije svih podataka
-% u skupu za učenje s ciljem bolje generalizacije nad još neviđenim skupom
-% podataka. Parametri SVM--a koji utječu na moć generalizacije nad neviđenim skupom
-% za ispitivanje su tako $C$ (parametar meke granice) i $\gamma$ (parametar
-% radijalne bazne funkcije). Oni zajedno čine prostor parametara čijom je pretragom
-% potrebno pronaći vrijednosti parametara, tj.\ odabrati onaj model, koji će dati
-% SVM klasifikator s najmanjom pogreškom generalizacije.
-
-% Pretraga parametra odvija se odabirom modela s parametrima $(C, \gamma)$ iz skupa
-% $\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
-% \ldots, 2^3} \right )$ \citep{CC01a} koji daju najveću točnost klasifikacije u
-% procesu cross--validacije nad skupom za učenje. Točnost klasifikacije mjeri se formulom:
-% \begin{equation}
-% acc = \frac{n_c}{N},
-% \end{equation}
-% pri čemu je $n_c$ broj točno klasificiranih članaka, a $N$ ukupan broj članaka
-% nad kojima je provedeno testiranje. Nakon što su pronađeni parametri modela $(C,
-% \gamma)$, koji daju najveću točnost, klasifikator s navedenim parametrima ponovo
-% se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u ovom
-% radu su $C = 16$ i $\gamma = 0.25$.
 Parameter search is done by model selection with parameters $(C, \gamma)$ from
 set $\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
 \ldots, 2^3} \right )$ \citep{CC01a} which give the highest accuracy of
@@ -758,24 +439,11 @@ paper are $C = 16$ and $\gamma = 0.25$.
 
 \section{Evaluation}
 \label{sec:evaluacija}
-% Izvorni skup tekstova podijeljen je na skup za učenje i skup za testiranje
-% tako da je $20\%$ tekstova svakog od 25 autora odvojeno za testiranje, a nad
-% ostalim tekstovima provedeno je učenje. Skup za testiranje sadrži
-% ukupno 1146 teksta. Mjera uspješnosti klasifikacije dana je omjerom broja točno
-% prepoznatih autora i ukupnog broja tekstova, tj.\ točnošću \engl{accuracy}.
-
 Data set is splitted on set for learning and set for testing by taking 20\%
 documents of each of 25 authors for testing. Data set for testing consists of
 1146 documents. Classification success is measured by ratio of correctly
 classified documents and total number of documents (accuracy).
 
-% Rezultati evaluacije prikazani su u tablici \ref{tbl:eval}. Radi kraćeg zapisa,
-% metoda opisana u \ref{sec:funkcijske-rijeci} nazvana je ``$\mathcal{F}$'', metoda
-% opisana u \ref{sec:funkcijske-rijeci-grupe} nazvana ``$\mathcal{G}$'',
-% metoda iz \ref{sec:funkcijske-rijeci-idf} ``\emph{idf}'', a metode iz
-% \ref{sec:znacajke-manje} redom ``$\mathcal{P}$'', ``$\mathcal{V}$'' i
-% ``$\mathcal{L}$''. Stupac ``Točni'' označava broj točno prepoznatih autora,
-% ``Netočni'' -- netočno prepoznatih. 
 Results of evalutaion are shown in \ref{tbl:eval}. For shorter record, method
 defined in \ref{sec:funkcijske-rijeci} is marked as ``$\mathcal{F}$'', method
 defined in \ref{sec:funkcijske-rijeci-grupe} is marked as ``$\mathcal{G}$'',
@@ -784,22 +452,9 @@ method from \ref{sec:funkcijske-rijeci-idf} ``\emph{idf}'' and methods from
 ``$\mathcal{L}$''. Column ``Correct'' denotes number of correctly
 recognized authors, ``Incorrect'' -- incorrectly recognized.
 
-% Najveću točnost, 88\% postiže kombinacija svih metoda opisanih u
-% \ref{sec:znacajke-manje} i metode iz \ref{sec:funkcijske-rijeci}.
 Highest accuracy (88\%) is achived by combination of every methods defined in
 \ref{sec:znacajke-manje} and method from \ref{sec:funkcijske-rijeci}.
 
-% Kako ukupna točnost ne objašnjava ponašanje klasifikatora na svakom razredu
-% pojedinačno, za svaki razred računaju se preciznost i odziv te pomoću njih
-% ukupna težinska $F$ mjera. Za dani razred $c$ preciznost je omjer broja točno
-% klasificiranih primjera u $c$ s brojem svih primjera koji su klasificirani u
-% razred $c$. Odziv je omjer broja točno klasificiranih primjera u $c$ s brojem
-% svih primjera koji se stvarno nalaze u razredu $c$. $F$ mjera računa se za svaki
-% razred $c_i$ prema sljedećoj formuli:
-% \begin{equation}
-% F_i = \frac{2 \cdot preciznost_i \cdot odziv_i}{preciznost_i + odziv_i}
-% \end{equation}
-% gdje su $preciznost_i$ i $odziv_i$ mjere preciznosti i odziva za razred $c_i$
 Total accuracy doesn't explains behaviour of classifier for every class by
 itself. For every class precision and recall are calculated and by them we
 calculate total weighted $F$ measure. For particular class $c$, precision is
@@ -813,13 +468,6 @@ F_i = \frac{2 \cdot precision_i \cdot recall_i}{precision_i + recall_i}
 where $precision_i$ and $recall_i$ are measures of precision and recall for
 class $c_i$.
 
-% Ukupna težinska mjera računa se tada prema formuli:
-% \begin{equation}
-% F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
-% \end{equation}
-% gdje je $n$ ukupan broj razreda, $|c_i|$ broj primjera u razredu $c_i$, a $F_i$
-% je $F$ mjera za razred $c_i$.
-
 Total weighted measure is calculated by following expression:
 \begin{equation}
 F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
@@ -827,8 +475,6 @@ F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
 where $n$ is total number of classes, $|c_i|$ number of documents in class
 $c_i$ and $F_i$ a $F$ measure for class $c_i$.
 
-% Težinska $F$ mjera na danom skupu za testiranje sa spomenutim metodama
-% izlučivanja značajki iznosi 87\%.
 Weighted $F$ measure at our data set for testing gives value of 87\%.
 
 % TODO: Smisliti kako srediti da je naslov tablice uvijek iznad tablice..
@@ -867,6 +513,8 @@ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$, $\mathca
 % \end{minipage}
 
 \section{Conclusion}
+% TODO: Ovo će se ionako morati ponovo pisati (ili dosta mijenjati, pa
+% ostavljam za kasnije).
 Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
 uspješno riješiti relativno jednostavnim metodama. U usporedbi s prijavljenim
 rezultatima (od 70\% do 97\%
