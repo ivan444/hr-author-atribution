@@ -99,7 +99,6 @@ Zagreb\\Unska 3, 10000 Zagreb, Croatia}
 
 % TODO:
 % - Napisati abstract
-% - Izbaciti sve vezano uz implementaciju
 % - Srediti literaturu (prilagoditi je ITI pravilima)
 % - Još malo popraviti predložak
 
@@ -584,39 +583,65 @@ the document.
 
 \subsection{Idf weighted function words frequency}
 \label{sec:funkcijske-rijeci-idf}
-Stvaranje vektora značajki se vrši množenjem komponenti vektora dobivenih metodom
-opisanom u odjeljku \ref{sec:funkcijske-rijeci} i pripadne \emph{idf} \engl{inverse
-document frequency} težine. \emph{Idf} težina dana je formulom (\ref{equ:idf})
-\citep{diederich2003authorship}.
+% Stvaranje vektora značajki se vrši množenjem komponenti vektora dobivenih metodom
+% opisanom u odjeljku \ref{sec:funkcijske-rijeci} i pripadne \emph{idf} \engl{inverse
+% document frequency} težine. \emph{Idf} težina dana je formulom (\ref{equ:idf})
+% \citep{diederich2003authorship}.
+The feature vector is build by multiplying components of vector got by method
+defined in \ref{sec:funkcijske-rijeci} and belonging \emph{idf} \engl{inverse
+document frequency} weight. \emph{Idf} weight is defined by expression
+(\ref{equ:idf}) \citep{diederich2003authorship}.
 
-Navedena mjera diskriminira tekstove koji sadrže funkcijske riječi koje su
-korištene u relativno malo korištene u drugim tekstovima. Nedostatak \emph{idf}
-mjere je što gleda samo je li se riječ pojavila u nekom dokumentu, ne i koliko
-puta se pojavila. Na ovaj način riječ koja se pojavi puno puta u jednom
-tekstu i jednom u svim ostalima dobiva jednaku mjeru kao riječ koja se jednom
-pojavi u svim tekstovima---zanemaruje se riječ koja bi izuzetno dobro
-odvojila tekst od ostatka skupa.
+% Navedena mjera diskriminira tekstove koji sadrže funkcijske riječi koje su
+% korištene u relativno malo korištene u drugim tekstovima. Nedostatak \emph{idf}
+% mjere je što gleda samo je li se riječ pojavila u nekom dokumentu, ne i koliko
+% puta se pojavila. Na ovaj način riječ koja se pojavi puno puta u jednom
+% tekstu i jednom u svim ostalima dobiva jednaku mjeru kao riječ koja se jednom
+% pojavi u svim tekstovima---zanemaruje se riječ koja bi izuzetno dobro
+% odvojila tekst od ostatka skupa.
+Shown measure discriminate documents that contain functional words that are
+used in small number of other documents. \emph{Idf} measure makes record only
+of presence of certain termin in document, term count in document is ignored.
+That is disadvantege of \emph{idf} measures. Word which appears many times in one
+text and one time in others measures the same value as the one which appears
+once all text---it ignores the word which would very well separate one
+document from others.
 
 \subsection{Punctation marks, vowels and words length frequency}
 \label{sec:znacajke-manje}
-Za računanje frekvencija interpunkcijskih znakova odabran je skup znakova (``.'',
-``,'', ``!'', ``?'', ``''', ``"'', ``-'', ``:``, ``;'', ``+'', ``*'') te je
-prebrojano njihovo pojavljivanje u tekstu. Rezultat je zapisan kao
-11--dimenzionalni vektor te je svaka komponenta vektora podijeljena ukupnim
-brojem znakova u dokumentu.
+% Za računanje frekvencija interpunkcijskih znakova odabran je skup znakova (``.'',
+% ``,'', ``!'', ``?'', ``''', ``"'', ``-'', ``:``, ``;'', ``+'', ``*'') te je
+% prebrojano njihovo pojavljivanje u tekstu. Rezultat je zapisan kao
+% 11--dimenzionalni vektor te je svaka komponenta vektora podijeljena ukupnim
+% brojem znakova u dokumentu.
+We use set of punctuation marks: ``.'', ``,'', ``!'', ``?'', ``''',
+``"'', ``-'', ``:``, ``;'', ``+'', ``*'' and count their appearance in document.
+Result is written as vector with eleven dimensions and every component is devided
+by total sum od characters in document.
 
-Vektor značajki koje se temelje na frekvencijama pojavljivanja samoglasnika se
-dobiva analogno postupku za interpunkcijske znakove.
+% Vektor značajki koje se temelje na frekvencijama pojavljivanja samoglasnika se
+% dobiva analogno postupku za interpunkcijske znakove.
+Feature vector based on the occurrence frequency of vowels (a, e, i, o, u) are
+obtained in equal procedure as for the punctuation marks.
 
-Frekvencije duljina riječi se dobiju brojanjem riječi koje imaju jednaku duljinu.
-Bitno je primjetiti da se ovim postupkom mogu dobiti vektori značajki različitih
-dimenzija (npr.\ jedan dokument ima riječi duljine 11 i 17, drugi nema). Problem
-je riješen ograničavanjem maksimalne duljine riječi na 10. Sve riječi dulje od 10
-znakova pribrajaju se 10.\ grupi. Dobivene frekvencije potrebno je podijeliti
-ukupnim brojem riječi (uklanjanje ovisnosti o duljini teksta).
+% Frekvencije duljina riječi se dobiju brojanjem riječi koje imaju jednaku duljinu.
+% Bitno je primjetiti da se ovim postupkom mogu dobiti vektori značajki različitih
+% dimenzija (npr.\ jedan dokument ima riječi duljine 11 i 17, drugi nema). Problem
+% je riješen ograničavanjem maksimalne duljine riječi na 10. Sve riječi dulje od 10
+% znakova pribrajaju se 10.\ grupi. Dobivene frekvencije potrebno je podijeliti
+% ukupnim brojem riječi (uklanjanje ovisnosti o duljini teksta).
+Frequency of word lengths are obtained by counting the words that have equal
+length. It is important to note that this procedure can lead to vectors of
+different features dimensions (e.g.\ a document has a word with length of 11,
+but some other document hasn't). Issue is solved by limiting the maximum length
+of words at length of 10. All words longer than 10 are counted to
+the 10th group. It is necessary to devide components of resulting feature
+vector with number of words in document (to remove dependency of text length).
 
-Navedene značajke samostalno imaju slabu diskriminacijsku moć, no vrlo su korisne
-za kombiniranje s drugim značajkama (vidi odjeljak \ref{sec:evaluacija}).
+% Navedene značajke samostalno imaju slabu diskriminacijsku moć, no vrlo su korisne
+% za kombiniranje s drugim značajkama (vidi odjeljak \ref{sec:evaluacija}).
+Suggested features have weak discriminatory power on their own, but they are
+very usefull in combination with other features (see \ref{sec:evaluacija}).
 
 \section{Classification}
 Prikaz dokumenata vektorima realnih brojeva omogućava jednostavno korištenje
