@@ -143,6 +143,24 @@ public class TextStatistics implements Iterable<String> {
 		return str.replaceAll("[^a-zA-ZčćžšđČĆŽŠĐ]", "").toLowerCase();
 	}
 	
+	public static String cleanNew(String str) {
+		int pos = str.indexOf("/{");
+		if (pos != -1)
+			str = str.substring(0, pos);
+		
+		return clean(str);
+	}
+	
+	static Pattern descriptionP = Pattern.compile("/\\{([^\\}]*)\\}");
+	
+	public static String getDescription(String str) {
+		Matcher m = descriptionP.matcher(str);
+		
+		if (!m.find())
+				throw new IllegalArgumentException("Nedostaje opis: "+str);
+		return m.group(1);
+	}
+	
 	/**
 	 * Parsiranje liste riječi iz datoteke.
 	 * 
