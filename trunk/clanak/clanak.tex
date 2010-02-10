@@ -101,6 +101,7 @@ Zagreb\\Unska 3, 10000 Zagreb, Croatia}
 % - Napisati abstract
 % - Srediti literaturu (prilagoditi je ITI pravilima)
 % - Još malo popraviti predložak
+% - Izbaciti kolumnista s malo članaka.
 
 % Jedna _vrlo kratka_ lista glagola koje je poželjno koristiti pri pisanju članka:
 % {notes, explains, references, shows, proves, defines, believe, convince,
@@ -633,7 +634,7 @@ obtained in equal procedure as for the punctuation marks.
 Frequency of word lengths are obtained by counting the words that have equal
 length. It is important to note that this procedure can lead to vectors of
 different features dimensions (e.g.\ a document has a word with length of 11,
-but some other document hasn't). Issue is solved by limiting the maximum length
+but some other document doesn't). Issue is solved by limiting the maximum length
 of words at length of 10. All words longer than 10 are counted to
 the 10th group. It is necessary to devide components of resulting feature
 vector with number of words in document (to remove dependency of text length).
@@ -656,41 +657,65 @@ prostoru.
 % razreda predočenih u prostoru je stroj s potporenim vektorima \engl{Support
 % vector machine}. 
 
-U radu je za klasifikaciju korišten stroj s potpornim vektorima \engl{Support
-vector machine}. Izvorno, SVM traži optimalnu linearnu granicu, odnosno
-hiperravninu, kako bi razdvojio različite razrede predstavljene skupom vektora u
-vektorskome prostoru. Iskorištavanjem jezgrenog trika \engl{kernel trick} isti
-klasifikator moguće je primijeniti za traženje proizvoljno nelinearne granice
-između različitih razreda. Pri tome često korištena jezgrena funkcija je
-radijalna bazna funkcija odnosno Gaussova jezgra:
-\begin{equation}
-k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2).
-\end{equation}
+% U radu je za klasifikaciju korišten stroj s potpornim vektorima \engl{Support
+% vector machine}. Izvorno, SVM traži optimalnu linearnu granicu, odnosno
+% hiperravninu, kako bi razdvojio različite razrede predstavljene skupom vektora u
+% vektorskome prostoru. Iskorištavanjem jezgrenog trika \engl{kernel trick} isti
+% klasifikator moguće je primijeniti za traženje proizvoljno nelinearne granice
+% između različitih razreda. Pri tome često korištena jezgrena funkcija je
+% radijalna bazna funkcija odnosno Gaussova jezgra:
+% \begin{equation}
+% k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2).
+% \end{equation}
+For classification we have used SVM (Support Vector Machine) with radial basis
+function as kernel. It is shown that, with selection of right parameters, linear
+SVM is special case of SVM with RBF kernel \citep{keerthi2003asymptotic} which
+removes need to use linear SVM as potential classifier.
 
-Pokazano je da uz odabir ispravnih parametara \citep{keerthi2003asymptotic} linearni SVM
-predstavlja specijalni slučaj SVM--a s radijalnom baznom funkcijom čime
-se isključuje potreba za korištenjem linearnog SVM--a kao potencijalnog
-klasifikatora. Prilikom korištenja radijalne bazne funkcije, a i općenito
-SVM--a, prije samog postupka učenja podatke je potrebno skalirati kako bi utjecaj svih
-atributa na klasifikaciju bio jednak. Svi se atributi pojedinog vektora unutar
-skupa za učenje skaliraju na interval $[0, 1]$ prema sljedećoj formuli:
+It is required to scale data for use with SVM to ensure equal contribution of
+every attribute to classification. We scale components of every feature vector
+to interval of $[0, 1]$ according to following expression:
 \begin{equation}
 x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
 - \min_{i}\; x_{i,j}}
 \end{equation}
-gdje je s $x^{s}_{i,j}$ označen skalirani atribut $j$ vektora $\mathbf{x_i}$, s
-$\min_{i}\; x_{i,j}$ označena minimalna vrijednost atributa $j$ između svih
-vektora $\mathbf{x_i}$, a s $\max_{i}\; x_{i,j}$ označena maksimalna vrijednost
-atributa $j$ između svih vektora. Ako dobivene minimalne i maksimalne vrijednosti označimo na sljedeći
-način:
+where $x^{s}_{i,j}$ is scaled component $j$ of vector $\mathbf{x_i}$,
+$\min_{i}\; x_{i,j}$ is minimum value of attribute $j$ among all vectors
+$\mathbf{x_i}$ and $\max_{i}\; x_{i,j}$ is maximum value of attribute $j$ among
+all vectors. If we denote the resulting minimum and maximum values as follows:
 \begin{eqnarray}
 M_i & = \max_{i}\; x_{i,j} \\
 m_i & = \min_{i}\; x_{i,j}
 \end{eqnarray}
-tada se nepoznati vektor $\mathbf{x}$ prije klasifikacije skalira prema:
+then, the unknown vector $\mathbf{x}$ before classification is scaled as:
 \begin{equation}
 x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
 \end{equation}
+
+% Pokazano je da uz odabir ispravnih parametara \citep{keerthi2003asymptotic} linearni SVM
+% predstavlja specijalni slučaj SVM--a s radijalnom baznom funkcijom čime
+% se isključuje potreba za korištenjem linearnog SVM--a kao potencijalnog
+% klasifikatora. Prilikom korištenja radijalne bazne funkcije, a i općenito
+% SVM--a, prije samog postupka učenja podatke je potrebno skalirati kako bi utjecaj svih
+% atributa na klasifikaciju bio jednak. Svi se atributi pojedinog vektora unutar
+% skupa za učenje skaliraju na interval $[0, 1]$ prema sljedećoj formuli:
+% \begin{equation}
+% x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
+% - \min_{i}\; x_{i,j}}
+% \end{equation}
+% gdje je s $x^{s}_{i,j}$ označen skalirani atribut $j$ vektora $\mathbf{x_i}$, s
+% $\min_{i}\; x_{i,j}$ označena minimalna vrijednost atributa $j$ između svih
+% vektora $\mathbf{x_i}$, a s $\max_{i}\; x_{i,j}$ označena maksimalna vrijednost
+% atributa $j$ između svih vektora. Ako dobivene minimalne i maksimalne vrijednosti označimo na sljedeći
+% način:
+% \begin{eqnarray}
+% M_i & = \max_{i}\; x_{i,j} \\
+% m_i & = \min_{i}\; x_{i,j}
+% \end{eqnarray}
+% tada se nepoznati vektor $\mathbf{x}$ prije klasifikacije skalira prema:
+% \begin{equation}
+% x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
+% \end{equation}
 
 %% Mislim da se ovo može izbaciti za članak..
 % Učenjem SVM--a traže se parametri pretpostavljenog oblika decizijske funkcije,
@@ -705,60 +730,106 @@ x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
 % potrebno pronaći vrijednosti parametara, tj.\ odabrati onaj model, koji će dati
 % SVM klasifikator s najmanjom pogreškom generalizacije.
 
-Pretraga parametra odvija se odabirom modela s parametrima $(C, \gamma)$ iz skupa
-$\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
-\ldots, 2^3} \right )$ \citep{CC01a} koji daju najveću točnost klasifikacije u
-procesu cross--validacije nad skupom za učenje. Točnost klasifikacije mjeri se formulom:
+% Pretraga parametra odvija se odabirom modela s parametrima $(C, \gamma)$ iz skupa
+% $\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
+% \ldots, 2^3} \right )$ \citep{CC01a} koji daju najveću točnost klasifikacije u
+% procesu cross--validacije nad skupom za učenje. Točnost klasifikacije mjeri se formulom:
+% \begin{equation}
+% acc = \frac{n_c}{N},
+% \end{equation}
+% pri čemu je $n_c$ broj točno klasificiranih članaka, a $N$ ukupan broj članaka
+% nad kojima je provedeno testiranje. Nakon što su pronađeni parametri modela $(C,
+% \gamma)$, koji daju najveću točnost, klasifikator s navedenim parametrima ponovo
+% se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u ovom
+% radu su $C = 16$ i $\gamma = 0.25$.
+Parameter search is done by model selection with parameters $(C, \gamma)$ from
+set $\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
+\ldots, 2^3} \right )$ \citep{CC01a} which give the highest accuracy of
+classification in process of cross--validation on learning data set. Accuracy
+of classification is measured by expression:
 \begin{equation}
 acc = \frac{n_c}{N},
 \end{equation}
-pri čemu je $n_c$ broj točno klasificiranih članaka, a $N$ ukupan broj članaka
-nad kojima je provedeno testiranje. Nakon što su pronađeni parametri modela $(C,
-\gamma)$, koji daju najveću točnost, klasifikator s navedenim parametrima ponovo
-se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u ovom
-radu su $C = 16$ i $\gamma = 0.25$.
+where $n_c$ is number of correctly classified documents, $N$ is total number of
+documents. After we find parameters $(C, \gamma)$ for which system has highest
+accuracy, we learn classifier with given parameters. Parameters used in this
+paper are $C = 16$ and $\gamma = 0.25$.
+
 
 \section{Evaluation}
 \label{sec:evaluacija}
-Izvorni skup tekstova podijeljen je na skup za učenje i skup za testiranje
-tako da je $20\%$ tekstova svakog od 25 autora odvojeno za testiranje, a nad
-ostalim tekstovima provedeno je učenje. Skup za testiranje sadrži
-ukupno 1092 teksta. Mjera uspješnosti klasifikacije dana je omjerom broja točno
-prepoznatih autora i ukupnog broja tekstova, tj.\ točnošću \engl{accuracy}.
+% Izvorni skup tekstova podijeljen je na skup za učenje i skup za testiranje
+% tako da je $20\%$ tekstova svakog od 25 autora odvojeno za testiranje, a nad
+% ostalim tekstovima provedeno je učenje. Skup za testiranje sadrži
+% ukupno 1146 teksta. Mjera uspješnosti klasifikacije dana je omjerom broja točno
+% prepoznatih autora i ukupnog broja tekstova, tj.\ točnošću \engl{accuracy}.
 
-Rezultati evaluacije prikazani su u tablici \ref{tbl:eval}. Radi kraćeg zapisa,
-metoda opisana u \ref{sec:funkcijske-rijeci} nazvana je ``$\mathcal{F}$'', metoda
-opisana u \ref{sec:funkcijske-rijeci-grupe} nazvana ``$\mathcal{G}$'',
-metoda iz \ref{sec:funkcijske-rijeci-idf} ``\emph{idf}'', a metode iz
-\ref{sec:znacajke-manje} redom ``$\mathcal{P}$'', ``$\mathcal{V}$'' i
-``$\mathcal{L}$''. Stupac ``Točni'' označava broj točno prepoznatih autora,
-``Netočni'' -- netočno prepoznatih.
+Data set is splitted on set for learning and set for testing by taking 20\%
+documents of each of 25 authors for testing. Data set for testing consists of
+1146 documents. Classification success is measured by ratio of correctly
+classified documents and total number of documents (accuracy).
 
-Najveću točnost, 88\% postiže kombinacija svih metoda opisanih u
-\ref{sec:znacajke-manje} i metode iz \ref{sec:funkcijske-rijeci}.
+% Rezultati evaluacije prikazani su u tablici \ref{tbl:eval}. Radi kraćeg zapisa,
+% metoda opisana u \ref{sec:funkcijske-rijeci} nazvana je ``$\mathcal{F}$'', metoda
+% opisana u \ref{sec:funkcijske-rijeci-grupe} nazvana ``$\mathcal{G}$'',
+% metoda iz \ref{sec:funkcijske-rijeci-idf} ``\emph{idf}'', a metode iz
+% \ref{sec:znacajke-manje} redom ``$\mathcal{P}$'', ``$\mathcal{V}$'' i
+% ``$\mathcal{L}$''. Stupac ``Točni'' označava broj točno prepoznatih autora,
+% ``Netočni'' -- netočno prepoznatih. 
+Results of evalutaion are shown in \ref{tbl:eval}. For shorter record, method
+defined in \ref{sec:funkcijske-rijeci} is marked as ``$\mathcal{F}$'', method
+defined in \ref{sec:funkcijske-rijeci-grupe} is marked as ``$\mathcal{G}$'',
+method from \ref{sec:funkcijske-rijeci-idf} ``\emph{idf}'' and methods from
+\ref{sec:znacajke-manje} respectivly ``$\mathcal{P}$'', ``$\mathcal{V}$'' and
+``$\mathcal{L}$''. Column ``Correct'' denotes number of correctly
+recognized authors, ``Incorrect'' -- incorrectly recognized.
 
-Kako ukupna točnost ne objašnjava ponašanje klasifikatora na svakom razredu
-pojedinačno, za svaki razred računaju se preciznost i odziv te pomoću njih
-ukupna težinska $F$ mjera. Za dani razred $c$ preciznost je omjer broja točno
-klasificiranih primjera u $c$ s brojem svih primjera koji su klasificirani u
-razred $c$. Odziv je omjer broja točno klasificiranih primjera u $c$ s brojem
-svih primjera koji se stvarno nalaze u razredu $c$. $F$ mjera računa se za svaki
-razred $c_i$ prema sljedećoj formuli:
+% Najveću točnost, 88\% postiže kombinacija svih metoda opisanih u
+% \ref{sec:znacajke-manje} i metode iz \ref{sec:funkcijske-rijeci}.
+Highest accuracy (88\%) is achived by combination of every methods defined in
+\ref{sec:znacajke-manje} and method from \ref{sec:funkcijske-rijeci}.
+
+% Kako ukupna točnost ne objašnjava ponašanje klasifikatora na svakom razredu
+% pojedinačno, za svaki razred računaju se preciznost i odziv te pomoću njih
+% ukupna težinska $F$ mjera. Za dani razred $c$ preciznost je omjer broja točno
+% klasificiranih primjera u $c$ s brojem svih primjera koji su klasificirani u
+% razred $c$. Odziv je omjer broja točno klasificiranih primjera u $c$ s brojem
+% svih primjera koji se stvarno nalaze u razredu $c$. $F$ mjera računa se za svaki
+% razred $c_i$ prema sljedećoj formuli:
+% \begin{equation}
+% F_i = \frac{2 \cdot preciznost_i \cdot odziv_i}{preciznost_i + odziv_i}
+% \end{equation}
+% gdje su $preciznost_i$ i $odziv_i$ mjere preciznosti i odziva za razred $c_i$
+Total accuracy doesn't explains behaviour of classifier for every class by
+itself. For every class precision and recall are calculated and by them we
+calculate total weighted $F$ measure. For particular class $c$, precision is
+ratio of number of correctly classified documents in $c$ with number of all
+documents which are classified as $c$. Recall is ratio of number of correctly
+classified documents in $c$ with number of all documents in $c$. $F$ measure is
+calculated for every class $c_i$ according to following expression:
 \begin{equation}
-F_i = \frac{2 \cdot preciznost_i \cdot odziv_i}{preciznost_i + odziv_i}
+F_i = \frac{2 \cdot precision_i \cdot recall_i}{precision_i + recall_i}
 \end{equation}
-gdje su $preciznost_i$ i $odziv_i$ mjere preciznosti i odziva za razred $c_i$
+where $precision_i$ and $recall_i$ are measures of precision and recall for
+class $c_i$.
 
-Ukupna težinska mjera računa se tada prema formuli:
+% Ukupna težinska mjera računa se tada prema formuli:
+% \begin{equation}
+% F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
+% \end{equation}
+% gdje je $n$ ukupan broj razreda, $|c_i|$ broj primjera u razredu $c_i$, a $F_i$
+% je $F$ mjera za razred $c_i$.
+
+Total weighted measure is calculated by following expression:
 \begin{equation}
 F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
 \end{equation}
+where $n$ is total number of classes, $|c_i|$ number of documents in class
+$c_i$ and $F_i$ a $F$ measure for class $c_i$.
 
-gdje je $n$ ukupan broj razreda, $|c_i|$ broj primjera u razredu $c_i$, a $F_i$
-je $F$ mjera za razred $c_i$.
-
-Težinska $F$ mjera na danom skupu za testiranje sa spomenutim metodama
-izlučivanja značajki iznosi 87\%.
+% Težinska $F$ mjera na danom skupu za testiranje sa spomenutim metodama
+% izlučivanja značajki iznosi 87\%.
+Weighted $F$ measure at our data set for testing gives value of 87\%.
 
 % TODO: Smisliti kako srediti da je naslov tablice uvijek iznad tablice..
 % \begin{minipage}{\linewidth}
