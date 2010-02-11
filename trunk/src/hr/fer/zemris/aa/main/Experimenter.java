@@ -6,9 +6,12 @@ import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
+import hr.fer.zemris.aa.features.impl.MorphosyntaticFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
+import hr.fer.zemris.aa.features.impl.TaggAdapterFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.VowelsExtractor;
 import hr.fer.zemris.aa.features.impl.WordLengthFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.WordType3gramsFreqExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
 import hr.fer.zemris.aa.recognizers.RecognizerTrainer;
 import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
@@ -206,10 +209,12 @@ public class Experimenter {
 		IFeatureExtractor featExtrac = null;
 		try {
 			featExtrac = new ComboFeatureExtractor(
-					new PunctuationMarksExtractor(new File("config/marks.txt")),
-					new FunctionWordOccurNumExtractor("config/fwords.txt"),
-					new VowelsExtractor(),
-					new WordLengthFeatureExtractor()
+					new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
+					new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
+					//new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true)
+					new TaggAdapterFeatureExtractor(new VowelsExtractor()),
+					new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
+					new MorphosyntaticFeatureExtractor()
 			);
 		} catch (FileNotFoundException e) {
 			System.err.println("Greška! " + e.getMessage());
@@ -217,7 +222,8 @@ public class Experimenter {
 		}
 		
 		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac, true);
-		preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml");
+		//preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml");
+		preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.test.xml");
 		
 		// Za koristiti ovaj test treba povećati java heap! VM params u runu, npr. -Xms512m -Xmx1024m 
 //		IFeatureExtractor fe1 = null;

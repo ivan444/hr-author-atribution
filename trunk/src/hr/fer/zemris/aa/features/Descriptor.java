@@ -8,7 +8,7 @@ public class Descriptor {
 	
 	public static enum Tag {
 		NOUN, VERB, ADJECTIVE, PRONOUN,
-		CONJUNCTION, INTERJECTION,  ADPOSITION, UNKNOWN;
+		CONJUNCTION, INTERJECTION, ADPOSITION, UNKNOWN;
 	}
 	
 	public static enum Gender {
