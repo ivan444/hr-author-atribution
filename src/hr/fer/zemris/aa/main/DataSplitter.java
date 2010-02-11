@@ -64,8 +64,8 @@ public class DataSplitter {
 			Collections.sort(authorArticles, articleCompDate);
 			
 			int size = authorArticles.size();
-			if (size == 1) {
-				// Preskacemo. Nema smisla raditi s ovako malo uzoraka
+			if (size < 20) {
+				// Preskacemo radi malog broja clanaka.
 				continue;
 			}
 			

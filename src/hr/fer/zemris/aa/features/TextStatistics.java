@@ -1,5 +1,8 @@
 package hr.fer.zemris.aa.features;
 
+import hr.fer.zemris.aa.features.Descriptor.Tag;
+import hr.fer.zemris.aa.xml.XMLMiner;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -340,8 +343,215 @@ public class TextStatistics implements Iterable<String> {
 		};
 	}
 	
-//	public static void main(String[] args) throws JDOMException, IOException {
-//		List<Article> arhive = XMLMiner.getArticles("podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml");
-//		calcIdf("config/fwords.txt", arhive, "config/fw-idf.txt");
+	/**
+	 * Lista svih tipova unutar teksta.
+	 * Tipovi su noun, verb, adjective. Za sve ostale osim unknowna se koristi baš
+	 * njihova (čista) vrijednost.
+	 * 
+	 * @param text
+	 * @param types Lista u koju će tipovi biti nadodani.
+	 * @throws Exception
+	 */
+	public static void listTypes(String text, List<String> types) throws Exception {
+		boolean added;
+		boolean textAdded;
+		String[] words = null;
+		words = text.split(" ");
+		for (String x : words) {
+			textAdded = false;
+			String cleaned = TextStatistics.cleanNew(x);
+			if (cleaned.length()==0)
+				continue ;
+			try {
+				List<Descriptor> ld = Descriptor.parse(TextStatistics.getDescription(x));
+				for (int i = 0; i < ld.size(); i++) {
+					switch (ld.get(i).getTag()) {
+					case NOUN:
+					case VERB:
+					case ADJECTIVE:
+						Tag current = ld.get(i).getTag();
+						added = false;
+						for (int j = 0; j < i; j++) {
+							if (ld.get(j).getTag().equals(current)) {
+								added = true;
+								break;
+							}
+						}
+						if (!added) {
+							types.add(current.toString().toLowerCase());
+						}
+						break;
+					case PRONOUN:
+					case CONJUNCTION:
+					case INTERJECTION:
+					case ADPOSITION:
+						if (!textAdded) {
+							textAdded = true;
+							types.add(cleaned.toLowerCase());
+						}
+						break;
+					default:
+						break;
+					}
+					
+				}
+			} catch (Exception e) {
+				throw new Exception(x, e);
+			}
+		}
+	}
+	
+	/**
+	 * Lista svih tipova unutar teksta (osim unknowna).
+	 * 
+	 * @param text
+	 * @param types Lista u koju će tipovi biti nadodani.
+	 * @throws Exception
+	 */
+	public static void listOnlyTypes(String text, List<String> types) throws Exception {
+		boolean added;
+		String[] words = null;
+		words = text.split(" ");
+		for (String x : words) {
+			String cleaned = TextStatistics.cleanNew(x);
+			if (cleaned.length()==0)
+				continue ;
+			try {
+				List<Descriptor> ld = Descriptor.parse(TextStatistics.getDescription(x));
+				for (int i = 0; i < ld.size(); i++) {
+					switch (ld.get(i).getTag()) {
+					case NOUN:
+					case VERB:
+					case ADJECTIVE:
+					case PRONOUN:
+					case CONJUNCTION:
+					case INTERJECTION:
+					case ADPOSITION:
+						Tag current = ld.get(i).getTag();
+						added = false;
+						for (int j = 0; j < i; j++) {
+							if (ld.get(j).getTag().equals(current)) {
+								added = true;
+								break;
+							}
+						}
+						if (!added) {
+							types.add(current.toString().toLowerCase());
+						}
+						break;
+					default:
+						break;
+					}
+					
+				}
+			} catch (Exception e) {
+				throw new Exception(x, e);
+			}
+		}
+	}
+	
+	public static void printAllType3grams(String filePath, String datOut) throws Exception {
+		
+		Set<String> validWords = new HashSet<String>(listWords("config/ngram-najcesci.txt"));
+		List<Article> list = XMLMiner.getArticles(filePath);
+		List<String> types = new LinkedList<String>();
+		
+		System.out.println("Parsing is done.");
+		int idx = 1;
+		int total = list.size();
+		for (Article a : list) {
+			System.out.println("Article: " + idx + "/" + total);
+			idx++;
+			listTypes(a.getText(), types);
+		}
+		
+		Map<Text3gram, Integer> ngrams = new HashMap<Text3gram, Integer>();
+		BufferedWriter writer = new BufferedWriter(new FileWriter(datOut));
+		int ngidx = 1;
+		String[] typesArr = types.toArray(new String[0]);
+		for (int i = 0; i+3 < typesArr.length; i++) {
+			if (ngidx % 50 == 0) {
+				System.out.println("NG: " + ngidx + "/" + typesArr.length);
+			}
+			ngidx++;
+			if (validWords.contains(typesArr[i])
+					&& validWords.contains(typesArr[i+1])
+					&& validWords.contains(typesArr[i+2])) {
+				Text3gram tg = new TextStatistics.Text3gram(typesArr[i], typesArr[i+1], typesArr[i+2]);
+				Integer count = ngrams.get(tg);
+				if (count == null) count = Integer.valueOf(1);
+				else count++;
+				ngrams.put(tg, count);
+//				writer.write(typesArr[i] + "\t" + typesArr[i+1] + "\t" + typesArr[i+2] + "\n");
+			}
+		}
+		
+		for (Text3gram nk : ngrams.keySet()) {
+			writer.write(nk.toString() + "\t" + ngrams.get(nk) + "\n");
+		}
+		writer.close();
+	}
+	
+//	public static void main(String[] args) throws Exception {
+//		printAllType3grams("podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.train.xml", "n-grami.txt");
 //	}
+	
+	private static class Text3gram {
+		public String first;
+		public String second;
+		public String third;
+		
+		public Text3gram(String first, String second, String third) {
+			super();
+			this.first = first;
+			this.second = second;
+			this.third = third;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((first == null) ? 0 : first.hashCode());
+			result = prime * result
+					+ ((second == null) ? 0 : second.hashCode());
+			result = prime * result + ((third == null) ? 0 : third.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Text3gram other = (Text3gram) obj;
+			if (first == null) {
+				if (other.first != null)
+					return false;
+			} else if (!first.equals(other.first))
+				return false;
+			if (second == null) {
+				if (other.second != null)
+					return false;
+			} else if (!second.equals(other.second))
+				return false;
+			if (third == null) {
+				if (other.third != null)
+					return false;
+			} else if (!third.equals(other.third))
+				return false;
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return first + "\t" + second + "\t" + third;
+		}
+		
+		
+
+	}
 }

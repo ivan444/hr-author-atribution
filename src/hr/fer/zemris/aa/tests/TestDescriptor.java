@@ -20,7 +20,8 @@ public class TestDescriptor {
 				if (TextStatistics.cleanNew(x).length()==0)
 					continue ;
 				try {
-					Descriptor.parse(TextStatistics.getDescription(x));
+					List<Descriptor> ld = Descriptor.parse(TextStatistics.getDescription(x));
+					System.out.println(ld.toString());
 				} catch (Exception e) {
 					throw new Exception(x, e);
 				}
