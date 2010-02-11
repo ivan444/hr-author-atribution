@@ -85,7 +85,7 @@ public class FunctionWordGroupFreqExtractor implements IFeatureExtractor {
 		int wordsCount = 0;
 		
 		for (int i=0; i < words.length; ++i) {
-			tmp = TextStatistics.clean(words[i]);
+			tmp = TextStatistics.cleanNew(words[i]);
 			
 			if (tmp.length() != 0)
 				wordsCount++;

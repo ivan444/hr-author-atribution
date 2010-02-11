@@ -42,7 +42,7 @@ public class FunctionWordOccurNumExtractor implements IFeatureExtractor {
 		int wordsCount = 0;
 		
 		for (int i=0; i < words.length; ++i) {
-			current = TextStatistics.clean(words[i]);
+			current = TextStatistics.cleanNew(words[i]);
 			
 			if (current.length() != 0) {
 				wordsCount++;
