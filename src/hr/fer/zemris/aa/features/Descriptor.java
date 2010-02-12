@@ -165,7 +165,7 @@ public class Descriptor {
 	//privatne metode
 
 	private static Descriptor parseUnknwon(String current) {
-		if (current.length() == 0)
+		if (current.length() == 1)
 			throw new IllegalArgumentException("Nedostaje oznaka");
 		if (current.charAt(1) == 'u')
 			return new Descriptor(Tag.UNKNOWN,Gender.NONE, Number.NONE,
