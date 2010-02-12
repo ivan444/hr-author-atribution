@@ -128,11 +128,11 @@ Times New Roman, 11 pt.
 \end{keywords}
 
 \section{Introduction}
-Automatic authorship attribution can be interpret as problem of text
+Automatic authorship attribution can be interpreted as problem of text
 classification based on its lingvistic features. Problems similar to authorship
 attribution are detection of age, region and gender of the author
 \citep{luyckx2005shallow}. Main concern of computer--assisted authorship
-attribution is to define an appropriate characterization of documents that
+attribution is to define an appropriate characterization of document that
 captures the writing style of authors \citep{coyotl2006authorship}.
 
 \citet{kukushkina2001using} notes that first works on authorship attribution
@@ -147,39 +147,39 @@ different from plagiarism detection. Plagiarism detection attempts to detect the
 similarity between two substantially different pieces of work but is unable to
 determine if they were produced by the same author \citep{de2001mining}.
 
-The problem can be devided in three categories \citep{zhao2005effective}: binary,
+The problem can be divided in three categories \citep{zhao2005effective}: binary,
 multi--class and single--class (or one--class) classification. Binary
-classification solves problem when each document from data set is written by one
-of two authors. Multi--class classification is generalization of binary
+classification solves the problem when each document from data set is written by
+one of two authors. Multi--class classification is generalization of binary
 classification in which we have more than two authors. Single--class
-classification is applied when we have some documents written by a particular
-author while the authorship of the other documents is unspecified. This
-classification answers the question does goven document belongs to single known
-author or not.
+classification is applied when some of the documents from data set are written by
+a particular author while the authorship of the other documents is unspecified.
+This classification answers the question about a given document belonging to
+single known author or not.
 
-In this paper we have studied the problem of multi--class classification for
-documents in Croatian language. We have oriented on evaluation of different sets
-of documents features.
+This paper presents a study of the problem of multi--class classification for
+documents in Croatian language, oriented on evaluation of different sets of
+documents features.
 
 The rest of the paper is organized as follows. Section 2 discusses some previous
 works on authorship attribution and similar problems. Section 3 describes used
-data set. The most important is 5th section which introduces used methods.
+data set. Section 5 is the most important, and it introduces used methods.
 Section 6 describes classification and 7th section discusses evaluation and
 gives evaluation results. Conclusion and future work is given in 8th section.
 
 \section{Related work}
-\citet{coyotl2006authorship} clusters methods of authorship attribution in
-three main approaches:
+\citet{coyotl2006authorship} cluster methods of authorship attribution in three
+main approaches:
 \begin{description}
-\item[Stylistic measures as document features:] Features characteristic for this
+\item[Stylistic measures as document features:] Characteristic features for this
 approach take into account length of words and sentences and the richness of the
 vocabulary. \citet{coyotl2006authorship} notes that such features are not
-sufficient to resolve problems that depend on the genre of the text and to lose
-their meaning when applied over short texts.
+sufficient to resolve problems that depend on the genre of the text and that they
+lose their meaning when applied over short texts.
 
 \item[Syntactic cues as document features:] Using the author style markers as
 features -- informations related to structure of the language which are obtained
-by an in depth syntactic analysis of documents. Text is characterized by the
+by an in--depth syntactic analysis of documents. Text is characterized by the
 presence and frequency of certain syntactic structures. This characterization is
 detailed and relevant. Unfortunately, it is computationally expensive and even
 impossible to build for languages lacking of text--processing resources (e.g.\
@@ -192,38 +192,38 @@ words (their presence and frequency), ignoring the content words since they tend
 to be highly correlated with the document topics. The method shows good results,
 but it is affected by the size of the document. \emph{Second branch} of methods
 observes document as a bag--of--words and uses single content words as document
-features. Mathod is very robust and produces excellent results when there is a
+features. Method is very robust and produces excellent results when there is a
 noticeable correlation between the authors and the topics. The \emph{third
-branch} considers word $n$--grams as features, i.e.\ features consisting od
+branch} considers word $n$--grams as features, i.e.\ features consisting of
 sequences of consecutive words. Nevertheless, due to the feature explosion, it
 tends to use only $n$--grams up to three words.
 \end{description}
 
-\citet{kukushkina2001using} explains method which uses algorithms for the data
+\citet{kukushkina2001using} explain method which uses algorithms for data
 compression to identify the author. Appendix of paper shows evaluation results
 for authorship attribution with different compression algorithms. The idea behind
-the method is to devide documents by authors and compress every set with selected
+the method is to divide documents by authors and compress every set with selected
 algorithm and write size of archive. To classify text of unknown author, text is
-added to each set and applied the same data compression algorithm. Author of
+added to each set and the same data compression algorithm is applied. Author of
 documents in archive which records the smallest increase of the size is declared
 as author of the new document. Review of a similar method can be found in the
 paper \citep{zhao2005effective}. Paper notes that the method has obvious
 omissions and cites paper which proves it.
 
-\citet{koppel2003exploiting} shows the use of gramatical errors and informal
+\citet{koppel2003exploiting} show the use of gramatical errors and informal
 styling (e.g.\ writing sentences in capital letters) as document features in
 order to identify the author. Method is applicable only to unedited texts (blogs,
 Internet forums, newsgroups, e--mail messages, etc.).
 
-\citet{peng2003language} suggests the use of $n$--gram language model to identify
+\citet{peng2003language} suggest the use of $n$--gram language model to identify
 the author. A similar method is shown in \citep{coyotl2006authorship}.
 
-The success of functional words over collocation (certain pair of words occurring
-within a given threshold distance of each other) is shown in
-\citep{argamon2005measuring} -- although, becouse of information reduction at
-using function words as features, one would might conclude the opposite -- which
-is wrong. \citet{argamon2005measuring} believes that most of the discriminating
-power of collocations is due to the frequent words they contain (and not the
+The success of functional words over collocations (certain pair of words
+occurring within a given threshold distance of each other) is shown in
+\citep{argamon2005measuring} -- although, because of information reduction at
+using function words as features, one might conclude the opposite -- which is
+wrong. \citet{argamon2005measuring} believe that most of the discriminating power
+of collocations is due to the frequent words they contain (and not the
 collocations themselves). They also note that using more training texts than
 features seriously reduces the likelihood of overfitting the model to the
 training data, improving the reliability of results. Similar claim can be found
@@ -231,9 +231,9 @@ in \citep{banko2001scaling} which deals with influence of the corpus size in
 general natural language processing.
 
 A similar comparison of the feature types is shown in
-\citep{uzuner2005comparative} where are compared the function words and syntactic
-elements in order to identify the author of document. It is conclouded that the
-syntactic elements of expression are useful as functional words in solving the
+\citep{uzuner2005comparative} where the function words and syntactic
+elements are compared in order to identify the author of document. It is
+concluded that the syntactic elements of expression are useful as functional words in solving the
 problem.
 
 Description of the authorship attribution process by using syntactic elements
@@ -241,23 +241,23 @@ of language can be found in the extremely influential work
 \citep{stamatatos2001computer}. Various types of style markers can be found in
 \citep{diri2003automatic,luyckx2005shallow}.
 
-\citet{stamatatos2001computer} as feature for identifying the author suggests
-vocabulary diversity of the authors. It is measured by the ratio of unique words
+\citet{stamatatos2001computer} suggest vocabulary diversity of the authors as
+feature for identifying the author. It is measured by the ratio of unique words
 and the total size of the text or counting words which occur only once
 (\emph{Hapax legomena}), words which occur only twice (\emph{dis legomena}), etc.
 These measures are closely related to length of the text. They also note that
-functions defined in \citep{yule1944statistical,honore1979some}
-should solve this problem, i.e.\ they should be constant regarding the length of
-the text. Analysis of similar function can be found in the
-\citep{tweedie1998variable} who claims that most these functions are not
-independent regarding the length of the text. It is concluded that the diversity
-vocabulary is unstable feature for texts shorter than 1000 words.
+functions defined in \citep{yule1944statistical,honore1979some} should solve this
+problem, i.e.\ they should be constant regarding the length of the text. Analysis
+of similar function can be found in the \citep{tweedie1998variable} which claims
+that most of these functions are not independent regarding the length of the
+text. It is concluded that the diversity of vocabulary is unstable feature for
+texts shorter than 1000 words.
 
 The problem of dependency on the length of the text for the classification using
 a SVM (Support Vector Machines) is explained in \citep{diederich2003authorship}.
-To avoid of dependency it was used a combination of $L_p$ normalization of the
+To avoid the dependency, a combination of $L_p$ normalization of the
 length and transformation of terms occurrence frequency such as \emph{idf}
-(inverse document frequency) measure.
+(inverse document frequency) measure was used.
 
 Idf measure is defined as
 \begin{equation}
@@ -270,12 +270,13 @@ appear in a small number of documents and thus it is very discriminatory.
 
 \section{Data set}
 \label{sec:podatci}
-Used data set is online archive of ``Jutarnji list'' newspaper columns
-available at \url{http://www.jutarnji.hr/komentari/}. Data set consists of
-4571 texts written by 25 authors. The lowest average number of words in
-document per author is 315 word, highest is 1347. Standard average number
-of words in document per author for data set is 717 words. Number of document
-per author in data set is shown at figure \ref{fig:articlesPerAuthor}.
+The online archive of ``Jutarnji list'' newspaper columns available at
+\url{http://www.jutarnji.hr/komentari/} was used as data set. The data set
+consists of 4571 texts written by 25 authors. The lowest average number of words
+in document per author is 315 words, and the highest is 1347 words. Standard
+average number of words in document per author for data set is 717 words. Number
+of documents per author in data set is shown on figure
+\ref{fig:articlesPerAuthor}.
 
 To make sure that learning of topic is avoided, data set is splitted by dates
 -- 20\% of newest texts of every author is taken for testing (hold--out method).
@@ -289,26 +290,27 @@ To make sure that learning of topic is avoided, data set is splitted by dates
 
 \section{Document features}
 The main problem of the construction of authorship attribution systems is the
-selection of the sufficienty discriminatory features of the text. Feature is
-discriminatory if it is common at one author, and rare at others. Due to the
-large number of authors complex features are extremely useful if their
+selection of the sufficiently discriminatory features of the text. Feature is
+discriminatory if it is common for one author, and rare for others. Due to the
+large number of authors, complex features are extremely useful if their
 distribution is characteristic for each author (e.g.\ the frequency distribution
 of some words).
 
-Features can be combined. If we combine complex features, new feature can
+Features can be combined. If complex features are combined, new feature can
 represent more distributions and have greater discriminatory power.
 
-At creation of feature vector we need to take care that feature doesn't depend
-on length or content of document. That dependency reduces generality of
-systems application and can lead to decrease of accurancy (e.g.\ relateing
-author with concrete topic or terms).
+During the creation of the feature vector, it is neccessary to take care that the
+feature does not depend on length or content of document. That dependency reduces
+generality of system's application and can lead to decreasment of accurancy
+(e.g.\ relating author to concrete topic or terms).
 
 Features can be expressed as vector of real numbers which makes classification
-very easy. Set of documents is expressed as set of vectors of equal dimensions.
-Combining of features is connecting (appending) of their feature vectors.
+very easy. Set of documents is expressed as set of vectors with equal dimensions.
+Combining the features is expressed as connecting (appending) of their feature
+vectors.
 
-Depending of selected feature model, text analysis and the creation of vector
-features can vary from computationally, very trivial operation to a very complex
+Depending on selected feature model, text analysis and creation of feature
+vectors can vary from computationally very trivial operations to very complex
 algorithms (such as obtaining syntactic features by analyzing natural language).
 
 
@@ -317,86 +319,84 @@ algorithms (such as obtaining syntactic features by analyzing natural language).
 % značenje, poput priloga, prijedloga, veznika, čestica, uzvika ili riječi koje
 % TODO: Mislim da sam krivo preveo vrste riječi!
 Function words are words that have little (or none) semantic content of their
-own, they are words such as prepositions, conjunctions, or articles, or elements
-such as words describing quantities. They usually indicate a grammatical
-relationship or generic property \citep{zhao2005effective}.
+own, like adverbs, prepositions, conjunctions, or articles. They usually indicate
+a grammatical relationship or generic property \citep{zhao2005effective}.
 
-Usefulness of function words occurrence frequency for authorship attribution
-lies in the fact that they are an indicators of writing style. Some
-less well--known function words, such as proposals \emph{onkraj},
-\emph{namjesto} and \emph{zavrh} are rarely used, and may very well
-suggest the authors. However, even the frequency of use of frequent
-functional words can be very well used to distinguish the author. It is shown
-that the high frequency of use of function words and their roles in the grammar
-the author usually has no conscious control over their use in a particular text
+Usefulness of function words occurrence frequency for authorship attribution lies
+in the fact that they are the indicators of writing style. Some of the less known
+function words, such as prepositions \emph{onkraj}, \emph{namjesto} and
+\emph{zavrh} are rarely used, and may very well suggest who are the authors.
+However, even the frequency of use of frequent functional words can be very well
+used to distinguish the author. It is shown that because of the high frequency of
+use of function words and their roles in the grammar, the author usually has no
+conscious control over their use in a particular text
 \citep{argamon2005measuring}.
 
-Functional words are topic independent, authors automatically (with out conscious
-control) use functional words which indicate their own style. Changing the
-language of documents, it is necessary to update and set of functional words with
-which the system works. It is difficult to predict how will changed system
-behave, and whether the function word may give equally good results for different
-languages. Although there are more research of this topic, due to various
-language, type and size of documents it is difficult to conclude are these
-methods generally effective \citep{zhao2005effective}.
+Functional words are topic--independent, authors automatically (without conscious
+control) use functional words which indicate their own style. During the changing
+of the language of documents, it is also neccessary to update the set of
+functional words with which the system works. It is difficult to predict how will
+the changed system behave, and whether the function words may give equally good
+results for different languages. Although there are more researches on this
+topic, due to various languages, type and size of documents, it is difficult to
+conclude are these methods generally effective \citep{zhao2005effective}.
 
-Building the document feature vector is done by counting the appearance of any
-functional words in the document. The resulting numbers are written as vector
-(for the function words that have not appeared in a document we write 0). After
-counting each frequency is devided with the total number of words in the document
-(to remove dependency of the length of the document).
+Building the document feature vector is done by counting the number of appearance
+of every functional word in the document. The results are written as vector (for
+the function words that have not appeared in a document, the result is 0) . After
+counting, each frequency is divided with the total number of words in the
+document (to remove dependency on the length of the document).
 
 \subsection{Function words types frequency}
 \label{sec:funkcijske-rijeci-grupe}
 % Ulazni skup funkcijskih riječi podijeljen je na: priloge, prijedloge, veznike,
 % čestice i uzvike.
 % TODO: U zagradama navesti tipove riječi!
-Building of the feature vector is done by counting the appearance of
-types of functional words. Result is written as a vector (five--dimensional
-vector) and each component of the vector is divided by the number of words in
-the document.
-
+Building of the feature vector is done by counting the number of appearance of
+types of functional words. Result is written as a vector (five-- dimensional
+vector) and each component of the vector is divided by the number of words in the
+document.
 
 \subsection{Idf weighted function words frequency}
 \label{sec:funkcijske-rijeci-idf}
-The feature vector is build by multiplying components of vector got by method
-defined in \ref{sec:funkcijske-rijeci} and belonging \emph{idf} \engl{inverse
-document frequency} weight. \emph{Idf} weight is defined by expression
-(\ref{equ:idf}) \citep{diederich2003authorship}.
+The feature vector is built by multiplying components of vector created by method
+defined in \ref{sec:funkcijske-rijeci} and its associated \emph{idf}
+\engl{inverse document frequency} weight. \emph{Idf} weight is defined by
+expression (\ref{equ:idf}) \citep{diederich2003authorship}.
 
-Shown measure discriminate documents that contain functional words that are
-used in small number of other documents. \emph{Idf} measure makes record only
-of presence of certain termin in document, term count in document is ignored.
-That is disadvantege of \emph{idf} measures. Word which appears many times in one
-text and one time in others measures the same value as the one which appears
-once all text---it ignores the word which would very well separate one
-document from others.
+Shown measure discriminate documents that contain functional words that are used
+in small number of other documents. The disadvantage of \emph{idf} measure is
+that it makes record only of presence of certain term in the document, term
+counting in the document is ignored. Therefore, word which appears many times in
+one text and one time in the others gets the same value as the one which appears
+once in all text---the word which would very well separate one document from the
+others is ignored.
 
 \subsection{Punctation marks, vowels and words length frequency}
 \label{sec:znacajke-manje}
-We use set of punctuation marks: ``.'', ``,'', ``!'', ``?'', ``''',
-``"'', ``-'', ``:``, ``;'', ``+'', ``*'' and count their appearance in document.
-Result is written as vector with eleven dimensions and every component is devided
-by total sum od characters in document.
+A set of following punctuation marks is used: ``.'', ``,'', ``!'', ``?'', ``''',
+``"'', ``-'', ``:``, ``;'', ``+'', ``*'' and their number of appearance in
+document is counted. Result is written as 11-dimensional vector and every
+component is divided by total sum of characters in the document.
 
-Feature vector based on the occurrence frequency of vowels (a, e, i, o, u) are
-obtained in equal procedure as for the punctuation marks.
+Feature vector based on the frequency of vowels occurence (a, e, i, o, u) is
+obtained in equal procedure as for the punctuation marks
 
 Frequency of word lengths are obtained by counting the words that have equal
 length. It is important to note that this procedure can lead to vectors of
 different features dimensions (e.g.\ a document has a word with length of 11,
-but some other document doesn't). Issue is solved by limiting the maximum length
-of words at length of 10. All words longer than 10 are counted to
-the 10th group. It is necessary to devide components of resulting feature
-vector with number of words in document (to remove dependency of text length).
+but some other document doesn't). The issue is solved by limiting the maximum
+length of words at length of 10. All words longer than 10 characters are
+counted to the 10th group. It is necessary to divide components of resulting feature
+vector with number of words in document (to remove dependency on text length).
 
 Suggested features have weak discriminatory power on their own, but they are
-very usefull in combination with other features (see \ref{sec:evaluacija}).
+very useful in combination with other features (see \ref{sec:evaluacija}).
 
 \section{Classification}
-Prikaz dokumenata vektorima realnih brojeva omogućava jednostavno korištenje
-klasifikatora koji traže decizijske funkcije, tj.\ granice u vektorskom
-prostoru.
+Representation of documents by real number vectors  enables easy use of
+classifiers that search decision functions, i.e.\ boundaries in vector
+space.
 
 For classification we have used SVM (Support Vector Machine) with radial basis
 function as kernel. It is shown that, with selection of right parameters, linear
