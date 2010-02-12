@@ -117,7 +117,6 @@ previše
 jedanput
 dvaput
 triput
-stoput
 ovako
 onako
 tako
@@ -128,24 +127,13 @@ svakojako
 jedva
 svejedno
 odjednom
-sjedećke
-ležećke
-potrbuške
-naglas
-napamet
 nabolje
-kriomice
 brzo
 brže
 najbrže
 najviše
 lijepo
 veselo
-najveselije
-bratski
-sestrinski
-gospodski
-ljudski
 puno
 
 ##############
