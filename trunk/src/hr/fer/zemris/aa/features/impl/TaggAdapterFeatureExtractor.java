@@ -29,7 +29,7 @@ public class TaggAdapterFeatureExtractor implements IFeatureExtractor {
 
 	@Override
 	public String getName() {
-		return extractor.toString();
+		return extractor.getName();
 	}
 
 }

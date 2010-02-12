@@ -325,7 +325,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		// default values
 		param.svm_type = svm_parameter.C_SVC;
 		param.kernel_type = svm_parameter.RBF;
-		param.cache_size = 700;
+		param.cache_size = 1200;
 		param.eps = 1e-3;
 		param.p = 0.1;
 		param.shrinking = 1;
@@ -343,8 +343,8 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		
 		double[] target = null;
 		
-		for (int i = 15; i > -6; i-=1) {
-			for (int j = 3; j > -16; j-=1) {
+		for (int i = 15; i > -6; i-=2) {
+			for (int j = 3; j > -16; j-=2) {
 		
 				//setting additional params
 				if (i < 0)
@@ -364,7 +364,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		
 				target = new double[prob.l];
 				
-				svm.svm_cross_validation(prob, param, 2, target);
+				svm.svm_cross_validation(prob, param, 3, target);
 				
 				int totalCorrect = 0;
 				for (int k = 0; k < prob.l; k++)
