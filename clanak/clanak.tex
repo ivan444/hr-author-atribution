@@ -1,6 +1,6 @@
 \documentclass[11pt,english]{article}
 
-\usepackage[a4paper, hmargin=2.5cm, vmargin=2.5cm, columnsep=0.6cm]{geometry}
+\usepackage[a4paper, hmargin=2.5cm, vmargin=2.5cm, columnsep=0.6cm, textheight=24.7cm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{babel}
 \usepackage[T1]{fontenc}
@@ -36,7 +36,9 @@
 
 \newcommand{\engl}[1]{(engl.~\emph{#1})}
 
-% Changeing list spaceing.
+\setlength{\topskip}{0cm}
+
+% List spaceing.
 \renewcommand{\labelitemi}{\textendash}
 \renewcommand{\labelitemii}{\textbullet}
 \renewenvironment{itemize}{%
@@ -62,14 +64,15 @@
 \newenvironment{keywords}
 {\noindent {\large {\bf Keywords}}.~}{}
 
-% Putting space between authors-(authblk package)
+% Space between authors-(authblk package)
 \renewcommand\Authsep{ \quad }
 \renewcommand\Authand{ \quad }
 \renewcommand\Authands{ \quad }
 
-% Removal of space between affils.
+% Space between affils.
 \setlength{\affilsep}{0em}
 
+% Environment for tables inside of multicol
 \makeatletter
 \newenvironment{tablehere}
   {\def\@captype{table}}
@@ -194,9 +197,9 @@ but it is affected by the size of the document. \emph{Second branch} of methods
 observes document as a bag--of--words and uses single content words as document
 features. Method is very robust and produces excellent results when there is a
 noticeable correlation between the authors and the topics. The \emph{third
-branch} considers word $n$--grams as features, i.e.\ features consisting of
+branch} considers word \emph{n}--grams as features, i.e.\ features consisting of
 sequences of consecutive words. Nevertheless, due to the feature explosion, it
-tends to use only $n$--grams up to three words.
+tends to use only \emph{n}--grams up to three words.
 \end{description}
 
 \citet{kukushkina2001using} explain method which uses algorithms for data
@@ -215,7 +218,7 @@ styling (e.g.\ writing sentences in capital letters) as document features in
 order to identify the author. Method is applicable only to unedited texts (blogs,
 Internet forums, newsgroups, e--mail messages, etc.).
 
-\citet{peng2003language} suggest the use of $n$--gram language model to identify
+\citet{peng2003language} suggest the use of \emph{n}--gram language model to identify
 the author. A similar method is shown in \citep{coyotl2006authorship}.
 
 The success of functional words over collocations (certain pair of words
@@ -319,7 +322,7 @@ algorithms (such as obtaining syntactic features by analyzing natural language).
 % značenje, poput priloga, prijedloga, veznika, čestica, uzvika ili riječi koje
 % TODO: Mislim da sam krivo preveo vrste riječi!
 Function words are words that have little (or none) semantic content of their
-own, like adverbs, prepositions, conjunctions, or articles. They usually indicate
+own, such as adverbs, prepositions, conjunctions, or articles. They usually indicate
 a grammatical relationship or generic property \citep{zhao2005effective}.
 
 Usefulness of function words occurrence frequency for authorship attribution lies
@@ -392,6 +395,26 @@ vector with number of words in document (to remove dependency on text length).
 
 Suggested features have weak discriminatory power on their own, but they are
 very useful in combination with other features (see \ref{sec:evaluacija}).
+
+\subsection{Word type \emph{n}--grams frequency}
+\label{sec:ngrami-tipova}
+Features are based on word type \emph{n}--grams frequency. Word types and their
+morphosyntactic descriptors are obtained by POS (Part--Of--Speech) tagging. Using
+\emph{n}--grams as features can produce very large number of dimensions, therefore
+only 3--grams are used.
+
+Method branches in two feature types. First type uses pure word types (nouns,
+verbs, adjectives, pronouns, conjunctions, interjections and prepositions), for
+example word 3--gram ``Adam i Eva'' transforms to ``noun conjunction noun.''
+Second type transforms nouns, verbs and adjectives to their types, and for other
+word types uses words as they are, therefore ``Adam i Eva'' transforms to
+``noun i noun.'' Due to many different pronouns, conjunctions, interjections and
+prepositions frequency filtering is applied---frequency is counted for only 500
+most frequent 3--grams in training data set. Used dimension reduction method is
+not optimal, therefore in future work other methods should be evaluated, such as
+information gain, $\chi^2$ test, mutual information, maximum relevance, minimum
+redundancy or classification with sparse SVM, logistic regression or na\"ive
+Bayes.
 
 \section{Classification}
 Representation of documents by real number vectors  enables easy use of
@@ -531,7 +554,7 @@ literaturi se može naći pozivanje na rad
 (npr.\ \citep{keselj2003n}). Na složenost problema bitno utječe broj autora i
 raznolikost skupa uzoraka.
 
-U daljnjem radu potrebno je evaluirati metode temeljene na $n$-gramima riječi i
+U daljnjem radu potrebno je evaluirati metode temeljene na \emph{n}--gramima riječi i
 slova poput onih opisanih u
 \citep{keselj2003n,peng2003language,coyotl2006authorship} te korištenje oznaka
 stila autora \engl{style markers} kao značajki – informacije vezane uz strukturu
