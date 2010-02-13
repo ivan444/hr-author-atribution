@@ -5,12 +5,15 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordGroupFreqExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
 import hr.fer.zemris.aa.features.impl.MorphosyntaticFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.Ngrams;
 import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
+import hr.fer.zemris.aa.features.impl.SentenceBasedFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.TaggAdapterFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.VowelsExtractor;
+import hr.fer.zemris.aa.features.impl.WordGroupExtractor;
 import hr.fer.zemris.aa.features.impl.WordLengthFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.WordType3gramsFreqExtractor;
 import hr.fer.zemris.aa.recognizers.AuthorRecognizer;
@@ -210,12 +213,15 @@ public class Experimenter {
 		IFeatureExtractor featExtrac = null;
 		try {
 			featExtrac = new ComboFeatureExtractor(
-//					new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
-					new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt"))
+					new SentenceBasedFeatureExtractor(20),
+					new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
+					new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
 //					new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true)
-//					new TaggAdapterFeatureExtractor(new VowelsExtractor()),
-//					new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
-//					new MorphosyntaticFeatureExtractor()
+					new TaggAdapterFeatureExtractor(new VowelsExtractor()),
+					new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
+//					new TaggAdapterFeatureExtractor(new FunctionWordGroupFreqExtractor(new File("config/fwords.txt"))),
+//					new WordGroupExtractor()
+					new MorphosyntaticFeatureExtractor()
 			);
 		} catch (Exception e) {
 			System.err.println("Greška! " + e.getMessage());
