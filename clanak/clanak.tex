@@ -21,11 +21,7 @@
 % if it doesn't suits your needs.
 \usepackage[affil-it]{authblk}
 %\usepackage{hyperref}
-% Da bi se promjenio stil citiranja umjesto:
-% [authoryear, round]
-% staviti:
-% [numbers, square]
-\usepackage[numbers, square]{natbib}
+\usepackage[numbers, square, sort]{natbib}
 \usepackage{subfig}
 \usepackage{fixltx2e}
 \usepackage{textcomp}
@@ -72,6 +68,10 @@
 % Space between affils.
 \setlength{\affilsep}{0em}
 
+% Bibliography
+\renewcommand{\bibsection}{\section{References}}
+\setlength{\bibsep}{2mm}
+
 % Environment for tables inside of multicol
 \makeatletter
 \newenvironment{tablehere}
@@ -102,32 +102,18 @@ Zagreb\\Unska 3, 10000 Zagreb, Croatia}
 
 % TODO:
 % - Napisati abstract
-% - Srediti literaturu (prilagoditi je ITI pravilima)
 % - Još malo popraviti predložak
-% - Izbaciti kolumnista s malo članaka.
 
 % Jedna _vrlo kratka_ lista glagola koje je poželjno koristiti pri pisanju članka:
 % {notes, explains, references, shows, proves, defines, believe, convince,
 % suggest}.
 
 \begin{abstract}
-The abstract is to be in fully-justified italicized text, at the top of the
-left-hand column as it is here, below the author information. Use the word
-``Abstract.'' in 12--point Times, boldface type, left positioned, initially
-capitalized, followed by the abstract in 11--point, single--spaced type, up to
-100 words long.
-
-Leave one blank line after the abstract, then begin the keywords. Use
-the word ``Keywords.'' in 12--point Times, boldface type, left positioned,
-initially capitalized, followed by up to ten keywords in 11--point, separated
-by comma, as below.
-
-Leave one blank line after the keywords, then begin the main text.
 \end{abstract}
 
 % Please, insert keywords:
 \begin{keywords}
-Times New Roman, 11 pt.
+Authorship attribution, SVM, feature words, POS tagging.
 \end{keywords}
 
 \section{Introduction}
@@ -138,15 +124,15 @@ attribution are detection of age, region and gender of the author
 attribution is to define an appropriate characterization of document that
 captures the writing style of authors \citep{coyotl2006authorship}.
 
-\citet{kukushkina2001using} notes that first works on authorship attribution
-problem are ``\emph{Izv.\ otd.\ russkogo jazyka i slovesnosti, Imp.\ akad.\ nauk.}'',
-Morozov, N., A.\ from 1915.\  and ``\emph{On some application of statistical
-method}'' from 1916.\ by Markov, A., A., founder of Theory of Markov chains.
+% \citet{kukushkina2001using} notes that first works on authorship attribution
+% problem are ``\emph{Izv.\ otd.\ russkogo jazyka i slovesnosti, Imp.\ akad.\ nauk.}'',
+% Morozov, N., A.\ from 1915.\  and ``\emph{On some application of statistical
+% method}'' from 1916.\ by Markov, A., A., founder of Theory of Markov chains.
 
 Authorship attribution can help in document indexing, document filtering and the
 hierarchical categorization of web pages and web search engines
-\citep{luyckx2005shallow}. It is important to note that authorship attribution is
-different from plagiarism detection. Plagiarism detection attempts to detect the
+\citep{luyckx2005shallow}. It is important to note that authorship attribution
+is different from plagiarism detection. Plagiarism detection attempts to detect the
 similarity between two substantially different pieces of work but is unable to
 determine if they were produced by the same author \citep{de2001mining}.
 
@@ -166,9 +152,9 @@ documents features.
 
 The rest of the paper is organized as follows. Section 2 discusses some previous
 works on authorship attribution and similar problems. Section 3 describes used
-data set. Section 5 is the most important, and it introduces used methods.
-Section 6 describes classification and 7th section discusses evaluation and
-gives evaluation results. Conclusion and future work is given in 8th section.
+data set. Section 4 is the most important, and it introduces used methods.
+Section 5 describes classification and 6th section discusses evaluation and
+gives evaluation results. Conclusion and future work is given in 7th section.
 
 \section{Related work}
 \citet{coyotl2006authorship} cluster methods of authorship attribution in three
@@ -192,22 +178,22 @@ documents.
 \item[Word--based document features:] This approach branches in three different
 methods. \emph{The first one} characterizes documents using a set of functional
 words (their presence and frequency), ignoring the content words since they tend
-to be highly correlated with the document topics. The method shows good results,
-but it is affected by the size of the document. \emph{Second branch} of methods
+to be highly correlated with the document topics. \emph{Second branch} of methods
 observes document as a bag--of--words and uses single content words as document
-features. Method is very robust and produces excellent results when there is a
-noticeable correlation between the authors and the topics. The \emph{third
-branch} considers word \emph{n}--grams as features, i.e.\ features consisting of
-sequences of consecutive words. Nevertheless, due to the feature explosion, it
-tends to use only \emph{n}--grams up to three words.
+features. This method can be applied only when there is a noticeable correlation
+between the authors and the topics. The \emph{third branch} considers word
+\emph{n}--grams as features, i.e.\ features consisting of sequences of
+consecutive words.
+% Nevertheless, due to the feature explosion, it tends to use
+% only \emph{n}--grams up to three words.
 \end{description}
 
 \citet{kukushkina2001using} explain method which uses algorithms for data
 compression to identify the author. Appendix of paper shows evaluation results
 for authorship attribution with different compression algorithms. The idea behind
-the method is to divide documents by authors and compress every set with selected
-algorithm and write size of archive. To classify text of unknown author, text is
-added to each set and the same data compression algorithm is applied. Author of
+the method is to divide documents by authors, compress every set with selected
+algorithm and write the size of archive. To classify text of unknown author,
+text is added to each set and the same data compression algorithm is applied. Author of
 documents in archive which records the smallest increase of the size is declared
 as author of the new document. Review of a similar method can be found in the
 paper \citep{zhao2005effective}. Paper notes that the method has obvious
@@ -247,11 +233,11 @@ of language can be found in the extremely influential work
 \citet{stamatatos2001computer} suggest vocabulary diversity of the authors as
 feature for identifying the author. It is measured by the ratio of unique words
 and the total size of the text or counting words which occur only once
-(\emph{Hapax legomena}), words which occur only twice (\emph{dis legomena}), etc.
+(\emph{hapax legomena}), words which occur only twice (\emph{dis legomena}), etc.
 These measures are closely related to length of the text. They also note that
-functions defined in \citep{yule1944statistical,honore1979some} should solve this
-problem, i.e.\ they should be constant regarding the length of the text. Analysis
-of similar function can be found in the \citep{tweedie1998variable} which claims
+functions defined by Yule (1944) and Honore (1979) should solve this problem,
+i.e.\ they should be constant regarding the length of the text. Analysis of
+similar function can be found in the \citep{tweedie1998variable} which claims
 that most of these functions are not independent regarding the length of the
 text. It is concluded that the diversity of vocabulary is unstable feature for
 texts shorter than 1000 words.
@@ -276,7 +262,7 @@ appear in a small number of documents and thus it is very discriminatory.
 The online archive of ``Jutarnji list'' newspaper columns available at
 \url{http://www.jutarnji.hr/komentari/} was used as data set. The data set
 consists of 4571 texts written by 25 authors. The lowest average number of words
-in document per author is 315 words, and the highest is 1347 words. Standard
+in document per author is 315 words, and the highest is 1347 words. An
 average number of words in document per author for data set is 717 words. Number
 of documents per author in data set is shown on figure
 \ref{fig:articlesPerAuthor}.
@@ -287,7 +273,7 @@ To make sure that learning of topic is avoided, data set is splitted by dates
 \begin{minipage}{0.8\linewidth}
 \vspace{10pt}
 \centerline{\resizebox{1.4\linewidth}{!}{\input{figures/articlesPerAuthor}}}%
-\figcaption{\small \textbf{\textsf{Number of documents per author.}}}%
+\figcaption{\small \textbf{\textsf{Number of texts per author.}}}%
 \label{fig:articlesPerAuthor}
 \end{minipage}
 
@@ -304,59 +290,56 @@ represent more distributions and have greater discriminatory power.
 
 During the creation of the feature vector, it is neccessary to take care that the
 feature does not depend on length or content of document. That dependency reduces
-generality of system's application and can lead to decreasment of accurancy
+generality of systems application and can lead to decreasment of accurancy
 (e.g.\ relating author to concrete topic or terms).
 
-Features can be expressed as vector of real numbers which makes classification
-very easy. Set of documents is expressed as set of vectors with equal dimensions.
-Combining the features is expressed as connecting (appending) of their feature
+Features can be expressed as vector of real numbers which simplifies
+classification. Set of documents is expressed as set of vectors with equal dimensions.
+Combining the features is expressed as appending of their feature
 vectors.
 
-Depending on selected feature model, text analysis and creation of feature
-vectors can vary from computationally very trivial operations to very complex
-algorithms (such as obtaining syntactic features by analyzing natural language).
+% Depending on selected feature model, text analysis and creation of feature
+% vectors can vary from computationally very trivial operations to very complex
+% algorithms (such as obtaining syntactic features by analyzing natural language).
 
 
 \subsection{Function words frequency}
 \label{sec:funkcijske-rijeci}
-% značenje, poput priloga, prijedloga, veznika, čestica, uzvika ili riječi koje
-% TODO: Mislim da sam krivo preveo vrste riječi!
 Function words are words that have little (or none) semantic content of their
-own, such as adverbs, prepositions, conjunctions, or articles. They usually indicate
-a grammatical relationship or generic property \citep{zhao2005effective}.
+own, such as adverbs, prepositions, conjunctions, or interjections. They usually
+indicate a grammatical relationship or generic property
+\citep{zhao2005effective}.
 
-Usefulness of function words occurrence frequency for authorship attribution lies
-in the fact that they are the indicators of writing style. Some of the less known
-function words, such as prepositions \emph{onkraj}, \emph{namjesto} and
-\emph{zavrh} are rarely used, and may very well suggest who are the authors.
-However, even the frequency of use of frequent functional words can be very well
-used to distinguish the author. It is shown that because of the high frequency of
-use of function words and their roles in the grammar, the author usually has no
+% Usefulness of function words occurrence frequency for authorship attribution lies
+% in the fact that they are the indicators of writing style.
+Some of the less known function words, such as prepositions \emph{onkraj},
+\emph{namjesto} and \emph{zavrh} are rarely used and may very well suggest the
+author. However, even the frequency of use of frequent functional words can be
+very well used to distinguish the author. Due to high frequency of use of
+function words and their roles in the grammar, the author usually has no
 conscious control over their use in a particular text
 \citep{argamon2005measuring}.
 
 Functional words are topic--independent, authors automatically (without conscious
-control) use functional words which indicate their own style. During the changing
-of the language of documents, it is also neccessary to update the set of
-functional words with which the system works. It is difficult to predict how will
-the changed system behave, and whether the function words may give equally good
+control) use functional words which indicate their own style.
+%During the changing
+%of the language of documents, it is also neccessary to update the set of
+%functional words with which the system works.
+It is difficult to predict whether the function words will give equally good
 results for different languages. Although there are more researches on this
 topic, due to various languages, type and size of documents, it is difficult to
 conclude are these methods generally effective \citep{zhao2005effective}.
 
 Building the document feature vector is done by counting the number of appearance
-of every functional word in the document. The results are written as vector (for
+of functional words in the document. The results are written as vector (for
 the function words that have not appeared in a document, the result is 0) . After
 counting, each frequency is divided with the total number of words in the
 document (to remove dependency on the length of the document).
 
 \subsection{Function words types frequency}
 \label{sec:funkcijske-rijeci-grupe}
-% Ulazni skup funkcijskih riječi podijeljen je na: priloge, prijedloge, veznike,
-% čestice i uzvike.
-% TODO: U zagradama navesti tipove riječi!
 Building of the feature vector is done by counting the number of appearance of
-types of functional words. Result is written as a vector (five-- dimensional
+word types of functional words. Result is written as a vector (five--dimensional
 vector) and each component of the vector is divided by the number of words in the
 document.
 
@@ -369,7 +352,7 @@ expression (\ref{equ:idf}) \citep{diederich2003authorship}.
 
 Shown measure discriminate documents that contain functional words that are used
 in small number of other documents. The disadvantage of \emph{idf} measure is
-that it makes record only of presence of certain term in the document, term
+that it records only presence of certain term in the document, term
 counting in the document is ignored. Therefore, word which appears many times in
 one text and one time in the others gets the same value as the one which appears
 once in all text---the word which would very well separate one document from the
@@ -377,9 +360,9 @@ others is ignored.
 
 \subsection{Punctation marks, vowels and words length frequency}
 \label{sec:znacajke-manje}
-A set of following punctuation marks is used: ``.'', ``,'', ``!'', ``?'', ``''',
-``"'', ``-'', ``:``, ``;'', ``+'', ``*'' and their number of appearance in
-document is counted. Result is written as 11-dimensional vector and every
+A set of following punctuation marks are used: ``.'', ``,'', ``!'', ``?'',
+``''', ``"'', ``-'', ``:'', ``;'', ``+'', ``*'' and their number of appearance in
+document is counted. Result is written as 11--dimensional vector and every
 component is divided by total sum of characters in the document.
 
 Feature vector based on the frequency of vowels occurence (a, e, i, o, u) is
@@ -399,9 +382,9 @@ very useful in combination with other features (see \ref{sec:evaluacija}).
 \subsection{Word type \emph{n}--grams frequency}
 \label{sec:ngrami-tipova}
 Features are based on word type \emph{n}--grams frequency. Word types and their
-morphosyntactic descriptors are obtained by POS (Part--Of--Speech) tagging. Using
-\emph{n}--grams as features can produce very large number of dimensions, therefore
-only 3--grams are used.
+morphosyntactic descriptors are obtained by POS (Part--Of--Speech) tagging for
+Croatian language. Using \emph{n}--grams as features can produce very large
+number of dimensions, therefore only 3--grams are used.
 
 Method branches in two feature types. First type uses pure word types (nouns,
 verbs, adjectives, pronouns, conjunctions, interjections and prepositions), for
@@ -416,35 +399,47 @@ information gain, $\chi^2$ test, mutual information, maximum relevance, minimum
 redundancy or classification with sparse SVM, logistic regression or na\"ive
 Bayes.
 
-\section{Classification}
-Representation of documents by real number vectors  enables easy use of
-classifiers that search decision functions, i.e.\ boundaries in vector
-space.
+\subsection{Word type groups frequency}
+\label{sec:grupe-tipova}
+The feature vector is build by counting nouns, verbs, adjectives and pronouns in
+text. Therefore, feature vector has four component and every component is divided
+by total number of words in text.
 
-For classification we have used SVM (Support Vector Machine) with radial basis
+\subsection{Word morphosyntactic tags}
+\label{sec:morphosyntactic}
+Building of feature vector is done by counting case, degree, form,
+gender, number and person frequency of word type.
+
+\section{Classification}
+% Representation of documents by real number vectors  enables easy use of
+% classifiers that search decision functions, i.e.\ boundaries in vector
+% space.
+
+The used classifier is SVM (Support Vector Machine) with radial basis
 function as kernel. It is shown that, with selection of right parameters, linear
 SVM is special case of SVM with RBF kernel \citep{keerthi2003asymptotic} which
 removes need to use linear SVM as potential classifier.
 
 It is required to scale data for use with SVM to ensure equal contribution of
 every attribute to classification. We scale components of every feature vector
-to interval of $[0, 1]$ according to following expression:
-\begin{equation}
-x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
-- \min_{i}\; x_{i,j}}
-\end{equation}
-where $x^{s}_{i,j}$ is scaled component $j$ of vector $\mathbf{x_i}$,
-$\min_{i}\; x_{i,j}$ is minimum value of attribute $j$ among all vectors
-$\mathbf{x_i}$ and $\max_{i}\; x_{i,j}$ is maximum value of attribute $j$ among
-all vectors. If we denote the resulting minimum and maximum values as follows:
-\begin{eqnarray}
-M_i & = \max_{i}\; x_{i,j} \\
-m_i & = \min_{i}\; x_{i,j}
-\end{eqnarray}
-then, the unknown vector $\mathbf{x}$ before classification is scaled as:
-\begin{equation}
-x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
-\end{equation}
+to interval of $[0, 1]$.
+%  according to following expression:
+% \begin{equation}
+% x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
+% - \min_{i}\; x_{i,j}}
+% \end{equation}
+% where $x^{s}_{i,j}$ is scaled component $j$ of vector $\mathbf{x_i}$,
+% $\min_{i}\; x_{i,j}$ is minimum value of attribute $j$ among all vectors
+% $\mathbf{x_i}$ and $\max_{i}\; x_{i,j}$ is maximum value of attribute $j$ among
+% all vectors. If we denote the resulting minimum and maximum values as follows:
+% \begin{eqnarray}
+% M_i & = \max_{i}\; x_{i,j} \\
+% m_i & = \min_{i}\; x_{i,j}
+% \end{eqnarray}
+% then, the unknown vector $\mathbf{x}$ before classification is scaled as:
+% \begin{equation}
+% x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
+% \end{equation}
 
 Parameter search is done by model selection with parameters $(C, \gamma)$ from
 set $\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
@@ -452,12 +447,11 @@ set $\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
 classification in process of cross--validation on learning data set. Accuracy
 of classification is measured by expression:
 \begin{equation}
-acc = \frac{n_c}{N},
+acc = \frac{n_c}{N}, % ako bude problema, ovo staviti kao ``inline'' jednadžbu.
 \end{equation}
 where $n_c$ is number of correctly classified documents, $N$ is total number of
 documents. After we find parameters $(C, \gamma)$ for which system has highest
-accuracy, we learn classifier with given parameters. Parameters used in this
-paper are $C = 16$ and $\gamma = 0.25$.
+accuracy, we learn classifier with given parameters.
 
 
 \section{Evaluation}
@@ -467,8 +461,8 @@ documents of each of 25 authors for testing. Data set for testing consists of
 1146 documents. Classification success is measured by ratio of correctly
 classified documents and total number of documents (accuracy).
 
-Results of evalutaion are shown in \ref{tbl:eval}. For shorter record, method
-defined in \ref{sec:funkcijske-rijeci} is marked as ``$\mathcal{F}$'', method
+Results of evalutaion are shown in table \ref{tbl:eval}. For shorter record,
+method defined in \ref{sec:funkcijske-rijeci} is marked as ``$\mathcal{F}$'', method
 defined in \ref{sec:funkcijske-rijeci-grupe} is marked as ``$\mathcal{G}$'',
 method from \ref{sec:funkcijske-rijeci-idf} ``\emph{idf}'' and methods from
 \ref{sec:znacajke-manje} respectivly ``$\mathcal{P}$'', ``$\mathcal{V}$'' and
@@ -500,9 +494,14 @@ $c_i$ and $F_i$ a $F$ measure for class $c_i$.
 
 Weighted $F$ measure at our data set for testing gives value of 87\%.
 
+% ### FeatureExtractor: FunctionWordGroupFreqExtractor + WordGroupExtractor + FunctionWordOccurNumExtractor
+% 0.9118248175182482: C = 32.0, gamma = 0.03125
+% ### FeatureExtractor: FunctionWordOccurNumExtractor + MorphosyntacticFeatureExtractor
+% 0.92: C = 128.0, gamma = 0.03125
+
 % TODO: Smisliti kako srediti da je naslov tablice uvijek iznad tablice..
 % \begin{minipage}{\linewidth}
-\begin{tablehere}
+\begin{table*}[!htb]
 \centering%
 \caption{\small \textbf{\textsf{Evaluation of different features}}}%
 \begin{tabular}{l c c c}
@@ -532,53 +531,32 @@ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$, $\mathca
 \hline
 \end{tabular}
 \label{tbl:eval}%
-\end{tablehere}%
+\end{table*}%
 % \end{minipage}
 
 \section{Conclusion}
-% TODO: Ovo će se ionako morati ponovo pisati (ili dosta mijenjati, pa
-% ostavljam za kasnije).
-Pokazano je da se problem automatskog prepoznavanja autora teksta može izuzetno
-uspješno riješiti relativno jednostavnim metodama. U usporedbi s prijavljenim
-rezultatima (od 70\% do 97\%
+It is shown that authorship attribution problem can be successfully solved by
+the relatively simple methods, although for state--of--art methods, we
+believe that syntactic analysis of documents is required. In compare with
+reported results (from 70\% to 97\%
 \citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer,stamatatos1999automatic}),
-dobiveni rezultat (88\%) je izuzetno dobar. U obzir se mora uzeti variranje
-rezultata zbog razlika u načinu evaluacije, podatcima nad kojima se evaluacija
-vršila te samom problemu (binarna, višerazredna ili jednorazredna
-klasifikacija).
+our results are very well.
 
-Nažalost, ispravna usporedba s drugim radovima zasad nije moguća jer ne postoji
-relevantan skup za usporedbu kao što navode \citep{zhao2005effective}, no u
-literaturi se može naći pozivanje na rad
-\citep{stamatatos2001computer,stamatatos1999automatic} i ``Grčki skup''
-(npr.\ \citep{keselj2003n}). Na složenost problema bitno utječe broj autora i
-raznolikost skupa uzoraka.
+Result comparision is difficult due to differences in the ways of evaluation,
+different types of data sets and the types of problems (binary, multi--class or
+single--class classifications). There are no relevant data set for comparision
+\citep{zhao2005effective}, but there are references on paper
+\citep{stamatatos2001computer,stamatatos1999automatic} and ``Greek data set''
+(e.g.\ \citep{keselj2003n}). There is an significant affected of data set type
+(number and variety of document samples) on the complexity of the problem.
 
-U daljnjem radu potrebno je evaluirati metode temeljene na \emph{n}--gramima riječi i
-slova poput onih opisanih u
-\citep{keselj2003n,peng2003language,coyotl2006authorship} te korištenje oznaka
-stila autora \engl{style markers} kao značajki – informacije vezane uz strukturu
-jezika koje su skupljene dubinskom analizom sintaksne analize dokumenta
-\citep{stamatatos2001computer,diri2003automatic,luyckx2005shallow}.
+In future work, methods based on word and character \emph{n}--grams suggested
+in \citep{keselj2003n,peng2003language,coyotl2006authorship} has to be
+evaluated. Also, evaluation has to be performed on different types of data sets
+such as poems, newspaper articles or books data sets.
 
-Uz navedeno, potrebno je provesti evaluaciju nad ispitnim korpusima različitih
-prosječnih duljina tekstova (npr.\ pjesme, novinski članci, knjige).
-
-% TODO: Prilagoditi ITI stilu
-\bibliography{literatura}
 \bibliographystyle{plainnat}
-
-% \section{Detalji evaluacije najbolje značajke}
-% \label{sec:detalji-evaluacije}
-% \begin{itemize}
-%   \item Kombinacija svih metoda iz \ref{sec:znacajke-manje} i metode iz
-%      \ref{sec:funkcijske-rijeci},
-%   \item broj autora	u skupu: 25,
-%   \item ukupno uzoraka za učenje: 3267,
-%   \item ukupno uzoraka za testiranje: 1092,
-%   \item točnost: 0.88003665 (961/131),
-%   \item F mjera: 0.8712441.
-% \end{itemize}
+\bibliography{literatura}
 
 \end{multicols}
 
