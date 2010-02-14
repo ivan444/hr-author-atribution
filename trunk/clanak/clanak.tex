@@ -368,7 +368,8 @@ one text and one time in the others gets the same value as the one which appears
 once in all text---the word which would very well separate one document from the
 others is ignored.
 
-\subsection{Punctation marks, vowels and words length frequency}
+\subsection{Punctation marks, vowels, words length and sentence length
+frequency}
 \label{sec:znacajke-manje}
 A set of following punctuation marks are used: ``.'', ``,'', ``!'', ``?'',
 ``''', ``"'', ``-'', ``:'', ``;'', ``+'', ``*'' and their number of appearance in
@@ -385,6 +386,10 @@ but some other document doesn't). The issue is solved by limiting the maximum
 length of words at length of 10. All words longer than 10 characters are
 counted to the 10th group. It is necessary to divide components of resulting feature
 vector with number of words in document (to remove dependency on text length).
+
+The sentence length frequency is obtained in equal procedure as for the word
+length frequency. An different vectors dimension issue is solved by limiting
+sentence length to 20.
 
 Suggested features have weak discriminatory power on their own, but they are
 very useful in combination with other features (see \ref{sec:evaluacija}).
@@ -467,14 +472,19 @@ classified documents and total number of documents (accuracy).
 
 Results of evalutaion are shown in table \ref{tbl:eval}. For shorter record,
 method defined in \ref{sec:funkcijske-rijeci} is marked as ``$\mathcal{F}$'', method
-defined in \ref{sec:rijeci-grupe} is marked as ``$\mathcal{G}$'',
-method from \ref{sec:funkcijske-rijeci-idf} ``\emph{idf}'' and methods from
-\ref{sec:znacajke-manje} respectivly ``$\mathcal{P}$'', ``$\mathcal{V}$'' and
-``$\mathcal{L}$''. Column ``$\top$'' denotes number of correctly
-recognized authors, ``$\bot$'' -- incorrectly recognized.
+defined in \ref{sec:rijeci-grupe} is marked as ``$\mathcal{C}$'',
+method from \ref{sec:funkcijske-rijeci-idf} ``$\mathcal{I}$'' and methods from
+\ref{sec:znacajke-manje} respectivly ``$\mathcal{P}$'', ``$\mathcal{V}$'', 
+``$\mathcal{L}$'' and ``$\mathcal{S}$'', methods from \ref{sec:ngrami-tipova}
+``$\mathcal{N}_1$'' and ``$\mathcal{N}_2$'' and method from
+\ref{sec:morphosyntactic} ``$\mathcal{M}$.'' Column ``Correct'' denotes number
+of correctly recognized authors, ``Incorrect'' -- incorrectly recognized.
+Columns ``$C$'' and ``$\gamma$'' denote parameters of SVM classifier obintained
+by cross--validation on training data set for selected model.
 
-Highest accuracy (88\%) is achived by combination of every methods defined in
-\ref{sec:znacajke-manje} and method from \ref{sec:funkcijske-rijeci}.
+Highest accuracy during cross--validation is achived by combination of
+methods marked as $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
+$\mathcal{L}$ and $\mathcal{M}$.
 
 %% TODO: Što s ovim?
 % Total accuracy doesn't explains behaviour of classifier for every class by
@@ -506,54 +516,63 @@ Highest accuracy (88\%) is achived by combination of every methods defined in
 
 % TODO: Smisliti kako srediti da je naslov tablice uvijek iznad tablice..
 % \begin{minipage}{\linewidth}
-\begin{tablehere}
-\caption{\small \textbf{\textsf{Evaluation of different features}}}%
+\begin{table*}
 \begin{center}
-\begin{tabular}{l c c c}
+\caption{\small \textbf{\textsf{Evaluation of different features}}}%
+\begin{tabular}{l c c c c c}
 \hline\hline
-Method & $\top$ & $\bot$ & Accuracy\\[0.5ex]
+Method & Correct & Incorrect & Accuracy & $C$ & $\gamma$ \\[0.5ex]
 \hline
-$\mathcal{P}$ & 603 & 489 & 55.2\% \\
-$\mathcal{F}$ & 870 & 222 & 79.6\% \\
-\emph{idf} & 872 & 220 & 79.8\% \\
-$\mathcal{G}$ & 379 & 713 & 34.7\% \\
-$\mathcal{V}$ & 326 & 766 & 29.8\% \\
-$\mathcal{L}$ & 463 & 629 & 42.3\% \\
-$\mathcal{V}$, \emph{idf} & 887 & 205 & 81.2\% \\
-$\mathcal{F}$, \emph{idf} & 848 & 244 & 77.6\% \\
-$\mathcal{P}$, $\mathcal{V}$, \emph{idf} & 948 & 144 & 86.8\% \\
-$\mathcal{P}$, $\mathcal{V}$, $\mathcal{L}$, \emph{idf} & 955 & 137 & 87.4\% \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf} & 905 & 187 & 82.8\% \\
-$\mathcal{P}$, $\mathcal{F}$, \emph{idf} & 900 & 192 & 82.4\% \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 956 & 136 & 87.5\%\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 961 & 131 & 88.0\% \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$ & 913 & 179 & 83.6\% \\
-%funkcijske, grupe & 872 & 220 & 79.8\% \\
-%grupe, idf & 874 & 218 & 80.0\% \\
-$\mathcal{P}$, $\mathcal{G}$, $\mathcal{V}$, \emph{idf} & 943 & 149 & 86.3\% \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$, $\mathcal{G}$ & 912 & 180 & 83.5\% \\ [1ex]
+% $\mathcal{P}$ & 603 & 489 & 55.2\% \\
+% $\mathcal{F}$ & 870 & 222 & 79.6\% \\
+% \emph{idf} & 872 & 220 & 79.8\% \\
+% $\mathcal{G}$ & 379 & 713 & 34.7\% \\
+% $\mathcal{V}$ & 326 & 766 & 29.8\% \\
+% $\mathcal{L}$ & 463 & 629 & 42.3\% \\
+% $\mathcal{V}$, \emph{idf} & 887 & 205 & 81.2\% \\
+% $\mathcal{F}$, \emph{idf} & 848 & 244 & 77.6\% \\
+% $\mathcal{P}$, $\mathcal{V}$, \emph{idf} & 948 & 144 & 86.8\% \\
+% $\mathcal{P}$, $\mathcal{V}$, $\mathcal{L}$, \emph{idf} & 955 & 137 & 87.4\% \\
+% $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf} & 905 & 187 & 82.8\% \\
+% $\mathcal{P}$, $\mathcal{F}$, \emph{idf} & 900 & 192 & 82.4\% \\
+% $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 956 & 136 & 87.5\%\\
+% $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 961 & 131 & 88.0\% \\
+% $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$ & 913 & 179 & 83.6\% \\
+% %funkcijske, grupe & 872 & 220 & 79.8\% \\
+% %grupe, idf & 874 & 218 & 80.0\% \\
+% $\mathcal{P}$, $\mathcal{G}$, $\mathcal{V}$, \emph{idf} & 943 & 149 & 86.3\% \\
+% $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$, $\mathcal{G}$ & 912 & 180 & 83.5\% \\ [1ex]
+$\mathcal{M}$ & 701 & 445 & 61.17\% & 512 & 0.125\\
+$\mathcal{F}$ & 1013 & 133 & 88.39\% & 8192 & 0.125\\
+$\mathcal{G}$ & 510 & 636 & 44.50\% & 512 & 2.0\\
+$\mathcal{G}$, $\mathcal{M}$ & 724 & 422 & 63.17\% & 8192 & 0.03125\\
+$\mathcal{P}$, $\mathcal{F}$ & 1051 & 95 & 91.71\% & 8 & 0.03125\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 1067 & 79 & 93.11\% & 128 & 0.03125\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$ & 1071 & 75 & 93.46\% & 32768 & 0.03125\\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$ & 1068 & 78 & 93.19\% & 128 & 0.03125\\
+$\mathcal{S}$ & 485 & 661 & 42.32\% & 128 & 0.125\\
+$\mathcal{F}$, $\mathcal{M}$ & 1045 & 101 & 91.18\% & 128 & 0.03125\\ [1ex]
 \hline
 \end{tabular}
 \label{tbl:eval}%
 \end{center}
-\end{tablehere}%
+\end{table*}%
 % \end{minipage}
 
 \section{Conclusion}
 It is shown that authorship attribution problem can be successfully solved by
 the relatively simple methods, although for state--of--art methods, we
-believe that syntactic analysis of documents is required. In compare with
-reported results (from 70\% to 97\%
-\citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}),
-our results are very well.
+believe that syntactic analysis of documents is required. Our results with
+93\% accuracy fit very well in interval of reported results which range from
+70\% to 97\% \citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
 
-Result comparision is difficult due to differences in the ways of evaluation,
-different types of data sets and the types of problems (binary, multi--class or
-single--class classifications). There are no relevant data set for comparision
+Result comparision is difficult due to different types of data sets (e.g.\ poems,
+newspaper articles, e--mails) and the problems (binary, multi--class or
+single--class classifications). There are no relevant data sets for comparision
 \citep{zhao2005effective}, but there are references on paper
-\citep{stamatatos2001computer} and ``Greek data set''
-(e.g.\ \citep{keselj2003n}). There is an significant affected of data set type
-(number and variety of document samples) on the complexity of the problem.
+\citep{stamatatos2001computer} and their ``Greek data set'' (e.g.\
+\citep{keselj2003n}). There is an significant affected of data set type (number
+and variety of document samples) on the complexity of the problem.
 
 In future work, methods based on word and character \emph{n}--grams suggested
 in \citep{keselj2003n,peng2003language,coyotl2006authorship} has to be
