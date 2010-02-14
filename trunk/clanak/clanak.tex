@@ -101,19 +101,23 @@ Zagreb\\Unska 3, 10000 Zagreb, Croatia}
 \begin{multicols}{2}
 
 % TODO:
-% - Napisati abstract
 % - Još malo popraviti predložak
 
-% Jedna _vrlo kratka_ lista glagola koje je poželjno koristiti pri pisanju članka:
-% {notes, explains, references, shows, proves, defines, believe, convince,
-% suggest}.
-
 \begin{abstract}
+Automatic authorship attribution is useful in automatic text classification
+which becomes quite complex task if it's applied in large data sets (such as
+application at web search engines). Most of reported methods are language
+specific, therefore we have developed methods specific for Croatian language
+which range from simple, based on stylistic measures and function words, to
+complex which require syntactic analysis of Croatian language. We have found that
+various combinations of methods are very successful in solving the authorship
+attribution problem.
 \end{abstract}
 
 % Please, insert keywords:
 \begin{keywords}
-Authorship attribution, SVM, feature words, POS tagging.
+Authorship attribution, SVM, function words, Croatian language syntactic
+analysis.
 \end{keywords}
 
 \section{Introduction}
@@ -158,35 +162,34 @@ gives evaluation results. Conclusion and future work is given in 7th section.
 
 \section{Related work}
 \citet{coyotl2006authorship} cluster methods of authorship attribution in three
-main approaches:
-\begin{description}
-\item[Stylistic measures as document features:] Characteristic features for this
-approach take into account length of words and sentences and the richness of the
-vocabulary. \citet{coyotl2006authorship} notes that such features are not
+main approaches: \emph{stylistic measures}, \emph{syntactic cues} and
+\emph{word--based} document features.
+
+\emph{Stylistic measures} based document features is characterized by features
+thata take into account length of words and sentences and the
+richness of the vocabulary. \citet{coyotl2006authorship} notes that such features are not
 sufficient to resolve problems that depend on the genre of the text and that they
 lose their meaning when applied over short texts.
 
-\item[Syntactic cues as document features:] Using the author style markers as
-features -- informations related to structure of the language which are obtained
-by an in--depth syntactic analysis of documents. Text is characterized by the
-presence and frequency of certain syntactic structures. This characterization is
-detailed and relevant. Unfortunately, it is computationally expensive and even
-impossible to build for languages lacking of text--processing resources (e.g.\
-POS tagger, syntactic parser, etc.). It is clearly influenced by the length of
-documents.
+When using the \emph{syntactic cues as document features} -- informations
+related to structure of the language which are obtained by an in--depth syntactic
+analysis of documents, text is characterized by the presence and frequency of
+certain syntactic structures. This characterization is detailed and relevant.
+Unfortunately, it is computationally expensive and even impossible to build for
+languages lacking of text--processing resources (e.g.\ POS tagger, syntactic
+parser, etc.). It is clearly influenced by the length of documents.
 
-\item[Word--based document features:] This approach branches in three different
-methods. \emph{The first one} characterizes documents using a set of functional
-words (their presence and frequency), ignoring the content words since they tend
-to be highly correlated with the document topics. \emph{Second branch} of methods
-observes document as a bag--of--words and uses single content words as document
-features. This method can be applied only when there is a noticeable correlation
-between the authors and the topics. The \emph{third branch} considers word
-\emph{n}--grams as features, i.e.\ features consisting of sequences of
+Approach which uses \emph{Word--based} document features branches in three
+different methods. \emph{The first one} characterizes documents using a set of
+functional words (their presence and frequency), ignoring the content words since
+they tend to be highly correlated with the document topics. \emph{Second branch}
+of methods observes document as a bag--of--words and uses single content words as
+document features. This method can be applied only when there is a noticeable
+correlation between the authors and the topics. The \emph{third branch} considers
+word \emph{n}--grams as features, i.e.\ features consisting of sequences of
 consecutive words.
 % Nevertheless, due to the feature explosion, it tends to use
 % only \emph{n}--grams up to three words.
-\end{description}
 
 \citet{kukushkina2001using} explain method which uses algorithms for data
 compression to identify the author. Appendix of paper shows evaluation results
@@ -228,7 +231,7 @@ problem.
 Description of the authorship attribution process by using syntactic elements
 of language can be found in the extremely influential work
 \citep{stamatatos2001computer}. Various types of style markers can be found in
-\citep{diri2003automatic,luyckx2005shallow}.
+\citep{luyckx2005shallow}.
 
 \citet{stamatatos2001computer} suggest vocabulary diversity of the authors as
 feature for identifying the author. It is measured by the ratio of unique words
@@ -267,7 +270,7 @@ average number of words in document per author for data set is 717 words. Number
 of documents per author in data set is shown on figure
 \ref{fig:articlesPerAuthor}.
 
-To make sure that learning of topic is avoided, data set is splitted by dates
+To make sure that learning of topic is avoided, data set is split by dates
 -- 20\% of newest texts of every author is taken for testing (hold--out method).
 
 \begin{minipage}{0.8\linewidth}
@@ -330,18 +333,25 @@ results for different languages. Although there are more researches on this
 topic, due to various languages, type and size of documents, it is difficult to
 conclude are these methods generally effective \citep{zhao2005effective}.
 
-Building the document feature vector is done by counting the number of appearance
-of functional words in the document. The results are written as vector (for
-the function words that have not appeared in a document, the result is 0) . After
-counting, each frequency is divided with the total number of words in the
-document (to remove dependency on the length of the document).
+Additionaly, to function words, auxiliary verbs and pronouns are being
+considered due to their frequencies might be representative for different
+author styles.
 
-\subsection{Function words types frequency}
-\label{sec:funkcijske-rijeci-grupe}
-Building of the feature vector is done by counting the number of appearance of
-word types of functional words. Result is written as a vector (five--dimensional
-vector) and each component of the vector is divided by the number of words in the
-document.
+Building the document feature vector is done by counting the number of appearance
+of functional words, auxiliary verbs and pronouns in the document. The results
+are written as vector where each component corresponds to number of occurences of
+related words divided by the total number of the words in the document to remove
+dependency on the length of the document. For the function words that have not
+appeared in a document resulting component equals zero.
+
+\subsection{Lexical categories frequency}
+\label{sec:rijeci-grupe}
+Building of the feature vector is done by counting the number of appearances of
+different lexical categories where the categories considered are adverbs,
+adpositions, conjunctions, particles, interjections, nouns, verbs, adjectives and
+pronouns which are obtained by syntactic analysis of Croatian language. Result is
+written as a vector (nine--dimensional vector) and each component of the vector
+is divided by the number of words in the document.
 
 \subsection{Idf weighted function words frequency}
 \label{sec:funkcijske-rijeci-idf}
@@ -399,12 +409,6 @@ information gain, $\chi^2$ test, mutual information, maximum relevance, minimum
 redundancy or classification with sparse SVM, logistic regression or na\"ive
 Bayes.
 
-\subsection{Word type groups frequency}
-\label{sec:grupe-tipova}
-The feature vector is build by counting nouns, verbs, adjectives and pronouns in
-text. Therefore, feature vector has four component and every component is divided
-by total number of words in text.
-
 \subsection{Word morphosyntactic tags}
 \label{sec:morphosyntactic}
 Building of feature vector is done by counting case, degree, form,
@@ -456,43 +460,44 @@ accuracy, we learn classifier with given parameters.
 
 \section{Evaluation}
 \label{sec:evaluacija}
-Data set is splitted on set for learning and set for testing by taking 20\%
+Data set is split on set for learning and set for testing by taking 20\%
 documents of each of 25 authors for testing. Data set for testing consists of
 1146 documents. Classification success is measured by ratio of correctly
 classified documents and total number of documents (accuracy).
 
 Results of evalutaion are shown in table \ref{tbl:eval}. For shorter record,
 method defined in \ref{sec:funkcijske-rijeci} is marked as ``$\mathcal{F}$'', method
-defined in \ref{sec:funkcijske-rijeci-grupe} is marked as ``$\mathcal{G}$'',
+defined in \ref{sec:rijeci-grupe} is marked as ``$\mathcal{G}$'',
 method from \ref{sec:funkcijske-rijeci-idf} ``\emph{idf}'' and methods from
 \ref{sec:znacajke-manje} respectivly ``$\mathcal{P}$'', ``$\mathcal{V}$'' and
-``$\mathcal{L}$''. Column ``Correct'' denotes number of correctly
-recognized authors, ``Incorrect'' -- incorrectly recognized.
+``$\mathcal{L}$''. Column ``$\top$'' denotes number of correctly
+recognized authors, ``$\bot$'' -- incorrectly recognized.
 
 Highest accuracy (88\%) is achived by combination of every methods defined in
 \ref{sec:znacajke-manje} and method from \ref{sec:funkcijske-rijeci}.
 
-Total accuracy doesn't explains behaviour of classifier for every class by
-itself. For every class precision and recall are calculated and by them we
-calculate total weighted $F$ measure. For particular class $c$, precision is
-ratio of number of correctly classified documents in $c$ with number of all
-documents which are classified as $c$. Recall is ratio of number of correctly
-classified documents in $c$ with number of all documents in $c$. $F$ measure is
-calculated for every class $c_i$ according to following expression:
-\begin{equation}
-F_i = \frac{2 \cdot precision_i \cdot recall_i}{precision_i + recall_i}
-\end{equation}
-where $precision_i$ and $recall_i$ are measures of precision and recall for
-class $c_i$.
-
-Total weighted measure is calculated by following expression:
-\begin{equation}
-F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
-\end{equation}
-where $n$ is total number of classes, $|c_i|$ number of documents in class
-$c_i$ and $F_i$ a $F$ measure for class $c_i$.
-
-Weighted $F$ measure at our data set for testing gives value of 87\%.
+%% TODO: Što s ovim?
+% Total accuracy doesn't explains behaviour of classifier for every class by
+% itself. For every class precision and recall are calculated and by them we
+% calculate total weighted $F$ measure. For particular class $c$, precision is
+% ratio of number of correctly classified documents in $c$ with number of all
+% documents which are classified as $c$. Recall is ratio of number of correctly
+% classified documents in $c$ with number of all documents in $c$. $F$ measure is
+% calculated for every class $c_i$ according to following expression:
+% \begin{equation}
+% F_i = \frac{2 \cdot precision_i \cdot recall_i}{precision_i + recall_i}
+% \end{equation}
+% where $precision_i$ and $recall_i$ are measures of precision and recall for
+% class $c_i$.
+% 
+% Total weighted measure is calculated by following expression:
+% \begin{equation}
+% F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
+% \end{equation}
+% where $n$ is total number of classes, $|c_i|$ number of documents in class
+% $c_i$ and $F_i$ a $F$ measure for class $c_i$.
+% 
+% Weighted $F$ measure at our data set for testing gives value of 87\%.
 
 % ### FeatureExtractor: FunctionWordGroupFreqExtractor + WordGroupExtractor + FunctionWordOccurNumExtractor
 % 0.9118248175182482: C = 32.0, gamma = 0.03125
@@ -501,13 +506,12 @@ Weighted $F$ measure at our data set for testing gives value of 87\%.
 
 % TODO: Smisliti kako srediti da je naslov tablice uvijek iznad tablice..
 % \begin{minipage}{\linewidth}
-\begin{table*}[!htb]
-\centering%
+\begin{tablehere}
 \caption{\small \textbf{\textsf{Evaluation of different features}}}%
+\begin{center}
 \begin{tabular}{l c c c}
 \hline\hline
-Method & Correct & Incorrect & Accuracy \\
-[0.5ex]
+Method & $\top$ & $\bot$ & Accuracy\\[0.5ex]
 \hline
 $\mathcal{P}$ & 603 & 489 & 55.2\% \\
 $\mathcal{F}$ & 870 & 222 & 79.6\% \\
@@ -521,8 +525,8 @@ $\mathcal{P}$, $\mathcal{V}$, \emph{idf} & 948 & 144 & 86.8\% \\
 $\mathcal{P}$, $\mathcal{V}$, $\mathcal{L}$, \emph{idf} & 955 & 137 & 87.4\% \\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf} & 905 & 187 & 82.8\% \\
 $\mathcal{P}$, $\mathcal{F}$, \emph{idf} & 900 & 192 & 82.4\% \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 956 & 136 & 87.5\% \\
-\textbf{$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$} & \textbf{961} & \textbf{131} & \textbf{88.0\%} \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 956 & 136 & 87.5\%\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 961 & 131 & 88.0\% \\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$ & 913 & 179 & 83.6\% \\
 %funkcijske, grupe & 872 & 220 & 79.8\% \\
 %grupe, idf & 874 & 218 & 80.0\% \\
@@ -531,7 +535,8 @@ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$, $\mathca
 \hline
 \end{tabular}
 \label{tbl:eval}%
-\end{table*}%
+\end{center}
+\end{tablehere}%
 % \end{minipage}
 
 \section{Conclusion}
@@ -539,14 +544,14 @@ It is shown that authorship attribution problem can be successfully solved by
 the relatively simple methods, although for state--of--art methods, we
 believe that syntactic analysis of documents is required. In compare with
 reported results (from 70\% to 97\%
-\citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer,stamatatos1999automatic}),
+\citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}),
 our results are very well.
 
 Result comparision is difficult due to differences in the ways of evaluation,
 different types of data sets and the types of problems (binary, multi--class or
 single--class classifications). There are no relevant data set for comparision
 \citep{zhao2005effective}, but there are references on paper
-\citep{stamatatos2001computer,stamatatos1999automatic} and ``Greek data set''
+\citep{stamatatos2001computer} and ``Greek data set''
 (e.g.\ \citep{keselj2003n}). There is an significant affected of data set type
 (number and variety of document samples) on the complexity of the problem.
 
