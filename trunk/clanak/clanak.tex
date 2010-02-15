@@ -263,14 +263,14 @@ appear in a small number of documents and thus it is very discriminatory.
 \section{Data set}
 \label{sec:podatci}
 The online archive of ``Jutarnji list'' newspaper columns available at
-\url{http://www.jutarnji.hr/komentari/} was used as data set. The data set
+\url{http://www.jutarnji.hr/komentari/} was used as the data set. The data set
 consists of 4571 texts written by 25 authors. The lowest average number of words
 in document per author is 315 words, and the highest is 1347 words. An
-average number of words in document per author for data set is 717 words. Number
-of documents per author in data set is shown on figure
+average number of words in document per author for this data set is 717 words. Number
+of documents per author in the set is shown on figure
 \ref{fig:articlesPerAuthor}.
 
-To make sure that learning of topic is avoided, data set is split by dates
+To avoid the learning of topic, the data set is split by dates
 -- 20\% of newest texts of every author is taken for testing (hold--out method).
 
 \begin{minipage}{0.8\linewidth}
@@ -281,24 +281,24 @@ To make sure that learning of topic is avoided, data set is split by dates
 \end{minipage}
 
 \section{Document features}
-The main problem of the construction of authorship attribution systems is the
-selection of the sufficiently discriminatory features of the text. Feature is
-discriminatory if it is common for one author, and rare for others. Due to the
+The main problem with the construction of an authorship attribution system is the
+selection of the sufficiently discriminatory features of the text. A feature is
+discriminatory if it is common for one author, and rare for all the others. Due to the
 large number of authors, complex features are extremely useful if their
-distribution is characteristic for each author (e.g.\ the frequency distribution
+distribution is specific for each author (e.g.\ the frequency distribution
 of some words).
 
-Features can be combined. If complex features are combined, new feature can
+Features can be combined. If complex features are combined, new features can
 represent more distributions and have greater discriminatory power.
 
-During the creation of the feature vector, it is neccessary to take care that the
-feature does not depend on length or content of document. That dependency reduces
+During the creation of the feature vector, it is neccessary to make the
+feature independent of the length or of the content of each document. That dependency reduces
 generality of systems application and can lead to decreasment of accurancy
 (e.g.\ relating author to concrete topic or terms).
 
-Features can be expressed as vector of real numbers which simplifies
-classification. Set of documents is expressed as set of vectors with equal dimensions.
-Combining the features is expressed as appending of their feature
+Features can be expressed as vectors of real numbers which simplifies
+classification. The set of documents is expressed as a set of vectors with equal dimensions.
+Combining of the features is implemented by appending the apropriate feature
 vectors.
 
 % Depending on selected feature model, text analysis and creation of feature
@@ -329,20 +329,20 @@ control) use functional words which indicate their own style.
 %of the language of documents, it is also neccessary to update the set of
 %functional words with which the system works.
 It is difficult to predict whether the function words will give equally good
-results for different languages. Although there are more researches on this
-topic, due to various languages, type and size of documents, it is difficult to
-conclude are these methods generally effective \citep{zhao2005effective}.
+results for different languages. Despite the size of research on this
+topic, due to various languages, the type and the size of the documents, it is difficult to
+conclude if these methods are generally effective \citep{zhao2005effective}.
 
-Additionaly, to function words, auxiliary verbs and pronouns are being
-considered due to their frequencies might be representative for different
+In addition to function words, auxiliary verbs and pronouns are being
+considered. Their frequencies might be representative for different
 author styles.
 
-Building the document feature vector is done by counting the number of appearance
+Building the document feature vector is done by counting the appearances
 of functional words, auxiliary verbs and pronouns in the document. The results
-are written as vector where each component corresponds to number of occurences of
-related words divided by the total number of the words in the document to remove
-dependency on the length of the document. For the function words that have not
-appeared in a document resulting component equals zero.
+are written as vectors where each component corresponds to the number of occurences of
+related words divided by the total number of the words in the document. This is done to remove
+the dependency on the length of the document. For the function words that have not
+appeared in a document, the resulting component always equals zero.
 
 \subsection{Lexical categories frequency}
 \label{sec:rijeci-grupe}
