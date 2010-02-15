@@ -176,14 +176,14 @@ related to structure of the language which are obtained by an in--depth syntacti
 analysis of documents, text is characterized by the presence and frequency of
 certain syntactic structures. This characterization is detailed and relevant.
 Unfortunately, it is computationally expensive and even impossible to build for
-languages lacking of text--processing resources (e.g.\ POS tagger, syntactic
+languages lacking the text--processing resources (e.g.\ POS tagger, syntactic
 parser, etc.). It is clearly influenced by the length of documents.
 
 Approach which uses \emph{Word--based} document features branches in three
 different methods. \emph{The first one} characterizes documents using a set of
 functional words (their presence and frequency), ignoring the content words since
 they tend to be highly correlated with the document topics. \emph{Second branch}
-of methods observes document as a bag--of--words and uses single content words as
+of methods observes a document as a bag--of--words and uses single content words as
 document features. This method can be applied only when there is a noticeable
 correlation between the authors and the topics. The \emph{third branch} considers
 word \emph{n}--grams as features, i.e.\ features consisting of sequences of
@@ -191,16 +191,16 @@ consecutive words.
 % Nevertheless, due to the feature explosion, it tends to use
 % only \emph{n}--grams up to three words.
 
-\citet{kukushkina2001using} explain method which uses algorithms for data
-compression to identify the author. Appendix of paper shows evaluation results
+\citet{kukushkina2001using} explain a method which uses algorithms for data
+compression to identify the author. The appendix of this paper shows evaluation results
 for authorship attribution with different compression algorithms. The idea behind
 the method is to divide documents by authors, compress every set with selected
-algorithm and write the size of archive. To classify text of unknown author,
-text is added to each set and the same data compression algorithm is applied. Author of
-documents in archive which records the smallest increase of the size is declared
-as author of the new document. Review of a similar method can be found in the
-paper \citep{zhao2005effective}. Paper notes that the method has obvious
-omissions and cites paper which proves it.
+algorithm and write the size of the archive. To classify text of an unknown author,
+text is added to each set and than the same data compression algorithm is applied. The author of
+the documents in archive which records the smallest increase of the size is declared
+as the author of the new document. Review of a similar method can be found in the
+paper \citep{zhao2005effective}, which notes that the method has obvious
+omissions and cites one paper that proves it.
 
 \citet{koppel2003exploiting} show the use of gramatical errors and informal
 styling (e.g.\ writing sentences in capital letters) as document features in
@@ -212,8 +212,8 @@ the author. A similar method is shown in \citep{coyotl2006authorship}.
 
 The success of functional words over collocations (certain pair of words
 occurring within a given threshold distance of each other) is shown in
-\citep{argamon2005measuring} -- although, because of information reduction at
-using function words as features, one might conclude the opposite -- which is
+\citep{argamon2005measuring} -- however, because of information reduction when 
+using function words as features, one might conclude the opposite -- which would be
 wrong. \citet{argamon2005measuring} believe that most of the discriminating power
 of collocations is due to the frequent words they contain (and not the
 collocations themselves). They also note that using more training texts than
@@ -246,7 +246,7 @@ text. It is concluded that the diversity of vocabulary is unstable feature for
 texts shorter than 1000 words.
 
 The problem of dependency on the length of the text for the classification using
-a SVM (Support Vector Machines) is explained in \citep{diederich2003authorship}.
+a SVM (Support Vector Machine) is explained in \citep{diederich2003authorship}.
 To avoid the dependency, a combination of $L_p$ normalization of the
 length and transformation of terms occurrence frequency such as \emph{idf}
 (inverse document frequency) measure was used.
