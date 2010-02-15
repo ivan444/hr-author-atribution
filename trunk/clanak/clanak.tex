@@ -346,52 +346,52 @@ appeared in a document, the resulting component always equals zero.
 
 \subsection{Lexical categories frequency}
 \label{sec:rijeci-grupe}
-Building of the feature vector is done by counting the number of appearances of
-different lexical categories where the categories considered are adverbs,
+Feature vector creation is done by counting the appearances of
+different lexical categories. The considered categories are adverbs,
 adpositions, conjunctions, particles, interjections, nouns, verbs, adjectives and
-pronouns which are obtained by syntactic analysis of Croatian language. Result is
-written as a vector (nine--dimensional vector) and each component of the vector
+pronouns. They are obtained by syntactic analysis of Croatian language. The result is
+written as a vector (nine--dimensional vector), where each component of the vector
 is divided by the number of words in the document.
 
 \subsection{Idf weighted function words frequency}
 \label{sec:funkcijske-rijeci-idf}
-The feature vector is built by multiplying components of vector created by method
+The feature vector is built by multiplying components of the vector created by the method
 defined in \ref{sec:funkcijske-rijeci} and its associated \emph{idf}
 \engl{inverse document frequency} weight. \emph{Idf} weight is defined by
 expression (\ref{equ:idf}) \citep{diederich2003authorship}.
 
-Shown measure discriminate documents that contain functional words that are used
-in small number of other documents. The disadvantage of \emph{idf} measure is
-that it records only presence of certain term in the document, term
+The shown measure discriminates documents which contain function words used
+in small number of other documents. The disadvantage of the \emph{idf} measure is
+the fact that it records only the presence of certain terms in the document, while term
 counting in the document is ignored. Therefore, word which appears many times in
-one text and one time in the others gets the same value as the one which appears
-once in all text---the word which would very well separate one document from the
-others is ignored.
+a single text and once in all the others gets the same value as the one which appears
+once in all of the texts---the word which would very well separate one document from the
+others is thus ignored.
 
 \subsection{Punctation marks, vowels, words length and sentence length
 frequency}
 \label{sec:znacajke-manje}
-A set of following punctuation marks are used: ``.'', ``,'', ``!'', ``?'',
-``''', ``"'', ``-'', ``:'', ``;'', ``+'', ``*'' and their number of appearance in
-document is counted. Result is written as 11--dimensional vector and every
-component is divided by total sum of characters in the document.
+A set of the following punctuation marks is used: ``.'', ``,'', ``!'', ``?'',
+``''', ``"'', ``-'', ``:'', ``;'', ``+'', ``*''. Their number of appearances is counted and 
+the sesult is written as an 11--dimensional vector. Every
+component of the vector is divided by the total sum of the characters in the document.
 
-Feature vector based on the frequency of vowels occurence (a, e, i, o, u) is
-obtained in equal procedure as for the punctuation marks
+The feature vector based on the frequency of vowel occurences (a, e, i, o, u) is
+obtained in equal procedure as for the punctuation marks.
 
-Frequency of word lengths are obtained by counting the words that have equal
+Frequency of word lengths is obtained by counting the words that have equal
 length. It is important to note that this procedure can lead to vectors of
-different features dimensions (e.g.\ a document has a word with length of 11,
-but some other document doesn't). The issue is solved by limiting the maximum
-length of words at length of 10. All words longer than 10 characters are
-counted to the 10th group. It is necessary to divide components of resulting feature
-vector with number of words in document (to remove dependency on text length).
+different feature vector dimensions (e.g.\ a document has a word with length of 11,
+but some other document does not). The issue is solved by limiting the maximum
+length of words to the length of 10. All of the words longer than 10 characters are
+attributed to the 10th group. It is necessary to divide the components of the resulting feature
+vector with the number of the words in the document (to remove dependency on text length).
 
-The sentence length frequency is obtained in equal procedure as for the word
-length frequency. An different vectors dimension issue is solved by limiting
-sentence length to 20.
+The sentence length frequency is obtained in equal procedure as the word
+length frequency. The different vector dimensions issue is solved by limiting
+the sentence length to 20.
 
-Suggested features have weak discriminatory power on their own, but they are
+Suggested features have weak discriminatory power on their own, but they proved
 very useful in combination with other features (see \ref{sec:evaluacija}).
 
 \subsection{Word type \emph{n}--grams frequency}
@@ -401,12 +401,12 @@ morphosyntactic descriptors are obtained by POS (Part--Of--Speech) tagging for
 Croatian language. Using \emph{n}--grams as features can produce very large
 number of dimensions, therefore only 3--grams are used.
 
-Method branches in two feature types. First type uses pure word types (nouns,
-verbs, adjectives, pronouns, conjunctions, interjections and prepositions), for
+This method branches into two feature types. The first type uses pure word types (nouns,
+verbs, adjectives, pronouns, conjunctions, interjections and prepositions). For
 example word 3--gram ``Adam i Eva'' transforms to ``noun conjunction noun.''
-Second type transforms nouns, verbs and adjectives to their types, and for other
-word types uses words as they are, therefore ``Adam i Eva'' transforms to
-``noun i noun.'' Due to many different pronouns, conjunctions, interjections and
+The second type transforms nouns, verbs and adjectives to their types, and for other
+word types uses words as they are. Therefore ``Adam i Eva'' transforms to
+``noun i noun''. Due to many different pronouns, conjunctions, interjections and
 prepositions frequency filtering is applied---frequency is counted for only 500
 most frequent 3--grams in training data set. Used dimension reduction method is
 not optimal, therefore in future work other methods should be evaluated, such as
@@ -416,8 +416,8 @@ Bayes.
 
 \subsection{Word morphosyntactic elements}
 \label{sec:morphosyntactic}
-Building of feature vector is done by counting appearances of morphosyntactic
-elements for every word in document and dividing them by number of words in text.
+Feature vector creation is done by counting the appearances of morphosyntactic
+elements for every word in the document and dividing them by the number of words in a text.
 Counted morphosyntactic elements are \emph{case}, \emph{degree}, \emph{form},
 \emph{gender}, \emph{number} and \emph{person}.
 
@@ -427,12 +427,12 @@ Counted morphosyntactic elements are \emph{case}, \emph{degree}, \emph{form},
 % space.
 
 The used classifier is SVM (Support Vector Machine) with radial basis
-function as kernel. It is shown that, with selection of right parameters, linear
-SVM is special case of SVM with RBF kernel \citep{keerthi2003asymptotic} which
-removes need to use linear SVM as potential classifier.
+function as a kernel. It is shown that, with the selection of right parameters, linear
+SVM is a special case of SVM with RBF kernel \citep{keerthi2003asymptotic} which
+removes the need to use linear SVM as a potential classifier.
 
-It is required to scale data for use with SVM to ensure equal contribution of
-every attribute to classification. We scale components of every feature vector
+For the use with SVM, scaling of the data is required to ensure equal contribution of
+every attribute to classification. Components of every single feature vector are scaled
 to interval of $[0, 1]$.
 %  according to following expression:
 % \begin{equation}
@@ -452,34 +452,34 @@ to interval of $[0, 1]$.
 % x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
 % \end{equation}
 
-Parameter search is done by model selection with parameters $(C, \gamma)$ from
-set $\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
+Parameter search is done by model selection with the parameters $(C, \gamma)$ from
+the set $\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
 \ldots, 2^3} \right )$ \citep{CC01a} which give the highest accuracy of
-classification in process of cross--validation on learning data set. Accuracy
+classification in process of cross--validation on learning the data set. Accuracy
 of classification is measured by expression:
 \begin{equation}
 acc = \frac{n_c}{N}, % ako bude problema, ovo staviti kao ``inline'' jednadžbu.
 \end{equation}
-where $n_c$ is number of correctly classified documents, $N$ is total number of
-documents. After we find parameters $(C, \gamma)$ for which system has highest
-accuracy, we learn classifier with given parameters.
+where $n_c$ is number of correctly classified documents and $N$ is the total number of
+documents. The parameters with the highest accuracy, $(C, \gamma)$,
+are used in the process of classifier learning.
 
 
 \section{Evaluation}
 \label{sec:evaluacija}
-Data set is split on set for learning and set for testing by taking 20\%
-documents of each of 25 authors for testing. Data set for testing consists of
-1146 documents. Classification success is measured by ratio of correctly
-classified documents and total number of documents (accuracy).
+The data set is split into a learning set and a testing set by taking 20\%
+of the documents of each of the 25 authors for testing. The testing set consists of
+1146 documents. Success of the classification is measured by the ratio of correctly
+classified documents and the total number of documents (accuracy).
 
-Results of evalutaion are shown in table \ref{tbl:eval}. For shorter record,
+The results of evaluation are shown in table \ref{tbl:eval}. For shorter record,
 method defined in \ref{sec:funkcijske-rijeci} is marked as ``$\mathcal{F}$,''
 method defined in \ref{sec:rijeci-grupe} is marked as ``$\mathcal{C}$,'' method
-from \ref{sec:funkcijske-rijeci-idf} ``$\mathcal{I}$,'' methods from
-\ref{sec:znacajke-manje} respectivly ``$\mathcal{P}$,'' ``$\mathcal{V}$,'' 
-``$\mathcal{L}$'' and ``$\mathcal{S}$,'' methods from \ref{sec:ngrami-tipova}
-``$\mathcal{N}_1$'' and ``$\mathcal{N}_2$'' and method from
-\ref{sec:morphosyntactic} ``$\mathcal{M}$.'' Column ``Correct'' denotes
+from \ref{sec:funkcijske-rijeci-idf} as ``$\mathcal{I}$,'' methods from
+\ref{sec:znacajke-manje} respectivly as ``$\mathcal{P}$,'' ``$\mathcal{V}$,'' 
+``$\mathcal{L}$'' and ``$\mathcal{S}$,'' methods from \ref{sec:ngrami-tipova} as 
+``$\mathcal{N}_1$'' and ``$\mathcal{N}_2$'' and a method from
+\ref{sec:morphosyntactic} as ``$\mathcal{M}$.'' Column ``Correct'' denotes
 number of correctly recognized authors, ``Incorrect'' -- incorrectly recognized.
 Columns ``$C$'' and ``$\gamma$'' denote parameters of SVM classifier used for
 selected model.
@@ -548,23 +548,23 @@ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mat
 \end{table*}%
 
 \section{Conclusion}
-It is shown that authorship attribution problem can be successfully solved by
-the relatively simple methods, although for state--of--art methods, we
-believe that syntactic analysis of documents is required. Our results with
-93\% accuracy fit very well in interval of reported results which range from
+It is shown that the authorship attribution problem can be successfully solved by
+some relatively simple methods, although for the state--of--art applications, we
+believe syntactic analysis of the documents is required. Our results with
+93\% accuracy fit very well in the interval of previous reported results, which range from
 70\% to 97\% \citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
 
-Result comparision is difficult due to different types of data sets (e.g.\ poems,
-newspaper articles, e--mails) and the problems (binary, multi--class or
+The comparision of the results has proved difficult due to the different types of data sets (e.g.\ poems,
+newspaper articles, e--mails) and the different types of problems (binary, multi--class or
 single--class classifications). There are no relevant data sets for comparision
-\citep{zhao2005effective}, but there are references on paper
+\citep{zhao2005effective}, however references exist in the paper
 \citep{stamatatos2001computer} and their ``Greek data set'' (e.g.\
-\citep{keselj2003n}). There is an significant affected of data set type (number
-and variety of document samples) on the complexity of the problem.
+\citep{keselj2003n}). A significant impact on the complexity of this problem 
+is the total number of authors considered and the variety of document samples.
 
-In future work, methods based on word and character \emph{n}--grams suggested
-in \citep{keselj2003n,peng2003language,coyotl2006authorship} has to be
-evaluated. Also, evaluation has to be performed on different types of data sets
+In the future work, methods based on word and character \emph{n}--grams suggested
+in \citep{keselj2003n,peng2003language,coyotl2006authorship} should be
+evaluated. Moreover, evaluation has to be performed on different types of data sets
 such as poems, newspaper articles or books data sets.
 
 \bibliographystyle{plainnat}
