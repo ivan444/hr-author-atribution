@@ -414,10 +414,12 @@ information gain, $\chi^2$ test, mutual information, maximum relevance, minimum
 redundancy or classification with sparse SVM, logistic regression or na\"ive
 Bayes.
 
-\subsection{Word morphosyntactic tags}
+\subsection{Word morphosyntactic elements}
 \label{sec:morphosyntactic}
-Building of feature vector is done by counting case, degree, form,
-gender, number and person frequency of word type.
+Building of feature vector is done by counting appearances of morphosyntactic
+elements for every word in document and dividing them by number of words in text.
+Counted morphosyntactic elements are \emph{case}, \emph{degree}, \emph{form},
+\emph{gender}, \emph{number} and \emph{person}.
 
 \section{Classification}
 % Representation of documents by real number vectors  enables easy use of
@@ -471,16 +473,16 @@ documents of each of 25 authors for testing. Data set for testing consists of
 classified documents and total number of documents (accuracy).
 
 Results of evalutaion are shown in table \ref{tbl:eval}. For shorter record,
-method defined in \ref{sec:funkcijske-rijeci} is marked as ``$\mathcal{F}$'', method
-defined in \ref{sec:rijeci-grupe} is marked as ``$\mathcal{C}$'',
-method from \ref{sec:funkcijske-rijeci-idf} ``$\mathcal{I}$'' and methods from
-\ref{sec:znacajke-manje} respectivly ``$\mathcal{P}$'', ``$\mathcal{V}$'', 
-``$\mathcal{L}$'' and ``$\mathcal{S}$'', methods from \ref{sec:ngrami-tipova}
+method defined in \ref{sec:funkcijske-rijeci} is marked as ``$\mathcal{F}$,''
+method defined in \ref{sec:rijeci-grupe} is marked as ``$\mathcal{C}$,'' method
+from \ref{sec:funkcijske-rijeci-idf} ``$\mathcal{I}$,'' methods from
+\ref{sec:znacajke-manje} respectivly ``$\mathcal{P}$,'' ``$\mathcal{V}$,'' 
+``$\mathcal{L}$'' and ``$\mathcal{S}$,'' methods from \ref{sec:ngrami-tipova}
 ``$\mathcal{N}_1$'' and ``$\mathcal{N}_2$'' and method from
-\ref{sec:morphosyntactic} ``$\mathcal{M}$.'' Column ``Correct'' denotes number
-of correctly recognized authors, ``Incorrect'' -- incorrectly recognized.
-Columns ``$C$'' and ``$\gamma$'' denote parameters of SVM classifier obintained
-by cross--validation on training data set for selected model.
+\ref{sec:morphosyntactic} ``$\mathcal{M}$.'' Column ``Correct'' denotes
+number of correctly recognized authors, ``Incorrect'' -- incorrectly recognized.
+Columns ``$C$'' and ``$\gamma$'' denote parameters of SVM classifier used for
+selected model.
 
 Highest accuracy during cross--validation is achived by combination of
 methods marked as $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
@@ -509,55 +511,41 @@ $\mathcal{L}$ and $\mathcal{M}$.
 % 
 % Weighted $F$ measure at our data set for testing gives value of 87\%.
 
-% ### FeatureExtractor: FunctionWordGroupFreqExtractor + WordGroupExtractor + FunctionWordOccurNumExtractor
-% 0.9118248175182482: C = 32.0, gamma = 0.03125
-% ### FeatureExtractor: FunctionWordOccurNumExtractor + MorphosyntacticFeatureExtractor
-% 0.92: C = 128.0, gamma = 0.03125
-
-% TODO: Smisliti kako srediti da je naslov tablice uvijek iznad tablice..
-% \begin{minipage}{\linewidth}
 \begin{table*}
 \begin{center}
 \caption{\small \textbf{\textsf{Evaluation of different features}}}%
 \begin{tabular}{l c c c c c}
-\hline\hline
-Method & Correct & Incorrect & Accuracy & $C$ & $\gamma$ \\[0.5ex]
-\hline
-% $\mathcal{P}$ & 603 & 489 & 55.2\% \\
-% $\mathcal{F}$ & 870 & 222 & 79.6\% \\
-% \emph{idf} & 872 & 220 & 79.8\% \\
-% $\mathcal{G}$ & 379 & 713 & 34.7\% \\
-% $\mathcal{V}$ & 326 & 766 & 29.8\% \\
-% $\mathcal{L}$ & 463 & 629 & 42.3\% \\
-% $\mathcal{V}$, \emph{idf} & 887 & 205 & 81.2\% \\
-% $\mathcal{F}$, \emph{idf} & 848 & 244 & 77.6\% \\
-% $\mathcal{P}$, $\mathcal{V}$, \emph{idf} & 948 & 144 & 86.8\% \\
-% $\mathcal{P}$, $\mathcal{V}$, $\mathcal{L}$, \emph{idf} & 955 & 137 & 87.4\% \\
-% $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf} & 905 & 187 & 82.8\% \\
-% $\mathcal{P}$, $\mathcal{F}$, \emph{idf} & 900 & 192 & 82.4\% \\
-% $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 956 & 136 & 87.5\%\\
-% $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 961 & 131 & 88.0\% \\
-% $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$ & 913 & 179 & 83.6\% \\
-% %funkcijske, grupe & 872 & 220 & 79.8\% \\
-% %grupe, idf & 874 & 218 & 80.0\% \\
-% $\mathcal{P}$, $\mathcal{G}$, $\mathcal{V}$, \emph{idf} & 943 & 149 & 86.3\% \\
-% $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, \emph{idf}, $\mathcal{L}$, $\mathcal{G}$ & 912 & 180 & 83.5\% \\ [1ex]
-$\mathcal{M}$ & 701 & 445 & 61.17\% & 512 & 0.125\\
+\toprule
+Method & Correct & Incorrect & Accuracy & $C$ & $\gamma$ \\
+\midrule
 $\mathcal{F}$ & 1013 & 133 & 88.39\% & 8192 & 0.125\\
-$\mathcal{G}$ & 510 & 636 & 44.50\% & 512 & 2.0\\
-$\mathcal{G}$, $\mathcal{M}$ & 724 & 422 & 63.17\% & 8192 & 0.03125\\
+$\mathcal{I}$ & 1008 & 138 & 87.96\% & 8192 & 0.125\\
+$\mathcal{C}$ & 510 & 636 & 44.50\% & 512 & 2.0\\
+$\mathcal{P}$ & 659 & 487 & 57.50\% & 8192 & 0.125\\
+$\mathcal{V}$ & 350 & 796 & 30.54\% & 128 & 0.125\\
+$\mathcal{L}$ & 495 & 651 & 43.19\% & 128 & 0.125\\
+$\mathcal{S}$ & 485 & 661 & 42.32\% & 128 & 0.125\\
+$\mathcal{N}_1$ & 817 & 329 & 71.29\% & 512 & 0.125\\
+$\mathcal{N}_2$ & 872 & 274 & 76.09\% & 512 & 0.125\\
+$\mathcal{M}$ & 701 & 445 & 61.17\% & 512 & 0.125\\
+$\mathcal{C}$, $\mathcal{M}$ & 724 & 422 & 63.17\% & 8192 & 0.03125\\
 $\mathcal{P}$, $\mathcal{F}$ & 1051 & 95 & 91.71\% & 8 & 0.03125\\
+$\mathcal{F}$, $\mathcal{M}$ & 1045 & 101 & 91.18\% & 128 & 0.03125\\
+$\mathcal{F}$, $\mathcal{N}_1$ & 1025 & 121 & 89.44\% & 128 & 0.03125\\
+$\mathcal{F}$, $\mathcal{N}_2$ & 1014 & 132 & 88.48\% & 128 & 0.03125\\
+$\mathcal{I}$, $\mathcal{M}$ & 1041 & 105 & 90.84\% & 128 & 0.03125\\
+$\mathcal{N}_1$, $\mathcal{M}$ & 818 & 328 & 71.38\% & 128 & 0.03125\\
+$\mathcal{I}$, $\mathcal{M}$, $\mathcal{C}$ & 1047 & 99 & 91.36\% & 128 & 0.03125\\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 1067 & 79 & 93.11\% & 128 & 0.03125\\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$ & 1071 & 75 & 93.46\% & 32768 & 0.03125\\
+$\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 1027 & 119 & 89.62\% & 128 & 0.03125\\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$ & 1068 & 78 & 93.19\% & 128 & 0.03125\\
-$\mathcal{S}$ & 485 & 661 & 42.32\% & 128 & 0.125\\
-$\mathcal{F}$, $\mathcal{M}$ & 1045 & 101 & 91.18\% & 128 & 0.03125\\ [1ex]
-\hline
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 1059 & 87 & 92.41\% & 128 & 0.03125\\
+\bottomrule
 \end{tabular}
 \label{tbl:eval}%
 \end{center}
 \end{table*}%
-% \end{minipage}
 
 \section{Conclusion}
 It is shown that authorship attribution problem can be successfully solved by
