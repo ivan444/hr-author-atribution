@@ -303,9 +303,8 @@ results for different languages. Despite the size of research on this
 topic, due to various languages, the type and the size of the texts, it is
 difficult to conclude if these methods are generally effective \citep{zhao2005effective}.
 
-In addition to functional words, auxiliary verbs and pronouns are being
-considered. Their frequencies might be representative for different
-author styles.
+In addition to functional words, auxiliary verbs and pronouns are considered.
+Their frequencies might be representative for different author styles.
 
 Building the text feature vector is done by counting the appearances
 of functional words, auxiliary verbs and pronouns in the text. The results
@@ -384,24 +383,31 @@ very useful in combination with other features as shown in Section \ref{sec:eval
 \subsection{Word part--of--speech \emph{n}--grams frequency ($\mathcal{N}_1$ \&
 $\mathcal{N}_2$)}
 \label{sec:ngrami-tipova}
-Features are based on word part--of--speech \emph{n}--grams frequency. Word
-parts--of--speech and their morphosyntactic descriptors are obtained by POS
+The two proposed features are based on word part--of--speech \emph{n}--grams
+frequency. Word parts--of--speech and their morphosyntactic descriptors are obtained by POS
 (Part--Of--Speech) and MSD (morphosyntactic) tagging for Croatian language
-\citep{snajder08automatic}. Using \emph{n}--grams as features can produce very
-large number of dimensions, therefore only 3--grams are used.
+\citep{snajder08automatic}. Having the corresponding part--of--speech, for
+each word in the text, makes the idea of using \emph{n}--grams as features
+possible. As \emph{n}--grams features can produce very large dimensionality 
+only 3--grams are considered. In addition POS tagging used is not perfect, the
+method doesn't use context information and therefore cannot distinguish between
+different homographs---words with same spelling but with different meaning and probably
+different POS too---so all possible POS tags for given word are considered.
 
-Method branches in two feature types. First type uses pure word parts--of-speech
-(nouns, verbs, adjectives, pronouns, conjunctions, interjections and prepositions), for
-example word 3--gram ``Adam i Eva'' transforms to ``noun conjunction noun.''
-Second type transforms nouns, verbs and adjectives to their POS, and for other
-word parts--of-speech uses words as they are, therefore ``Adam i Eva'' transforms to
-``noun i noun.'' Due to many different pronouns, conjunctions, interjections and
-prepositions frequency filtering is applied---frequency is counted for only 500
-most frequent 3--grams in training data set. Used dimension reduction method is
-not optimal, therefore in future work other methods should be evaluated, such as
-information gain, $\chi^2$ test, mutual information, maximum relevance, minimum
-redundancy or classification with sparse SVM, logistic regression or na\"ive
-Bayes.
+First proposed feature uses the words parts--of-speech
+(nouns, verbs, adjectives, pronouns, conjunctions, interjections and
+prepositions) to form various \emph{n}--grams and count their frequencies. For
+example, word 3--gram ``Adam i Eva'' (``Adam and Eve'') forms ``noun
+conjunction noun'' trigram. Second proposed feature uses only words
+parts--of-speech information for nouns, verbs and adjectives and for other word
+parts--of-speech it uses words as they are, therefore ``Adam i Eva'' transforms
+to ``noun i noun''. Due to many different pronouns, conjunctions, interjections
+and prepositions that make many different \emph{n}--grams, frequency filtering
+is applied---only frequency of 500 most frequent 3--grams in
+training data set is considered. Used dimension reduction method is not optimal,
+therefore in future work other methods should be evaluated, such as information
+gain, $\chi^2$ test, mutual information, maximum relevance, minimum redundancy
+or classification with sparse SVM, logistic regression or na\"ive Bayes.
 
 \subsection{Word morphologic categories ($\mathcal{M}$)}
 \label{sec:morphosyntactic}
@@ -452,14 +458,14 @@ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mat
 % Representation of documents by real number vectors  enables easy use of
 % classifiers that search decision functions, i.e.\ boundaries in vector
 % space.
-The used classifier is SVM (Support Vector Machine) with radial basis
-function as the kernel. It is shown that, with selection of right parameters, linear
-SVM is special case of SVM with RBF kernel \citep{keerthi2003asymptotic} which
-removes need to use linear SVM as potential classifier.
+The classifier used is SVM (Support Vector Machine) with radial basis
+function as the kernel. It is shown that, with the use of parameter selection,
+linear SVM is special case of SVM with RBF kernel \citep{keerthi2003asymptotic}
+what removes the need to consider linear SVM as potential classifier.
 
-It is required to scale data for use with SVM to ensure equal contribution of
-every attribute to classification. We scale components of every feature vector
-to interval of $[0, 1]$.
+Before the use of SVM, it is required to scale the data to ensure
+equal contribution of every attribute to the classification. Components of
+every feature vector are scaled to interval $[0, 1]$.
 %  according to following expression:
 % \begin{equation}
 % x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
@@ -479,17 +485,19 @@ to interval of $[0, 1]$.
 % \end{equation}
 
 % TODO: REPHRASE
-REPHRASE!
-Parameter search is done by model selection with parameters $(C, \gamma)$ from
-the sets: $C \in \{2^{-5}, 2^{-4}, \ldots , 2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \ldots, 2^3\}$ \citep{CC01a} which give the highest accuracy of
-classification in process of cross--validation on learning data set. Accuracy
-of classification is measured by expression:
+Finding appropriate paramters $(C, \gamma)$ is done by the means of
+cross-validation: using the 5-fold cross-validation on the
+learning set parameters $(C, \gamma)$ which give the highest accuracy are
+selected. Parameters that were considered are: $C \in \{2^{-5}, 2^{-4}, \ldots ,
+2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \ldots, 2^3\}$ \citep{CC01a}.
+The accuracy of classification is measured by the expression:
 \begin{equation}
 acc = \frac{n_c}{N}, % ako bude problema, ovo staviti kao ``inline'' jednadžbu.
 \end{equation}
 where $n_c$ is number of correctly classified texts, $N$ is total number of
-texts. After we find parameters $(C, \gamma)$ for which system has highest
-accuracy, we learn classifier with given parameters.
+texts. After the best parameters  $(C, \gamma)$ are found for
+which the system achives the highest accuracy, the classifier is learned using
+those parameters.
 
 \section{Evaluation}
 \label{sec:evaluacija}
