@@ -158,8 +158,8 @@ classification and Section 6 presents evaluation methods and experiment results.
 Conclusion and future work are given in Section 7.
 
 \section{Related work}
-Approaches to text representation and classification for authorship attribution
-include: stylistic measures \citep{coyotl2006authorship}, syntactic clues
+There are several approaches to text representation and classification in the field 
+of authorship attribution. This approaches include: stylistic measures \citep{coyotl2006authorship}, syntactic clues
 \citep{stamatatos2001computer,uzuner2005comparative}, word-based features
 \citep{argamon2005measuring,uzuner2005comparative}, compression algorithms
 \citep{kukushkina2001using,zhao2005effective}, grammatical error lookup
@@ -168,45 +168,45 @@ include: stylistic measures \citep{coyotl2006authorship}, syntactic clues
 \citep{stamatatos2001computer}. Following paragraphs describe these approaches in
 more depth and relate our work with the existing research.
 
-\citet{coyotl2006authorship} group methods of authorship attribution into three
+\citet{coyotl2006authorship} group the methods of authorship attribution into three
 main approaches: \emph{stylistic measures}, \emph{syntactic cues} and
 \emph{word--based} text features.
 
-\emph{Stylistic measures} based text features are characterized by features that
-take into account the length of words and sentences and the richness of the
-vocabulary. Various types of style markers can be found in
+Text features based on \emph{stylistic measures} are characterized by features that
+take into account the length of words, the length of sentences and the richness of vocabulary.
+Various types of style markers can be found in
 \citep{luyckx2005shallow}. In \citep{coyotl2006authorship} it is noted that such
-features are not sufficient to resolve problems that depend on the genre of the
-text and that they lose their meaning when applied over short texts.
+features are not sufficient to resolve problems dependent on the genre of the
+text. Moreover, they lose their meaning when applied over short texts.
 
-When using the \emph{syntactic cues as text features}---informations
-related to structure of the language which are obtained by an in--depth syntactic
-analysis of texts---a single text is characterized by the presence and
+When using the \emph{syntactic cues as text features} --- information
+related to structure of the language that is obtained by an in--depth syntactic
+analysis of the text --- a single text is characterized by the presence and
 frequency of certain syntactic structures. This characterization is detailed and relevant.
-Unfortunately, it is computationally expensive and even impossible to build for
-languages lacking the text--processing resources (e.g., POS tagger, syntactic
-parser, etc.). It is clearly influenced by the length of texts. Description of
-authorship attribution process by using syntactic elements can be found in a very influential work by Stamatos et al.
-\citep{stamatatos2001computer}.
+Unfortunately, it is computationally expensive or even impossible to build for
+certain languages lacking the text--processing resources (e.g., POS tagger, syntactic
+parser, etc.). This method is clearly influenced by the length of the text. More detailed 
+description of the authorship attribution process based on syntactic elements can be found 
+in a very influential work by Stamatos et al. \citep{stamatatos2001computer}.
 
-Approach that uses \emph{Word--based} text features branches into three
-different methods. The first one characterizes texts using a set of
-functional words (their presence and frequency), ignoring the content words since
-they tend to be highly correlated with the text topics. Second branch
-of methods observes a text as a bag--of--words and uses single content words as
-text features. This method can be applied only when there is a noticeable
-correlation between the authors and the topics. The third branch considers
+The approach with the \emph{Word--based} text features can be based on three
+different types of methods. The first type of methods characterize a text
+using a set of functional words (their presence and frequency). Content words, which 
+tend to be highly correlated with the text topics, are ignored. The second type
+of methods observe a single text as a bag--of--words and use single content words as
+features. This type of methods can be applied only when there is a noticeable
+correlation between the authors and the topics. The third type considers
 word \emph{n}-grams as features, i.e., features consisting of sequences of
 consecutive words.
 % Nevertheless, due to the feature explosion, it tends to use
 % only \emph{n}-grams up to three words.
 
 The success of functional words over collocations (certain pairs of words
-occurring within a given threshold distance of each other) is shown in
-\citep{argamon2005measuring}. However, because of information reduction when 
-using functional words as features, one might conclude the opposite -- which would be
-wrong. \citet{argamon2005measuring} believe that most of the discriminating power
-of collocations is due to the frequent words they contain and not the
+occurring within a given threshold distance of each other), is shown in
+\citep{argamon2005measuring}. The opposite might mistakenly be concluded considering
+the information reduction when using functional words as features.
+\citet{argamon2005measuring} believe that the most of the discriminating power
+of collocations is due to the frequent words they contain and not due to the
 collocations themselves.
 % They also note that using more training texts than
 % features seriously reduces the likelihood of overfitting the model to the
@@ -215,13 +215,13 @@ collocations themselves.
 % general natural language processing.
 
 A similar comparison of feature types is shown in
-\citep{uzuner2005comparative} where the functional words and syntactic
-elements are compared in order to identify the author of text. It is
-concluded that the syntactic elements of expressions are useful as functional words in solving the
-problem.
+\citep{uzuner2005comparative}. The functional words and syntactic
+elements are compared in order to identify the author of a text. It is
+concluded that the syntactic elements of expressions are as useful as functional 
+words in solving the problem.
 
-\citet{kukushkina2001using} explain a method which uses algorithms for data
-compression to identify the author. The appendix of this paper shows evaluation results
+\citet{kukushkina2001using} explain a method that uses certain algorithms for data
+compression in order to identify the author of a text. The appendix of this paper shows evaluation results
 for authorship attribution with different compression algorithms.
 % The idea behind
 % the method is to divide texts by authors, compress every set with selected
@@ -229,38 +229,41 @@ for authorship attribution with different compression algorithms.
 % text is added to each set and than the same data compression algorithm is applied. The author of
 % the texts in archive which records the smallest increase in size is declared
 % as the author of the new text.
-Review of a similar method can be found in 
-\citep{zhao2005effective}, where it is noted that the method has obvious omissions. Also, a citation on another work that proves it is given.
+A review of a similar method can be found in 
+\citep{zhao2005effective}. It is noted that the method has obvious omissions, 
+and a citation on another work that proves this is given.
 
 \citet{koppel2003exploiting} show the use of grammatical errors and informal
-styling (e.g., writing sentences in capital letters) as text features in
-order to identify the author. Method is applicable only to unedited texts (blogs,
-Internet forums, newsgroups, e--mail messages, etc.).
+styling (e.g., writing sentences in capital letters) as text features used for authorship attribution.
+The method is only applicable for unedited texts (blogs, Internet forums,
+newsgroups, e--mail messages, etc.).
 
 \citet{peng2003language} suggest the use of \emph{n}-gram language model to identify
 the author. A similar method is shown in \citep{coyotl2006authorship}.
 
-\citet{stamatatos2001computer} suggest vocabulary diversity of the authors as
-feature for identifying the author. It is measured by the ratio of unique words
-and the total size of the text or counting words which occur only once
-(\emph{hapax legomena}), or twice (\emph{dis legomena}), etc.
-These measures are closely related to length of the text. They also note that
-functions defined by Yule (1944) and Honore (1979) should solve this problem,
-i.e., they should be constant regarding the length of the text. Analysis of
-similar function can be found in the \citep{tweedie1998variable} which claims
+\citet{stamatatos2001computer} suggest vocabulary diversity as
+features for identifying the authors. The diversity is defined as the ratio of unique words 
+and the total size of the text. An alternative strategy is counting the words which occur only once
+(\emph{hapax legomena}), twice (\emph{dis legomena}), etc.
+These measures are closely related to the length of the text. They also note that
+the functions defined by Yule (1944) and Honore (1979) should solve this problem,
+i.e., they should be constant regarding the length of the text. The analysis of
+similar functions can be found in the \citep{tweedie1998variable}. It claims
 that most of these functions are not independent regarding the length of the
 text. It is concluded that the vocabulary diversity is an unstable feature for
-texts shorter than 1000 words.
+the texts shorter than 1000 words.
 
-Our work is a mix of syntactic clues, word--based features, and stylistic measures, adapted for Croatian language (prosiriti).
+%TODO: prosiriti
+Our work is based on the composition of various methods --- syntactic clues, word--based features, 
+and stylistic measures --- adapted for use with the Croatian language. 
 
 \section{Data set}
 \label{sec:podatci}
-We used an online archive of columns from daily Croatian newspaper ``Jutarnji
-list'' available at \url{http://www.jutarnji.hr/komentari/}. The data set
+We used an online archive of columns from a daily Croatian newspaper ``Jutarnji
+list'', available at \url{http://www.jutarnji.hr/komentari/}. The data set
 consists of 4571 texts written by 25 authors. The lowest average number of words
-in text per author is 315 words, and the highest is 1347 words. An average number
-of words in text per author for this data set is 717 words. Number of texts per
+in the text per author is 315 words, and the highest is 1347 words. An average number
+of words in text per author for this data set is 717 words. The number of texts per
 author in the set is shown on Figure \ref{fig:articlesPerAuthor}.
 
 Because topics in columns tend to be time--specific and in order to avoid the
