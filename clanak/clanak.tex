@@ -301,7 +301,6 @@ vector of an appropriate dimensions. We combine features simply by creating unio
 % vectors can vary from computationally very trivial operations to very complex
 % algorithms (such as obtaining syntactic features by analyzing natural language).
 
-
 \subsection{Functional words frequency ($\mathcal{F}$)}
 \label{sec:funkcijske-rijeci}
 Functional words, such as adverbs, prepositions, conjunctions, or interjections,
@@ -411,33 +410,34 @@ $\mathcal{N}_2$)}
 The two proposed features are based on word part--of--speech \emph{n}-grams
 frequency. Word parts--of--speech and their morphosyntactic descriptors are obtained by POS
 (Part--Of--Speech) and MSD (morphosyntactic) tagging for Croatian language
-\citep{snajder08automatic}. Having the corresponding part--of--speech, for
-each word in the text, makes the idea of using \emph{n}-grams as features
-possible. As \emph{n}-grams features can produce very large dimensionality 
-only 3-grams are considered. In addition POS tagging used is not perfect, the
+\citep{snajder08automatic}. Having the corresponding part--of--speech for
+each word in the text makes the usage \emph{n}-grams as features
+possible. As \emph{n}-gram features can produce very large dimensionality, 
+only 3-grams are considered. In addition, POS tagging used is not perfect. The
 method does not use context information and therefore cannot distinguish between
-different homographs---words with same spelling but with different meaning and probably
-different POS too---so all possible POS tags for given word are considered.
+different homographs --- words with same spelling but with different meaning and probably
+different POS too --- so all possible POS tags for a given word are considered.
 
-First proposed feature uses the words parts--of-speech
+%FIXME: pos patterns, not n-grams
+The first feature proposed uses the words parts--of-speech
 (nouns, verbs, adjectives, pronouns, conjunctions, interjections and
 prepositions) to form various \emph{n}-grams and count their frequencies. For
 example, word 3-gram ``Adam i Eva'' (``Adam and Eve'') forms ``noun
-conjunction noun'' trigram. Second proposed feature uses only words
+conjunction noun'' trigram. The second feature proposed uses only words
 parts--of-speech information for nouns, verbs and adjectives and for other word
 parts--of-speech it uses words as they are, therefore ``Adam i Eva'' transforms
 to ``noun i noun''. Due to many different pronouns, conjunctions, interjections
 and prepositions that make many different \emph{n}-grams, frequency filtering
-is applied---only frequency of 500 most frequent 3-grams in
+is applied --- only the frequency of 500 most frequent 3-grams in the
 training data set is considered. Used dimension reduction method is not optimal,
-therefore in future work other methods should be evaluated, such as information
+therefore in the future work other methods should be evaluated, such as information
 gain, $\chi^2$ test, mutual information, maximum relevance, minimum redundancy
 or classification with sparse SVM, logistic regression or na\"ive Bayes.
 
 \subsection{Word morphologic categories ($\mathcal{M}$)}
 \label{sec:morphosyntactic}
-Building of feature vector is done by counting appearances of morphologic
-categories for every word in text and dividing them by number of words in text.
+The feature vector is created by counting the appearances of morphologic
+categories for every word in a text, and dividing them by the number of words in the text.
 Counted morphologic categories are \emph{case}, \emph{degree}, \emph{form},
 \emph{gender}, \emph{number} and \emph{person}.
 
@@ -483,14 +483,14 @@ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mat
 % Representation of documents by real number vectors  enables easy use of
 % classifiers that search decision functions, i.e., boundaries in vector
 % space.
-The classifier used is SVM (Support Vector Machine) with radial basis
+The classifier used is an SVM (Support Vector Machine) with radial basis
 function as the kernel. It is shown that, with the use of parameter selection,
-linear SVM is special case of SVM with RBF kernel \citep{keerthi2003asymptotic}
-what removes the need to consider linear SVM as potential classifier.
+linear SVM is a special case of an SVM with RBF kernel \citep{keerthi2003asymptotic},
+which removes the need to consider a linear SVM as a potential classifier.
 
-Before the use of SVM, it is required to scale the data to ensure
+Before sending the features to the SVM, we scale the data to ensure
 equal contribution of every attribute to the classification. Components of
-every feature vector are scaled to interval $[0, 1]$.
+every feature vector are scaled to an interval $[0, 1]$.
 %  according to following expression:
 % \begin{equation}
 % x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
@@ -512,22 +512,21 @@ every feature vector are scaled to interval $[0, 1]$.
 % TODO: REPHRASE
 Finding appropriate paramters $(C, \gamma)$ is done by the means of
 cross-validation: using the 5-fold cross--validation on the
-learning set parameters $(C, \gamma)$ which give the highest accuracy are
+learning set. Parameters $(C, \gamma)$ that give the highest accuracy are
 selected. Parameters that were considered are: $C \in \{2^{-5}, 2^{-4}, \cdots ,
 2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \citep{CC01a}.
 The accuracy of classification is measured by the expression:
 \begin{equation}
 acc = \frac{n_c}{N}, % ako bude problema, ovo staviti kao ``inline'' jednadžbu.
 \end{equation}
-where $n_c$ is number of correctly classified texts, $N$ is total number of
-texts. After the best parameters  $(C, \gamma)$ are found for
-which the system achives the highest accuracy, the classifier is learned using
-those parameters.
+where $n_c$ is the number of correctly classified texts and $N$ is the total number of
+texts. The parameters with the highest accuracy, $(C, \gamma)$, 
+are used in the process of classifier learning.
 
 \section{Evaluation}
 \label{sec:evaluacija}
-Classification success is measured by ratio of correctly classified texts and
-total number of texts (accuracy). Results of evalutaion are shown in Table
+Classification success is measured by the ratio of correctly classified texts and
+the total number of texts (accuracy). Results of the evalutaion are shown in Table
 \ref{tbl:eval}. Columns ``$C$'' and ``$\gamma$'' denote parameters of SVM
 classifier used for selected model.
 
@@ -559,27 +558,28 @@ classifier used for selected model.
 % Weighted $F$ measure at our data set for testing gives value of 87\%.
 
 \section{Conclusion}
-It is shown that authorship attribution problem can be successfully solved by
-relatively simple methods, although for state--of--the--art methods, we
-believe that syntactic analysis of texts is required. Our results with
-93\% accuracy fit very well in interval of reported results which range from
+It is shown that the authorship attribution problem can be successfully solved by
+some relatively simple methods, although for the state--of--art applications, we
+believe syntactic analysis of the texts is required. Our results with
+93\% accuracy fit very well in the interval of previous reported results, which range from
 70\% to 97\% \citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
 
-Result comparision is difficult due to different types of data sets (e.g., poems,
-newspaper articles, e--mails) and the problems (binary, multi--class or
+The comparision of the results has proved difficult due to the different types of data sets (e.g., poems,
+newspaper articles, e--mails) and the different types of problems (binary, multi--class or
 single--class classifications). There are no relevant data sets for comparision
-\citep{zhao2005effective}, but there are references on paper
+\citep{zhao2005effective}, however references exist in the paper
 \citep{stamatatos2001computer} and their ``Greek data set'' (e.g.,
-\citep{keselj2003n}). There is an significant affected of data set type (number
-and variety of text samples) on the complexity of the problem.
+\citep{keselj2003n}). A significant impact on the complexity of this problem 
+is the total number of authors considered and the variety of document samples.
 
-In future work, methods based on word and character \emph{n}-grams suggested
-in \citep{keselj2003n,peng2003language,coyotl2006authorship} has to be
-evaluated. Also, evaluation has to be performed on different types of data sets
-such as poems, newspaper articles or books data sets.
+In the future work, methods based on word and character \emph{n}-grams suggested
+in \citep{keselj2003n,peng2003language,coyotl2006authorship} should be
+evaluated. Moreover, evaluation has to be performed on different types of data sets
+such as poems, newspaper articles or book data sets.
 
 \section*{Acknowledgement}
-% TODO: Napisati
+% TODO: Napisati 
+% Hvala dragom Bogu i drugu Titu što umijem da pročitam u potpisu tko je autor teksta!
 
 \bibliographystyle{plainnat}
 \bibliography{literatura}
