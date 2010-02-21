@@ -121,11 +121,11 @@ text classification, SVM, functional words, MSD tagging.
 
 \section{Introduction}
 Automatic authorship attribution can be interpreted as a problem of text
-classification based on linguistic features that are specific to certain authors. Problems similar to authorship
-attribution are detection of age, region and gender of the author
-\citep{luyckx2005shallow}. Main concern of computer--assisted authorship
-attribution is to define an appropriate characterization of text that
-captures the writing style of authors \citep{coyotl2006authorship}.
+classification based on linguistic features specific to certain authors. Problems similar to authorship
+attribution are detection of author's age, region or gender
+\citep{luyckx2005shallow}. The main concern in computer--assisted authorship
+attribution is defining an appropriate characterization of the text. Such characterization should
+capture the writing style of the authors \citep{coyotl2006authorship}.
 
 % \citet{kukushkina2001using} notes that first works on authorship attribution
 % problem are ``\emph{Izv.\ otd.\ russkogo jazyka i slovesnosti, Imp.\ akad.\ nauk.}'',
@@ -134,23 +134,23 @@ captures the writing style of authors \citep{coyotl2006authorship}.
 
 Authorship attribution can help in document indexing, document filtering and
 hierarchical categorization of web pages \citep{luyckx2005shallow}. These
-applications are important information retrieval tasks. It is important to note
-that authorship attribution differs from plagiarism detection in that the latter
+applications are important tasks in the field of information retrieval. 
+Authorship attribution differs from plagiarism detection. Plagiarism detection
 attempts to detect similarities between two substantially different pieces of
-work but is unable to determine if they were produced by the same author
+work. However, it is unable to determine if they were produced by the same author or not
 \citep{de2001mining}.
 
-The problem can be divided in three categories \citep{zhao2005effective}: binary,
-multi--class and single--class (or one--class) classification. Binary
-classification solves the problem of each text from data set being written by one
-of two authors. Multi--class classification is generalization of binary
-classification in which we have more than two authors. One--class classification
-is applied when some of the texts from the data set are written by a particular
-author while the authorship of the other texts is unspecified. This
-classification ascertains if a given text belong to a single known author or not.
+The problem of authorship attribution can be divided into three categories \citep{zhao2005effective}: binary,
+multi--class and single--class (or one--class) classification. Binary classification 
+solves the problem when the data set contains the texts written by one of two authors. Multi--class 
+classification is a generalization of the binary classification when there are 
+more than two authors in the data set. One--class classification
+is applied when only some of the texts from the data set are written by a particular
+author while the authorship of all the other texts is unspecified. This
+classification ascertains whether a given text belongs to a single known author or not.
 
 This paper presents a study of multi--class classification for texts in Croatian
-language, oriented on evaluation of different text representations. The rest of
+language, oriented on the evaluation of different text representations. The rest of
 the paper is organized as follows. Section 2 discusses related work on authorship
 attribution and similar problems. Section 3 describes the used data set. Section
 4 introduces methods of text representation we have used. Section 5 describes
