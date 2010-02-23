@@ -1,108 +1,30 @@
-\documentclass[11pt,english]{article}
+\documentclass{llncs}
 
-\usepackage[a4paper, hmargin=2.5cm, vmargin=2.5cm, columnsep=0.6cm, textheight=24.7cm]{geometry}
 \usepackage[utf8]{inputenc}
-\usepackage{babel}
+\usepackage[english]{babel}
 \usepackage[T1]{fontenc}
-\usepackage{algorithmic}
-\usepackage{algorithm}
-\usepackage{longtable}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{amsmath}
-\usepackage{times}
-\usepackage{titlesec}
-\usepackage{multicol}
-\usepackage{enumitem}
-\usepackage{nonfloat}
 \usepackage{url}
-\usepackage{indentfirst}
-% Package used for \author{} command. Feel free to remove
-% if it doesn't suits your needs.
-\usepackage[affil-it]{authblk}
-%\usepackage{hyperref}
-\usepackage[numbers, square, sort]{natbib}
-\usepackage{subfig}
-\usepackage{fixltx2e}
-\usepackage{textcomp}
-\usepackage{float}
-\usepackage{floatflt}
-
-\pagestyle{empty}
-
-\newcommand{\engl}[1]{(engl.~\emph{#1})}
-
-\setlength{\topskip}{0cm}
-
-% List spaceing.
-\renewcommand{\labelitemi}{\textendash}
-\renewcommand{\labelitemii}{\textbullet}
-\renewenvironment{itemize}{%
-\begin{list}{\labelitemi}{%
-\setlength{\topsep}{0mm}
-\setlength{\itemsep}{-1mm}
-\setlength{\labelindent}{\parindent}
-\setlength{\leftmargin}{6mm}}}
-{\end{list}}
-
-% Setting right title format.
-\let\LaTeXtitle\title
-\renewcommand{\title}[1]{\LaTeXtitle{\Large \textbf{#1}}}
-\renewenvironment{abstract}
-{\noindent \large \bf Abstract. \normalsize \begin{it}}
-{\end{it}\\}
-
-% Adding dots after {sub}secions.
-\titleformat{\section}{\large\bfseries}{\thesection.}{1em}{}
-\titleformat{\subsection}{\large\bfseries}{\thesubsection.}{1em}{}
-\titleformat{\subsubsection}{\large\bfseries}{\thesubsubsection.}{1em}{}
-
-\newenvironment{keywords}
-{\noindent {\large {\bf Keywords}}.~}{}
-
-% Space between authors-(authblk package)
-\renewcommand\Authsep{ \quad }
-\renewcommand\Authand{ \quad }
-\renewcommand\Authands{ \quad }
-
-% Space between affils.
-\setlength{\affilsep}{0em}
-
-% Bibliography
-\renewcommand{\bibsection}{\section{References}}
-\setlength{\bibsep}{2mm}
-
-% Environment for tables inside of multicol
-\makeatletter
-\newenvironment{tablehere}
-  {\def\@captype{table}}
-  {}
-\makeatother
-
+\usepackage{lmodern}
+\usepackage{nonfloat}
 
 \begin{document}
 
-\title{Automatic authorship attribution for Croatian texts}
-\author{Tomislav Reicher}
-\author{Ivan Krišto}
-\author{Igor Belša}
-\author{Artur Šilić}
-\affil{Faculty of Electrical and Computing Engineering, University of
-Zagreb\\Unska 3, 10000 Zagreb, Croatia}
-\affil{\{tomislav.reicher, ivan.kristo, igor.belsa, artur.silic\}@fer.hr}
-
-% Removal of date. Don't change.
-\date{}
+\title{Automatic Authorship Attribution for\\Croatian Texts}
+\author{Tomislav Reicher \and Ivan Krišto \and Igor Belša \and Artur Šilić}
+\institute{Faculty of Electrical and Computing Engineering\\
+University of Zagreb\\
+Unska 3, 10000 Zagreb, Croatia\\
+\email{\{tomislav.reicher, ivan.kristo, igor.belsa, artur.silic\}@fer.hr}}
 
 \maketitle
-
-\thispagestyle{empty}
-\pagestyle{empty}
-\begin{multicols}{2}
 
 % TODO:
 % - Još malo popraviti predložak
 
+% min 70 riječi, max 150.
 \begin{abstract}
 Automatic authorship attribution is a useful task in automatic text
 classification which becomes quite complex if it is applied in large data sets
@@ -114,42 +36,40 @@ that various combinations of methods are very successful in solving the
 authorship attribution problem.
 \end{abstract}
 
-% Please, insert keywords:
-\begin{keywords}
 text classification, SVM, functional words, MSD tagging.
-\end{keywords}
 
 \section{Introduction}
 Automatic authorship attribution can be interpreted as a problem of text
 classification based on linguistic features specific to certain authors. Problems similar to authorship
 attribution are detection of author's age, region or gender
-\citep{luyckx2005shallow}. The main concern in computer--assisted authorship
+\cite{luyckx2005shallow}. The main concern in computer-assisted authorship
 attribution is defining an appropriate characterization of the text. Such characterization should
-capture the writing style of the authors \citep{coyotl2006authorship}.
+capture the writing style of the authors \cite{coyotl2006authorship}.
 
+% - citet! Složiti da tu bude cite!
 % \citet{kukushkina2001using} notes that first works on authorship attribution
 % problem are ``\emph{Izv.\ otd.\ russkogo jazyka i slovesnosti, Imp.\ akad.\ nauk.}'',
 % Morozov, N., A.\ from 1915.\  and ``\emph{On some application of statistical
 % method}'' from 1916.\ by Markov, A., A., founder of Theory of Markov chains.
 
 Authorship attribution can help in document indexing, document filtering and
-hierarchical categorization of web pages \citep{luyckx2005shallow}. These
+hierarchical categorization of web pages \cite{luyckx2005shallow}. These
 applications are important tasks in the field of information retrieval. 
 Authorship attribution differs from plagiarism detection. Plagiarism detection
 attempts to detect similarities between two substantially different pieces of
 work. However, it is unable to determine if they were produced by the same author or not
-\citep{de2001mining}.
+\cite{de2001mining}.
 
-The problem of authorship attribution can be divided into three categories \citep{zhao2005effective}: binary,
-multi--class and single--class (or one--class) classification. Binary classification 
-solves the problem when the data set contains the texts written by one of two authors. Multi--class 
+The problem of authorship attribution can be divided into three categories \cite{zhao2005effective}: binary,
+multi-class and single-class (or one-class) classification. Binary classification 
+solves the problem when the data set contains the texts written by one of two authors. Multi-class 
 classification is a generalization of the binary classification when there are 
-more than two authors in the data set. One--class classification
+more than two authors in the data set. One-class classification
 is applied when only some of the texts from the data set are written by a particular
 author while the authorship of all the other texts is unspecified. This
 classification ascertains whether a given text belongs to a single known author or not.
 
-This paper presents a study of multi--class classification for texts in Croatian
+This paper presents a study of multi-class classification for texts in Croatian
 language, oriented on the evaluation of different text representations. The rest of
 the paper is organized as follows. Section 2 discusses related work on authorship
 attribution and similar problems. Section 3 describes the used data set. Section
@@ -157,25 +77,25 @@ attribution and similar problems. Section 3 describes the used data set. Section
 classification and Section 6 presents evaluation methods and experiment results.
 Conclusion and future work are given in Section 7.
 
-\section{Related work}
+\section{Related Work}
 There are several approaches to text representation and classification in the field 
-of authorship attribution. This approaches include: stylistic measures \citep{coyotl2006authorship}, syntactic clues
-\citep{stamatatos2001computer,uzuner2005comparative}, word-based features
-\citep{argamon2005measuring,uzuner2005comparative}, compression algorithms
-\citep{kukushkina2001using,zhao2005effective}, grammatical error lookup
-\citep{koppel2003exploiting}, language modeling
-\citep{peng2003language,coyotl2006authorship}, and vocabulary diversity
-\citep{stamatatos2001computer}. Following paragraphs describe these approaches in
+of authorship attribution. This approaches include: stylistic measures \cite{coyotl2006authorship}, syntactic clues
+\cite{stamatatos2001computer,uzuner2005comparative}, word-based features
+\cite{argamon2005measuring,uzuner2005comparative}, compression algorithms
+\cite{kukushkina2001using,zhao2005effective}, grammatical error lookup
+\cite{koppel2003exploiting}, language modeling
+\cite{peng2003language,coyotl2006authorship}, and vocabulary diversity
+\cite{stamatatos2001computer}. Following paragraphs describe these approaches in
 more depth and relate our work with the existing research.
 
-\citet{coyotl2006authorship} group the methods of authorship attribution into three
-main approaches: \emph{stylistic measures}, \emph{syntactic cues} and
+Coyotl-Morales et al.\ \cite{coyotl2006authorship} group the methods of
+authorship attribution into three main approaches: \emph{stylistic measures}, \emph{syntactic cues} and
 \emph{word--based} text features.
 
 Text features based on \emph{stylistic measures} are characterized by features that
 take into account the length of words, the length of sentences and the richness of vocabulary.
 Various types of style markers can be found in
-\citep{luyckx2005shallow}. In \citep{coyotl2006authorship} it is noted that such
+\cite{luyckx2005shallow}. In \cite{coyotl2006authorship} it is noted that such
 features are not sufficient to resolve problems dependent on the genre of the
 text. Moreover, they lose their meaning when applied over short texts.
 
@@ -187,7 +107,7 @@ Unfortunately, it is computationally expensive or even impossible to build for
 certain languages lacking the text--processing resources (e.g., POS tagger, syntactic
 parser, etc.). This method is clearly influenced by the length of the text. More detailed 
 description of the authorship attribution process based on syntactic elements can be found 
-in a very influential work by Stamatos et al. \citep{stamatatos2001computer}.
+in a very influential work by Stamatos et al. \cite{stamatatos2001computer}.
 
 The approach with \emph{Word--based} text features can be based on three
 different types of methods. The first type of methods characterize a text
@@ -203,26 +123,27 @@ consecutive words.
 
 The success of functional words over collocations (certain pairs of words
 occurring within a given threshold distance of each other), is shown in
-\citep{argamon2005measuring}. The opposite might mistakenly be concluded considering
+\cite{argamon2005measuring}. The opposite might mistakenly be concluded considering
 the information reduction when using functional words as features.
-\citet{argamon2005measuring} believe that the most of the discriminating power
-of collocations is due to the frequent words they contain and not due to the
+Argamon and Levitan \cite{argamon2005measuring} believe that the most of the
+discriminating power of collocations is due to the frequent words they contain and not due to the
 collocations themselves.
 % They also note that using more training texts than
 % features seriously reduces the likelihood of overfitting the model to the
 % training data, improving the reliability of results. Similar claim can be found
-% in \citep{banko2001scaling} which deals with influence the of corpus size in
+% in \cite{banko2001scaling} which deals with influence the of corpus size in
 % general natural language processing.
 
 A similar comparison of feature types is shown in
-\citep{uzuner2005comparative}. The functional words and syntactic
+\cite{uzuner2005comparative}. The functional words and syntactic
 elements are compared in order to identify the author of a text. It is
 concluded that the syntactic elements of expressions are as useful as functional 
 words in solving the problem.
 
-\citet{kukushkina2001using} explain a method that uses certain algorithms for data
-compression in order to identify the author of a text. The appendix of this paper shows evaluation results
-for authorship attribution with different compression algorithms.
+Kukushkina et al.\ \cite{kukushkina2001using} explain a method that uses certain
+algorithms for data compression in order to identify the author of a text. The
+appendix of this paper shows evaluation results for authorship attribution with
+different compression algorithms.
 % The idea behind
 % the method is to divide texts by authors, compress every set with selected
 % algorithm and write the size of the archive. To classify text of an unknown author,
@@ -230,25 +151,25 @@ for authorship attribution with different compression algorithms.
 % the texts in archive which records the smallest increase in size is declared
 % as the author of the new text.
 A review of a similar method can be found in 
-\citep{zhao2005effective}. It is noted that the method has obvious omissions, 
+\cite{zhao2005effective}. It is noted that the method has obvious omissions, 
 and a citation on another work that proves this is given.
 
-\citet{koppel2003exploiting} show the use of grammatical errors and informal
-styling (e.g., writing sentences in capital letters) as text features used for authorship attribution.
+Koppel and Schler \cite{koppel2003exploiting} show the use of grammatical
+errors and informal styling (e.g., writing sentences in capital letters) as text features used for authorship attribution.
 The method is only applicable for unedited texts (blogs, Internet forums,
-newsgroups, e--mail messages, etc.).
+newsgroups, e-mail messages, etc.).
 
-\citet{peng2003language} suggest the use of \emph{n}-gram language model to identify
-the author. A similar method is shown in \citep{coyotl2006authorship}.
+Peng et al.\ \cite{peng2003language} suggest the use of \emph{n}-gram language
+model to identify the author. A similar method is shown in \cite{coyotl2006authorship}.
 
-\citet{stamatatos2001computer} suggest vocabulary diversity as
-features for identifying the authors. The diversity is defined as the ratio of unique words 
+Stamatatos et al.\ \cite{stamatatos2001computer} suggest vocabulary diversity
+as features for identifying the authors. The diversity is defined as the ratio of unique words 
 and the total size of the text. An alternative strategy is counting the words which occur only once
 (\emph{hapax legomena}), twice (\emph{dis legomena}), etc.
 These measures are closely related to the length of the text. They also note that
 the functions defined by Yule (1944) and Honore (1979) should solve this problem,
 i.e., they should be constant regarding the length of the text. The analysis of
-similar functions can be found in the \citep{tweedie1998variable}. It claims
+similar functions can be found in the \cite{tweedie1998variable}. It claims
 that most of these functions are not independent regarding the length of the
 text. It is concluded that the vocabulary diversity is an unstable feature for
 the texts shorter than 1000 words.
@@ -257,7 +178,7 @@ the texts shorter than 1000 words.
 Our work is based on the composition of various methods --- syntactic clues, word--based features, 
 and stylistic measures --- adapted for use with the Croatian language. 
 
-\section{Data set}
+\section{Data Set}
 \label{sec:podatci}
 %TODO: columns, kao prijevod za kolumnu je OK, ali mene uvijek prvo asocira na stupce!!!
 % mislim da oni to nikada tako ne zovu u stvarnosti, nego articles/commentarys/postings... ne znam... PROVJERITI!
@@ -276,12 +197,12 @@ set contains 3425 texts and testing data set 1146 texts.
 
 \begin{minipage}{0.8\linewidth}
 \vspace{10pt}
-\centerline{\resizebox{1.4\linewidth}{!}{\input{figures/articlesPerAuthor}}}%
-\figcaption{\small \textbf{\textsf{Number of texts per author.}}}%
+\centerline{\resizebox{0.7\linewidth}{!}{\input{figures/articlesPerAuthor}}}%
+\figcaption{Number of texts per author.}%
 \label{fig:articlesPerAuthor}
 \end{minipage}
 
-\section{Text representation}
+\section{Text Representation}
 When constructing an authorship attribution system, the central issuse is the selection of 
 sufficiently discriminative features. A feature is discriminative if it is common for one author 
 and rare for all the others. Due to the large number of authors some complex features are very useful if their
@@ -301,12 +222,12 @@ vector of an appropriate dimensions. We combine features simply by creating unio
 % vectors can vary from computationally very trivial operations to very complex
 % algorithms (such as obtaining syntactic features by analyzing natural language).
 
-\subsection{Functional words frequency ($\mathcal{F}$)}
+\subsection{Functional Words Frequency ($\mathcal{F}$)}
 \label{sec:funkcijske-rijeci}
 Functional words, such as adverbs, prepositions, conjunctions, or interjections,
 are words that have little or no semantic content of their
 own. They usually indicate a grammatical relationship or a generic property
-\citep{zhao2005effective}.
+\cite{zhao2005effective}.
 
 % Usefulness of function words occurrence frequency for authorship attribution lies
 % in the fact that they are the indicators of writing style.
@@ -315,13 +236,13 @@ Some of the less used functional words, such as prepositions \emph{onkraj},
 author. However, even the frequency of more common functional words can adequately distinguish the author. 
 Due to the high frequency of the functional words and their significant roles in the grammar, the author 
 usually has no conscious control over their usage in a particular text
-\citep{argamon2005measuring}. They are also topic--independent.
+\cite{argamon2005measuring}. They are also topic--independent.
 Therefore, functional words are good indicators of the author's style.
 
 It is difficult to predict whether these words will give equally good
 results for different languages. Moreover, despite the abundance of research in this
 field, due to various languages, types and sizes of the texts, it is
-currently impossible to conclude if these methods are generally effective \citep{zhao2005effective}.
+currently impossible to conclude if these methods are generally effective \cite{zhao2005effective}.
 
 In addition to functional words, auxiliary verbs and pronouns are also considered.
 Their frequencies might be representative for the styles of different authors.
@@ -336,7 +257,7 @@ have not appeared in a certain text, the resulting component always equals zero.
 Label $\mathcal{F}$ denotes evaluation result of this feature in Table
 \ref{tbl:eval}.
 
-\subsection{Lexical categories frequency ($\mathcal{C}$)}
+\subsection{Lexical Categories Frequency ($\mathcal{C}$)}
 \label{sec:rijeci-grupe}
 The feature vector is created by counting the appearances of
 different lexical categories. The used categories are adverbs,
@@ -345,17 +266,17 @@ pronouns. They are obtained by syntactic analysis of the Croatian language. Resu
 stored as a vector (nine--dimensional vector). Each component of the vector
 is divided by the number of words in the text.
 
-\subsection{Idf weighted functional words frequency ($\mathcal{I}$)}
+\subsection{Idf Weighted Functional Words Frequency ($\mathcal{I}$)}
 \label{sec:funkcijske-rijeci-idf}
 The problem of the text length dependency in the classification using
-an SVM (Support Vector Machine) is explained in \citep{diederich2003authorship}.
+an SVM (Support Vector Machine) is explained in \cite{diederich2003authorship}.
 %FIXME članovi skraćenica mogu biti kako se citaju ili za pune rijeci. Ovdje moze biti
 % i a i an jer moze biti _a Support Vector_ ili _an EsViEm_.
 To avoid the dependency, we used a combination of $L_p$ normalization of the
 length and transformation of the terms occurrence frequency, such as \emph{idf}
 (inverse document frequency) measure.
 
-Idf measure is defined as \citep{diederich2003authorship}
+Idf measure is defined as \cite{diederich2003authorship}
 \begin{equation}
 F_{idf}(t_k) = \log \frac{n_d}{n_d(t_k)},
 \label{equ:idf}
@@ -378,8 +299,8 @@ one single document and once in all the others gets the same value as the one wh
 once in all of the texts. Thus, the word which would very well separate one document from the
 others is ignored.
 
-\subsection{Punctation marks ($\mathcal{P}$), vowels ($\mathcal{V}$), words
-length ($\mathcal{L}$) and sentence length ($\mathcal{S}$) frequency}
+\subsection{Punctation Marks ($\mathcal{P}$), Vowels ($\mathcal{V}$), Words
+Length ($\mathcal{L}$) and Sentence Length ($\mathcal{S}$) Frequency}
 \label{sec:znacajke-manje}
 A set of following punctuation marks is used: ``.'', ``,'', ``!'', ``?'',
 ``''', ``"'', ``-'', ``:'', ``;'', ``+'', ``*''. Their appearance in the text is counted and
@@ -404,13 +325,13 @@ The different vector dimensions issue is solved by limiting the sentence length 
 Features suggested here all have weak discriminatory power on their own, However, they proved 
 very useful in the combination with other features, as shown in Section \ref{sec:evaluacija}.
 
-\subsection{Word part--of--speech \emph{n}-grams frequency ($\mathcal{N}_1$ \&
+\subsection{Word Part--Of--Speech \emph{n}-grams Frequency ($\mathcal{N}_1$ \&
 $\mathcal{N}_2$)}
 \label{sec:ngrami-tipova}
 The two proposed features are based on word part--of--speech \emph{n}-grams
 frequency. Word parts--of--speech and their morphosyntactic descriptors are obtained by POS
 (Part--Of--Speech) and MSD (morphosyntactic) tagging for Croatian language
-\citep{snajder08automatic}. Having the corresponding part--of--speech for
+\cite{snajder08automatic}. Having the corresponding part--of--speech for
 each word in the text makes the usage \emph{n}-grams as features
 possible. As \emph{n}-gram features can produce very large dimensionality, 
 only 3-grams are considered. In addition, POS tagging used is not perfect. The
@@ -419,13 +340,13 @@ different homographs --- words with same spelling but with different meaning and
 different POS too --- so all possible POS tags for a given word are considered.
 
 %FIXME: pos patterns, not n-grams
-The first feature proposed uses the words parts--of-speech
+The first feature proposed uses the words parts--of--speech
 (nouns, verbs, adjectives, pronouns, conjunctions, interjections and
 prepositions) to form various \emph{n}-grams and count their frequencies. For
 example, word 3-gram ``Adam i Eva'' (``Adam and Eve'') forms ``noun
 conjunction noun'' trigram. The second feature proposed uses only words
-parts--of-speech information for nouns, verbs and adjectives and for other word
-parts--of-speech it uses words as they are, therefore ``Adam i Eva'' transforms
+parts--of--speech information for nouns, verbs and adjectives and for other word
+parts--of--speech it uses words as they are, therefore ``Adam i Eva'' transforms
 to ``noun i noun''. Due to many different pronouns, conjunctions, interjections
 and prepositions that make many different \emph{n}-grams, frequency filtering
 is applied --- only the frequency of 500 most frequent 3-grams in the
@@ -434,17 +355,16 @@ therefore in the future work other methods should be evaluated, such as informat
 gain, $\chi^2$ test, mutual information, maximum relevance, minimum redundancy
 or classification with sparse SVM, logistic regression or na\"ive Bayes.
 
-\subsection{Word morphologic categories ($\mathcal{M}$)}
+\subsection{Word Morphologic Categories ($\mathcal{M}$)}
 \label{sec:morphosyntactic}
 The feature vector is created by counting the appearances of morphologic
 categories for every word in a text, and dividing them by the number of words in the text.
 Counted morphologic categories are \emph{case}, \emph{degree}, \emph{form},
 \emph{gender}, \emph{number} and \emph{person}.
 
-\end{multicols}
-\begin{table*}[htb]
+\begin{table*}
 \begin{center}%
-\caption{\small \textbf{\textsf{Evaluation of different features}}}%
+\caption{Evaluation of Different Features}%
 \begin{tabular}{r c c r@{.}l}%
 \toprule%
 Method & Accuracy [\%] & $C$ & \multicolumn{2}{c}{$\gamma$} \\
@@ -477,7 +397,6 @@ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mat
 \label{tbl:eval}%
 \end{center}
 \end{table*}
-\begin{multicols}{2}
 
 \section{Classification}
 % Representation of documents by real number vectors  enables easy use of
@@ -485,7 +404,7 @@ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mat
 % space.
 The classifier used is an SVM (Support Vector Machine) with radial basis
 function as the kernel. It is shown that, with the use of parameter selection,
-linear SVM is a special case of an SVM with RBF kernel \citep{keerthi2003asymptotic},
+linear SVM is a special case of an SVM with RBF kernel \cite{keerthi2003asymptotic},
 which removes the need to consider a linear SVM as a potential classifier.
 
 Before sending the features to the SVM, we scale the data to ensure
@@ -514,7 +433,7 @@ Finding appropriate paramters $(C, \gamma)$ is done by the means of
 cross-validation: using the 5-fold cross--validation on the
 learning set. Parameters $(C, \gamma)$ that give the highest accuracy are
 selected. Parameters that were considered are: $C \in \{2^{-5}, 2^{-4}, \cdots ,
-2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \citep{CC01a}.
+2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \cite{CC01a}.
 The accuracy of classification is measured by the expression:
 \begin{equation}
 acc = \frac{n_c}{N}, % ako bude problema, ovo staviti kao ``inline'' jednadžbu.
@@ -562,18 +481,18 @@ It is shown that the authorship attribution problem can be successfully solved b
 some relatively simple methods, although for the state--of--art applications, we
 believe syntactic analysis of the texts is required. Our results with
 93\% accuracy fit very well in the interval of previous reported results, which range from
-70\% to 97\% \citep{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
+70\% to 97\% \cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
 
 The comparision of the results has proved difficult due to the different types of data sets (e.g., poems,
-newspaper articles, e--mails) and the different types of problems (binary, multi--class or
-single--class classifications). There are no relevant data sets for comparision
-\citep{zhao2005effective}, however references exist in the paper
-\citep{stamatatos2001computer} and their ``Greek data set'' (e.g.,
-\citep{keselj2003n}). A significant impact on the complexity of this problem 
+newspaper articles, e-mails) and the different types of problems (binary, multi-class or
+single-class classifications). There are no relevant data sets for comparision
+\cite{zhao2005effective}, however references exist in the paper
+\cite{stamatatos2001computer} and their ``Greek data set'' (e.g.,
+\cite{keselj2003n}). A significant impact on the complexity of this problem 
 is the total number of authors considered and the variety of document samples.
 
 In the future work, methods based on word and character \emph{n}-grams suggested
-in \citep{keselj2003n,peng2003language,coyotl2006authorship} should be
+in \cite{keselj2003n,peng2003language,coyotl2006authorship} should be
 evaluated. Moreover, evaluation has to be performed on different types of data sets
 such as poems, newspaper articles or book data sets.
 
@@ -581,9 +500,7 @@ such as poems, newspaper articles or book data sets.
 % TODO: Napisati 
 % Hvala dragom Bogu i drugu Titu što umijem da pročitam u potpisu tko je autor teksta!
 
-\bibliographystyle{plainnat}
+\bibliographystyle{splncs}
 \bibliography{literatura}
-
-\end{multicols}
 
 \end{document}
