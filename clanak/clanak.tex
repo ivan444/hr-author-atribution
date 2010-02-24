@@ -78,61 +78,45 @@ classification and Section 6 presents evaluation methods and experiment results.
 Conclusion and future work are given in Section 7.
 
 \section{Related Work}
-There are several approaches to text representation and classification in the field 
-of authorship attribution. This approaches include: stylistic measures \cite{coyotl2006authorship}, syntactic clues
-\cite{stamatatos2001computer,uzuner2005comparative}, word-based features
-\cite{argamon2005measuring,uzuner2005comparative}, compression algorithms
-\cite{kukushkina2001using,zhao2005effective}, grammatical error lookup
-\cite{koppel2003exploiting}, language modeling
-\cite{peng2003language,coyotl2006authorship}, and vocabulary diversity
-\cite{stamatatos2001computer}. Following paragraphs describe these approaches in
-more depth and relate our work with the existing research.
+There are several approaches to author attribution in respect of different text
+representation features used for the classification. Based on those features
+following taxonomy, which is mainly focused on the computational requirements,
+can be made: \cite{stamatatos2009survey}: \emph{character features},
+\emph{lexical features}, \emph{syntactic features}, \emph{semantic features} and
+\emph{application--specific features}. Following paragraphs describe these
+features in more depth and relate our work with the existing research.
 
-Coyotl-Morales et al.\ \cite{coyotl2006authorship} group the methods of
-authorship attribution into three main approaches: \emph{stylistic measures}, \emph{syntactic cues} and
-\emph{word--based} text features.
+\emph{Character features} are the simplest text representation features, which
+consider text as mere sequence of characters, and therby usable for any natural
+language and corpus. In that notion various meassures can be defiend such as
+characters frequencies, digit frequencies, uppercase and lowercase character
+frequencies, punctuation marks frequencies, etc.~\cite{de2001mining}. Another
+character based features, which have been proven to be quite successful
+\cite{peng2003language,stamatatos2006ensemble}, consider extracting
+frequencies of character \emph{n}--grams to be used as features. 
 
-Text features based on \emph{stylistic measures} are characterized by features that
-take into account the length of words, the length of sentences and the richness of vocabulary.
-Various types of style markers can be found in
-\cite{luyckx2005shallow}. In \cite{coyotl2006authorship} it is noted that such
-features are not sufficient to resolve problems dependent on the genre of the
-text. Moreover, they lose their meaning when applied over short texts.
+Text representation using \emph{lexical features} is characterized by dividing
+the text into the sequence of tokens (words) that group into sentences. Features
+straightforwardly derived from that representation are the length of words, the
+length of sentences and the richness of vocabulary, used in
+\cite{mendenhall1887,holmes1994authorship} . Results achived demonstrate that
+these features are not sufficient for the task mainly because of their
+significant dependence on text genre and text length. Taking advantage of
+features based on frequencies of different words, especially function words,
+can produce fairly better results
+\cite{argamon2005measuring,uzuner2005comparative,koppel2003exploiting,zhao2005effective}.
+Analogusly to character \emph{n}--grams, word \emph{n}--gram features
+can be defined for which is shown to be quite successfull too
+\cite{keselj2003n,coyotl2006authorship}.
 
-When using the \emph{syntactic cues as text features} --- information
-related to structure of the language that is obtained by an in--depth syntactic
-analysis of the text --- a single text is characterized by the presence and
-frequency of certain syntactic structures. This characterization is detailed and relevant.
-Unfortunately, it is computationally expensive or even impossible to build for
-certain languages lacking the text--processing resources (e.g., POS tagger, syntactic
-parser, etc.). This method is clearly influenced by the length of the text. More detailed 
-description of the authorship attribution process based on syntactic elements can be found 
-in a very influential work by Stamatos et al. \cite{stamatatos2001computer}.
-
-The approach with \emph{Word--based} text features can be based on three
-different types of methods. The first type of methods characterize a text
-using a set of functional words (their presence and frequency). Content words, which 
-tend to be highly correlated with the text topics, are ignored. The second type
-of methods observe a single text as a bag--of--words and use single content words as
-features. This type of methods can be applied only when there is a noticeable
-correlation between the authors and the topics. The third type considers
-word \emph{n}-grams as features, i.e., features consisting of sequences of
-consecutive words.
-% Nevertheless, due to the feature explosion, it tends to use
-% only \emph{n}-grams up to three words.
-
-The success of functional words over collocations (certain pairs of words
-occurring within a given threshold distance of each other), is shown in
-\cite{argamon2005measuring}. The opposite might mistakenly be concluded considering
-the information reduction when using functional words as features.
-Argamon and Levitan \cite{argamon2005measuring} believe that the most of the
-discriminating power of collocations is due to the frequent words they contain and not due to the
-collocations themselves.
-% They also note that using more training texts than
-% features seriously reduces the likelihood of overfitting the model to the
-% training data, improving the reliability of results. Similar claim can be found
-% in \cite{banko2001scaling} which deals with influence the of corpus size in
-% general natural language processing.
+Usage of \emph{syntactic features} is governed by the idea that authors tend to
+use similar syntactic patterns unconsciously. Information related to structure of
+the language is obtained by an in--depth syntactic analysis of the text and a
+single text is characterized by the presence and frequency of certain syntactic
+structures. More detailed description of the authorship attribution process based
+on syntactic elements can be found in a very influential work by Stamatos et al.
+\cite{stamatatos2001computer}.
+ \cite{luyckx2005shallow,uzuner2005comparative,}
 
 A similar comparison of feature types is shown in
 \cite{uzuner2005comparative}. The functional words and syntactic
@@ -159,41 +143,28 @@ errors and informal styling (e.g., writing sentences in capital letters) as text
 The method is only applicable for unedited texts (blogs, Internet forums,
 newsgroups, e-mail messages, etc.).
 
-Peng et al.\ \cite{peng2003language} suggest the use of \emph{n}-gram language
-model to identify the author. A similar method is shown in \cite{coyotl2006authorship}.
 
-Stamatatos et al.\ \cite{stamatatos2001computer} suggest vocabulary diversity
-as features for identifying the authors. The diversity is defined as the ratio of unique words 
-and the total size of the text. An alternative strategy is counting the words which occur only once
-(\emph{hapax legomena}), twice (\emph{dis legomena}), etc.
-These measures are closely related to the length of the text. They also note that
-the functions defined by Yule (1944) and Honore (1979) should solve this problem,
-i.e., they should be constant regarding the length of the text. The analysis of
-similar functions can be found in the \cite{tweedie1998variable}. It claims
-that most of these functions are not independent regarding the length of the
-text. It is concluded that the vocabulary diversity is an unstable feature for
-the texts shorter than 1000 words.
-
-%TODO: prosiriti
 Our work is based on the composition of various methods --- syntactic clues, word--based features, 
 and stylistic measures --- adapted for use with the Croatian language. 
 
 \section{Data Set}
 \label{sec:podatci}
-%TODO: columns, kao prijevod za kolumnu je OK, ali mene uvijek prvo asocira na stupce!!!
-% mislim da oni to nikada tako ne zovu u stvarnosti, nego articles/commentarys/postings... ne znam... PROVJERITI!
-We used an online archive of articles (columns) from a daily Croatian newspaper ``Jutarnji
-list'', available at \url{http://www.jutarnji.hr/komentari/}. The data set
-consists of 4571 texts written by 25 authors. The lowest average number of words
-in the text per author is 315 words, and the highest is 1347 words. An average number
-of words in text per author for this data set is 717 words. The number of texts per
-author in the set is shown on Figure \ref{fig:articlesPerAuthor}.
 
-Since the topics in these articles tend to be time--specific, and to avoid the learning of topic, 
-%FIXME Kako prevesti ucenje teme? ovo mi se ne cini ok!? 
-we split the set by dates -- 20\% of the newest articles of
-each author are taken for testing (hold--out method). Therefore, training data
-set contains 3425 texts and testing data set 1146 texts.
+We used an online archive of \emph{proofread} articles (journals) from a daily
+Croatian newspaper ``Jutarnji list'', available at
+\url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
+written by 25 different authors where the articles are not evenly distributed
+across authors. The number of texts per author in the set is shown on Figure
+\ref{fig:articlesPerAuthor}. The articles are not all the same size either
+--- the lowest average number of words in the text per author is 315 words, and
+the highest average is 1347 words. An average number of words in text per author for
+this data set is 717 words. As one can see, data set we used is very
+heterogeneous.
+
+Since the topics in these articles tend to be time--specific, to avoid the
+overfitting, we split the set by dates --- 20\% of the newest articles of each author are
+taken for testing (hold--out method). Therefore, training data set contains 3425 texts
+and testing data set 1146 texts.
 
 \begin{minipage}{0.8\linewidth}
 \vspace{10pt}
@@ -203,127 +174,90 @@ set contains 3425 texts and testing data set 1146 texts.
 \end{minipage}
 
 \section{Text Representation}
-When constructing an authorship attribution system, the central issuse is the selection of 
-sufficiently discriminative features. A feature is discriminative if it is common for one author 
-and rare for all the others. Due to the large number of authors some complex features are very useful if their
-distribution is specific to each author. % (e.g., the frequency distribution of some words).%
+When constructing an authorship attribution system, the central issuse is the
+selection of sufficiently discriminative features. A feature is discriminative if
+it is common for one author and rare for all the others. Due to the large number
+of authors some complex features are very useful if their distribution is
+specific to each author. Moreover, as the texts from dataset greatly differ in
+length and topic, it is neccessary to use the features independent of such
+variations. If the features were not independent of such variation that
+would most certanly reduce generality of system's application and could lead
+to a decrease of accurancy (e.g., relating author to concrete topic or terms).
 
-%Features can be combined. If complex features are combined, new features can represent more distributions and have greater discriminatory power.%
+In the following subsections we will describe different features used.
 
-During the creation of the feature vector, it is neccessary to make the
-features independent of the length or of the content of each text. That
-dependency reduces generality of system's application and can lead to a decrease of accurancy
-(e.g., relating author to concrete topic or terms).
-
-Since features are expressed as real numbers, each text is expressed as a real
-vector of an appropriate dimensions. We combine features simply by creating unions of basic feature sets.
-
-% Depending on selected feature model, text analysis and creation of feature
-% vectors can vary from computationally very trivial operations to very complex
-% algorithms (such as obtaining syntactic features by analyzing natural language).
-
-\subsection{Functional Words Frequency ($\mathcal{F}$)}
+\subsection{Function Words Frequencies ($\mathcal{F}$)}
 \label{sec:funkcijske-rijeci}
-Functional words, such as adverbs, prepositions, conjunctions, or interjections,
-are words that have little or no semantic content of their
-own. They usually indicate a grammatical relationship or a generic property
+Function words, such as adverbs, prepositions, conjunctions, or interjections,
+are words that have little or no semantic content of their own. They usually
+indicate a grammatical relationship or a generic property
+\cite{zhao2005effective}. Although one would assume that frequencies of some of
+the less used function words would be useful indicator of authors style even the
+frequencies of more common function words can adequately distinguish between the
+authors. Due to the high frequency of the function words and their significant
+roles in the grammar, the author usually has no conscious control over their
+usage in a particular text \cite{argamon2005measuring}. They are also
+topic--independent. Therefore, function words are good indicators of the author's
+style.
+
+It is difficult to predict whether these words will give equally good results for
+different languages. Moreover, despite the abundance of research in this field,
+due to various languages, types and sizes of the texts, it is currently
+impossible to conclude if these methods are generally effective
 \cite{zhao2005effective}.
 
-% Usefulness of function words occurrence frequency for authorship attribution lies
-% in the fact that they are the indicators of writing style.
-Some of the less used functional words, such as prepositions \emph{onkraj},
-\emph{namjesto} and \emph{zavrh} in the Croatian language, are rarely used and may very well suggest the
-author. However, even the frequency of more common functional words can adequately distinguish the author. 
-Due to the high frequency of the functional words and their significant roles in the grammar, the author 
-usually has no conscious control over their usage in a particular text
-\cite{argamon2005measuring}. They are also topic--independent.
-Therefore, functional words are good indicators of the author's style.
-
-It is difficult to predict whether these words will give equally good
-results for different languages. Moreover, despite the abundance of research in this
-field, due to various languages, types and sizes of the texts, it is
-currently impossible to conclude if these methods are generally effective \cite{zhao2005effective}.
-
-In addition to functional words, auxiliary verbs and pronouns are also considered.
-Their frequencies might be representative for the styles of different authors.
-
-The feature vector of a text is created by counting the appearances
-of functional words, auxiliary verbs and pronouns in a text. The results
-are written as vectors. Each component corresponds to the number of occurences of
-related words divided by the total number of the words in the text. This is done
-to remove the dependency on the length of the text. In the case of functional words that
-have not appeared in a certain text, the resulting component always equals zero.
+In addition to function words in this work we also consider frequencies of
+auxiliary verbs and pronouns as their frequencies might also be
+representative of the style of different authors. This makes the set of totaly
+652 function words used.
 
 Label $\mathcal{F}$ denotes evaluation result of this feature in Table
 \ref{tbl:eval}.
 
-\subsection{Lexical Categories Frequency ($\mathcal{C}$)}
-\label{sec:rijeci-grupe}
-The feature vector is created by counting the appearances of
-different lexical categories. The used categories are adverbs,
-adpositions, conjunctions, particles, interjections, nouns, verbs, adjectives and
-pronouns. They are obtained by syntactic analysis of the Croatian language. Result is
-stored as a vector (nine--dimensional vector). Each component of the vector
-is divided by the number of words in the text.
-
-\subsection{Idf Weighted Functional Words Frequency ($\mathcal{I}$)}
+\subsection{Idf Weighted Function Words Frequency ($\mathcal{I}$)}
 \label{sec:funkcijske-rijeci-idf}
-The problem of the text length dependency in the classification using
-an SVM (Support Vector Machine) is explained in \cite{diederich2003authorship}.
-%FIXME članovi skraćenica mogu biti kako se citaju ili za pune rijeci. Ovdje moze biti
-% i a i an jer moze biti _a Support Vector_ ili _an EsViEm_.
-To avoid the dependency, we used a combination of $L_p$ normalization of the
-length and transformation of the terms occurrence frequency, such as \emph{idf}
-(inverse document frequency) measure.
+
+Usage of features based on function words frequencies often implies the
+problem with the quantifying how important, for the sake of discrimination, a
+specific given function word is \cite{diederich2003authorship}.
+
+To cope with that problem we used a combination of $L_p$ normalization of the
+length and transformation of the function word occurrence frequency, in
+particular \emph{idf} (inverse document frequency) measure.
 
 Idf measure is defined as \cite{diederich2003authorship}
 \begin{equation}
 F_{idf}(t_k) = \log \frac{n_d}{n_d(t_k)},
 \label{equ:idf}
 \end{equation}
-where $n_d(t_k)$ is number of documents that contain term $t_k$ and
-$n_d$ the total number of documents. The shown measure gives high values for terms
-that appear in a small number of documents and is thus very discriminatory.
-%FIXME Zasto term? originalno smo koristili rijec. Term jest _izraz_, ali nekako se rijede koristili
-% u ovom smislu, a cesce u smislu _semestra_ ili _uvijeta_. Expression ili phrase za izraze u govornom jeziku...
-%FIXME Ovdje namjerno koristimo documents umjesto texts?
+where $n_d(t_k)$ is the number of texts from learning data set that contain word
+$t_k$ and $n_d$ the total number of the texts in that learning data set. The
+shown measure gives high values for words that appear in a small number of
+texts and are thus very discriminatory.
 
-The feature vector is built by multiplying components of the vector created by a method
-defined in \ref{sec:funkcijske-rijeci} and its associated \emph{idf} weight.
+As the \emph{idf} measure uses only the information of the pressence of a
+certain function word in the texts ignoring frequency of that word, a word that appears
+many times in one single text and once in all the others gets the same value as
+the one which appears once in all of the texts. Therefore it is necessary to
+multiply the obtained \emph{idf} measure, of the given function word, with the
+occurrence frequency of that word in the observed text.
 
-The shown measure discriminates documents that contain functional words used in small 
-number of other documents. The disadvantage of the \emph{idf} measure is
-in the fact that it records only the presence of a certain term in a document. Term
-counting is ignored. Therefore, a term that appears many times in
-one single document and once in all the others gets the same value as the one which appears
-once in all of the texts. Thus, the word which would very well separate one document from the
-others is ignored.
+\subsection{Lexical Categories Frequency ($\mathcal{C}$)}
+\label{sec:rijeci-grupe}
+Next three features we used are syntax--based
+features and thus some sort of NLP (Natural Language Processing) tool
+is required. Croatian language is morphologically
+complex and it is problematic to construct a robust NLP tool. The tool
+we used, given in \cite{snajder08automatic},  
+used cannot distinguish between different homographs. The tool is not perfect
+because the method is feature vector is created by counting the appearances of different lexical categories. The used categories are adverbs, adpositions, conjunctions, particles, interjections, nouns, verbs, adjectives and pronouns. They are obtained by syntactic analysis of the Croatian language. Result is stored as a vector (nine--dimensional vector). Each component of the vector is divided by the number of words in the text.
 
-\subsection{Punctation Marks ($\mathcal{P}$), Vowels ($\mathcal{V}$), Words
-Length ($\mathcal{L}$) and Sentence Length ($\mathcal{S}$) Frequency}
-\label{sec:znacajke-manje}
-A set of following punctuation marks is used: ``.'', ``,'', ``!'', ``?'',
-``''', ``"'', ``-'', ``:'', ``;'', ``+'', ``*''. Their appearance in the text is counted and
-the result is written as an 11--dimensional vector. Every
-component is divided by the total number of characters in the text. 
-
-A feature vector based on the frequency of vowel occurence (a, e, i, o, u) is
-obtained in an equal manner.
-
-The Frequency of words length is obtained by counting the words with equal
-length. It is important to note that this procedure can lead to vectors with different dimensions
-(e.g., a text has a word with length of 11, but some other text does not). 
-The issue is solved by limiting the maximum word length to the length of 10. 
-All the words longer than 10 characters are attributed to the group of length 10. 
-It is necessary to divide the components of the resulting vector 
-with the number of words in a text to diminish the dependency of features on the text 
-length. 
-
-The sentence length frequency is obtained in a similar procedure.
-The different vector dimensions issue is solved by limiting the sentence length to 20.
-
-Features suggested here all have weak discriminatory power on their own, However, they proved 
-very useful in the combination with other features, as shown in Section \ref{sec:evaluacija}.
+\subsection{Word Morphologic Categories ($\mathcal{M}$)}
+\label{sec:morphosyntactic}
+The feature vector is created by counting the appearances of morphologic
+categories for every word in a text, and dividing them by the number of words in the text.
+Counted morphologic categories are \emph{case}, \emph{degree}, \emph{form},
+\emph{gender}, \emph{number} and \emph{person}.
 
 \subsection{Word Part--Of--Speech \emph{n}-grams Frequency ($\mathcal{N}_1$ \&
 $\mathcal{N}_2$)}
@@ -355,12 +289,34 @@ therefore in the future work other methods should be evaluated, such as informat
 gain, $\chi^2$ test, mutual information, maximum relevance, minimum redundancy
 or classification with sparse SVM, logistic regression or na\"ive Bayes.
 
-\subsection{Word Morphologic Categories ($\mathcal{M}$)}
-\label{sec:morphosyntactic}
-The feature vector is created by counting the appearances of morphologic
-categories for every word in a text, and dividing them by the number of words in the text.
-Counted morphologic categories are \emph{case}, \emph{degree}, \emph{form},
-\emph{gender}, \emph{number} and \emph{person}.
+\subsection{Other Features}
+\label{sec:znacajke-manje}
+
+Other features we used are simple features: punctation marks, vowels, words
+length and sentence length frequencies.
+
+A set of following punctuation marks is used: ``.'', ``,'', ``!'', ``?'',
+``''', ``"'', ``-'', ``:'', ``;'', ``+'', ``*''. Their appearance in the text is counted and
+the result is normalized by the total number of characters in the text. 
+
+Feature based on the frequency of vowel occurence (a, e, i, o, u) is
+obtained in an equal manner.
+
+The Frequency of words length is obtained by counting the words with equal
+length. It is important to note that this procedure can lead to vectors with different dimensions
+(e.g., a text has a word with length of 11, but some other text does not). 
+The issue is solved by limiting the maximum word length to the length of 10. 
+All the words longer than 10 characters are attributed to the group of length 10. 
+It is necessary to divide the components of the resulting vector 
+with the number of words in a text to diminish the dependency of features on the text 
+length. 
+
+The sentence length frequency is obtained in a similar procedure.
+The different vector dimensions issue is solved by limiting the sentence length to 20.
+
+Features suggested here all have weak discriminatory power on their own
+However, they proved very useful in the combination with other features, as
+shown in Section \ref{sec:evaluacija}.
 
 \begin{table*}
 \begin{center}%
@@ -499,6 +455,7 @@ such as poems, newspaper articles or book data sets.
 \section*{Acknowledgement}
 % TODO: Napisati 
 % Hvala dragom Bogu i drugu Titu što umijem da pročitam u potpisu tko je autor teksta!
+This research has been supported by the Croatian Ministry of Science, Education and Sports under the grant No.036-1300646-1986.
 
 \bibliographystyle{splncs}
 \bibliography{literatura}
