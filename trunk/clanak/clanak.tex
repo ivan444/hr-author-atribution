@@ -146,7 +146,7 @@ Croatian language.
 \section{Data Set}
 \label{sec:podatci}
 We used an online archive of \emph{proofread} articles (journals) from a daily
-Croatian newspaper ``Jutarnji list'', available at
+Croatian newspaper ``Jutarnji list,'' available at
 \url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
 written by 25 different authors where the texts are not evenly distributed
 among authors. The number of texts per author in the used data set is shown on
@@ -371,7 +371,7 @@ Parameters $(C, \gamma)$ that were considered are: $C \in \{2^{-5}, 2^{-4},
 \cdots , 2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \cite{CC01a}.
 
 \begin{table*}[htb]
-\begin{center}%
+\begin{center}
 \caption{Evaluation of Different Features}%
 \begin{tabular}{c c c r@{.}l c}%
 \toprule%
@@ -379,24 +379,23 @@ Features & Accuracy [\%] & $C$ & \multicolumn{2}{c}{$\gamma$} & $F_w$ [\%]\\
 \midrule
 Function Words ($\mathcal{F}$) & 88.39 & 8192 & 0 & 125 & 87.38\\
 Idf Weighted Function Words ($\mathcal{I}$) & 87.96 & 8192 & 0 & 125 & 86.84\\
-Lexical Categories ($\mathcal{C}$) & 44.50 & 512 & 2 & 0 & -\\
-Punctation Marks ($\mathcal{P}$) & 57.50 & 8192 & 0 & 125 & -\\
-Vowels ($\mathcal{V}$) & 30.54 & 128 & 0 & 125 & -\\
-Words Length ($\mathcal{L}$) & 43.19 & 128 & 0 & 125 & -\\
-Sentence Length ($\mathcal{S}$) & 42.32 & 128 & 0 & 125 & -\\
+Lexical Categories ($\mathcal{C}$) & 44.50 & 512 & 2 & 0 & 38.18\\
+Punctation Marks ($\mathcal{P}$) & 57.50 & 8192 & 0 & 125 & 52.93\\
+Vowels ($\mathcal{V}$) & 30.54 & 128 & 0 & 125 & 16.24\\
+Words Length ($\mathcal{L}$) & 43.19 & 128 & 0 & 125 & 33.22\\
+Sentence Length ($\mathcal{S}$) & 40.49 & 128 & 0 & 125 & 33.70\\
 Word POS \emph{n}-grams -- 1st method ($\mathcal{N}_1$) & 71.29 &
 512 & 0 & 125 & 68.68\\
 Word POS \emph{n}-grams -- 2nd method ($\mathcal{N}_2$) & 76.09
 & 512 & 0 & 125 & 72.52\\
-Word Morphosyntactical Categories ($\mathcal{M}$) & 61.17 & 512 & 0 & 125 &
--\\
-$\mathcal{C}$, $\mathcal{M}$ & 63.17 & 8192 & 0 & 03125 & -\\
+Word Morphosyntactical Categories ($\mathcal{M}$) & 61.17 & 512 & 0 & 125 & 58.91\\
+$\mathcal{C}$, $\mathcal{M}$ & 63.17 & 8192 & 0 & 03125 & 62.06\\
 $\mathcal{P}$, $\mathcal{F}$ & 92.41 & 8 & 0 & 03125 & 91.93\\
 $\mathcal{F}$, $\mathcal{M}$ & 91.18 & 128 & 0 & 03125 & 90.68\\
 $\mathcal{F}$, $\mathcal{N}_1$ & 89.44 & 128 & 0 & 03125 & 88.52\\
 $\mathcal{F}$, $\mathcal{N}_2$ & 90.92 & 128 & 0 & 03125 & 90.43\\
 $\mathcal{I}$, $\mathcal{M}$ & 90.84 & 128 & 0 & 03125 & 90.35\\
-$\mathcal{N}_1$, $\mathcal{M}$ & 71.38 & 128 & 0 & 03125 & -\\
+$\mathcal{N}_1$, $\mathcal{M}$ & 71.38 & 128 & 0 & 03125 & 70.15\\
 $\mathcal{I}$, $\mathcal{M}$, $\mathcal{C}$ & 91.36 & 128 & 0 & 03125 & 90.89\\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & \textbf{93.37} & 128 & 0 & 03125
 & 92.96\\
@@ -407,7 +406,7 @@ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & \textbf{93.37} &
 $\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 89.62 & 128 & 0
 & 03125 & 88.70\\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, & 92.67 & 128 & 0 &
-03125 & -\\
+03125 & 92.18\\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, &
 93.19 & 128 & 0 & 03125 & 92.85\\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
