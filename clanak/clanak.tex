@@ -22,14 +22,17 @@ Unska 3, 10000 Zagreb, Croatia\\
 \maketitle
 
 \begin{abstract}
-In this work we investi the system specific for Croatian language Most
-reported methods are language specific, therefore we have developed methods specific for Croatian language which range from simple, based
-on stylistic measures and functional words, to complex which require syntactic
-analysis of the Croatian language. We have found that various combinations of
-methods are very successful in solving the authorship attribution problem.
-\end{abstract}
+In this work we investigate the system specific for Croatian language. Most
+reported methods are language specific, therefore we have developed methods
+specific for Croatian language which range from simple, based on stylistic
+measures and functional words, to complex which require syntactic analysis of the
+Croatian language. We have found that various combinations of methods are very
+successful in solving the authorship attribution problem.
+% TODO: Obavezno proširiti!! Zasad imamo 60 riječi, a minimum je 70!
 
-text classification, SVM, functional words, MSD tagging.
+\vspace{10pt}
+\textbf{Key words:} text classification, SVM, functional words, MSD tagging.
+\end{abstract}
 
 \section{Introduction}
 Automatic authorship attribution is a task in the field of text classification
@@ -240,7 +243,8 @@ Next three features we used are syntax--based features and thus some sort of NLP
 (Natural Language Processing) tool was required. Croatian language is
 morphologically complex and it is problematic to construct a robust NLP tool.
 With the tool we used, given in \cite{snajder08automatic}, we were able to get
-morphosyntactic descriptions of each word in the text. ?? The method does not
+% TODO: Ovdje je neki upitnik bio.. o čemu se radi? - ``text. ?? The method''
+morphosyntactic descriptions of each word in the text. The method does not
 use context information and therefore cannot distinguish between different
 homographs --- words with same spelling but with different meaning and probably
 different POS too --- so all possible POS tags for a given word are considered.
@@ -254,7 +258,7 @@ then one lexical category is obtained, all different categories where counted.
 The used categories are adverbs, adpositions, conjunctions, particles,
 interjections, nouns, verbs, adjectives and pronouns. In addition, category
 ``unknown'' was introduced for all the words whose lexical category was not
-determinated (names, places, etc.~).
+determinated (names, places, etc.).
 
 \subsection{Word Morphosyntactical Categories ($\mathcal{M}$)}
 \label{sec:morphosyntactic}
