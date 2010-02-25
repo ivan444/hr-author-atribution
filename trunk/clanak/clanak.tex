@@ -12,7 +12,8 @@
 
 \begin{document}
 
-\title{Automatic Authorship Attribution for\\Croatian Texts}
+\title{Automatic Authorship Attribution for texts in Croatian language using\\
+combination of features}
 \author{Tomislav Reicher \and Ivan Krišto \and Igor Belša \and Artur Šilić}
 \institute{Faculty of Electrical and Computing Engineering\\
 University of Zagreb\\
@@ -22,24 +23,24 @@ Unska 3, 10000 Zagreb, Croatia\\
 \maketitle
 
 \begin{abstract}
-In this work we investigate the system specific for Croatian language. Most
-reported methods are language specific, therefore we have developed methods
-specific for Croatian language which range from simple, based on stylistic
-measures and functional words, to complex which require syntactic analysis of the
-Croatian language. We have found that various combinations of methods are very
-successful in solving the authorship attribution problem.
-% TODO: Obavezno proširiti!! Zasad imamo 60 riječi, a minimum je 70!
+In this work we investigate the use of various character, lexical, syntactical
+level features and their combination for automatic authorship attribution. Since
+the most text representation features, reported in the related work, are language
+specific we examine their application on the texts written in Croatian language.
+Data set considered is quite heterogeneous and consists of articles (journals)
+from daily Croatian newspaper written by 25 different authors.
 
 \vspace{10pt}
 \textbf{Key words:} text classification, SVM, functional words, MSD tagging.
 \end{abstract}
+
 
 \section{Introduction}
 Automatic authorship attribution is a task in the field of text classification
 that deals with the identification of the author of a given text. It can
 be interpreted as a problem of text classification based on linguistic features
 specific to certain authors. Problems similar to authorship attribution are
-author's age detection, region detection or gender detection \cite{luyckx2005shallow}. The main
+detection of author's age, region or gender \cite{luyckx2005shallow}. The main
 concern in computer-based authorship attribution is defining an appropriate
 characterization of the text. Such characterization should capture the writing
 style of the authors \cite{coyotl2006authorship}.
@@ -103,8 +104,8 @@ Analogusly to character \emph{n}--grams, word \emph{n}--gram features
 can be defined for which is shown to be quite successfull too
 \cite{keselj2003n,coyotl2006authorship}.
 
-Usage of \emph{syntactic features} is governed by the idea that authors tend to
-use similar syntactic patterns unconsciously. Information related to structure of
+The use of \emph{syntactic features} is governed by the idea that authors tend
+to use similar syntactic patterns unconsciously. Information related to structure of
 the language is obtained by an in--depth syntactic analysis of the text and a
 single text is characterized by the presence and frequency of certain syntactic
 structures. More detailed description of the authorship attribution process based
@@ -144,7 +145,6 @@ Croatian language.
 
 \section{Data Set}
 \label{sec:podatci}
-
 We used an online archive of \emph{proofread} articles (journals) from a daily
 Croatian newspaper ``Jutarnji list'', available at
 \url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
@@ -209,7 +209,7 @@ representative of the style of different authors. This makes the set of totaly
 \subsection{Idf Weighted Function Words Frequency}
 \label{sec:funkcijske-rijeci-idf}
 
-Usage of features based on function words frequencies often implies the
+The use of features based on function words frequencies often implies the
 problem with the quantifying how important, for the sake of discrimination, a
 specific given function word is \cite{diederich2003authorship}.
 
@@ -234,14 +234,13 @@ the one which appears once in all of the texts. Therefore it is necessary to
 multiply the obtained \emph{idf} measure, of the given function word, with the
 occurrence frequency of that word in the observed text.
 
-\subsection{Lexical Categories Frequency}
+\subsection{Lexical Categories Frequency ($\mathcal{C}$)}
 \label{sec:rijeci-grupe}
 Next three features we used are syntax--based features and thus some sort of NLP
 (Natural Language Processing) tool was required. Croatian language is
 morphologically complex and it is problematic to construct a robust NLP tool.
 With the tool we used, given in \cite{snajder08automatic}, we were able to get
-% TODO: Ovdje je neki upitnik bio.. o čemu se radi? - ``text. ?? The method''
-morphosyntactic descriptions of each word in the text. The method does not
+morphosyntactic descriptions of each word in the text. ?? The method does not
 use context information and therefore cannot distinguish between different
 homographs --- words with same spelling but with different meaning and probably
 different POS too --- so all possible POS tags for a given word are considered.
@@ -275,8 +274,7 @@ frequency. Word parts--of--speech and their morphosyntactic descriptors are obta
 \cite{snajder08automatic}. Having the corresponding part--of--speech for
 each word in the text makes the usage \emph{n}-grams as features
 possible. As \emph{n}-gram features can produce very large dimensionality, 
-only 3-grams are considered. In addition, POS tagging used is not perfect.
-% FIXME: Ne može samo stajati ``not perfect''..
+only 3-grams are considered. In addition, POS tagging used is not perfect. 
 
 %FIXME: pos patterns, not n-grams
 The first feature proposed uses the words parts--of--speech
@@ -330,7 +328,10 @@ features in a form of vectors, for the classification, we used an SVM (Support
 Vector Machine) with radial basis function as the kernel. It is shown that, with
 the use of parameter selection, linear SVM is a special case of an SVM with RBF
 kernel \cite{keerthi2003asymptotic}, which removes the need to consider a linear
-SVM as a potential classifier.
+SVM as a potential classifier. RBF kernel is defiend as:
+\begin{equation}
+k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2).
+\end{equation}
 
 Before the learning process and classification with the SVM, we scale the data,
 real valued feature vectors, to ensure equal contribution of every attribute to
@@ -355,11 +356,13 @@ $[0, 1]$.
 % \end{equation}
 
 % TODO: REPHRASE
-The searching of the appropriate parameters $(C, \gamma)$ is done by the means
-of cross-validation: using the 5--fold cross--validation on the
-learning set parameters $(C, \gamma)$ that give the highest accuracy are
-selected and the SVM classifier is learned using them. 
-The accuracy of classification is measured by the expression:
+
+For the application of SVM classifier in practical problems it is reasonably to
+consider SVM with soft margins defined by parameter $C$, as in 
+\cite{cortes1995support}. Parameter $C$ together with $\gamma$ used in RBF
+kernel completly define SVM model. The search of the appropriate parameters
+$(C, \gamma)$, i.~e.~model selection, is done by the means of cross-validation:
+using the 5--fold cross--validation on the learning set parameters $(C, \gamma)$ that give the highest accuracy are selected and the SVM classifier is learned using them. The accuracy of classification is measured by the expression:
 \begin{equation}
 acc = \frac{n_c}{N}, % ako bude problema, ovo staviti kao ``inline'' jednadžbu.
 \end{equation}
@@ -368,12 +371,12 @@ texts.
 Parameters $(C, \gamma)$ that were considered are: $C \in \{2^{-5}, 2^{-4},
 \cdots , 2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \cite{CC01a}.
 
-\begin{table*}[htb]
+\begin{table*}
 \begin{center}%
 \caption{Evaluation of Different Features}%
-\begin{tabular}{c c c r@{.}l@{~~} c}%
+\begin{tabular}{c c c r@{.}l}%
 \toprule%
-Features & Accuracy [\%] & $C$ & \multicolumn{2}{c}{$\gamma$} & $F_1$ [\%] \\
+Features & Accuracy [\%] & $C$ & \multicolumn{2}{c}{$\gamma$} \\
 \midrule
 Function Words ($\mathcal{F}$) & 88.39 & 8192 & 0 & 125 & 87.38\\
 Idf Weighted Function Words ($\mathcal{I}$) & 87.96 & 8192 & 0 & 125 & 86.84\\
@@ -461,18 +464,16 @@ classifier optimal for the selected features.
 
 \section{Conclusion}
 It is shown that the authorship attribution problem, in morphologically complex
-language such as the Croatian, can be successfully solved using some relatively
-simple features. Our results with 93\% accuracy are quite notable considering
-that the data set used was very heterogeneous with texts of rather small
-size (on average less than 1000 words). The resulst also fit very well in the
-interval of previous reported results, which range from 70\% to 97\% \cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
+language such as the Croatian language, can be successfully solved using
+combination of some relatively simple features. Our results with 93\% accuracy
+are quite notable considering that the data set used was very heterogeneous with
+texts of rather small size (on average <1000 words). Although the comparison of
+the results has proved to be difficult due to the different types of data sets
+used (e.g., poems, newspaper articles, e-mails) and different number of authors
+considered (e.g., 2, 5, 10, 25, 150) the results fit very well in the interval of
+previous reported results, which range from 70\% to 97\%
+\cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
 
-The comparision of the results has proved difficult due to the different types of
-data sets (e.g., poems, newspaper articles, e-mails) and the different types of
-problems (binary, multi-class or single-class classifications). There are no
-relevant data sets for comparision \cite{zhao2005effective}. A significant impact
-on the complexity of this problem is the total number of authors considered and
-the variety of document samples.
 
 In the future work, methods based on word and character \emph{n}-grams suggested
 in \cite{keselj2003n,peng2003language,coyotl2006authorship} should be
@@ -480,9 +481,8 @@ evaluated. Moreover, evaluation has to be performed on different types of data s
 such as poems, newspaper articles or book data sets.
 
 \section*{Acknowledgement}
-% Hvala dragom Bogu i drugu Titu što umijem da pročitam u potpisu tko je autor teksta!
-This research has been supported by the Croatian Ministry of Science, Education
-and Sports under the grant No.036-1300646-1986.
+
+This research has been supported by the Croatian Ministry of Science, Education and Sports under the grant No.036-1300646-1986.
 
 \bibliographystyle{splncs}
 \bibliography{literatura}
