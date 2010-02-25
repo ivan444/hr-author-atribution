@@ -411,9 +411,9 @@ $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 92.41 & 128 & 0 & 03125 &
 \label{sec:evaluacija}
 Classification success is measured by the ratio of correctly classified texts and
 the total number of texts in the training set i.e.,~micro average accuracy.
-First we tested all the features separately and then we tested those features in
-different combinations. The process of SVM parameter selection is very time
-consuming so not all feature combinations were tested. Results of the evalutaion
+First we tested all the features separately and then the same features in
+various combinations. The SVM parameter selection is very time
+consuming process. Thus, not all of the feature combinations were tested. Results of the evalutaion
 are shown in Table \ref{tbl:eval}. Columns ``$C$'' and ``$\gamma$'' denote
 parameters of SVM classifier optimal for the selected features.
 
@@ -421,25 +421,25 @@ parameters of SVM classifier optimal for the selected features.
 % methods marked as $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
 % $\mathcal{L}$ and $\mathcal{M}$.
 
-Total accuracy does not explain behaviour of classifier for every class by
-itself. Therefore, for every class precision and recall are calculated and then
-used to calculate total weighted $F_1$ measure. For particular class $c$,
-precision is ratio of number of correctly classified documents in $c$ and number
-of all documents which are classified as $c$. Recall is ratio of number of correctly
-classified documents in $c$ and number of all documents in $c$. $F_1$ measure
-is calculated for every class $c_i$ according to following expression:
+Total accuracy does not explain the behaviour of a classifier for every class by
+itself. Therefore, precision and recall are calculated for every class and then
+used to calculate the total weighted $F_1$ measure. For particular class $c$,
+precision is a ratio of the number of correctly classified documents in $c$ and the number
+of all documents which are classified as $c$. Recall is a ratio of the number of correctly
+classified documents in $c$ and the number of all the documents in $c$. $F_1$ measure
+is calculated for every class $c_i$ according to the following expression:
 \begin{equation}
 F_i = \frac{2 \cdot precision_i \cdot recall_i}{precision_i + recall_i}
 \end{equation}
 where $precision_i$ and $recall_i$ are measures of precision and recall for
-class $c_i$.
+the class $c_i$.
 
-Total weighted measure is calculated by following expression:
+Total weighted measure is calculated by the following expression:
 \begin{equation}
 F_w = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
 \end{equation}
-where $n$ is total number of classes, $|c_i|$ number of documents in class
-$c_i$ and $F_i$ a $F_1$ measure for class $c_i$.
+where $n$ is total number of classes, $|c_i|$ number of documents in the class
+$c_i$ and $F_i$ an $F_1$ measure for class $c_i$.
 
 
 % 
