@@ -29,9 +29,11 @@ the majority of text representation features are language
 specific, as reported in the related work, we examine their application on the texts written in 
 the Croatian language. The used data set is quite heterogeneous and consists of articles (journals)
 from a daily Croatian newspaper written by 25 different authors.
+For the classification we use powerful machine learning algorithm Support
+Vector Machine to achive excellent results of 93\% accuracy.
 
 \vspace{10pt}
-\textbf{Key words:} text classification, SVM, functional words, MSD tagging.
+\textbf{Key words:} text classification, SVM, function words, MSD tagging.
 \end{abstract}
 
 
@@ -77,8 +79,9 @@ There are several approaches to author attribution in respect of different text
 representation features used for the classification. Based on those features, the
 following taxonomy can be made \cite{stamatatos2009survey}: \emph{character features},
 \emph{lexical features}, \emph{syntactic features}, \emph{semantic features} and
-\emph{application--specific features}. This taxonomy is mainly focused on computational requirements.
-The following paragraphs describe the mentioned features in more depth and relate our work with existing research.
+\emph{application--specific features}.  This taxonomy is mainly focused on computational requirements. 
+The following paragraphs desribe character, lexical and syncatic features 
+in more depth and relate our work with the existing research.
 
 \emph{Character features} are the simplest text representation features. They
 consider text as a mere sequence of characters and are therby usable for any natural
@@ -103,39 +106,21 @@ Analogusly to character \emph{n}--grams, word \emph{n}--gram features
 can be defined for which is shown to be quite successfull too
 \cite{keselj2003n,coyotl2006authorship}.
 
-The use of \emph{syntactic features} is governed by the idea that authors tend
-to use similar syntactic patterns unconsciously. Information related to structure of
-the language is obtained by an in--depth syntactic analysis of the text and a
-single text is characterized by the presence and frequency of certain syntactic
-structures. More detailed description of the authorship attribution process based
-on syntactic elements can be found in a very influential work by Stamatos et al.
-\cite{stamatatos2001computer}.
-% Što je s ovim? - \cite{luyckx2005shallow,uzuner2005comparative}
+The use of \emph{syntactic features} is governed by the idea that authors tend to
+use similar syntactic patterns unconsciously. Information related to structure of
+the language is obtained by an in--depth syntactic analysis of the text, usually
+using some sort of NLP tool, and a single text is characterized by the presence
+and frequency of certain syntactic structures. Syntax-based features were
+introduced in \cite{van1996outside} where the rewrite rules frequencies were
+used. \cite{stamatatos2001computer} used noun, verb and prepositional phrases
+frequencies. Using a Part--of--speech (POS) tagger one can obtain POS tags and
+POS tags \emph{n}--grams frequencies by which excellent results can be achived
+\cite{kukushkina2001using,koppel2003exploiting,diederich2003authorship,luyckx2005shallow}.
+\cite{koppel2003exploiting} show the use of grammatical errors and informal
+styling (e.g., writing sentences in capital letters) as text features used for
+authorship attribution. A comparison of lexical and syntactical features is shown
+in \cite{uzuner2005comparative}.
 
-A similar comparison of feature types is shown in
-\cite{uzuner2005comparative}. The functional words and syntactic
-elements are compared in order to identify the author of a text. It is
-concluded that the syntactic elements of expressions are as useful as functional 
-words in solving the problem.
-
-Kukushkina et al.\ \cite{kukushkina2001using} explain a method that uses certain
-algorithms for data compression in order to identify the author of a text. The
-appendix of this paper shows evaluation results for authorship attribution with
-different compression algorithms.
-% The idea behind
-% the method is to divide texts by authors, compress every set with selected
-% algorithm and write the size of the archive. To classify text of an unknown author,
-% text is added to each set and than the same data compression algorithm is applied. The author of
-% the texts in archive which records the smallest increase in size is declared
-% as the author of the new text.
-A review of a similar method can be found in 
-\cite{zhao2005effective}. It is noted that the method has obvious omissions, 
-and a citation on another work that proves this is given.
-
-Koppel and Schler \cite{koppel2003exploiting} show the use of grammatical
-errors and informal styling (e.g., writing sentences in capital letters) as text features used for authorship attribution.
-The method is only applicable for unedited texts (blogs, Internet forums,
-newsgroups, e-mail messages, etc.).
 
 Our work is based on the composition and evaluation of various
 afore--mentioned text representation features. We use different
@@ -145,7 +130,7 @@ Croatian language.
 \section{Data Set}
 \label{sec:podatci}
 We used an online archive of \emph{proofread} articles (journals) from a daily
-Croatian newspaper ``Jutarnji list,'' available at
+Croatian newspaper ``Jutarnji list'', available at
 \url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
 written by 25 different authors where the texts are not evenly distributed
 among authors. The number of texts per author in the used data set is shown on
@@ -394,7 +379,7 @@ $\mathcal{F}$, $\mathcal{M}$ & 91.18 & 128 & 0 & 03125 & 90.68\\
 $\mathcal{F}$, $\mathcal{N}_1$ & 89.44 & 128 & 0 & 03125 & 88.52\\
 $\mathcal{F}$, $\mathcal{N}_2$ & 90.92 & 128 & 0 & 03125 & 90.43\\
 $\mathcal{I}$, $\mathcal{M}$ & 90.84 & 128 & 0 & 03125 & 90.35\\
-$\mathcal{N}_1$, $\mathcal{M}$ & 71.38 & 128 & 0 & 03125 & 70.15\\
+$\mathcal{N}_1$, $\mathcal{M}$ & 71.38 & 128 & 0 & 03125 & -\\
 $\mathcal{I}$, $\mathcal{M}$, $\mathcal{C}$ & 91.36 & 128 & 0 & 03125 & 90.89\\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & \textbf{93.37} & 128 & 0 & 03125
 & 92.96\\
@@ -405,7 +390,7 @@ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & \textbf{93.37} &
 $\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 89.62 & 128 & 0
 & 03125 & 88.70\\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, & 92.67 & 128 & 0 &
-03125 & 92.18\\
+03125 & -\\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, &
 93.19 & 128 & 0 & 03125 & 92.85\\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
@@ -455,6 +440,13 @@ where $n$ is total number of classes, $|c_i|$ number of documents in class
 $c_i$ and $F_i$ a $F_1$ measure for class $c_i$.
 
 
+% 
+% Total weighted measure is calculated by following expression:
+% \begin{equation}
+% F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
+% \end{equation}
+% where $n$ is total number of classes, $|c_i|$ number of documents in class
+% $c_i$ and $F_i$ a $F$ measure for class $c_i$.
 % 
 % Weighted $F$ measure at our data set for testing gives value of 87\%.
 
