@@ -21,61 +21,52 @@ Unska 3, 10000 Zagreb, Croatia\\
 
 \maketitle
 
-% TODO:
-% - Još malo popraviti predložak
-
-% min 70 riječi, max 150.
 \begin{abstract}
-Automatic authorship attribution is a useful task in automatic text
-classification which becomes quite complex if it is applied in large data sets
-(such as application at web search engines). Most reported methods are language
-specific, therefore we have developed methods specific for Croatian language
-which range from simple, based on stylistic measures and functional words, to
-complex which require syntactic analysis of the Croatian language. We have found
-that various combinations of methods are very successful in solving the
-authorship attribution problem.
+In this work we investi the system specific for Croatian language Most
+reported methods are language specific, therefore we have developed methods specific for Croatian language which range from simple, based
+on stylistic measures and functional words, to complex which require syntactic
+analysis of the Croatian language. We have found that various combinations of
+methods are very successful in solving the authorship attribution problem.
 \end{abstract}
 
 text classification, SVM, functional words, MSD tagging.
 
 \section{Introduction}
-Automatic authorship attribution can be interpreted as a problem of text
-classification based on linguistic features specific to certain authors. Problems similar to authorship
-attribution are detection of author's age, region or gender
-\cite{luyckx2005shallow}. The main concern in computer-assisted authorship
-attribution is defining an appropriate characterization of the text. Such characterization should
-capture the writing style of the authors \cite{coyotl2006authorship}.
-
-% - citet! Složiti da tu bude cite!
-% \citet{kukushkina2001using} notes that first works on authorship attribution
-% problem are ``\emph{Izv.\ otd.\ russkogo jazyka i slovesnosti, Imp.\ akad.\ nauk.}'',
-% Morozov, N., A.\ from 1915.\  and ``\emph{On some application of statistical
-% method}'' from 1916.\ by Markov, A., A., founder of Theory of Markov chains.
+Automatic authorship attribution is a task in the field of text classification
+that deals with the identification of the author of a given text. It can
+be interpreted as a problem of text classification based on linguistic features
+specific to certain authors. Problems similar to authorship attribution are
+detection of author's age, region or gender \cite{luyckx2005shallow}. The main
+concern in computer-based authorship attribution is defining an appropriate
+characterization of the text. Such characterization should capture the writing
+style of the authors \cite{coyotl2006authorship}.
 
 Authorship attribution can help in document indexing, document filtering and
 hierarchical categorization of web pages \cite{luyckx2005shallow}. These
 applications are important tasks in the field of information retrieval. 
-Authorship attribution differs from plagiarism detection. Plagiarism detection
-attempts to detect similarities between two substantially different pieces of
+It is important to say that authorship attribution differs from plagiarism
+detection. Plagiarism detection attempts to detect similarities between two substantially different pieces of
 work. However, it is unable to determine if they were produced by the same author or not
 \cite{de2001mining}.
 
-The problem of authorship attribution can be divided into three categories \cite{zhao2005effective}: binary,
-multi-class and single-class (or one-class) classification. Binary classification 
-solves the problem when the data set contains the texts written by one of two authors. Multi-class 
-classification is a generalization of the binary classification when there are 
-more than two authors in the data set. One-class classification
-is applied when only some of the texts from the data set are written by a particular
-author while the authorship of all the other texts is unspecified. This
-classification ascertains whether a given text belongs to a single known author or not.
+The problem of authorship attribution can be divided into three categories
+\cite{zhao2005effective}: binary, multi-class and single-class (or one-class)
+classification. Binary classification solves the problem when the data set
+contains the texts written by one of two authors. Multi-class classification is a
+generalization of the binary classification when there are more than two authors
+in the data set. One-class classification is applied when only some of the texts
+from the data set are written by a particular author while the authorship of all
+the other texts is unspecified. This classification ascertains whether a given
+text belongs to a single known author or not.
 
-This paper presents a study of multi-class classification for texts in Croatian
-language, oriented on the evaluation of different text representations. The rest of
-the paper is organized as follows. Section 2 discusses related work on authorship
-attribution and similar problems. Section 3 describes the used data set. Section
-4 introduces methods of text representation we have used. Section 5 describes
-classification and Section 6 presents evaluation methods and experiment results.
-Conclusion and future work are given in Section 7.
+This paper presents a study of multi-class classification for the texts written
+in Croatian languagem that is oriented on the combination and evaluation of
+different text representations features. The rest of the paper is organized as
+follows. Section 2 discusses related work on authorship attribution and similar
+problems. Section 3 describes the used data set. Section 4 introduces
+different types of text representation features we have used. Section 5 describes
+classification and Section 6 presents evaluation methods and experiment results. Conclusion and
+future work are given in Section 7.
 
 \section{Related Work}
 There are several approaches to author attribution in respect of different text
@@ -143,9 +134,10 @@ errors and informal styling (e.g., writing sentences in capital letters) as text
 The method is only applicable for unedited texts (blogs, Internet forums,
 newsgroups, e-mail messages, etc.).
 
-
-Our work is based on the composition of various methods --- syntactic clues, word--based features, 
-and stylistic measures --- adapted for use with the Croatian language. 
+Our work is based on the composition and evaluation of various
+afore--mentioned text representation features. We use different
+character, lexical and syntactical features and adapt them for the use with the
+Croatian language.
 
 \section{Data Set}
 \label{sec:podatci}
@@ -153,10 +145,10 @@ and stylistic measures --- adapted for use with the Croatian language.
 We used an online archive of \emph{proofread} articles (journals) from a daily
 Croatian newspaper ``Jutarnji list'', available at
 \url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
-written by 25 different authors where the articles are not evenly distributed
-across authors. The number of texts per author in the set is shown on Figure
-\ref{fig:articlesPerAuthor}. The articles are not all the same size either
---- the lowest average number of words in the text per author is 315 words, and
+written by 25 different authors where the texts are not evenly distributed
+among authors. The number of texts per author in the used data set is shown on
+Figure \ref{fig:articlesPerAuthor}. The articles are not all the same size
+either --- the lowest average number of words in the text per author is 315 words, and
 the highest average is 1347 words. An average number of words in text per author for
 this data set is 717 words. As one can see, data set we used is very
 heterogeneous.
@@ -203,7 +195,7 @@ style.
 It is difficult to predict whether these words will give equally good results for
 different languages. Moreover, despite the abundance of research in this field,
 due to various languages, types and sizes of the texts, it is currently
-impossible to conclude if these methods are generally effective
+impossible to conclude if these features are generally effective
 \cite{zhao2005effective}.
 
 In addition to function words in this work we also consider frequencies of
@@ -244,20 +236,35 @@ occurrence frequency of that word in the observed text.
 
 \subsection{Lexical Categories Frequency ($\mathcal{C}$)}
 \label{sec:rijeci-grupe}
-Next three features we used are syntax--based
-features and thus some sort of NLP (Natural Language Processing) tool
-is required. Croatian language is morphologically
-complex and it is problematic to construct a robust NLP tool. The tool
-we used, given in \cite{snajder08automatic},  
-used cannot distinguish between different homographs. The tool is not perfect
-because the method is feature vector is created by counting the appearances of different lexical categories. The used categories are adverbs, adpositions, conjunctions, particles, interjections, nouns, verbs, adjectives and pronouns. They are obtained by syntactic analysis of the Croatian language. Result is stored as a vector (nine--dimensional vector). Each component of the vector is divided by the number of words in the text.
+Next three features we used are syntax--based features and thus some sort of NLP
+(Natural Language Processing) tool was required. Croatian language is
+morphologically complex and it is problematic to construct a robust NLP tool.
+With the tool we used, given in \cite{snajder08automatic}, we were able to get
+morphosyntactic descriptions of each word in the text. ?? The method does not
+use context information and therefore cannot distinguish between different
+homographs --- words with same spelling but with different meaning and probably
+different POS too --- so all possible POS tags for a given word are considered.
 
-\subsection{Word Morphologic Categories ($\mathcal{M}$)}
+Simplest syntax--based feature we used are features based on lexical category
+frequency, similar to one used in \cite{kukushkina2001using}. The given text is
+tagged with the use of NLP tool and thus lexical category for each word in the text is determinated. Features are obtained by
+counting the number of occurrence of different lexical categories, which are
+then normalized by the total number of words in the text. If for some word more
+then one lexical category is obtained, all different categories where counted. 
+The used categories are adverbs, adpositions, conjunctions, particles,
+interjections, nouns, verbs, adjectives and pronouns. In addition, category
+``unknown'' was introduced for all the words whose lexical category was not
+determinated (names, places, etc.~).
+
+\subsection{Word Morphosyntactical Categories ($\mathcal{M}$)}
 \label{sec:morphosyntactic}
-The feature vector is created by counting the appearances of morphologic
-categories for every word in a text, and dividing them by the number of words in the text.
-Counted morphologic categories are \emph{case}, \emph{degree}, \emph{form},
-\emph{gender}, \emph{number} and \emph{person}.
+
+More complex syntax--based features we used take advantage of morphosyntactic
+description of a word. Each word can be described by the set of different
+morphosyntactic as are features that take The feature vector is created by
+counting the appearances of morphologic categories for every word in a text, and dividing them by the number of words in
+the text. Counted morphologic categories are \emph{case}, \emph{degree},
+\emph{form}, \emph{gender}, \emph{number} and \emph{person}.
 
 \subsection{Word Part--Of--Speech \emph{n}-grams Frequency ($\mathcal{N}_1$ \&
 $\mathcal{N}_2$)}
@@ -268,10 +275,7 @@ frequency. Word parts--of--speech and their morphosyntactic descriptors are obta
 \cite{snajder08automatic}. Having the corresponding part--of--speech for
 each word in the text makes the usage \emph{n}-grams as features
 possible. As \emph{n}-gram features can produce very large dimensionality, 
-only 3-grams are considered. In addition, POS tagging used is not perfect. The
-method does not use context information and therefore cannot distinguish between
-different homographs --- words with same spelling but with different meaning and probably
-different POS too --- so all possible POS tags for a given word are considered.
+only 3-grams are considered. In addition, POS tagging used is not perfect. 
 
 %FIXME: pos patterns, not n-grams
 The first feature proposed uses the words parts--of--speech
@@ -299,31 +303,76 @@ A set of following punctuation marks is used: ``.'', ``,'', ``!'', ``?'',
 ``''', ``"'', ``-'', ``:'', ``;'', ``+'', ``*''. Their appearance in the text is counted and
 the result is normalized by the total number of characters in the text. 
 
-Feature based on the frequency of vowel occurence (a, e, i, o, u) is
+Features based on the frequency of vowel occurence (a, e, i, o, u) are
 obtained in an equal manner.
 
-The Frequency of words length is obtained by counting the words with equal
-length. It is important to note that this procedure can lead to vectors with different dimensions
-(e.g., a text has a word with length of 11, but some other text does not). 
-The issue is solved by limiting the maximum word length to the length of 10. 
-All the words longer than 10 characters are attributed to the group of length 10. 
-It is necessary to divide the components of the resulting vector 
-with the number of words in a text to diminish the dependency of features on the text 
-length. 
+The frequencies of words lengths are obtained by counting the lengths of all
+the words form a text and then normalizing them by the total number of words in
+text. To enforce consistency, the words longer than 10 characters are counted as
+if they were 10 characters long.
 
 The sentence length frequency is obtained in a similar procedure.
-The different vector dimensions issue is solved by limiting the sentence length to 20.
+For the same reason as with the words length, sentences longer than 20 words are
+counted as if they were 20 words long.
 
-Features suggested here all have weak discriminatory power on their own
-However, they proved very useful in the combination with other features, as
+All features suggested here int this subsection have weak discriminatory power
+on their own. However, they proved very useful in the combination with other features, as
 shown in Section \ref{sec:evaluacija}.
+
+\section{Classification}
+% Representation of documents by real number vectors  enables easy use of
+% classifiers that search decision functions, i.e., boundaries in vector
+% space.
+All the features mentioned in this work use some sort of frequency information
+that makes it possible to represent them by real valued feature vectors. Having
+features in a form of vectors, for the classification, we used an SVM (Support
+Vector Machine) with radial basis function as the kernel. It is shown that, with
+the use of parameter selection, linear SVM is a special case of an SVM with RBF
+kernel \cite{keerthi2003asymptotic}, which removes the need to consider a linear
+SVM as a potential classifier.
+
+Before the learning process and classification with the SVM, we scale the data,
+real valued feature vectors, to ensure equal contribution of every attribute to
+the classification. Components of every feature vector are scaled to an interval
+$[0, 1]$.
+%  according to following expression:
+% \begin{equation}
+% x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
+% - \min_{i}\; x_{i,j}}
+% \end{equation}
+% where $x^{s}_{i,j}$ is scaled component $j$ of vector $\mathbf{x_i}$,
+% $\min_{i}\; x_{i,j}$ is minimum value of attribute $j$ among all vectors
+% $\mathbf{x_i}$ and $\max_{i}\; x_{i,j}$ is maximum value of attribute $j$ among
+% all vectors. If we denote the resulting minimum and maximum values as follows:
+% \begin{eqnarray}
+% M_i & = \max_{i}\; x_{i,j} \\
+% m_i & = \min_{i}\; x_{i,j}
+% \end{eqnarray}
+% then, the unknown vector $\mathbf{x}$ before classification is scaled as:
+% \begin{equation}
+% x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
+% \end{equation}
+
+% TODO: REPHRASE
+The searching of the appropriate parameters $(C, \gamma)$ is done by the means
+of cross-validation: using the 5--fold cross--validation on the
+learning set parameters $(C, \gamma)$ that give the highest accuracy are
+selected and the SVM classifier is learned using them. 
+The accuracy of classification is measured by the expression:
+\begin{equation}
+acc = \frac{n_c}{N}, % ako bude problema, ovo staviti kao ``inline'' jednadžbu.
+\end{equation}
+where $n_c$ is the number of correctly classified texts and $N$ is the total number of
+texts.
+Parameters $(C, \gamma)$ that were considered are: $C \in \{2^{-5}, 2^{-4},
+\cdots , 2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \cite{CC01a}.
 
 \begin{table*}
 \begin{center}%
 \caption{Evaluation of Different Features}%
-\begin{tabular}{r c c r@{.}l}%
+\begin{tabular}{c c c r@{.}l}%
 \toprule%
-Method & Accuracy [\%] & $C$ & \multicolumn{2}{c}{$\gamma$} \\
+Features & Accuracy [\%] & $C$ & \multicolumn{2}{c}{$\gamma$} \\
 \midrule
 $\mathcal{F}$ & 88.39 & 8192 & 0 & 125\\
 $\mathcal{I}$ & 87.96 & 8192 & 0 & 125\\
@@ -346,7 +395,7 @@ $\mathcal{I}$, $\mathcal{M}$, $\mathcal{C}$ & 91.36 & 128 & 0 & 03125\\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & \textbf{93.11} & 128 & 0 & 03125\\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$ & \textbf{93.46} & 32768 & 0 & 03125\\
 $\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 89.62 & 128 & 0 & 03125\\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$ & \textbf{93.19} & 128 & 0 & 03125\\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$ & 93.19 & 128 & 0 & 03125\\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 92.41 & 128 & 0 & 03125\\
 \bottomrule%
 \end{tabular}%
@@ -354,56 +403,17 @@ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mat
 \end{center}
 \end{table*}
 
-\section{Classification}
-% Representation of documents by real number vectors  enables easy use of
-% classifiers that search decision functions, i.e., boundaries in vector
-% space.
-The classifier used is an SVM (Support Vector Machine) with radial basis
-function as the kernel. It is shown that, with the use of parameter selection,
-linear SVM is a special case of an SVM with RBF kernel \cite{keerthi2003asymptotic},
-which removes the need to consider a linear SVM as a potential classifier.
-
-Before sending the features to the SVM, we scale the data to ensure
-equal contribution of every attribute to the classification. Components of
-every feature vector are scaled to an interval $[0, 1]$.
-%  according to following expression:
-% \begin{equation}
-% x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
-% - \min_{i}\; x_{i,j}}
-% \end{equation}
-% where $x^{s}_{i,j}$ is scaled component $j$ of vector $\mathbf{x_i}$,
-% $\min_{i}\; x_{i,j}$ is minimum value of attribute $j$ among all vectors
-% $\mathbf{x_i}$ and $\max_{i}\; x_{i,j}$ is maximum value of attribute $j$ among
-% all vectors. If we denote the resulting minimum and maximum values as follows:
-% \begin{eqnarray}
-% M_i & = \max_{i}\; x_{i,j} \\
-% m_i & = \min_{i}\; x_{i,j}
-% \end{eqnarray}
-% then, the unknown vector $\mathbf{x}$ before classification is scaled as:
-% \begin{equation}
-% x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
-% \end{equation}
-
-% TODO: REPHRASE
-Finding appropriate paramters $(C, \gamma)$ is done by the means of
-cross-validation: using the 5-fold cross--validation on the
-learning set. Parameters $(C, \gamma)$ that give the highest accuracy are
-selected. Parameters that were considered are: $C \in \{2^{-5}, 2^{-4}, \cdots ,
-2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \cite{CC01a}.
-The accuracy of classification is measured by the expression:
-\begin{equation}
-acc = \frac{n_c}{N}, % ako bude problema, ovo staviti kao ``inline'' jednadžbu.
-\end{equation}
-where $n_c$ is the number of correctly classified texts and $N$ is the total number of
-texts. The parameters with the highest accuracy, $(C, \gamma)$, 
-are used in the process of classifier learning.
-
 \section{Evaluation}
 \label{sec:evaluacija}
 Classification success is measured by the ratio of correctly classified texts and
-the total number of texts (accuracy). Results of the evalutaion are shown in Table
+the total number of texts in the training set (accuracy). First we tested all the
+features separately and then we tested those features in different combinations.
+The process of SVM parameter selection is very time consuming so not all feature
+combinations were tested. Results of the evalutaion are shown in Table
 \ref{tbl:eval}. Columns ``$C$'' and ``$\gamma$'' denote parameters of SVM
-classifier used for selected model.
+classifier optimal for the selected features.
+
+
 
 % Highest accuracy during cross--validation is achived by combination of
 % methods marked as $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
@@ -433,11 +443,12 @@ classifier used for selected model.
 % Weighted $F$ measure at our data set for testing gives value of 87\%.
 
 \section{Conclusion}
-It is shown that the authorship attribution problem can be successfully solved by
-some relatively simple methods, although for the state--of--art applications, we
-believe syntactic analysis of the texts is required. Our results with
-93\% accuracy fit very well in the interval of previous reported results, which range from
-70\% to 97\% \cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
+It is shown that the authorship attribution problem, in morphologically complex
+language such as the Croatian, can be successfully solved using some relatively
+simple features. Our results with 93\% accuracy are quite notable considering
+that the data set used was very heterogeneous with texts of rather small
+size (on average <1000 words). The resulst also fit very well in the interval of
+previous reported results, which range from 70\% to 97\% \cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
 
 The comparision of the results has proved difficult due to the different types of data sets (e.g., poems,
 newspaper articles, e-mails) and the different types of problems (binary, multi-class or
