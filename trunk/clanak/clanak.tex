@@ -181,7 +181,7 @@ to a decrease of accurancy (e.g., relating author to concrete topic or terms).
 
 In the following subsections we will describe different features used.
 
-\subsection{Function Words Frequencies ($\mathcal{F}$)}
+\subsection{Function Words Frequencies}
 \label{sec:funkcijske-rijeci}
 Function words, such as adverbs, prepositions, conjunctions, or interjections,
 are words that have little or no semantic content of their own. They usually
@@ -206,10 +206,7 @@ auxiliary verbs and pronouns as their frequencies might also be
 representative of the style of different authors. This makes the set of totaly
 652 function words used.
 
-Label $\mathcal{F}$ denotes evaluation result of this feature in Table
-\ref{tbl:eval}.
-
-\subsection{Idf Weighted Function Words Frequency ($\mathcal{I}$)}
+\subsection{Idf Weighted Function Words Frequency}
 \label{sec:funkcijske-rijeci-idf}
 
 Usage of features based on function words frequencies often implies the
@@ -237,7 +234,7 @@ the one which appears once in all of the texts. Therefore it is necessary to
 multiply the obtained \emph{idf} measure, of the given function word, with the
 occurrence frequency of that word in the observed text.
 
-\subsection{Lexical Categories Frequency ($\mathcal{C}$)}
+\subsection{Lexical Categories Frequency}
 \label{sec:rijeci-grupe}
 Next three features we used are syntax--based features and thus some sort of NLP
 (Natural Language Processing) tool was required. Croatian language is
@@ -260,7 +257,7 @@ interjections, nouns, verbs, adjectives and pronouns. In addition, category
 ``unknown'' was introduced for all the words whose lexical category was not
 determinated (names, places, etc.).
 
-\subsection{Word Morphosyntactical Categories ($\mathcal{M}$)}
+\subsection{Word Morphosyntactical Categories}
 \label{sec:morphosyntactic}
 
 More complex syntax--based features we used take advantage of morphosyntactic
@@ -270,8 +267,7 @@ counting the appearances of morphologic categories for every word in a text, and
 the text. Counted morphologic categories are \emph{case}, \emph{degree},
 \emph{form}, \emph{gender}, \emph{number} and \emph{person}.
 
-\subsection{Word Part--Of--Speech \emph{n}-grams Frequency ($\mathcal{N}_1$ \&
-$\mathcal{N}_2$)}
+\subsection{Word Part--Of--Speech \emph{n}-grams Frequency}
 \label{sec:ngrami-tipova}
 The two proposed features are based on word part--of--speech \emph{n}-grams
 frequency. Word parts--of--speech and their morphosyntactic descriptors are obtained by POS
@@ -279,7 +275,8 @@ frequency. Word parts--of--speech and their morphosyntactic descriptors are obta
 \cite{snajder08automatic}. Having the corresponding part--of--speech for
 each word in the text makes the usage \emph{n}-grams as features
 possible. As \emph{n}-gram features can produce very large dimensionality, 
-only 3-grams are considered. In addition, POS tagging used is not perfect. 
+only 3-grams are considered. In addition, POS tagging used is not perfect.
+% FIXME: Ne može samo stajati ``not perfect''..
 
 %FIXME: pos patterns, not n-grams
 The first feature proposed uses the words parts--of--speech
@@ -321,7 +318,7 @@ counted as if they were 20 words long.
 
 All features suggested here int this subsection have weak discriminatory power
 on their own. However, they proved very useful in the combination with other features, as
-shown in Section \ref{sec:evaluacija}.
+shown in Table \ref{tbl:eval}.
 
 \section{Classification}
 % Representation of documents by real number vectors  enables easy use of
@@ -371,37 +368,53 @@ texts.
 Parameters $(C, \gamma)$ that were considered are: $C \in \{2^{-5}, 2^{-4},
 \cdots , 2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \cite{CC01a}.
 
-\begin{table*}
+\begin{table*}[htb]
 \begin{center}%
 \caption{Evaluation of Different Features}%
-\begin{tabular}{c c c r@{.}l}%
+\begin{tabular}{c c c r@{.}l@{~~} c}%
 \toprule%
-Features & Accuracy [\%] & $C$ & \multicolumn{2}{c}{$\gamma$} \\
+Features & Accuracy [\%] & $C$ & \multicolumn{2}{c}{$\gamma$} & $F_1$ [\%] \\
 \midrule
-$\mathcal{F}$ & 88.39 & 8192 & 0 & 125\\
-$\mathcal{I}$ & 87.96 & 8192 & 0 & 125\\
-$\mathcal{C}$ & 44.50 & 512 & 2 & 0\\
-$\mathcal{P}$ & 57.50 & 8192 & 0 & 125\\
-$\mathcal{V}$ & 30.54 & 128 & 0 & 125\\
-$\mathcal{L}$ & 43.19 & 128 & 0 & 125\\
-$\mathcal{S}$ & 42.32 & 128 & 0 & 125\\
-$\mathcal{N}_1$ & 71.29 & 512 & 0 & 125\\
-$\mathcal{N}_2$ & 76.09 & 512 & 0 & 125\\
-$\mathcal{M}$ & 61.17 & 512 & 0 & 125\\
-$\mathcal{C}$, $\mathcal{M}$ & 63.17 & 8192 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$ & 91.71 & 8 & 0 & 03125\\
-$\mathcal{F}$, $\mathcal{M}$ & 91.18 & 128 & 0 & 03125\\
-$\mathcal{F}$, $\mathcal{N}_1$ & 89.44 & 128 & 0 & 03125\\
-$\mathcal{F}$, $\mathcal{N}_2$ & 88.48 & 128 & 0 & 03125\\
-$\mathcal{I}$, $\mathcal{M}$ & 90.84 & 128 & 0 & 03125\\
-$\mathcal{N}_1$, $\mathcal{M}$ & 71.38 & 128 & 0 & 03125\\
-$\mathcal{I}$, $\mathcal{M}$, $\mathcal{C}$ & 91.36 & 128 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & \textbf{93.11} & 128 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$ & \textbf{93.46} & 32768 & 0 & 03125\\
-$\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 89.62 & 128 & 0 & 03125\\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$ & 93.19 & 128 & 0 & 03125\\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 92.41 & 128 & 0 & 03125\\
-\bottomrule%
+Function Words ($\mathcal{F}$) & 88.39 & 8192 & 0 & 125 & 87.38\\
+Idf Weighted Function Words ($\mathcal{I}$) & 87.96 & 8192 & 0 & 125 & 86.84\\
+Lexical Categories ($\mathcal{C}$) & 44.50 & 512 & 2 & 0 & -\\
+Punctation Marks ($\mathcal{P}$) & 57.50 & 8192 & 0 & 125 & -\\
+Vowels ($\mathcal{V}$) & 30.54 & 128 & 0 & 125 & -\\
+Words Length ($\mathcal{L}$) & 43.19 & 128 & 0 & 125 & -\\
+Sentence Length ($\mathcal{S}$) & 42.32 & 128 & 0 & 125 & -\\
+Word POS \emph{n}-grams -- 1st method ($\mathcal{N}_1$) & 71.29 &
+512 & 0 & 125 & 68.68\\
+Word POS \emph{n}-grams -- 2nd method ($\mathcal{N}_2$) & 76.09
+& 512 & 0 & 125 & 72.52\\
+Word Morphosyntactical Categories ($\mathcal{M}$) & 61.17 & 512 & 0 & 125 &
+-\\
+$\mathcal{C}$, $\mathcal{M}$ & 63.17 & 8192 & 0 & 03125 & -\\
+$\mathcal{P}$, $\mathcal{F}$ & 92.41 & 8 & 0 & 03125 & 91.93\\
+$\mathcal{F}$, $\mathcal{M}$ & 91.18 & 128 & 0 & 03125 & 90.68\\
+$\mathcal{F}$, $\mathcal{N}_1$ & 89.44 & 128 & 0 & 03125 & 88.52\\
+$\mathcal{F}$, $\mathcal{N}_2$ & 90.92 & 128 & 0 & 03125 & 90.43\\
+$\mathcal{I}$, $\mathcal{M}$ & 90.84 & 128 & 0 & 03125 & 90.35\\
+$\mathcal{N}_1$, $\mathcal{M}$ & 71.38 & 128 & 0 & 03125 & -\\
+$\mathcal{I}$, $\mathcal{M}$, $\mathcal{C}$ & 91.36 & 128 & 0 & 03125 & 90.89\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & \textbf{93.37} & 128 & 0 & 03125
+& 92.96\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$ & \textbf{93.46} &
+32768 & 0 & 03125 & 93.09\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & \textbf{93.37} &
+128 & 0 & 03125 & 93.04\\
+$\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 89.62 & 128 & 0
+& 03125 & 88.70\\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, & 92.67 & 128 & 0 &
+03125 & -\\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, &
+93.19 & 128 & 0 & 03125 & 92.85\\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
+$\mathcal{M}$ & 93.19 & 128 & 0 & 03125 & 92.88\\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
+$\mathcal{M}$, $\mathcal{N}_1$ & 92.41 & 128 & 0 & 03125 & 91.96\\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
+$\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 92.41 & 128 & 0 & 03125 &
+91.96\\ \bottomrule%
 \end{tabular}%
 \label{tbl:eval}%
 \end{center}
