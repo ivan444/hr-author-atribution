@@ -132,18 +132,18 @@ Croatian language.
 We used an online archive of \emph{proofread} articles (journals) from a daily
 Croatian newspaper ``Jutarnji list'', available at
 \url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
-written by 25 different authors where the texts are not evenly distributed
-among authors. The number of texts per author in the used data set is shown on
-Figure \ref{fig:articlesPerAuthor}. The articles are not all the same size
-either --- the lowest average number of words in the text per author is 315 words, and
-the highest average is 1347 words. An average number of words in text per author for
-this data set is 717 words. As one can see, data set we used is very
+written by 25 different authors. The texts are not evenly distributed
+among authors. The number of texts per author in the used data set is shown in
+Figure \ref{fig:articlesPerAuthor}. The articles are not of the same size --- the 
+lowest average number of words in the text per author is 315 words, and
+the highest average is 1347 words. An average number of words in a text per author is 717 words.
+Considering this analysis, we can conclude that the used data set is very
 heterogeneous.
 
-Since the topics in these articles tend to be time--specific, to avoid the
+Since the writing topics in these articles tend to be time--specific, to avoid the
 overfitting, we split the set by dates --- 20\% of the newest articles of each author are
-taken for testing (hold--out method). Therefore, training data set contains 3425 texts
-and testing data set 1146 texts.
+taken for testing (hold--out method). Therefore, the training set contains 3425 texts
+and the testing set 1146 texts.
 
 \begin{minipage}{0.8\linewidth}
 \vspace{10pt}
