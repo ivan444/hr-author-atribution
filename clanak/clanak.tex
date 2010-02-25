@@ -75,7 +75,7 @@ future work are given in Section 7.
 There are several approaches to author attribution in respect of different text
 representation features used for the classification. Based on those features
 following taxonomy, which is mainly focused on the computational requirements,
-can be made: \cite{stamatatos2009survey}: \emph{character features},
+can be made \cite{stamatatos2009survey}: \emph{character features},
 \emph{lexical features}, \emph{syntactic features}, \emph{semantic features} and
 \emph{application--specific features}. Following paragraphs describe these
 features in more depth and relate our work with the existing research.
@@ -110,7 +110,7 @@ single text is characterized by the presence and frequency of certain syntactic
 structures. More detailed description of the authorship attribution process based
 on syntactic elements can be found in a very influential work by Stamatos et al.
 \cite{stamatatos2001computer}.
- \cite{luyckx2005shallow,uzuner2005comparative,}
+% Što je s ovim? - \cite{luyckx2005shallow,uzuner2005comparative}
 
 A similar comparison of feature types is shown in
 \cite{uzuner2005comparative}. The functional words and syntactic
@@ -451,16 +451,15 @@ It is shown that the authorship attribution problem, in morphologically complex
 language such as the Croatian, can be successfully solved using some relatively
 simple features. Our results with 93\% accuracy are quite notable considering
 that the data set used was very heterogeneous with texts of rather small
-size (on average <1000 words). The resulst also fit very well in the interval of
-previous reported results, which range from 70\% to 97\% \cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
+size (on average less than 1000 words). The resulst also fit very well in the
+interval of previous reported results, which range from 70\% to 97\% \cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
 
-The comparision of the results has proved difficult due to the different types of data sets (e.g., poems,
-newspaper articles, e-mails) and the different types of problems (binary, multi-class or
-single-class classifications). There are no relevant data sets for comparision
-\cite{zhao2005effective}, however references exist in the paper
-\cite{stamatatos2001computer} and their ``Greek data set'' (e.g.,
-\cite{keselj2003n}). A significant impact on the complexity of this problem 
-is the total number of authors considered and the variety of document samples.
+The comparision of the results has proved difficult due to the different types of
+data sets (e.g., poems, newspaper articles, e-mails) and the different types of
+problems (binary, multi-class or single-class classifications). There are no
+relevant data sets for comparision \cite{zhao2005effective}. A significant impact
+on the complexity of this problem is the total number of authors considered and
+the variety of document samples.
 
 In the future work, methods based on word and character \emph{n}-grams suggested
 in \cite{keselj2003n,peng2003language,coyotl2006authorship} should be
@@ -468,9 +467,9 @@ evaluated. Moreover, evaluation has to be performed on different types of data s
 such as poems, newspaper articles or book data sets.
 
 \section*{Acknowledgement}
-% TODO: Napisati 
 % Hvala dragom Bogu i drugu Titu što umijem da pročitam u potpisu tko je autor teksta!
-This research has been supported by the Croatian Ministry of Science, Education and Sports under the grant No.036-1300646-1986.
+This research has been supported by the Croatian Ministry of Science, Education
+and Sports under the grant No.036-1300646-1986.
 
 \bibliographystyle{splncs}
 \bibliography{literatura}
