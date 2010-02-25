@@ -66,13 +66,13 @@ the other texts is unspecified. This classification ascertains whether a given
 text belongs to a single known author or not.
 
 This paper presents a study of multi-class classification for the texts written
-in the Croatian language. The work is oriented on the combination and evaluation of
-different text representations features. The rest of the paper is organized as
+in the Croatian language. The work is oriented on the combination and evaluation
+of different text representations features. The rest of the paper is organized as
 follows. Section 2 discusses related work in authorship attribution and similar
-problems. Section 3 describes the used data set. Section 4 introduces
-different types of text representation features we have utilized. Section 5 describes
-the classification and Section 6 presents evaluation methods and experiment results. The conclusion and
-future work are given in Section 7.
+problems. Section 3 introduces different types of text representation features we
+have utilized. Section 4 describes the classification, Section 5 describes the
+used data set and Section 6 presents evaluation methods and experiment results.
+The conclusion and future work are given in Section 7.
 
 \section{Related Work}
 There are several approaches to author attribution in respect of different text
@@ -121,36 +121,10 @@ and informal styling (e.g., writing sentences in capital letters) as text featur
 authorship attribution. A comparison of lexical and syntactical features is shown
 in \cite{uzuner2005comparative}.
 
-
 Our work is based on the composition and evaluation of various
 afore--mentioned text representation features. We use different
 character, lexical and syntactical features and adapt them for the use with the
-Croatian language.
-
-\section{Data Set}
-\label{sec:podatci}
-We used an online archive of \emph{proofread} articles (journals) from a daily
-Croatian newspaper ``Jutarnji list,'' available at
-\url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
-written by 25 different authors. The texts are not evenly distributed
-among authors. The number of texts per author in the used data set is shown in
-Figure \ref{fig:articlesPerAuthor}. The articles are not of the same size --- the 
-lowest average number of words in the text per author is 315 words, and
-the highest average is 1347 words. An average number of words in a text per author is 717 words.
-Considering this analysis, we can conclude that the used data set is very
-heterogeneous.
-
-Since the writing topics in these articles tend to be time--specific, to avoid the
-overfitting, we split the set by dates --- 20\% of the newest articles of each author are
-taken for testing (hold--out method). Therefore, the training set contains 3425 texts
-and the testing set 1146 texts.
-
-\begin{minipage}{0.8\linewidth}
-\vspace{10pt}
-\centerline{\resizebox{0.7\linewidth}{!}{\input{figures/articlesPerAuthor}}}%
-\figcaption{Number of texts per author.}%
-\label{fig:articlesPerAuthor}
-\end{minipage}
+Croatian language. We use word length, sentence length, punctuation marks 
 
 \section{Text Representation}
 When constructing an authorship attribution system, the central issuse is the
@@ -354,6 +328,31 @@ texts.
 Parameters $(C, \gamma)$ that were considered are: $C \in \{2^{-5}, 2^{-4},
 \cdots , 2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \cite{CC01a}.
 
+\section{Data Set}
+\label{sec:podatci}
+We used an online archive of \emph{proofread} articles (journals) from a daily
+Croatian newspaper ``Jutarnji list,'' available at
+\url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
+written by 25 different authors. The texts are not evenly distributed
+among authors. The number of texts per author in the used data set is shown in
+Figure \ref{fig:articlesPerAuthor}. The articles are not of the same size --- the 
+lowest average number of words in the text per author is 315 words, and
+the highest average is 1347 words. An average number of words in a text per author is 717 words.
+Considering this analysis, we can conclude that the used data set is very
+heterogeneous.
+
+Since the writing topics in these articles tend to be time--specific, to avoid the
+overfitting, we split the set by dates --- 20\% of the newest articles of each author are
+taken for testing (hold--out method). Therefore, the training set contains 3425 texts
+and the testing set 1146 texts.
+
+\begin{minipage}{0.8\linewidth}
+\vspace{10pt}
+\centerline{\resizebox{0.7\linewidth}{!}{\input{figures/articlesPerAuthor}}}%
+\figcaption{Number of texts per author.}%
+\label{fig:articlesPerAuthor}
+\end{minipage}
+
 \begin{table*}[htb]
 \begin{center}
 \caption{Evaluation of Different Features}%
@@ -411,23 +410,23 @@ $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 92.41 & 128 & 0 & 03125 &
 \section{Evaluation}
 \label{sec:evaluacija}
 Classification success is measured by the ratio of correctly classified texts and
-the total number of texts in the training set (accuracy). First we tested all the
-features separately and then we tested those features in different combinations.
-The process of SVM parameter selection is very time consuming so not all feature
-combinations were tested. Results of the evalutaion are shown in Table
-\ref{tbl:eval}. Columns ``$C$'' and ``$\gamma$'' denote parameters of SVM
-classifier optimal for the selected features.
+the total number of texts in the training set i.e.,~micro average accuracy.
+First we tested all the features separately and then we tested those features in
+different combinations. The process of SVM parameter selection is very time
+consuming so not all feature combinations were tested. Results of the evalutaion
+are shown in Table \ref{tbl:eval}. Columns ``$C$'' and ``$\gamma$'' denote
+parameters of SVM classifier optimal for the selected features.
 
 % Highest accuracy during cross--validation is achived by combination of
 % methods marked as $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
 % $\mathcal{L}$ and $\mathcal{M}$.
 
 Total accuracy does not explain behaviour of classifier for every class by
-itself. For every class precision and recall are calculated and by them we
-calculate total weighted $F_1$ measure. For particular class $c$, precision is
-ratio of number of correctly classified documents in $c$ with number of all
-documents which are classified as $c$. Recall is ratio of number of correctly
-classified documents in $c$ with number of all documents in $c$. $F_1$ measure
+itself. Therefore, for every class precision and recall are calculated and then
+used to calculate total weighted $F_1$ measure. For particular class $c$,
+precision is ratio of number of correctly classified documents in $c$ and number
+of all documents which are classified as $c$. Recall is ratio of number of correctly
+classified documents in $c$ and number of all documents in $c$. $F_1$ measure
 is calculated for every class $c_i$ according to following expression:
 \begin{equation}
 F_i = \frac{2 \cdot precision_i \cdot recall_i}{precision_i + recall_i}
@@ -457,15 +456,17 @@ $c_i$ and $F_i$ a $F_1$ measure for class $c_i$.
 It is shown that the authorship attribution problem, when applied to morphologically complex
 languages, such as the Croatian language, can be successfully solved using the
 combination of some relatively simple features. Our results with 93\% accuracy
-are quite notable considering the fact that the data set used was very heterogeneous, with
-texts of a rather small size (on average less than 1000 words). The
-result comparison has proved very difficult due to the different types of data sets
-used in the related work (e.g., poems, newspaper articles, e-mails) and different number of authors
-considered (e.g., 2, 5, 10, 25, 150). However, our results coincide within the interval of
-previously reported results, which range from 70\% to 97\%
+are quite notable considering the fact that the data set used was very
+heterogeneous, with the imbalanced distribution of texts over the authors, texts
+of a variable but rather small size (an average of 717 words per author). The
+result comparison has proved very difficult due to the different types of data sets used
+in the related work (e.g., poems, newspaper articles, e-mails) and different
+number of authors considered (e.g., 2, 5, 10, 25, 150). However, our results
+coincide within the interval of previously reported results, which range from
+70\% to 97\%
 \cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
-In addition, there are no other reported methods or results for the Croatian language, nor
-any of the related languages.
+In addition, there are no other reported methods or results for the Croatian
+language, nor any of the related languages.
 
 In the future work, methods based on word and character \emph{n}-grams, suggested
 in \cite{keselj2003n,peng2003language,coyotl2006authorship}, should be
