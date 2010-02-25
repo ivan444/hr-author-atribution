@@ -74,29 +74,28 @@ future work are given in Section 7.
 
 \section{Related Work}
 There are several approaches to author attribution in respect of different text
-representation features used for the classification. Based on those features
-following taxonomy, which is mainly focused on the computational requirements,
-can be made \cite{stamatatos2009survey}: \emph{character features},
+representation features used for the classification. Based on those features, the
+following taxonomy can be made \cite{stamatatos2009survey}: \emph{character features},
 \emph{lexical features}, \emph{syntactic features}, \emph{semantic features} and
-\emph{application--specific features}. Following paragraphs describe these
-features in more depth and relate our work with the existing research.
+\emph{application--specific features}. This taxonomy is mainly focused on computational requirements.
+The following paragraphs describe the mentioned features in more depth and relate our work with existing research.
 
-\emph{Character features} are the simplest text representation features, which
-consider text as mere sequence of characters, and therby usable for any natural
-language and corpus. In that notion various meassures can be defiend such as
+\emph{Character features} are the simplest text representation features. They
+consider text as a mere sequence of characters and are therby usable for any natural
+language or corpus. Various meassures can be defiend, such as
 characters frequencies, digit frequencies, uppercase and lowercase character
 frequencies, punctuation marks frequencies, etc.~\cite{de2001mining}. Another
-character based features, which have been proven to be quite successful
-\cite{peng2003language,stamatatos2006ensemble}, consider extracting
-frequencies of character \emph{n}--grams to be used as features. 
+type of character based features, which has been proven as quite successful
+\cite{peng2003language,stamatatos2006ensemble}, considers extracting
+frequencies of character \emph{n}--grams. 
 
 Text representation using \emph{lexical features} is characterized by dividing
-the text into the sequence of tokens (words) that group into sentences. Features
-straightforwardly derived from that representation are the length of words, the
-length of sentences and the richness of vocabulary, used in
+the text into a sequence of tokens (words) that group into sentences. Features
+directly derived from that representation are the length of words, the
+length of sentences and vocabulary richness. This types of features have been used in
 \cite{mendenhall1887,holmes1994authorship} . Results achived demonstrate that
-these features are not sufficient for the task mainly because of their
-significant dependence on text genre and text length. Taking advantage of
+they are not sufficient for the task mostly due to their
+significant dependence on the text genre and length. However, taking advantage of
 features based on frequencies of different words, especially function words,
 can produce fairly better results
 \cite{argamon2005measuring,uzuner2005comparative,koppel2003exploiting,zhao2005effective}.
