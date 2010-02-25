@@ -12,8 +12,8 @@
 
 \begin{document}
 
-\title{Automatic Authorship Attribution for texts in Croatian language using\\
-combination of features}
+\title{Automatic Authorship Attribution for Texts in\\Croatian Language Using
+Combination of Features}
 \author{Tomislav Reicher \and Ivan Krišto \and Igor Belša \and Artur Šilić}
 \institute{Faculty of Electrical and Computing Engineering\\
 University of Zagreb\\
@@ -234,13 +234,13 @@ the one which appears once in all of the texts. Therefore it is necessary to
 multiply the obtained \emph{idf} measure, of the given function word, with the
 occurrence frequency of that word in the observed text.
 
-\subsection{Lexical Categories Frequency ($\mathcal{C}$)}
+\subsection{Lexical Categories Frequency}
 \label{sec:rijeci-grupe}
 Next three features we used are syntax--based features and thus some sort of NLP
 (Natural Language Processing) tool was required. Croatian language is
 morphologically complex and it is problematic to construct a robust NLP tool.
 With the tool we used, given in \cite{snajder08automatic}, we were able to get
-morphosyntactic descriptions of each word in the text. ?? The method does not
+morphosyntactic descriptions of each word in the text. The method does not
 use context information and therefore cannot distinguish between different
 homographs --- words with same spelling but with different meaning and probably
 different POS too --- so all possible POS tags for a given word are considered.
@@ -294,7 +294,6 @@ or classification with sparse SVM, logistic regression or na\"ive Bayes.
 
 \subsection{Other Features}
 \label{sec:znacajke-manje}
-
 Other features we used are simple features: punctation marks, vowels, words
 length and sentence length frequencies.
 
@@ -361,7 +360,7 @@ For the application of SVM classifier in practical problems it is reasonably to
 consider SVM with soft margins defined by parameter $C$, as in 
 \cite{cortes1995support}. Parameter $C$ together with $\gamma$ used in RBF
 kernel completly define SVM model. The search of the appropriate parameters
-$(C, \gamma)$, i.~e.~model selection, is done by the means of cross-validation:
+$(C, \gamma)$, i.e., model selection, is done by the means of cross-validation:
 using the 5--fold cross--validation on the learning set parameters $(C, \gamma)$ that give the highest accuracy are selected and the SVM classifier is learned using them. The accuracy of classification is measured by the expression:
 \begin{equation}
 acc = \frac{n_c}{N}, % ako bude problema, ovo staviti kao ``inline'' jednadžbu.
@@ -371,12 +370,12 @@ texts.
 Parameters $(C, \gamma)$ that were considered are: $C \in \{2^{-5}, 2^{-4},
 \cdots , 2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \cite{CC01a}.
 
-\begin{table*}
+\begin{table*}[htb]
 \begin{center}%
 \caption{Evaluation of Different Features}%
-\begin{tabular}{c c c r@{.}l}%
+\begin{tabular}{c c c r@{.}l c}%
 \toprule%
-Features & Accuracy [\%] & $C$ & \multicolumn{2}{c}{$\gamma$} \\
+Features & Accuracy [\%] & $C$ & \multicolumn{2}{c}{$\gamma$} & $F_w$ [\%]\\
 \midrule
 Function Words ($\mathcal{F}$) & 88.39 & 8192 & 0 & 125 & 87.38\\
 Idf Weighted Function Words ($\mathcal{I}$) & 87.96 & 8192 & 0 & 125 & 86.84\\
@@ -433,32 +432,31 @@ combinations were tested. Results of the evalutaion are shown in Table
 \ref{tbl:eval}. Columns ``$C$'' and ``$\gamma$'' denote parameters of SVM
 classifier optimal for the selected features.
 
-
-
 % Highest accuracy during cross--validation is achived by combination of
 % methods marked as $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
 % $\mathcal{L}$ and $\mathcal{M}$.
 
-%% TODO: Što s ovim?
-% Total accuracy doesn't explains behaviour of classifier for every class by
-% itself. For every class precision and recall are calculated and by them we
-% calculate total weighted $F$ measure. For particular class $c$, precision is
-% ratio of number of correctly classified documents in $c$ with number of all
-% documents which are classified as $c$. Recall is ratio of number of correctly
-% classified documents in $c$ with number of all documents in $c$. $F$ measure is
-% calculated for every class $c_i$ according to following expression:
-% \begin{equation}
-% F_i = \frac{2 \cdot precision_i \cdot recall_i}{precision_i + recall_i}
-% \end{equation}
-% where $precision_i$ and $recall_i$ are measures of precision and recall for
-% class $c_i$.
-% 
-% Total weighted measure is calculated by following expression:
-% \begin{equation}
-% F_u = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
-% \end{equation}
-% where $n$ is total number of classes, $|c_i|$ number of documents in class
-% $c_i$ and $F_i$ a $F$ measure for class $c_i$.
+Total accuracy does not explain behaviour of classifier for every class by
+itself. For every class precision and recall are calculated and by them we
+calculate total weighted $F_1$ measure. For particular class $c$, precision is
+ratio of number of correctly classified documents in $c$ with number of all
+documents which are classified as $c$. Recall is ratio of number of correctly
+classified documents in $c$ with number of all documents in $c$. $F_1$ measure
+is calculated for every class $c_i$ according to following expression:
+\begin{equation}
+F_i = \frac{2 \cdot precision_i \cdot recall_i}{precision_i + recall_i}
+\end{equation}
+where $precision_i$ and $recall_i$ are measures of precision and recall for
+class $c_i$.
+
+Total weighted measure is calculated by following expression:
+\begin{equation}
+F_w = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
+\end{equation}
+where $n$ is total number of classes, $|c_i|$ number of documents in class
+$c_i$ and $F_i$ a $F_1$ measure for class $c_i$.
+
+
 % 
 % Weighted $F$ measure at our data set for testing gives value of 87\%.
 
@@ -467,21 +465,20 @@ It is shown that the authorship attribution problem, in morphologically complex
 language such as the Croatian language, can be successfully solved using
 combination of some relatively simple features. Our results with 93\% accuracy
 are quite notable considering that the data set used was very heterogeneous with
-texts of rather small size (on average <1000 words). Although the comparison of
-the results has proved to be difficult due to the different types of data sets
+texts of rather small size (on average less than 1000 words). Although the
+comparison of the results has proved to be difficult due to the different types of data sets
 used (e.g., poems, newspaper articles, e-mails) and different number of authors
 considered (e.g., 2, 5, 10, 25, 150) the results fit very well in the interval of
 previous reported results, which range from 70\% to 97\%
 \cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
-
 
 In the future work, methods based on word and character \emph{n}-grams suggested
 in \cite{keselj2003n,peng2003language,coyotl2006authorship} should be
 evaluated. Moreover, evaluation has to be performed on different types of data sets
 such as poems, newspaper articles or book data sets.
 
-\section*{Acknowledgement}
 
+\section*{Acknowledgement}
 This research has been supported by the Croatian Ministry of Science, Education and Sports under the grant No.036-1300646-1986.
 
 \bibliographystyle{splncs}
