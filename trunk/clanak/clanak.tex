@@ -80,12 +80,12 @@ representation features used for the classification. Based on those features, th
 following taxonomy can be made \cite{stamatatos2009survey}: \emph{character features},
 \emph{lexical features}, \emph{syntactic features}, \emph{semantic features} and
 \emph{application--specific features}.  This taxonomy is mainly focused on computational requirements. 
-The following paragraphs desribe character, lexical and syncatic features 
+The following paragraphs describe character, lexical and syncatic features 
 in more depth and relate our work with the existing research.
 
 \emph{Character features} are the simplest text representation features. They
 consider text as a mere sequence of characters and are therby usable for any natural
-language or corpus. Various meassures can be defiend, such as
+language or corpus. Various meassures can be defined, such as
 characters frequencies, digit frequencies, uppercase and lowercase character
 frequencies, punctuation marks frequencies, etc.\ \cite{de2001mining}. Another
 type of character based features, which has been proven as quite successful
@@ -130,15 +130,15 @@ tag \emph{n}--grams frequencies.
 
 
 \section{Text Representation}
-When constructing an authorship attribution system, the central issuse is the
+When constructing an authorship attribution system, the central issue is the
 selection of sufficiently discriminative features. A feature is discriminative if
 it is common for one author and rare for all the others. Due to the large number
 of authors some complex features are very useful if their distribution is
 specific to each author. Moreover, as the texts from dataset greatly differ in
-length and topic, it is neccessary to use the features independent of such
+length and topic, it is necessary to use the features independent of such
 variations. If the features were not independent of such variation that
-would most certanly reduce generality of system's application and could lead
-to a decrease of accurancy (e.g., relating author to concrete topic or terms).
+would most certainly reduce generality of system's application and could lead
+to a decrease of accuracy (e.g., relating author to concrete topic or terms).
 
 In the following subsections we will describe different features used.
 
@@ -164,7 +164,7 @@ impossible to conclude if these features are generally effective
 
 In addition to function words in this work we also consider frequencies of
 auxiliary verbs and pronouns as their frequencies might also be
-representative of the style of different authors. This makes the set of totaly
+representative of the style of different authors. This makes the set of totally
 652 function words used.
 
 \subsection{Idf Weighted Function Words Frequency}
@@ -188,7 +188,7 @@ $t_k$ and $n_d$ the total number of the texts in that learning data set. The
 shown measure gives high values for words that appear in a small number of
 texts and are thus very discriminatory.
 
-As the \emph{idf} measure uses only the information of the pressence of a
+As the \emph{idf} measure uses only the information of the presence of a
 certain function word in the texts ignoring frequency of that word, a word that appears
 many times in one single text and once in all the others gets the same value as
 the one which appears once in all of the texts. Therefore it is necessary to
@@ -208,14 +208,14 @@ different POS too --- so all possible POS tags for a given word are considered.
 
 Simplest syntax--based feature we used are features based on lexical category
 frequency, similar to one used in \cite{kukushkina2001using}. The given text is
-tagged with the use of NLP tool and thus lexical category for each word in the text is determinated. Features are obtained by
+tagged with the use of NLP tool and thus lexical category for each word in the text is determined. Features are obtained by
 counting the number of occurrence of different lexical categories, which are
 then normalized by the total number of words in the text. If for some word more
 then one lexical category is obtained, all different categories where counted. 
-The used categories are adverbs, adpositions, conjunctions, particles,
+The used categories are adverbs, appositions, conjunctions, particles,
 interjections, nouns, verbs, adjectives and pronouns. In addition, category
 ``unknown'' was introduced for all the words whose lexical category was not
-determinated (names, places, etc.).
+determined (names, places, etc.).
 
 \subsection{Word Morphosyntactical Categories}
 \label{sec:morphosyntactic}
@@ -255,14 +255,14 @@ or classification with sparse SVM, logistic regression or na\"ive Bayes.
 
 \subsection{Other Features}
 \label{sec:znacajke-manje}
-Other features we used are simple features: punctation marks, vowels, words
+Other features we used are simple features: punctuation marks, vowels, words
 length and sentence length frequencies.
 
 A set of following punctuation marks is used: ``.'', ``,'', ``!'', ``?'',
 ``''', ``"'', ``-'', ``:'', ``;'', ``+'', ``*''. Their appearance in the text is counted and
 the result is normalized by the total number of characters in the text. 
 
-Features based on the frequency of vowel occurence (a, e, i, o, u) are
+Features based on the frequency of vowel occurrence (a, e, i, o, u) are
 obtained in an equal manner.
 
 The frequencies of words lengths are obtained by counting the lengths of all
@@ -288,7 +288,7 @@ features in a form of vectors, for the classification, we used an SVM (Support
 Vector Machine) with radial basis function as the kernel. It is shown that, with
 the use of parameter selection, linear SVM is a special case of an SVM with RBF
 kernel \cite{keerthi2003asymptotic}, which removes the need to consider a linear
-SVM as a potential classifier. RBF kernel is defiend as:
+SVM as a potential classifier. RBF kernel is defined as:
 \begin{equation}
 k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2).
 \end{equation}
@@ -416,7 +416,7 @@ Classification success is measured by the ratio of correctly classified texts an
 the total number of texts in the training set i.e.,~micro average accuracy.
 First we tested all the features separately and then the same features in
 various combinations. The SVM parameter selection is very time
-consuming process. Thus, not all of the feature combinations were tested. Results of the evalutaion
+consuming process. Thus, not all of the feature combinations were tested. Results of the evaluation
 are shown in Table \ref{tbl:eval}. Columns ``$C$'' and ``$\gamma$'' denote
 parameters of SVM classifier optimal for the selected features.
 
@@ -424,7 +424,7 @@ parameters of SVM classifier optimal for the selected features.
 % methods marked as $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
 % $\mathcal{L}$ and $\mathcal{M}$.
 
-Total accuracy does not explain the behaviour of a classifier for every class by
+Total accuracy does not explain the behavior of a classifier for every class by
 itself. Therefore, precision and recall are calculated for every class and then
 used to calculate the total weighted $F_1$ measure. For particular class $c$,
 precision is a ratio of the number of correctly classified documents in $c$ and the number
