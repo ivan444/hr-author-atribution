@@ -361,6 +361,7 @@ $\mathcal{P}$, $\mathcal{F}$ & 92.41 & 8 & 0 & 03125 & 91.93\\
 $\mathcal{F}$, $\mathcal{M}$ & 91.18 & 128 & 0 & 03125 & 90.68\\
 $\mathcal{F}$, $\mathcal{N}_1$ & 89.44 & 128 & 0 & 03125 & 88.52\\
 $\mathcal{F}$, $\mathcal{N}_2$ & 90.92 & 128 & 0 & 03125 & 90.43\\
+$\mathcal{F}$, $\mathcal{C}$ & 90.05 & 128 & 0 & 03125 & 89.52\\
 $\mathcal{I}$, $\mathcal{M}$ & 90.84 & 128 & 0 & 03125 & 90.35\\
 $\mathcal{N}_1$, $\mathcal{M}$ & 71.38 & 128 & 0 & 03125 & 70.15\\
 $\mathcal{I}$, $\mathcal{M}$, $\mathcal{C}$ & 91.36 & 128 & 0 & 03125 & 90.89\\
@@ -368,6 +369,16 @@ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & \textbf{93.37} & 128 & 0 & 03125
 & 92.96\\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$ & \textbf{93.46} &
 32768 & 0 & 03125 & 93.09\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{C}$ & 93.28 &
+128 & 0 & 03125 & 92.97\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{N}_2$ & 90.31 &
+128 & 0 & 03125 & 89.24\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$ &
+\textbf{93.46} & 128 & 0 & 03125 & 93.15\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_2$ &
+91.54 & 128 & 0 & 03125 & 90.52\\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$,
+$\mathcal{N}_2$ & 91.80 & 128 & 0 & 03125 & 90.88\\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & \textbf{93.37} &
 128 & 0 & 03125 & 93.04\\
 $\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 89.62 & 128 & 0
@@ -385,16 +396,16 @@ $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 92.41 & 128 & 0 & 03125 & 91.96\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
 $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 92.41 & 128 & 0 & 03125 &
 91.96\\
-\bottomrule%
-\end{tabular}%
-\label{tbl:eval}%
+\bottomrule
+\end{tabular}
+\label{tbl:eval}
 \end{center}
 \end{table*}
 
 \section{Evaluation}
 \label{sec:evaluacija}
 Classification success is measured by the ratio of correctly classified texts and
-the total number of texts in the training set i.e.,~micro average accuracy.
+the total number of texts in the training set i.e., micro average accuracy.
 First we tested all the features separately and then the same features in
 various combinations. Results of the evalutaion
 are shown in Table \ref{tbl:eval}. Columns ``$C$'' and ``$\gamma$'' denote
@@ -439,9 +450,9 @@ It is shown that the authorship attribution problem, when applied to morphologic
 languages, such as the Croatian language, can be successfully solved using the
 combination of some relatively simple features. Our results with 93\% accuracy
 are quite notable considering the fact that the data set used was very
-heterogeneous, with the imbalanced distribution of texts over the authors, texts
-of a variable but rather small size (an average of 717 words per author). The
-result comparison has proved very difficult due to the different types of data sets used
+heterogeneous, with the imbalanced distribution of texts over the authors (see
+Figure \ref{fig:articlesPerAuthor}), texts of a variable but rather small size (an average of 717
+words per author). The result comparison has proved very difficult due to the different types of data sets used
 in the related work (e.g., poems, newspaper articles, e-mails) and different
 number of authors considered (e.g., 2, 5, 10, 25, 150). However, our results
 coincide within the interval of previously reported results, which range from
