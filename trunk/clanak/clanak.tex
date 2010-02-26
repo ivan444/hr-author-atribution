@@ -201,26 +201,26 @@ This types of features used are syntax--based features. Thus, some sort of NLP
 (Natural Language Processing) tool was required. Croatian language is
 morphologically complex and it is difficult to construct a robust NLP tool.
 We utilized the tool given in \cite{snajder08automatic}. Using it, we were able to get
-morphosyntactic descriptions of each word in the text. The method does not
-use context information and therefore cannot distinguish between different
-homographs --- words with same spelling but with different meaning and possibly
-different POS --- so all possible POS tags for a given word are considered.
+morphosyntactic descriptions of each word in the text. But, the tool we used
+does not use context information and therefore cannot distinguish between different homographs
+--- words with same spelling but with different meaning --- so all possible
+morphosyntactic descriptions for a given word are considered.
 
 Simplest syntax--based feature we used are features based on lexical category
 frequency, similar to one used in \cite{kukushkina2001using}. The given text is
-tagged with the help of NLP tool and the lexical category for each word in the text is determined.
-Features are obtained by counting the number of occurrences of different lexical categories. They are
-then normalized by the total number of words in the text. If more
-then one lexical category is obtained for a certain word, the word is attributed to all of the categories obtained. 
-The used categories are adverbs, appositions, conjunctions, particles,
-interjections, nouns, verbs, adjectives and pronouns. In addition, category
-``unknown'' was introduced for all the words whose lexical category was not
-determined (names, places, etc.).
+processed with the help of NLP tool and the lexical
+category for each word in the text is determined. Features are obtained by counting the
+number of occurrences of different lexical categories. They are then normalized
+by the total number of words in the text. If more then one lexical
+category is obtained for a certain word, the word is attributed to all of the categories obtained. The used categories
+are adverbs, adpositions, conjunctions, particles, interjections, nouns, verbs,
+adjectives and pronouns. In addition, category ``unknown'' was introduced for all
+the words whose lexical category was not determined (names, places, etc.).
 
 \subsection{Word Morphosyntactical Categories}
 \label{sec:morphosyntactic}
 
-More complex syntax--based features used take advantage of morphosyntactic
+More complex syntax--based features we used take advantage of morphosyntactic
 description of a word. Each word can be described by the set of different
 morphosyntactic features. The feature vector is created by
 counting the appearances of morphologic categories for every word in a text, and dividing them by the number of words in
@@ -234,7 +234,7 @@ frequency. Word parts--of--speech and their morphosyntactic descriptors are obta
 (Part--Of--Speech) and MSD (morphosyntactic) tagging for Croatian language
 \cite{snajder08automatic}. Having the corresponding part--of--speech for
 each word in the text makes the \emph{n}-gram usage as features
-possible. Since \emph{n}-gram features can produce very large dimensionality,
+possible. Since \emph{n}-gram features can produce very large dimensionality, 
 only 3-grams are considered. In addition, the used POS tagging is not perfect. 
 
 %FIXME: pos patterns, not n-grams
@@ -248,8 +248,8 @@ parts--of--speech it uses words as they are, therefore ``Adam i Eva'' transforms
 to ``noun i noun''. Due to many different pronouns, conjunctions, interjections
 and prepositions that make many different \emph{n}-grams, frequency filtering
 is applied --- only the frequency of 500 most frequent 3-grams in the
-training data set is considered. Used dimension reduction method is not optimal.
-In the future work other methods should be evaluated, such as information
+training data set is considered. Used dimension reduction method is not optimal,
+therefore in the future work other methods should be evaluated, such as information
 gain, $\chi^2$ test, mutual information, maximum relevance, minimum redundancy
 or classification with sparse SVM, logistic regression or na\"ive Bayes.
 
@@ -274,7 +274,7 @@ The sentence length frequency is obtained in a similar procedure.
 For the same reason as with the words length, sentences longer than 20 words are
 counted as if they were 20 words long.
 
-All features suggested here int this subsection have weak discriminatory power
+All features suggested here in this subsection have weak discriminatory power
 on their own. However, they proved very useful in the combination with other features, as
 shown in Table \ref{tbl:eval}.
 
@@ -297,25 +297,6 @@ Before the learning process and classification with the SVM, we scale the data,
 real valued feature vectors, to ensure equal contribution of every attribute to
 the classification. Components of every feature vector are scaled to an interval
 $[0, 1]$.
-%  according to following expression:
-% \begin{equation}
-% x^{s}_{i,j} = \frac{x_{i,j} - \min_{i}\; x_{i,j}}{\max_{i}\; x_{i,j}
-% - \min_{i}\; x_{i,j}}
-% \end{equation}
-% where $x^{s}_{i,j}$ is scaled component $j$ of vector $\mathbf{x_i}$,
-% $\min_{i}\; x_{i,j}$ is minimum value of attribute $j$ among all vectors
-% $\mathbf{x_i}$ and $\max_{i}\; x_{i,j}$ is maximum value of attribute $j$ among
-% all vectors. If we denote the resulting minimum and maximum values as follows:
-% \begin{eqnarray}
-% M_i & = \max_{i}\; x_{i,j} \\
-% m_i & = \min_{i}\; x_{i,j}
-% \end{eqnarray}
-% then, the unknown vector $\mathbf{x}$ before classification is scaled as:
-% \begin{equation}
-% x^{s}_{j} = \frac{x_j-m_i}{M_i-m_i}
-% \end{equation}
-
-% TODO: REPHRASE
 
 For the application of SVM classifier in practical problems it is reasonably to
 consider SVM with soft margins defined by parameter $C$, as in 
@@ -415,8 +396,7 @@ $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 92.41 & 128 & 0 & 03125 &
 Classification success is measured by the ratio of correctly classified texts and
 the total number of texts in the training set i.e.,~micro average accuracy.
 First we tested all the features separately and then the same features in
-various combinations. The SVM parameter selection is very time
-consuming process. Thus, not all of the feature combinations were tested. Results of the evaluation
+various combinations. Results of the evalutaion
 are shown in Table \ref{tbl:eval}. Columns ``$C$'' and ``$\gamma$'' denote
 parameters of SVM classifier optimal for the selected features.
 
@@ -444,12 +424,14 @@ F_w = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
 where $n$ is total number of classes, $|c_i|$ number of documents in the class
 $c_i$ and $F_i$ an $F_1$ measure for class $c_i$.
 
-The evaluation was not conducted on all of the possible methods. We focused
-on the evaluation of the methods based on syntactic analysis of the Croatian language.
-Furthermore, some of the methods are very similar and the evaluation would show no
-considerable improvements. %((N1 i N2, te F i Idf (I))
-In addition, methods using certain feature combinations made no significant contributions.
-Since no conclusions could be derived from them, they are not presented within the results. 
+The SVM parameter selection is very time consuming process. Thus, not all of the
+feature combinations were tested. We focused on the evaluation of the feature
+combinations that are based on syntactic analysis of the Croatian language and those
+that are based on function word frequencies as they have proven to be most successful.
+Furthermore, some of the features are very similar and the evaluation would show no considerable improvements. %((N1 i N2, te F i Idf (I)) 
+In addition, methods using certain
+feature combinations made no significant contributions. Since no conclusions
+could be derived from them, they are not presented within the results.
 %navesti detaljnije koje za svaku tvrdnju (recimo u zagradi), ili ostaviti ovako?
 
 \section{Conclusion}
@@ -465,17 +447,21 @@ number of authors considered (e.g., 2, 5, 10, 25, 150). However, our results
 coincide within the interval of previously reported results, which range from
 70\% to 97\%
 \cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer}.
-In addition, there are no other reported methods or results for the Croatian
-language, nor any of the related languages.
 
-In the future work, methods based on word and character \emph{n}-grams, suggested
-in \cite{keselj2003n,peng2003language,coyotl2006authorship}, should be
-compared to our methods. Moreover, evaluation has to be performed on different
-types of data sets, such as poems, newspaper articles or book data sets.
+In addition, there are no other reported methods or results for the Croatian
+language, nor any of the related languages, so our work presents a basis for
+the further research.
+
+In the future work, features based on word and character \emph{n}--grams,
+suggested in \cite{keselj2003n,peng2003language,coyotl2006authorship}, should
+be compared to features mentioned in this work. Moreover, evaluation has
+to be performed on different types of data sets, such as poems, e--mails,
+on--line conversations or book data sets.
 
 
 \section*{Acknowledgement}
-This research has been supported by the Croatian Ministry of Science, Education and Sports under the grant No.036-1300646-1986.
+This research has been supported by the Croatian Ministry of Science, Education
+and Sports under the grant No.~036--1300646--1986.
 
 \bibliographystyle{splncs}
 \bibliography{literatura}
