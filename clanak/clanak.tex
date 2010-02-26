@@ -107,24 +107,27 @@ can be defined for which is shown to be quite successfull too
 \cite{keselj2003n,coyotl2006authorship}.
 
 The use of \emph{syntactic features} is governed by the idea that authors tend to
-use similar syntactic patterns unconsciously. Information related to structure of
+unconsciously use similar syntactic patterns. Information related to the structure of
 the language is obtained by an in--depth syntactic analysis of the text, usually
-using some sort of NLP tool, and a single text is characterized by the presence
+using some sort of an NLP tool. A single text is characterized by the presence
 and frequency of certain syntactic structures. Syntax-based features were
-introduced in \cite{van1996outside} where the rewrite rules frequencies were
-used. Stamatatos et al.\ \cite{stamatatos2001computer} used noun, verb and
-prepositional phrases frequencies. Using a Part--of--speech (POS) tagger one can obtain POS tags and
-POS tags \emph{n}--grams frequencies by which excellent results can be achived
+introduced in \cite{van1996outside}, where the rewrite rules frequencies were
+utilized. Stamatatos et al.\ \cite{stamatatos2001computer} used noun, verb and
+prepositional phrase frequencies. Using a Part--of--speech (POS) tagger one can obtain POS tags and
+POS tag \emph{n}--gram frequencies. Excellent results can be achived using such features
 \cite{kukushkina2001using,koppel2003exploiting,diederich2003authorship,luyckx2005shallow}.
 Koppel et al.\ \cite{koppel2003exploiting} show the use of grammatical errors
 and informal styling (e.g., writing sentences in capital letters) as text features used for
 authorship attribution. A comparison of lexical and syntactical features is shown
-in \cite{uzuner2005comparative}.
+in \cite{uzuner2005comparative}. 
 
-Our work is based on the composition and evaluation of various
-afore--mentioned text representation features. We use different
-character, lexical and syntactical features and adapt them for the use with the
-Croatian language. We use word length, sentence length, punctuation marks 
+Our work is based on the composition and evaluation of various afore--mentioned
+text representation features. We used different character, lexical and syntactical
+features and adapt them for the use with the Croatian language. We used punctuation marks and 
+wovels frequency as character features. Word length, sentence length and function words frequencies were used as lexical features.
+For the syntax--based features we used those relatively similar to POS tag and POS
+tag \emph{n}--grams frequencies.
+
 
 \section{Text Representation}
 When constructing an authorship attribution system, the central issuse is the
