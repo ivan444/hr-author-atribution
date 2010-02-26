@@ -162,19 +162,19 @@ due to various languages, types and sizes of the texts, it is currently
 impossible to conclude if these features are generally effective
 \cite{zhao2005effective}.
 
-In addition to function words in this work we also consider frequencies of
-auxiliary verbs and pronouns as their frequencies might also be
-representative of the style of different authors. This makes the set of totally
-652 function words used.
+In addition to function words, in this work we also consider frequencies of
+auxiliary verbs and pronouns. Their frequencies might be
+representative of the authors style. This makes the set of totally
+652 function words that were used.
 
 \subsection{Idf Weighted Function Words Frequency}
 \label{sec:funkcijske-rijeci-idf}
 
-The use of features based on function words frequencies often implies the
-problem with the quantifying how important, for the sake of discrimination, a
+The use of features based on function word frequencies often implies the
+problem of determining how important, in terms of discrimination, a
 specific given function word is \cite{diederich2003authorship}.
 
-To cope with that problem we used a combination of $L_p$ normalization of the
+To cope with this problem we used a combination of $L_p$ normalization of the
 length and transformation of the function word occurrence frequency, in
 particular \emph{idf} (inverse document frequency) measure.
 
@@ -197,21 +197,21 @@ occurrence frequency of that word in the observed text.
 
 \subsection{Lexical Categories Frequency}
 \label{sec:rijeci-grupe}
-Next three features we used are syntax--based features and thus some sort of NLP
+This types of features used are syntax--based features. Thus, some sort of NLP
 (Natural Language Processing) tool was required. Croatian language is
-morphologically complex and it is problematic to construct a robust NLP tool.
-With the tool we used, given in \cite{snajder08automatic}, we were able to get
+morphologically complex and it is difficult to construct a robust NLP tool.
+We utilized the tool given in \cite{snajder08automatic}. Using it, we were able to get
 morphosyntactic descriptions of each word in the text. The method does not
 use context information and therefore cannot distinguish between different
-homographs --- words with same spelling but with different meaning and probably
-different POS too --- so all possible POS tags for a given word are considered.
+homographs --- words with same spelling but with different meaning and possibly
+different POS --- so all possible POS tags for a given word are considered.
 
 Simplest syntax--based feature we used are features based on lexical category
 frequency, similar to one used in \cite{kukushkina2001using}. The given text is
-tagged with the use of NLP tool and thus lexical category for each word in the text is determined. Features are obtained by
-counting the number of occurrence of different lexical categories, which are
-then normalized by the total number of words in the text. If for some word more
-then one lexical category is obtained, all different categories where counted. 
+tagged with the help of NLP tool and the lexical category for each word in the text is determined.
+Features are obtained by counting the number of occurrences of different lexical categories. They are
+then normalized by the total number of words in the text. If more
+then one lexical category is obtained for a certain word, the word is attributed to all of the categories obtained. 
 The used categories are adverbs, appositions, conjunctions, particles,
 interjections, nouns, verbs, adjectives and pronouns. In addition, category
 ``unknown'' was introduced for all the words whose lexical category was not
@@ -220,11 +220,11 @@ determined (names, places, etc.).
 \subsection{Word Morphosyntactical Categories}
 \label{sec:morphosyntactic}
 
-More complex syntax--based features we used take advantage of morphosyntactic
+More complex syntax--based features used take advantage of morphosyntactic
 description of a word. Each word can be described by the set of different
-morphosyntactic as are features that take The feature vector is created by
+morphosyntactic features. The feature vector is created by
 counting the appearances of morphologic categories for every word in a text, and dividing them by the number of words in
-the text. Counted morphologic categories are \emph{case}, \emph{degree},
+that text. Counted morphologic categories are \emph{case}, \emph{degree},
 \emph{form}, \emph{gender}, \emph{number} and \emph{person}.
 
 \subsection{Word Part--Of--Speech \emph{n}-grams Frequency}
@@ -233,9 +233,9 @@ The two proposed features are based on word part--of--speech \emph{n}-grams
 frequency. Word parts--of--speech and their morphosyntactic descriptors are obtained by POS
 (Part--Of--Speech) and MSD (morphosyntactic) tagging for Croatian language
 \cite{snajder08automatic}. Having the corresponding part--of--speech for
-each word in the text makes the usage \emph{n}-grams as features
-possible. As \emph{n}-gram features can produce very large dimensionality, 
-only 3-grams are considered. In addition, POS tagging used is not perfect. 
+each word in the text makes the \emph{n}-gram usage as features
+possible. Since \emph{n}-gram features can produce very large dimensionality,
+only 3-grams are considered. In addition, the used POS tagging is not perfect. 
 
 %FIXME: pos patterns, not n-grams
 The first feature proposed uses the words parts--of--speech
@@ -248,8 +248,8 @@ parts--of--speech it uses words as they are, therefore ``Adam i Eva'' transforms
 to ``noun i noun''. Due to many different pronouns, conjunctions, interjections
 and prepositions that make many different \emph{n}-grams, frequency filtering
 is applied --- only the frequency of 500 most frequent 3-grams in the
-training data set is considered. Used dimension reduction method is not optimal,
-therefore in the future work other methods should be evaluated, such as information
+training data set is considered. Used dimension reduction method is not optimal.
+In the future work other methods should be evaluated, such as information
 gain, $\chi^2$ test, mutual information, maximum relevance, minimum redundancy
 or classification with sparse SVM, logistic regression or na\"ive Bayes.
 
