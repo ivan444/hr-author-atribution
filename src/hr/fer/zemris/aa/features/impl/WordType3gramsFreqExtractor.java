@@ -69,7 +69,8 @@ public class WordType3gramsFreqExtractor implements IFeatureExtractor {
 
 	@Override
 	public String getName() {
-		return "WordType3grams";
+		if (useOnlyTypes) return "WordType3grams1";
+		else return "WordType3grams2";
 	}
 
 }

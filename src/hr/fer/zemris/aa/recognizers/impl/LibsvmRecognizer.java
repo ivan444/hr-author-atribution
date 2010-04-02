@@ -43,11 +43,22 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	private float[] fmax = null;
 	private float[] fmin = null;
 	private boolean scale;
+	private double C;
+	private double gamma;
 	
 	private final static float eps = 1e-7F;
 	
 	/** Mapiranje naziva klasa (libsvm radi sa brojčanim podatcima) */
 	private Map<Double, String> classNames;
+	
+	public LibsvmRecognizer(IFeatureExtractor featureExtractor, boolean scale, double C, double gamma) {
+		this.model = null;
+		this.scale = scale;
+		this.classNames = new HashMap<Double, String>();
+		this.featureExtractor = featureExtractor;
+		this.C = C;
+		this.gamma = gamma;
+	}
 	
 	/**
 	 * Konstruktor za klasifikator bez postojećeg modela.
@@ -56,10 +67,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 	 * @param Skalirati ili ne.
 	 */
 	public LibsvmRecognizer(IFeatureExtractor featureExtractor, boolean scale) {
-		this.model = null;
-		this.scale = scale;
-		this.classNames = new HashMap<Double, String>();
-		this.featureExtractor = featureExtractor;
+		this(featureExtractor, scale, 16, 0.25);
 	}
 	
 	public LibsvmRecognizer(IFeatureExtractor featureExtractor) {
@@ -171,7 +179,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		param.coef0 = 1;
 		param.nu = 0.5;
 		param.cache_size = 700;
-		param.C = 16;
+		param.C = C;
 		param.eps = 1e-3;
 		param.p = 0.1;
 		param.shrinking = 1;
@@ -179,11 +187,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		param.nr_weight = 0;
 		param.weight_label = new int[0];
 		param.weight = new double[0];
-		param.gamma = 0; // 1/num_features
-		
-//		param.gamma = 1.0/trainData.get(0).size();
-		
-		param.gamma = 0.25;
+		param.gamma = gamma;
 		
 		// Postavljanje uzoraka
 		Vector<Double> authors = new Vector<Double>();
