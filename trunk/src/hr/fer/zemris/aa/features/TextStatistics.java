@@ -492,9 +492,11 @@ public class TextStatistics implements Iterable<String> {
 		writer.close();
 	}
 	
-//	public static void main(String[] args) throws Exception {
-//		printAllType3grams("podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.train.xml", "n-grami.txt");
-//	}
+	public static void main(String[] args) throws Exception {
+		List<Article> list = XMLMiner.getArticles("podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05.train.xml");
+		calcIdf("config/fwords.txt", list, "config/fw-idf.txt");
+		//printAllType3grams("podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.train.xml", "n-grami.txt");
+	}
 	
 	private static class Text3gram {
 		public String first;

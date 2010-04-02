@@ -29,6 +29,7 @@ public class XMLMiner {
 		try {
 			this.document = builder.build(path);
 	    } catch (JDOMException e) {
+	    	System.err.println(e.getMessage());
 	    	System.err.println("Neispravan XML zapis datoteke: " + path);
 		} catch (IOException e) {
 			System.err.println("Neuspješno otvaranje datoteke: " + path);
@@ -158,7 +159,7 @@ public class XMLMiner {
 				if (allInfo) {
 					article.setName(upperDoc.getAttributeValue("name"));
 					article.setUrl(getChild(extra, "url").getText());
-					article.setColumnTitle(getChild(extra, "columntitle").getText());
+					//article.setColumnTitle(getChild(extra, "columntitle").getText());
 					article.setCreationDate(getChild(extra, "creation-date").getText());
 				}
 		

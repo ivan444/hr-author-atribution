@@ -60,19 +60,29 @@ public class DataSplitter {
 		System.out.println("Dohvaćam tekstove i dijelim arhivu.");
 		for (String a : authors) {
 			List<Article> authorArticles = miner.getArticlesByAuthor(a, true);
+//			List<Article> aaaaauthorArticles = new LinkedList<Article>(); // del
 			
 			Collections.sort(authorArticles, articleCompDate);
 			
 			int size = authorArticles.size();
-			if (size < 20) {
-				// Preskacemo radi malog broja clanaka.
-				continue;
-			}
+//			if (size < 20) {
+//				// Preskacemo radi malog broja clanaka.
+//				continue;
+//			}
 			
 			int testNum = (int) Math.round(size*OMJER);
 			if (testNum == 0) testNum = 1;
 			testArticles.addAll(authorArticles.subList(0, testNum));
 			trainArticles.addAll(authorArticles.subList(testNum, size));
+			
+			
+//			for (Article aa : authorArticles) { // del
+//				if (aa.getText().split(" ").length < 500) continue; // del
+//				aaaaauthorArticles.add(aa); // del
+//			} // del
+//			if (aaaaauthorArticles.size() >= 40) { // del
+//				trainArticles.addAll(aaaaauthorArticles); // del
+//			} // del
 		}
 		
 		Comparator<Article> articleComp = new Comparator<Article>() {
@@ -82,6 +92,7 @@ public class DataSplitter {
 				int second = Integer.parseInt(o2.getName().substring(16));
 				
 				return second-first;
+//				return o1.getName().compareTo(o2.getName());
 			}
 		};
 		
@@ -99,7 +110,8 @@ public class DataSplitter {
 	
 	public static void writeXML(List<Article> articles, String outPath) {
 		String header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
-		String start = "<documentSet name=\"jutarnji-kolumne-arhiva-2009-11-14\" type=\"\" description=\"Arhiva kolumni Jutarnjeg lista do 2009-11-14\" xmlns=\"http://ktlab.fer.hr\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://ktlab.fer.hr http://ktlab.fer.hr/download/documentSet.xsd\">\n";
+		//String start = "<documentSet name=\"jutarnji-kolumne-arhiva-2009-11-14\" type=\"\" description=\"Arhiva kolumni Jutarnjeg lista do 2009-11-14\" xmlns=\"http://ktlab.fer.hr\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://ktlab.fer.hr http://ktlab.fer.hr/download/documentSet.xsd\">\n";
+		String start = "<documentSet name=\"blog-hr-aa-arhiva-2010-04-02\" type=\"\" description=\"Arhiva blog.hr blogova za prepoznavanje autora do 2010-04-02\" xmlns=\"http://ktlab.fer.hr\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://ktlab.fer.hr http://ktlab.fer.hr/download/documentSet.xsd\">\n";
 		String end = "</documentSet>\n";
 		
 		try {
