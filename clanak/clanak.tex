@@ -99,15 +99,15 @@ Text representation using \emph{lexical features} is characterized by dividing
 the text into a sequence of tokens (words) that group into sentences. Features
 directly derived from that representation are the length of words, the
 length of sentences and vocabulary richness. This types of features have been used in
-\cite{mendenhall1887,holmes1994authorship} . Results achieved demonstrate that
+\cite{holmes1994authorship,mendenhall1887} . Results achieved demonstrate that
 they are not sufficient for the task mostly due to their
 significant dependence on the text genre and length. However, taking advantage of
 features based on frequencies of different words, especially function words,
 can produce fairly better results
-\cite{argamon2005measuring,uzuner2005comparative,koppel2003exploiting,zhao2005effective}.
+\cite{argamon2005measuring,koppel2003exploiting,uzuner2005comparative,zhao2005effective}.
 Analogous to character \emph{n}-grams, word \emph{n}-gram features
 can be defined for which is shown to be quite successfull too
-\cite{keselj2003n,coyotl2006authorship}.
+\cite{coyotl2006authorship,keselj2003n}.
 
 The use of \emph{syntactic features} is governed by the idea that authors tend to
 unconsciously use similar syntactic patterns. Information related to the
@@ -119,7 +119,7 @@ were utilized. Stamatatos et al.\ \cite{stamatatos2001computer} used noun, verb
 and prepositional phrase frequencies. Using a Part-of-speech (POS) tagger one can
 obtain POS tags and POS tag \emph{n}-gram frequencies. Using such features
 excellent results can be achieved
-\cite{kukushkina2001using,koppel2003exploiting,diederich2003authorship,luyckx2005shallow}.
+\cite{diederich2003authorship,koppel2003exploiting,kukushkina2001using,luyckx2005shallow}.
 Koppel et al.\ \cite{koppel2003exploiting} show that the use of grammatical
 errors and informal styling (e.g., writing sentences in capital letters) as text features
 can be useful in authorship attribution.
@@ -496,7 +496,7 @@ basis for further research.
 In the future work the problems with homography should be resolved in order to
 get more accurate results of syntax-based features. Features based on word and
 character \emph{n}-grams, suggested in
-\cite{keselj2003n,peng2003language,coyotl2006authorship}, should be compared to
+\cite{coyotl2006authorship,keselj2003n,peng2003language}, should be compared to
 features used in this work. Also, comparison to semantic based features
 should be conducted. Evaluation has to be performed on different types
 of data sets, such as poems, e-mails, on-line conversations, or books.
