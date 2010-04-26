@@ -368,7 +368,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 		
 				target = new double[prob.l];
 				
-				svm.svm_cross_validation(prob, param, 3, target);
+				svm.svm_cross_validation(prob, param, 5, target);
 				
 				int totalCorrect = 0;
 				for (int k = 0; k < prob.l; k++)
@@ -386,6 +386,7 @@ public class LibsvmRecognizer implements AuthorRecognizer, RecognizerTrainer {
 				} else {
 					try {
 						writer.write("C == "+i+", g == "+j+": "+((double)totalCorrect)/prob.l + "\n");
+						writer.flush();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
