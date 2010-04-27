@@ -178,7 +178,6 @@ public class Experimenter {
 		String sufix = null;
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
-			System.out.println(line);
 			if (line.startsWith("#")) continue;
 			else if (line.startsWith("!") && line.length() > 1) {
 				sufix = line.substring(1);
@@ -198,23 +197,48 @@ public class Experimenter {
 			String[] strFeat = line.split(",");
 			IFeatureExtractor[] features = new IFeatureExtractor[strFeat.length];
 			
+			boolean tagged = false;
+			for (int i = 0; i < strFeat.length; i++) {
+				if (strFeat[i].equals("M") || strFeat[i].equals("N1") || strFeat[i].equals("N2")) {
+					tagged = true;
+				}
+			}
 			for (int i = 0; i < strFeat.length; i++) {
 				if (strFeat[i].equals("F")) {
-					
-				} else if (strFeat[i].equals("F")) {
 					features[i] = new FunctionWordOccurNumExtractor("config/fwords.txt");
+					if (tagged) {
+						features[i] = new TaggAdapterFeatureExtractor(features[i]);
+					}
 				} else if (strFeat[i].equals("I")) {
 					features[i] = new FunctionWordTFIDFExtractor("config/fw-idf"+sufix+".txt");
+					if (tagged) {
+						features[i] = new TaggAdapterFeatureExtractor(features[i]);
+					}
 				} else if (strFeat[i].equals("C")) {
 					features[i] = new FunctionWordGroupFreqExtractor(new File("config/fwords.txt"));
+					if (tagged) {
+						features[i] = new TaggAdapterFeatureExtractor(features[i]);
+					}
 				} else if (strFeat[i].equals("P")) {
 					features[i] = new PunctuationMarksExtractor(new File("config/marks.txt"));
+					if (tagged) {
+						features[i] = new TaggAdapterFeatureExtractor(features[i]);
+					}
 				} else if (strFeat[i].equals("V")) {
 					features[i] = new VowelsExtractor();
+					if (tagged) {
+						features[i] = new TaggAdapterFeatureExtractor(features[i]);
+					}
 				} else if (strFeat[i].equals("L")) {
 					features[i] = new WordLengthFeatureExtractor();
+					if (tagged) {
+						features[i] = new TaggAdapterFeatureExtractor(features[i]);
+					}
 				} else if (strFeat[i].equals("S")) {
 					features[i] = new SentenceBasedFeatureExtractor(20);
+					if (tagged) {
+						features[i] = new TaggAdapterFeatureExtractor(features[i]);
+					}
 				} else if (strFeat[i].equals("N1")) {
 					features[i] = new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true);
 				} else if (strFeat[i].equals("N2")) {
@@ -545,40 +569,50 @@ public class Experimenter {
 	public static void findParams(String prefix, String trainDataPath, IFeatureExtractor ... arrFeatExtrac) throws IOException {
 		System.out.println("Započelo traženje parametara!");
 		for (int i = 0; i < arrFeatExtrac.length; i++) {
-			System.out.println("### FeatureExtractor: " + arrFeatExtrac[i].getName());
-			System.out.println("Vrijeme početka: " + new Date());
-			List<FeatureClass> trainData = loadTrainData(trainDataPath, arrFeatExtrac[i]);
-			LibsvmRecognizer svm = new LibsvmRecognizer(arrFeatExtrac[i], true);
-//			BufferedWriter writer = new BufferedWriter(new FileWriter(prefix+arrFeatExtrac[i].getName()));
-			svm.gridSearch(trainData, null);
-//			writer.close();
-			System.out.println("Vrijeme završetka: " + new Date());
-			System.out.println();
-			svm = null;
-			trainData = null;
-			System.gc();
+			try {
+				System.out.println("### FeatureExtractor: " + arrFeatExtrac[i].getName());
+				System.out.println("Vrijeme početka: " + new Date());
+				List<FeatureClass> trainData = loadTrainData(trainDataPath, arrFeatExtrac[i]);
+				LibsvmRecognizer svm = new LibsvmRecognizer(arrFeatExtrac[i], true);
+	//			BufferedWriter writer = new BufferedWriter(new FileWriter(prefix+arrFeatExtrac[i].getName()));
+				svm.gridSearch(trainData, null);
+	//			writer.close();
+				System.out.println("Vrijeme završetka: " + new Date());
+				System.out.println();
+				svm = null;
+				trainData = null;
+				System.gc();
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
 		}
 	}
 
 	public static void main(String[] args) throws IOException {
-		IFeatureExtractor featExtrac = null;
-		try {
-			featExtrac = new ComboFeatureExtractor(
-					//new WordType3gramsFreqExtractor("config/n-grami-najcesci.txt", false)
-					//new FunctionWordOccurNumExtractor("config/fwords.txt")
-					new FunctionWordOccurNumExtractor("config/fwords.txt")
-			);
-		} catch (Exception e) {
-			System.err.println("Greška! " + e.getMessage());
-			System.exit(-1);
-		}
+//		IFeatureExtractor featExtrac = null;
+//		try {
+//			featExtrac = new ComboFeatureExtractor(
+//					//new WordType3gramsFreqExtractor("config/n-grami-najcesci.txt", false)
+//					//new FunctionWordOccurNumExtractor("config/fwords.txt")
+//					new FunctionWordOccurNumExtractor("config/fwords.txt")
+//			);
+//		} catch (Exception e) {
+//			System.err.println("Greška! " + e.getMessage());
+//			System.exit(-1);
+//		}
 		
 //		smth();
 		//smth2();
 		
+		List<IFeatureExtractor> featExtractors = createFeatureSets(args[0]);
+		int idx = 1;
+		for (IFeatureExtractor fe : featExtractors) {
+			System.out.println(idx + ": " + fe.getName());
+			idx++;
+		}
 //		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac, true, 16.0, 0.25);
 //		preformExperiment(featExtrac, trainer, "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train.xml", "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.test.xml");
-		findParams("blogovi_", "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train.xml", featExtrac);
+		findParams("blogovi_", "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train.xml", featExtractors.toArray(new IFeatureExtractor[0]));
 		// Za koristiti ovaj test treba povećati java heap! VM params u runu, npr. -Xms512m -Xmx1024m 
 //		IFeatureExtractor fe1 = null;
 //		IFeatureExtractor fe2 = null;
