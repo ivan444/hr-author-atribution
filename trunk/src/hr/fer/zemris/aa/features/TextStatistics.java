@@ -493,8 +493,8 @@ public class TextStatistics implements Iterable<String> {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		List<Article> list = XMLMiner.getArticles("podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05.train.xml");
-		calcIdf("config/fwords.txt", list, "config/fw-idf.txt");
+		List<Article> list = XMLMiner.getArticles("podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train.xml");
+		calcIdf("config/fwords.txt", list, "config/fw-idf_blogovi.txt");
 		//printAllType3grams("podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.train.xml", "n-grami.txt");
 	}
 	

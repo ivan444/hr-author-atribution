@@ -1,4 +1,6 @@
-# Lista svih skupova značajki
+# Lista svih skupova značajki.
+# "#" je komentar, "!" je oznaka sufiksa konfig datoteka (npr. fw-idf_blog.txt)
+!_blogovi
 F
 I
 C
