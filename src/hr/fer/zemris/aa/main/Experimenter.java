@@ -5,7 +5,9 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordGroupFreqExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
+import hr.fer.zemris.aa.features.impl.FunctionWordTFIDFExtractor;
 import hr.fer.zemris.aa.features.impl.MorphosyntaticFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.PunctuationMarksExtractor;
 import hr.fer.zemris.aa.features.impl.SentenceBasedFeatureExtractor;
@@ -20,12 +22,16 @@ import hr.fer.zemris.aa.recognizers.impl.LibsvmRecognizer;
 import hr.fer.zemris.aa.xml.XMLMiner;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 import org.jdom.JDOMException;
@@ -159,6 +165,68 @@ public class Experimenter {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Stvaranje vektora značajki po konfig datoteci.
+	 * @param configPath
+	 * @return
+	 * @throws FileNotFoundException
+	 */
+	public static List<IFeatureExtractor> createFeatureSets(String configPath) throws FileNotFoundException {
+		Scanner s = new Scanner(new FileInputStream(configPath));
+		String sufix = null;
+		while (s.hasNextLine()) {
+			String line = s.nextLine();
+			System.out.println(line);
+			if (line.startsWith("#")) continue;
+			else if (line.startsWith("!") && line.length() > 1) {
+				sufix = line.substring(1);
+				break;
+			} else {
+				System.err.println("Sufiks nije definiran!");
+				System.exit(-1);
+			}
+		}
+		
+		List<IFeatureExtractor> allFeatures = new LinkedList<IFeatureExtractor>();
+		while (s.hasNextLine()) {
+			String line = s.nextLine();
+			line = line.trim();
+			if (line.equals("")) continue;
+			
+			String[] strFeat = line.split(",");
+			IFeatureExtractor[] features = new IFeatureExtractor[strFeat.length];
+			
+			for (int i = 0; i < strFeat.length; i++) {
+				if (strFeat[i].equals("F")) {
+					
+				} else if (strFeat[i].equals("F")) {
+					features[i] = new FunctionWordOccurNumExtractor("config/fwords.txt");
+				} else if (strFeat[i].equals("I")) {
+					features[i] = new FunctionWordTFIDFExtractor("config/fw-idf"+sufix+".txt");
+				} else if (strFeat[i].equals("C")) {
+					features[i] = new FunctionWordGroupFreqExtractor(new File("config/fwords.txt"));
+				} else if (strFeat[i].equals("P")) {
+					features[i] = new PunctuationMarksExtractor(new File("config/marks.txt"));
+				} else if (strFeat[i].equals("V")) {
+					features[i] = new VowelsExtractor();
+				} else if (strFeat[i].equals("L")) {
+					features[i] = new WordLengthFeatureExtractor();
+				} else if (strFeat[i].equals("S")) {
+					features[i] = new SentenceBasedFeatureExtractor(20);
+				} else if (strFeat[i].equals("N1")) {
+					features[i] = new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true);
+				} else if (strFeat[i].equals("N2")) {
+					features[i] = new WordType3gramsFreqExtractor("config/n-grami-najcesci"+sufix+".txt", false);
+				} else if (strFeat[i].equals("M")) {
+					features[i] = new MorphosyntaticFeatureExtractor();
+				} 
+			}
+			allFeatures.add(new ComboFeatureExtractor(features));
+		}
+		
+		return allFeatures;
 	}
 	
 	public static void preformExperiment(IFeatureExtractor featExtrac, RecognizerTrainer trainer, String trainDataPath, String testDataPath) {
@@ -478,11 +546,13 @@ public class Experimenter {
 		System.out.println("Započelo traženje parametara!");
 		for (int i = 0; i < arrFeatExtrac.length; i++) {
 			System.out.println("### FeatureExtractor: " + arrFeatExtrac[i].getName());
+			System.out.println("Vrijeme početka: " + new Date());
 			List<FeatureClass> trainData = loadTrainData(trainDataPath, arrFeatExtrac[i]);
 			LibsvmRecognizer svm = new LibsvmRecognizer(arrFeatExtrac[i], true);
 //			BufferedWriter writer = new BufferedWriter(new FileWriter(prefix+arrFeatExtrac[i].getName()));
 			svm.gridSearch(trainData, null);
 //			writer.close();
+			System.out.println("Vrijeme završetka: " + new Date());
 			System.out.println();
 			svm = null;
 			trainData = null;
@@ -491,23 +561,24 @@ public class Experimenter {
 	}
 
 	public static void main(String[] args) throws IOException {
-//		IFeatureExtractor featExtrac = null;
-//		try {
-//			featExtrac = new ComboFeatureExtractor(
-//					new WordType3gramsFreqExtractor("config/n-grami-najcesci.txt", false)
-//			);
-//		} catch (Exception e) {
-//			System.err.println("Greška! " + e.getMessage());
-//			System.exit(-1);
-//		}
+		IFeatureExtractor featExtrac = null;
+		try {
+			featExtrac = new ComboFeatureExtractor(
+					//new WordType3gramsFreqExtractor("config/n-grami-najcesci.txt", false)
+					//new FunctionWordOccurNumExtractor("config/fwords.txt")
+					new FunctionWordOccurNumExtractor("config/fwords.txt")
+			);
+		} catch (Exception e) {
+			System.err.println("Greška! " + e.getMessage());
+			System.exit(-1);
+		}
 		
-//		preformExperiment("", "podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.train.xml", featExtrac);
-		smth();
+//		smth();
 		//smth2();
 		
 //		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac, true, 16.0, 0.25);
-//		preformExperiment(featExtrac, trainer, "podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.test.xml");
-		
+//		preformExperiment(featExtrac, trainer, "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train.xml", "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.test.xml");
+		findParams("blogovi_", "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train.xml", featExtrac);
 		// Za koristiti ovaj test treba povećati java heap! VM params u runu, npr. -Xms512m -Xmx1024m 
 //		IFeatureExtractor fe1 = null;
 //		IFeatureExtractor fe2 = null;
