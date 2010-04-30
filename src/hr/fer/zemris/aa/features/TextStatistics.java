@@ -452,7 +452,7 @@ public class TextStatistics implements Iterable<String> {
 	
 	public static void printAllType3grams(String filePath, String datOut) throws Exception {
 		
-		Set<String> validWords = new HashSet<String>(listWords("config/ngram-najcesci.txt"));
+//		Set<String> validWords = new HashSet<String>(listWords("config/ngram-najcesci.txt"));
 		List<Article> list = XMLMiner.getArticles(filePath);
 		List<String> types = new LinkedList<String>();
 		
@@ -474,16 +474,16 @@ public class TextStatistics implements Iterable<String> {
 				System.out.println("NG: " + ngidx + "/" + typesArr.length);
 			}
 			ngidx++;
-			if (validWords.contains(typesArr[i])
-					&& validWords.contains(typesArr[i+1])
-					&& validWords.contains(typesArr[i+2])) {
+//			if (validWords.contains(typesArr[i])
+//					&& validWords.contains(typesArr[i+1])
+//					&& validWords.contains(typesArr[i+2])) {
 				Text3gram tg = new TextStatistics.Text3gram(typesArr[i], typesArr[i+1], typesArr[i+2]);
 				Integer count = ngrams.get(tg);
 				if (count == null) count = Integer.valueOf(1);
 				else count++;
 				ngrams.put(tg, count);
 //				writer.write(typesArr[i] + "\t" + typesArr[i+1] + "\t" + typesArr[i+2] + "\n");
-			}
+//			}
 		}
 		
 		for (Text3gram nk : ngrams.keySet()) {
@@ -493,9 +493,13 @@ public class TextStatistics implements Iterable<String> {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		List<Article> list = XMLMiner.getArticles("podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train.xml");
-		calcIdf("config/fwords.txt", list, "config/fw-idf_blogovi.txt");
-		//printAllType3grams("podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.train.xml", "n-grami.txt");
+		List<Article> list = XMLMiner.getArticles("podatci-skripta/forum-hr_tagged.train.xml");
+		calcIdf("config/fwords.txt", list, "config/fw-idf_forum.txt");
+		//printAllType3grams("podatci-skripta/forum-hr_tagged.train.xml", "n-grami_forum.txt");
+		// Nakon printAllType3grams potrebno je:
+		// - sortirati po 4. stupcu (sort -n -k4 -r n-grami_forum.txt > n-grami_forum.txt_s)
+		// - uzeti 500 najfrekventnijih (head -n500 n-grami_forum.txt_s > n-grami_forum.txt)
+		// - ukloniti 4. stupac (cut -f1,2,3 n-grami_forum.txt > config/n-grami-najcesci_forum.txt) <- ova nije testirana!
 	}
 	
 	private static class Text3gram {
