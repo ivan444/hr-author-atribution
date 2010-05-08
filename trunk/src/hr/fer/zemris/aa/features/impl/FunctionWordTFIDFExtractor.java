@@ -63,6 +63,11 @@ public class FunctionWordTFIDFExtractor implements IFeatureExtractor {
 	public String getName() {
 		return "FunctionWordsTFIDF";
 	}
+
+	@Override
+	public String getShortName() {
+		return "I";
+	}
 	
 	
 

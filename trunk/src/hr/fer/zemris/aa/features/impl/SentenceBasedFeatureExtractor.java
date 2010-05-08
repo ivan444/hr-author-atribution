@@ -53,4 +53,9 @@ public class SentenceBasedFeatureExtractor implements IFeatureExtractor {
 		return "SentenceBasedFeatureExtractor";
 	}
 
+	@Override
+	public String getShortName() {
+		return "S";
+	}
+
 }

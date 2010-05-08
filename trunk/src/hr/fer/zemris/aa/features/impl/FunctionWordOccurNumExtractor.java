@@ -65,4 +65,9 @@ public class FunctionWordOccurNumExtractor implements IFeatureExtractor {
 	public String getName() {
 		return "FunctionWordOccurNumExtractor";
 	}
+
+	@Override
+	public String getShortName() {
+		return "F";
+	}
 }

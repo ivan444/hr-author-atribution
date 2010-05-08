@@ -50,4 +50,14 @@ public class ComboFeatureExtractor implements IFeatureExtractor {
 		return sb.toString();
 	}
 
+	@Override
+	public String getShortName() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < extractors.length; i++) {
+			if (i != 0) sb.append(",");
+			sb.append(extractors[i].getShortName());
+		}
+		return sb.toString();
+	}
+
 }

@@ -35,4 +35,9 @@ public class VowelsExtractor implements IFeatureExtractor {
 		return "VowelsExtractor";
 	}
 
+	@Override
+	public String getShortName() {
+		return "V";
+	}
+
 }
