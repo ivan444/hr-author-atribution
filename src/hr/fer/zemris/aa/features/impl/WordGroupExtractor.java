@@ -62,4 +62,9 @@ public class WordGroupExtractor implements IFeatureExtractor {
 		return "WordGroupExtractor";
 	}
 
+	@Override
+	public String getShortName() {
+		return "C";
+	}
+
 }

@@ -16,7 +16,6 @@ import hr.fer.zemris.aa.features.Descriptor.Person;
 import hr.fer.zemris.aa.features.Descriptor.Special;
 
 public class MorphosyntaticFeatureExtractor implements IFeatureExtractor {
-
 	
 	//ocajno rjesenje :D
 	int size = 22;
@@ -115,6 +114,11 @@ public class MorphosyntaticFeatureExtractor implements IFeatureExtractor {
 	@Override
 	public String getName() {
 		return "MorphosyntacticFeatureExtractor";
+	}
+
+	@Override
+	public String getShortName() {
+		return "M";
 	}
 
 }

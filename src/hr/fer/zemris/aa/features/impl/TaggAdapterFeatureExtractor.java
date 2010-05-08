@@ -32,4 +32,9 @@ public class TaggAdapterFeatureExtractor implements IFeatureExtractor {
 		return extractor.getName();
 	}
 
+	@Override
+	public String getShortName() {
+		return extractor.getShortName();
+	}
+
 }

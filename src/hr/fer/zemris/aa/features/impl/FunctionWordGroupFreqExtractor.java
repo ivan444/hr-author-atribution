@@ -112,4 +112,9 @@ public class FunctionWordGroupFreqExtractor implements IFeatureExtractor {
 		return "FunctionWordGroupFreqExtractor";
 	}
 
+	@Override
+	public String getShortName() {
+		return "CF";
+	}
+
 }

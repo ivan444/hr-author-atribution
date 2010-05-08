@@ -4,6 +4,9 @@ import hr.fer.zemris.aa.features.FeatureVector;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.TextStatistics;
 
+/**
+ * Frekvencije duljina riječi.
+ */
 public class WordLengthFeatureExtractor implements IFeatureExtractor {
 
 	@Override
@@ -43,6 +46,11 @@ public class WordLengthFeatureExtractor implements IFeatureExtractor {
 	@Override
 	public String getName() {
 		return "WordLengthFeatureExtractor";
+	}
+
+	@Override
+	public String getShortName() {
+		return "L";
 	}
 
 }

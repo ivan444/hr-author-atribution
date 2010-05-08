@@ -5,7 +5,6 @@ import hr.fer.zemris.aa.features.FeatureClass;
 import hr.fer.zemris.aa.features.FeatureGenerator;
 import hr.fer.zemris.aa.features.IFeatureExtractor;
 import hr.fer.zemris.aa.features.impl.ComboFeatureExtractor;
-import hr.fer.zemris.aa.features.impl.FunctionWordGroupFreqExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordOccurNumExtractor;
 import hr.fer.zemris.aa.features.impl.FunctionWordTFIDFExtractor;
 import hr.fer.zemris.aa.features.impl.MorphosyntaticFeatureExtractor;
@@ -25,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,7 +40,6 @@ import org.jdom.JDOMException;
  * Razred za eksperimentiranje s različitim parametrima.
  * Slobodno proširiti po volji i potrebi.
  * 
- * @author Ivan Krišto
  */
 public class Experimenter {
 	
@@ -144,7 +143,6 @@ public class Experimenter {
 		System.out.println("Testiranje je završilo!");
 		System.out.println("Uspješnost: " + precision + " (" + hits + "/" + misses + ").");
 		System.out.println(f1/testData.size());
-		
 		return precision;
 	}
 	
@@ -191,68 +189,125 @@ public class Experimenter {
 		List<IFeatureExtractor> allFeatures = new LinkedList<IFeatureExtractor>();
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
-			line = line.trim();
-			if (line.equals("")) continue;
-			
-			String[] strFeat = line.split(",");
-			IFeatureExtractor[] features = new IFeatureExtractor[strFeat.length];
-			
-			boolean tagged = false;
-			for (int i = 0; i < strFeat.length; i++) {
-				if (strFeat[i].equals("M") || strFeat[i].equals("N1") || strFeat[i].equals("N2")) {
-					tagged = true;
-				}
-			}
-			for (int i = 0; i < strFeat.length; i++) {
-				if (strFeat[i].equals("F")) {
-					features[i] = new FunctionWordOccurNumExtractor("config/fwords.txt");
-					if (tagged) {
-						features[i] = new TaggAdapterFeatureExtractor(features[i]);
-					}
-				} else if (strFeat[i].equals("I")) {
-					features[i] = new FunctionWordTFIDFExtractor("config/fw-idf"+sufix+".txt");
-					if (tagged) {
-						features[i] = new TaggAdapterFeatureExtractor(features[i]);
-					}
-				} else if (strFeat[i].equals("C")) {
-					features[i] = new FunctionWordGroupFreqExtractor(new File("config/fwords.txt"));
-					if (tagged) {
-						features[i] = new TaggAdapterFeatureExtractor(features[i]);
-					}
-				} else if (strFeat[i].equals("P")) {
-					features[i] = new PunctuationMarksExtractor(new File("config/marks.txt"));
-					if (tagged) {
-						features[i] = new TaggAdapterFeatureExtractor(features[i]);
-					}
-				} else if (strFeat[i].equals("V")) {
-					features[i] = new VowelsExtractor();
-					if (tagged) {
-						features[i] = new TaggAdapterFeatureExtractor(features[i]);
-					}
-				} else if (strFeat[i].equals("L")) {
-					features[i] = new WordLengthFeatureExtractor();
-					if (tagged) {
-						features[i] = new TaggAdapterFeatureExtractor(features[i]);
-					}
-				} else if (strFeat[i].equals("S")) {
-					features[i] = new SentenceBasedFeatureExtractor(20);
-					if (tagged) {
-						features[i] = new TaggAdapterFeatureExtractor(features[i]);
-					}
-				} else if (strFeat[i].equals("N1")) {
-					features[i] = new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true);
-				} else if (strFeat[i].equals("N2")) {
-					features[i] = new WordType3gramsFreqExtractor("config/n-grami-najcesci"+sufix+".txt", false);
-				} else if (strFeat[i].equals("M")) {
-					features[i] = new MorphosyntaticFeatureExtractor();
-				} 
-			}
-			allFeatures.add(new ComboFeatureExtractor(features));
+			ComboFeatureExtractor feat = createFeature(line, sufix);
+			if (feat == null) continue;
+			else allFeatures.add(feat);
 		}
 		
 		return allFeatures;
 	}
 	
+	/**
+	 * Stvaranje skupova za testiranje po konfig datoteci.
+	 * @param configPath
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws ParseException 
+	 */
+	public static List<TestSet> createTestSets(String configPath) throws FileNotFoundException, ParseException {
+		Scanner s = new Scanner(new FileInputStream(configPath));
+		String sufix = null;
+		int lineNum = 0;
+		while (s.hasNextLine()) {
+			String line = s.nextLine();
+			lineNum++;
+			if (line.startsWith("#")) continue;
+			else if (line.startsWith("!") && line.length() > 1) {
+				sufix = line.substring(1);
+				break;
+			} else {
+				System.err.println("Sufiks nije definiran!");
+				System.exit(-1);
+			}
+		}
+		
+		List<TestSet> allTests = new LinkedList<TestSet>();
+		while (s.hasNextLine()) {
+			String line = s.nextLine();
+			lineNum++;
+			line = line.trim();
+			if (line.equals("")) continue;
+			String[] parts = line.split(" ");
+			if (parts.length != 3) throw new ParseException("Konfig datoteka je neispravna!", lineNum);
+			
+			ComboFeatureExtractor feat = createFeature(parts[0], sufix);
+			if (feat == null) throw new ParseException("Konfig datoteka je neispravna (ne postoji značajka)!", lineNum);
+			
+			double c = Double.parseDouble(parts[1]);
+			double gamma = Double.parseDouble(parts[2]);
+			
+			allTests.add(new TestSet(c, gamma, feat));
+		}
+		
+		return allTests;
+	}
+	
+	/**
+	 * Stvaranje vektora značajki iz konfiguracijskog stringa (jedna linija).
+	 * 
+	 * @param line Linija s opisom vektora (npr. P,F).
+	 * @param sufix Sufiks skupa za treniranje (npr. _blogovi)
+	 * @return null ako je konfiguracijski string prazan, inače stvorena (Combo) značajka.
+	 * @throws FileNotFoundException Ukoliko neka konfig datoteka nedostaje.
+	 */
+	private static ComboFeatureExtractor createFeature(String line, String sufix) throws FileNotFoundException {
+		line = line.trim();
+		if (line.equals("")) return null;
+		
+		String[] strFeat = line.split(",");
+		IFeatureExtractor[] features = new IFeatureExtractor[strFeat.length];
+		
+		boolean tagged = false;
+		for (int i = 0; i < strFeat.length; i++) {
+			if (strFeat[i].equals("M") || strFeat[i].equals("N1") || strFeat[i].equals("N2") || strFeat[i].equals("C")) {
+				tagged = true;
+			}
+		}
+		for (int i = 0; i < strFeat.length; i++) {
+			if (strFeat[i].equals("F")) {
+				features[i] = new FunctionWordOccurNumExtractor("config/fwords.txt");
+				if (tagged) {
+					features[i] = new TaggAdapterFeatureExtractor(features[i]);
+				}
+			} else if (strFeat[i].equals("I")) {
+				features[i] = new FunctionWordTFIDFExtractor("config/fw-idf"+sufix+".txt");
+				if (tagged) {
+					features[i] = new TaggAdapterFeatureExtractor(features[i]);
+				}
+			} else if (strFeat[i].equals("C")) {
+				features[i] = new WordGroupExtractor();
+			} else if (strFeat[i].equals("P")) {
+				features[i] = new PunctuationMarksExtractor(new File("config/marks.txt"));
+				if (tagged) {
+					features[i] = new TaggAdapterFeatureExtractor(features[i]);
+				}
+			} else if (strFeat[i].equals("V")) {
+				features[i] = new VowelsExtractor();
+				if (tagged) {
+					features[i] = new TaggAdapterFeatureExtractor(features[i]);
+				}
+			} else if (strFeat[i].equals("L")) {
+				features[i] = new WordLengthFeatureExtractor();
+				if (tagged) {
+					features[i] = new TaggAdapterFeatureExtractor(features[i]);
+				}
+			} else if (strFeat[i].equals("S")) {
+				features[i] = new SentenceBasedFeatureExtractor(20);
+				if (tagged) {
+					features[i] = new TaggAdapterFeatureExtractor(features[i]);
+				}
+			} else if (strFeat[i].equals("N1")) {
+				features[i] = new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true);
+			} else if (strFeat[i].equals("N2")) {
+				features[i] = new WordType3gramsFreqExtractor("config/n-grami-najcesci"+sufix+".txt", false);
+			} else if (strFeat[i].equals("M")) {
+				features[i] = new MorphosyntaticFeatureExtractor();
+			} 
+		}
+		
+		return new ComboFeatureExtractor(features);
+	}
+
 	public static void preformExperiment(IFeatureExtractor featExtrac, RecognizerTrainer trainer, String trainDataPath, String testDataPath) {
 		System.out.println("Započeo eksperiment!");
 		List<FeatureClass> trainData = loadTrainData(trainDataPath, featExtrac);
@@ -281,86 +336,25 @@ public class Experimenter {
 		}
 	}
 	
-	public static void smth() throws FileNotFoundException {
-		IFeatureExtractor[] arrFeatExtrac = new IFeatureExtractor[6];
-		double[] Cs = new double[6];
-		double[] gammas = new double[6];
+	/**
+	 * Izvođenje eksperimenata iz pripremljenih test setova.
+	 * 
+	 * @param testSets
+	 * @param trainDataPath
+	 * @param testDataPath
+	 */
+	public static void preformTestSetsExperiments(List<TestSet> testSets, String trainDataPath, String testDataPath) {
+		int idx = 1;
+		for (TestSet testSet : testSets) {
+			System.out.println(idx + ": " + testSet);
+			idx++;
+		}
 		
-//		arrFeatExtrac[0] = new FunctionWordTFIDFExtractor("config/fw-idf.txt");
-//		Cs[0] = 8192.0;
-//		gammas[0] = 0.125;
-//		
-		arrFeatExtrac[1] = new PunctuationMarksExtractor(new File("config/marks.txt"));
-		Cs[1] = 8192.0;
-		gammas[1] = 0.125;
-		
-		arrFeatExtrac[2] = new VowelsExtractor();
-		Cs[2] = 128.0;
-		gammas[2] = 0.125;
-		
-		arrFeatExtrac[3] = new WordLengthFeatureExtractor();
-		Cs[3] = 128.0;
-		gammas[3] = 0.125;
-		
-		arrFeatExtrac[4] = new FunctionWordOccurNumExtractor("config/fwords.txt");
-		Cs[4] = 8192.0;
-		gammas[4] = 0.125;
-		
-		arrFeatExtrac[5] = new SentenceBasedFeatureExtractor(20);
-		Cs[5] = 128.0;
-		gammas[5] = 0.125;
-//		
-//		arrFeatExtrac[6] = new ComboFeatureExtractor(
-//				new PunctuationMarksExtractor(new File("config/marks.txt")),
-//				new FunctionWordOccurNumExtractor("config/fwords.txt")
-//		);
-//		Cs[6] = 8.0;
-//		gammas[6] = 0.03125;
-//		
-//		arrFeatExtrac[7] = new ComboFeatureExtractor(
-//				new PunctuationMarksExtractor(new File("config/marks.txt")),
-//				new FunctionWordOccurNumExtractor("config/fwords.txt"),
-//				new WordLengthFeatureExtractor()
-//		);
-//		Cs[7] = 128.0;
-//		gammas[7] = 0.03125;
-//		
-		arrFeatExtrac[0] = new ComboFeatureExtractor(
-				new SentenceBasedFeatureExtractor(20),
-				new PunctuationMarksExtractor(new File("config/marks.txt")),
-				new FunctionWordOccurNumExtractor("config/fwords.txt"),
-				new WordLengthFeatureExtractor()
-		);
-		Cs[0] = 128.0;
-		gammas[0] = 0.03125;
-//		
-//		arrFeatExtrac[9] = new ComboFeatureExtractor(
-//				new SentenceBasedFeatureExtractor(20),
-//				new PunctuationMarksExtractor(new File("config/marks.txt")),
-//				new FunctionWordOccurNumExtractor("config/fwords.txt"),
-//				new VowelsExtractor(),
-//				new WordLengthFeatureExtractor()
-//		);
-//		Cs[9] = 128.0;
-//		gammas[9] = 0.03125;
-		
-		String testDataPath = "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.test.xml";
-		String trainDataPath = "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train.xml";
-//		String testDataPath = "podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05.test.xml";
-//		String trainDataPath = "podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05.train.xml";
 		List<Article> testData = loadTestData(testDataPath);
-		for (int i = 0; i < arrFeatExtrac.length; i++) {
+		for (int i = 0; i < testSets.size(); i++) {
 			try {
-				System.out.println("### FeatureExtractor: " + arrFeatExtrac[i].getName());
-				List<FeatureClass> trainData = loadTrainData(trainDataPath, arrFeatExtrac[i]);
-				
-				RecognizerTrainer trainer = new LibsvmRecognizer(arrFeatExtrac[i], true, Cs[i], gammas[i]);
-				AuthorRecognizer recognizer = trainRecognizer(trainer, trainData);
-				testRecognizer(recognizer, testData);
-				System.out.println();
-				trainer = null;
-				recognizer = null;
-				trainData = null;
+				testSets.get(i).runTest(trainDataPath, testData);
+				testSets.set(i, null);
 				System.gc();
 			} catch (Exception e) {
 				System.err.println("Greška\n" + e.getMessage());
@@ -368,205 +362,19 @@ public class Experimenter {
 		}
 	}
 	
-	public static void smth2() throws FileNotFoundException {
-		IFeatureExtractor[] arrFeatExtrac = new IFeatureExtractor[5];
-		double[] Cs = new double[5];
-		double[] gammas = new double[5];
-//		SentenceBasedFeatureExtractor(20) + PunctuationMarksExtractor + WordType3grams(N2) + WordLengthFeatureExtractor
-//		0.8475912408759124: C = 8.0, gamma = 0.03125
-		
-		arrFeatExtrac[0] = new ComboFeatureExtractor(
-				new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
-				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-				new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
-				new WordGroupExtractor()
-		);
-		Cs[0] = 128.0;
-		gammas[0] = 0.03125;
-		
-		arrFeatExtrac[1] = new ComboFeatureExtractor(
-				new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
-				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-				new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
-				new WordType3gramsFreqExtractor("config/n-grami-najcesci.txt", false)
-		);
-		Cs[1] = 128.0;
-		gammas[1] = 0.03125;
-		
-		arrFeatExtrac[2] = new ComboFeatureExtractor(
-				new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
-				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-				new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
-				new MorphosyntaticFeatureExtractor(),
-				new WordGroupExtractor()
-		);
-		Cs[2] = 128.0;
-		gammas[2] = 0.03125;
-		
-		arrFeatExtrac[3] = new ComboFeatureExtractor(
-				new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
-				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-				new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
-				new MorphosyntaticFeatureExtractor(),
-				new WordType3gramsFreqExtractor("config/n-grami-najcesci.txt", false)
-		);
-		Cs[3] = 128.0;
-		gammas[3] = 0.03125;
-		
-		arrFeatExtrac[4] = new ComboFeatureExtractor(
-				new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
-				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-				new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
-				new MorphosyntaticFeatureExtractor(),
-				new WordGroupExtractor(),
-				new WordType3gramsFreqExtractor("config/n-grami-najcesci.txt", false)
-		);
-		Cs[4] = 128.0;
-		gammas[4] = 0.03125;
-		
-//		arrFeatExtrac[0] = new WordGroupExtractor();
-//		Cs[0] = 512.0;
-//		gammas[0] = 2.0;
-//		
-//		arrFeatExtrac[1] = new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true);
-//		Cs[1] = 512.0;
-//		gammas[1] = 0.125;
-//		
-//		arrFeatExtrac[2] = new WordType3gramsFreqExtractor("config/n-grami-najcesci.txt", false);
-//		Cs[2] = 512.0;
-//		gammas[2] = 0.125;
-//		
-//		arrFeatExtrac[1] = new MorphosyntaticFeatureExtractor();
-//		Cs[1] = 512.0;
-//		gammas[1] = 0.125;
-//		
-//		arrFeatExtrac[2] = new ComboFeatureExtractor(
-//				new WordGroupExtractor(),
-//				new MorphosyntaticFeatureExtractor()
-//		);
-//		Cs[2] = 8192.0;
-//		gammas[2] = 0.03125;
-//		
-//		arrFeatExtrac[5] = new ComboFeatureExtractor(
-//				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-//				new MorphosyntaticFeatureExtractor()
-//		);
-//		Cs[5] = 128.0;
-//		gammas[5] = 0.03125;
-		
-//		arrFeatExtrac[6] = new ComboFeatureExtractor(
-//				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-//				new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true)
-//		);
-//		Cs[6] = 128.0;
-//		gammas[6] = 0.03125;
-		
-//		arrFeatExtrac[7] = new ComboFeatureExtractor(
-//				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-//				new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", false)
-//		);
-//		Cs[7] = 128.0;
-//		gammas[7] = 0.03125;
-//		
-//		arrFeatExtrac[8] = new ComboFeatureExtractor(
-//				new TaggAdapterFeatureExtractor(new FunctionWordTFIDFExtractor("config/fw-idf.txt")),
-//				new MorphosyntaticFeatureExtractor()
-//		);
-//		Cs[8] = 128.0;
-//		gammas[8] = 0.03125;
-//		
-//		arrFeatExtrac[3] = new ComboFeatureExtractor(
-//				new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true),
-//				new MorphosyntaticFeatureExtractor()
-//		);
-//		Cs[3] = 128.0;
-//		gammas[3] = 0.03125;
-//		
-//		arrFeatExtrac[10] = new ComboFeatureExtractor(
-//				new TaggAdapterFeatureExtractor(new FunctionWordTFIDFExtractor("config/fw-idf.txt")),
-//				new MorphosyntaticFeatureExtractor(),
-//				new WordGroupExtractor()
-//		);
-//		Cs[10] = 128.0;
-//		gammas[10] = 0.03125;
-//		
-//		arrFeatExtrac[11] = new ComboFeatureExtractor(
-//				new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
-//				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-//				new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
-//				new MorphosyntaticFeatureExtractor()
-//		);
-//		Cs[11] = 32768.0;
-//		gammas[11] = 0.03125;
-//		
-//		arrFeatExtrac[12] = new ComboFeatureExtractor(
-//				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-//				new MorphosyntaticFeatureExtractor(),
-//				new WordGroupExtractor(),
-//				new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true)
-//		);
-//		Cs[12] = 128.0;
-//		gammas[12] = 0.03125;
-//		
-//		arrFeatExtrac[13] = new ComboFeatureExtractor(
-//				new TaggAdapterFeatureExtractor(new SentenceBasedFeatureExtractor(20)),
-//				new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
-//				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-//				new TaggAdapterFeatureExtractor(new VowelsExtractor()),
-//				new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
-//				new MorphosyntaticFeatureExtractor()
-//		);
-//		Cs[13] = 128.0;
-//		gammas[13] = 0.03125;
-//		
-//		arrFeatExtrac[14] = new ComboFeatureExtractor(
-//				new TaggAdapterFeatureExtractor(new SentenceBasedFeatureExtractor(20)),
-//				new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
-//				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-//				new TaggAdapterFeatureExtractor(new VowelsExtractor()),
-//				new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
-//				new MorphosyntaticFeatureExtractor(),
-//				new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true)
-//		);
-//		Cs[14] = 128.0;
-//		gammas[14] = 0.03125;
-//		
-//		arrFeatExtrac[15] = new ComboFeatureExtractor(
-//				new TaggAdapterFeatureExtractor(new SentenceBasedFeatureExtractor(20)),
-//				new TaggAdapterFeatureExtractor(new PunctuationMarksExtractor(new File("config/marks.txt"))),
-//				new TaggAdapterFeatureExtractor(new FunctionWordOccurNumExtractor("config/fwords.txt")),
-//				new TaggAdapterFeatureExtractor(new VowelsExtractor()),
-//				new TaggAdapterFeatureExtractor(new WordLengthFeatureExtractor()),
-//				new MorphosyntaticFeatureExtractor(),
-//				new WordType3gramsFreqExtractor("config/n-grami-cisti-najcesci.txt", true),
-//				new WordGroupExtractor()
-//		);
-//		Cs[15] = 128.0;
-//		gammas[15] = 0.03125;
-		
-		
-		String testDataPath = "podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.test.xml";
-		String trainDataPath = "podatci-skripta/jutarnji-kolumne-arhiva-2010-02-05_clean_tagged.train.xml";
-		List<Article> testData = loadTestData(testDataPath);
-		for (int i = 0; i < arrFeatExtrac.length; i++) {
-			try {
-				System.out.println("### FeatureExtractor: " + arrFeatExtrac[i].getName());
-				List<FeatureClass> trainData = loadTrainData(trainDataPath, arrFeatExtrac[i]);
-				RecognizerTrainer trainer = new LibsvmRecognizer(arrFeatExtrac[i], true, Cs[i], gammas[i]);
-				AuthorRecognizer recognizer = trainRecognizer(trainer, trainData);
-				testRecognizer(recognizer, testData);
-				System.out.println();
-				trainer = null;
-				recognizer = null;
-				trainData = null;
-				System.gc();
-			} catch (Exception e) {
-				System.err.println("Greška\n" + e.getMessage());
-			}
-		}
-	}
-	
+	/**
+	 * Cross-validacija - traženje najboljih parametara C i gamma za skup koji se nalazi na {@code trainDataPathu}.
+	 *  
+	 * @param prefix Prefiks datoteke za ispis.
+	 * @param trainDataPath
+	 * @param arrFeatExtrac
+	 * @throws IOException
+	 */
 	public static void findParams(String prefix, String trainDataPath, IFeatureExtractor ... arrFeatExtrac) throws IOException {
+		for (int i = 0; i < arrFeatExtrac.length; i++) {
+			System.out.println((i+1) + ": " + arrFeatExtrac[i].getName());
+		}
+		
 		System.out.println("Započelo traženje parametara!");
 		for (int i = 0; i < arrFeatExtrac.length; i++) {
 			try {
@@ -588,7 +396,7 @@ public class Experimenter {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ParseException {
 //		IFeatureExtractor featExtrac = null;
 //		try {
 //			featExtrac = new ComboFeatureExtractor(
@@ -601,53 +409,46 @@ public class Experimenter {
 //			System.exit(-1);
 //		}
 		
-//		smth();
-		//smth2();
-		
-		List<IFeatureExtractor> featExtractors = createFeatureSets(args[0]);
-		int idx = 1;
-		for (IFeatureExtractor fe : featExtractors) {
-			System.out.println(idx + ": " + fe.getName());
-			idx++;
-		}
+//		List<IFeatureExtractor> featExtractors = createFeatureSets(args[0]);
 //		RecognizerTrainer trainer = new LibsvmRecognizer(featExtrac, true, 16.0, 0.25);
 //		preformExperiment(featExtrac, trainer, "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train.xml", "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.test.xml");
-		findParams("blogovi_", "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train.xml", featExtractors.toArray(new IFeatureExtractor[0]));
-		// Za koristiti ovaj test treba povećati java heap! VM params u runu, npr. -Xms512m -Xmx1024m 
-//		IFeatureExtractor fe1 = null;
-//		IFeatureExtractor fe2 = null;
-//		IFeatureExtractor fe3 = null;
-//		IFeatureExtractor fe4 = null;
-//		IFeatureExtractor fe5 = null;
-//		IFeatureExtractor fe6 = null;
-//		
-//		try {
-//			fe1 = new PunctuationMarksExtractor(new File("config/marks.txt"));
-//			fe2 = new FunctionWordOccurNumExtractor("config/fwords.txt");
-//			fe3 = new VowelsExtractor();
-//			fe4 = new FunctionWordTFIDFExtractor("config/fw-idf.txt");
-//			fe5 = new WordLengthFeatureExtractor();
-//			fe6 = new FunctionWordGroupFreqExtractor(new File("config/fwords.txt"));
-//		} catch (FileNotFoundException e) {
-//			System.err.println("Greška! " + e.getMessage());
-//			System.exit(-1);
+//		findParams("blogovi_", "podatci-skripta/blog-hr-aa-arhiva-2010-04-02.short.train_tagged.xml", featExtractors.toArray(new IFeatureExtractor[0]));
+		
+		List<TestSet> testSets = createTestSets(args[0]);
+		preformTestSetsExperiments(testSets, args[1], args[2]);
+	}
+	
+	/**
+	 * Opisnik testa.
+	 */
+	private static class TestSet {
+		final private double C;
+		final private double gamma;
+		final private IFeatureExtractor featExtractor;
+		
+		public TestSet(double c, double gamma, IFeatureExtractor featExtractor) {
+			C = c;
+			this.gamma = gamma;
+			this.featExtractor = featExtractor;
+		}
+		
+//		public void runTest(String trainDataPath, String testDataPath) {
+//			List<Article> testData = loadTestData(testDataPath);
+//			runTest(trainDataPath, testData);
 //		}
-//		//preformMultiExperiment("podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.test.xml",
-//		preformMultiExperiment(args[0], args[1],
-//				fe1,fe2,fe3,fe4,fe5,fe6,
-//				new ComboFeatureExtractor(fe2, fe4),
-//				new ComboFeatureExtractor(fe3, fe4),
-//				new ComboFeatureExtractor(fe1, fe2, fe4),
-//				new ComboFeatureExtractor(fe1, fe2, fe3, fe4),
-//				new ComboFeatureExtractor(fe1, fe2, fe5),
-//				new ComboFeatureExtractor(fe1, fe3, fe5, fe4),
-//				new ComboFeatureExtractor(fe1, fe2, fe3, fe5),
-//				new ComboFeatureExtractor(fe1, fe2, fe3, fe4, fe5)
-//		);
 		
+		public void runTest(String trainDataPath, List<Article> testData) {
+			System.out.println("### FeatureExtractor: " + featExtractor.getName());
+			List<FeatureClass> trainData = loadTrainData(trainDataPath, featExtractor);
+			RecognizerTrainer trainer = new LibsvmRecognizer(featExtractor, true, C, gamma);
+			AuthorRecognizer recognizer = trainRecognizer(trainer, trainData);
+			testRecognizer(recognizer, testData);
+			System.out.println(featExtractor.getShortName());
+			System.out.println();
+		}
 		
-//		IFeatureExtractor feCom1 = new ComboFeatureExtractor(fe1, fe3, fe5, fe2);
-//		IFeatureExtractor feCom2 = new ComboFeatureExtractor(fe1, fe3, fe5, fe4);
-//		findParams("params_", "podatci-skripta/jutarnji-kolumne-arhiva-2009-11-14.train.xml", feCom1, feCom2);
+		public String toString() {
+			return featExtractor.getShortName() + " C:" + C + " gamma:" + gamma;
+		}
 	}
 }

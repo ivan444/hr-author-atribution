@@ -21,4 +21,10 @@ public interface IFeatureExtractor {
 	 */
 	String getName();
 	
+	/**
+	 * 
+	 * @return Kratki naziv ekstractora (jedno ili dva velika slova).
+	 */
+	String getShortName();
+	
 }

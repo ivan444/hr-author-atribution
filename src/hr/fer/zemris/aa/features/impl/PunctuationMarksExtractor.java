@@ -67,4 +67,9 @@ public class PunctuationMarksExtractor implements IFeatureExtractor {
 	public String getName() {
 		return "PunctuationMarksExtractor";
 	}
+
+	@Override
+	public String getShortName() {
+		return "P";
+	}
 }
