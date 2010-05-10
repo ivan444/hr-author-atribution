@@ -32,7 +32,7 @@ set of features than previously proposed. Secondly, we use three different
 data sets and compare the same features across those data sets to draw stronger
 conclusions. The data sets that we use consist of articles, blogs and books
 written in Croatian language. Finally, we employ a classification method based on
-a strong classifier. We use Support Vector Machine algorithm to learn classifiers
+a strong classifier. We use the Support Vector Machine algorithm to learn classifiers
 which achieve excellent results from 91\% accuracy and 91\% $F_1$ measure up to
 99\% accuracy and 99\% $F_1$ measure.
 
@@ -351,7 +351,7 @@ overfitting, we split the set by dates -- 20\% of the newest articles of each
 author are taken for testing (hold-out method). Therefore, the training set
 contains 3425 texts and the testing set 1146 texts.
 
-Second data set we used is a collection of on-line blogs. Blog authors were
+The second data set we used is a collection of on-line blogs. Blog authors were
 carefully selected: only those authors with more than 40 posts
 and posts longer than 500 words were considered. In addition, special attention
 was paid to select only posts that contain original information as authors often tend to
@@ -359,25 +359,25 @@ quote other sources like news, books, other authors, etc. As a result dataset
 consisting of 22 authors with a total of 3662 posts was obtained. An
 average number of words in a post is 846 words. For the testing purposes we
 split the data set by dates using the same technique that was applied to the
-articles. That resulted with training set containing 2715 posts and test set
+articles. That resulted with the training set containing 2715 posts and the test set
 containing 907 posts.
 
-Third data set we used is comprised of classics of Croatian literature. We have
+The third data set is comprised of classics of Croatian literature. We have
 selected 52 novels and novellas from 20 different authors and divided them by
 chapters, treating each chapter as a separate text (the same approach was used by
 Argamon et al.\ \cite{argamon2005measuring}). All chapters longer than 4000 words
 were further divided. That resulted with a total of 1149 texts, with an average
-of 2236 words in a text. The lowest average number of words in the text per
-author is 1407 words and the highest average is 3652 words. We have selected
-randomly 20\% of the texts from each author for the test set, leaving the rest as
+of 2236 words in a text. The lowest average number of words in a text per
+author is 1407 words and the highest average is 3652 words. We have randomly 
+selected 20\% of the texts from each author for the test set, leaving the rest as
 a training set.
 
-Last data set we used is a set of Internet forum (message board)
+The Last data set used is a set of Internet forum (message board)
 posts from \url{http://www.forum.hr}. We have selected all the posts from the threads in
 \textit{Politics} category. Initially there were 2269 different authors with a
 total of 64765 posts. Subsequently we have chosen only those authors that on
-average have more than 100 words per post and more than 64 posts in total. As the
-result, data set consisting of 19 authors and 4026 posts was obtained. Twenty
+average have more than 100 words per post and more than 64 posts in total. As a
+result, the data set consisting of 19 authors and 4026 posts was obtained. Twenty
 percent of the newest posts of each author were taken as the test set.
 
 \begin{table*}[htb]
@@ -436,11 +436,11 @@ First we tested all the features separately and then the same features in
 various combinations. Results of the evaluation
 are shown in Table \ref{tbl:eval}.
 
-Total accuracy does not explain the behavior of a classifier for every class by
+Total accuracy does not explain the behavior of the classifier for every class by
 itself. Therefore, precision and recall are calculated for each class and then
 used to calculate the total macro $F_1$ measure. For particular class $c$,
-precision is a ratio of the number of correctly classified documents in $c$ and
-the number of all documents which are classified as $c$. Recall is a ratio of the
+precision is the ratio of the number of correctly classified documents in $c$ and
+the number of all documents which are classified as $c$. Recall is the ratio of the
 number of correctly classified documents in $c$ and the number of all the
 documents truly in $c$. $F_1$ measure is calculated for every class $c_i$
 according to the following expression:
@@ -464,8 +464,7 @@ those that are based on function word frequencies as they have proven to be most
 successful. Furthermore, some of the features like function words and idf
 weighted function words are very similar and the evaluation of their combination
 would show no considerable improvements. Also, certain feature combinations made
-no significant contributions so we did not conduct further evaluation using
-those combinations.
+no significant contributions so we did not conduct further evaluation.
 
 As we can see from Table \ref{tbl:eval}, highest accuracies are achieved by
 using combination of simple features such as function words, punctuation marks
@@ -482,13 +481,13 @@ on Internet forum posts shows poor results as the texts considered are too short
 \section{Conclusion}
 It is shown that the authorship attribution problem, when applied to
 morphologically complex languages, such as the Croatian language, can be
-successfully solved using the combination of some relatively simple features. Our
+successfully solved using a combination of some relatively simple features. Our
 results with 91\%, 93\% and 99\% accuracy are quite notable considering the fact
 that different heterogeneous data sets were used. Evaluation on different data
 sets shows that the same feature combinations, based on function words,
 punctuation marks, word lengths, and sentence lengths frequencies achieve the
 highest results. Therefore, we conclude that those
-features are the most suitable features for the use in the task of authorship
+features are the most suitable features for use in the task of authorship
 attribution. In the similar work of Uzuner et al.\ \cite{uzuner2005comparative}
 on a smaller set of authors, fairly larger texts and with the use of
 different classifier similar results and conclusions are obtained. The direct comparison of
