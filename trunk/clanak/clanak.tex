@@ -28,12 +28,13 @@ level features and their combinations in automatic authorship attribution. Since
 the majority of text representation features are language specific, we examine
 their application on texts written in Croatian language. Our work differs from
 the similar work in at least three aspects. Firstly, we use slightly different
-set of features than previously proposed. Secondly, the data set we use contains much
-shorter texts written by more authors. More precisely, the data set consists of
-articles from a Croatian daily newspaper written by 25 authors. Finally, we
-employ a classification method based on a strong classifier. We use Support Vector
-Machine algorithm to learn classifiers which achieve excellent results of 93\%
-accuracy and 93\% $F_1$ measure.
+set of features than previously proposed. Secondly, we use three different
+data sets and compare the same features across those data sets to draw stronger
+conclusions. The data sets that we use consist of articles, blogs and books
+written in Croatian language. Finally, we employ a classification method based on
+a strong classifier. We use Support Vector Machine algorithm to learn classifiers
+which achieve excellent results from 91\% accuracy and 91\% $F_1$ measure up to
+99\% accuracy and 99\% $F_1$ measure.
 
 \vspace{10pt}
 \textbf{Key words:} author attribution, function words, POS \emph{n}-grams,
@@ -70,11 +71,11 @@ text belongs to a single known author or not.
 
 This paper presents a study of multi-class classification for the texts written
 in the Croatian language. The work is oriented on the combination and evaluation
-of different text representation features. The rest of the paper is organized in
-the following manner. Section 2 discusses related work in authorship attribution
+of different text representation features on different data sets. The rest of
+the paper is organized in the following manner. Section 2 discusses related work in authorship attribution
 and similar problems. Section 3 introduces different types of text representation
 features we have utilized. Section 4 describes the classification, Section 5
-describes the used data set and Section 6 presents evaluation methods and
+describes the used data sets and Section 6 presents evaluation methods and
 experiment results. The conclusion and future work are given in Section 7.
 
 \section{Related Work}
@@ -335,56 +336,49 @@ Parameters $(C, \gamma)$ that were considered are: $C \in \{2^{-5}, 2^{-4},
 
 \section{Data Set}
 \label{sec:podatci}
-We use three different datasets in our experimental evaluation. First we
-experimented using an online archive of \emph{proofread} articles (journals) from
-a daily Croatian newspaper ``Jutarnji list,'' available at
+We used three different data sets in our experimental evaluation. First we
+experimented using an on-line archive of \emph{proofread} articles (journals)
+from a daily Croatian newspaper ``Jutarnji list,'' available at
 \url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
 written by 25 different authors. The texts are not evenly distributed among
-authors. The number of texts per author in the used data set is shown in Figure
-\ref{fig:articlesPerAuthor}. The articles also differ in size -- the lowest
-average number of words in the text per author is 315 words, and the highest
-average is 1347 words. An average number of words in a text per author is 717
-words. Considering this analysis, we can conclude that the used data set is very
-heterogeneous. Since the writing topics in these articles tend to be
-time-specific, to avoid the overfitting, we split the set by dates -- 20\% of the
-newest articles of each author are taken for testing (hold-out method).
-Therefore, the training set contains 3425 texts and the testing set 1146 texts.
+authors -- numbers vary from 14 to 1285 texts per author with an average of 182
+texts per author. The articles also differ in size -- the lowest average number
+of words in the text per author is 315 words, and the highest average is 1347
+words. An average number of words in a text per author is 717 words. Considering
+this analysis, we can conclude that the used data set is very heterogeneous.
+Since the writing topics in these articles tend to be time-specific, to avoid the
+overfitting, we split the set by dates -- 20\% of the newest articles of each
+author are taken for testing (hold-out method). Therefore, the training set
+contains 3425 texts and the testing set 1146 texts.
 
-Second dataset we used is a collection of online blogs. Blog authors were
-carefully selected: only those authors with topic-independent blog posts were
-considered. Moreover, we have chosen only those authors with more than 40 posts
-and posts longer than 500 words. Finally, special attention was paid to select
-only posts that contain original information as authors often tend to
-quote other sources (news, books, other authors, etc.). As a result dataset
+Second data set we used is a collection of on-line blogs. Blog authors were
+carefully selected: only those authors with more than 40 posts
+and posts longer than 500 words were considered. In addition, special attention
+was paid to select only posts that contain original information as authors often tend to
+quote other sources like news, books, other authors, etc. As a result dataset
 consisting of 22 authors with a total of 3662 posts was obtained. An
-averege number of words in a post is 846 words. For the testing purposes we
-splitted the dataset by dates using the same technique that was applied to the
+average number of words in a post is 846 words. For the testing purposes we
+split the data set by dates using the same technique that was applied to the
 articles. That resulted with training set containing 2715 posts and test set
 containing 907 posts.
 
-Third dataset we used is comprised of classics of Croatian literature. We have
+Third data set we used is comprised of classics of Croatian literature. We have
 selected 52 novels and novellas from 20 different authors and divided them by
 chapters, treating each chapter as a separate text (the same approach was used by
-Argamon et al.\ \cite{argamon2005measuring}). That resulted with a total of 1149
-texts (chapters), with an average of 2236 words in a text. The lowest average
-number of words in the text per author is 1407 words and the highest average is
-3652 words. We have selected randomly 20\% of the texts from each
-author for the test set, leaving the rest as a training set.
+Argamon et al.\ \cite{argamon2005measuring}). All chapters longer than 4000 words
+were further divided. That resulted with a total of 1149 texts, with an average
+of 2236 words in a text. The lowest average number of words in the text per
+author is 1407 words and the highest average is 3652 words. We have selected
+randomly 20\% of the texts from each author for the test set, leaving the rest as
+a training set.
 
-Last dataset we used is a set of Internet forum (message board) posts from
-\url{http://www.forum.hr}. We have selected all the posts from the threads in
+Last data set we used is a set of Internet forum (message board)
+posts from \url{http://www.forum.hr}. We have selected all the posts from the threads in
 \textit{Politics} category. Initially there were 2269 different authors with a
 total of 64765 posts. Subsequently we have chosen only those authors that on
 average have more than 100 words per post and more than 64 posts in total. As the
-result dataset consists of 19 authors and 4026 posts altogether.
-
-
-\begin{minipage}{0.8\linewidth}
-\vspace{10pt}
-\centerline{\resizebox{0.7\linewidth}{!}{\input{figures/articlesPerAuthor}}}%
-\figcaption{Number of texts per author.}%
-\label{fig:articlesPerAuthor}
-\end{minipage}
+result, data set consisting of 19 authors and 4026 posts was obtained. Twenty
+percent of the newest posts of each author were taken as the test set.
 
 \begin{table*}[htb]
 \caption{Evaluation of Different Features}%
@@ -440,8 +434,7 @@ Classification success is measured by the ratio of correctly classified texts an
 the total number of texts in the training set i.e., micro average accuracy.
 First we tested all the features separately and then the same features in
 various combinations. Results of the evaluation
-are shown in Table \ref{tbl:eval}. Columns ``$C$'' and ``$\gamma$'' denote
-parameters of SVM classifier optimal for the selected features.
+are shown in Table \ref{tbl:eval}.
 
 Total accuracy does not explain the behavior of a classifier for every class by
 itself. Therefore, precision and recall are calculated for each class and then
@@ -475,32 +468,34 @@ no significant contributions so we did not conduct further evaluation using
 those combinations.
 
 As we can see from Table \ref{tbl:eval}, highest accuracies are achieved by
-using simple features such as function words, punctuation marks and words length
-frequencies. On the other hand the combinations of syntax-based features are
+using combination of simple features such as function words, punctuation marks
+and words length frequencies. On the other hand the combinations of syntax-based features are
 slightly less accurate. If we use the combination of function word and
 syntax-based features accuracy remains nearly the same as without the use of syntax-based
-features. Additionaly, we can also see that features based on function
-words achieve excellent results on different datasets, regardless of the form of
-the text, as long as the dataset used is comprised of texts that are
-sufficiently long. Therefore, we conclude that the features based on function
-words are the most suitable features for the use in the task of authorship
-attribution.
+features. We can also see that features based on function
+words frequencies achieve excellent results on different data sets, regardless
+of the form of the text, as long as the data set used is comprised of texts that
+are sufficiently large. By increasing the average text length we can
+see that classification results get higher. Consequently evaluation
+on Internet forum posts shows poor results as the texts considered are too short.
 
 \section{Conclusion}
 It is shown that the authorship attribution problem, when applied to
 morphologically complex languages, such as the Croatian language, can be
 successfully solved using the combination of some relatively simple features. Our
-results with 93\% accuracy are quite notable considering the fact that the data
-set used was very heterogeneous, with imbalanced distribution of texts over the
-authors (see Figure \ref{fig:articlesPerAuthor}) and the texts of a variable but
-rather small size (an average of 717 words per author). In the similar work of
-Uzuner et al.\ \cite{uzuner2005comparative} on a smaller set of authors, fairly
-larger texts and with the use of different classifier nearly the same results and
-conclusions are obtained. The direct comparison of the results has proved very
-difficult due to the different types of data sets used  and different number of
-authors considered. However, our results fall within the interval of previously
-reported results, which range from 70\% to 97\%
-\cite{coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer,uzuner2005comparative}.
+results with 91\%, 93\% and 99\% accuracy are quite notable considering the fact
+that different heterogeneous data sets were used. Evaluation on different data
+sets shows that the same feature combinations, based on function words,
+punctuation marks, word lengths, and sentence lengths frequencies achieve the
+highest results. Therefore, we conclude that those
+features are the most suitable features for the use in the task of authorship
+attribution. In the similar work of Uzuner et al.\ \cite{uzuner2005comparative}
+on a smaller set of authors, fairly larger texts and with the use of
+different classifier similar results and conclusions are obtained. The direct comparison of
+the results has proved very difficult due to the different types of data sets
+used  and different number of authors considered. However, our results fall
+within the interval of previously reported results, which range from 70\% to 99\%
+\cite{argamon2005measuring,coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer,uzuner2005comparative}.
 
 In addition, there are no other reported methods or results for the Croatian
 language, nor any of the related South Slavic languages, so our work presents a
@@ -511,8 +506,9 @@ get more accurate results of syntax-based features. Features based on word and
 character \emph{n}-grams, suggested in
 \cite{coyotl2006authorship,keselj2003n,peng2003language}, should be compared to
 features used in this work. Also, comparison to semantic based features
-should be conducted. Evaluation has to be performed on different types
-of data sets, such as poems, e-mails, on-line conversations, or books.
+should be conducted. It would be interesting to investigate other features
+that are able to cope with short texts such as Internet forum posts, e-mails,
+on-line conversations, or text messages.
 
 
 \section*{Acknowledgement}
