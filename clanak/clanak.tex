@@ -355,7 +355,7 @@ carefully selected: only those authors with topic-independent blog posts were
 considered. Moreover, we have chosen only those authors with more than 40 posts
 and posts longer than 500 words. Finally, special attention was paid to select
 only posts that contain original information as authors often tend to
-quote other sources (news, books, other authors, etc.~). As a result dataset
+quote other sources (news, books, other authors, etc.). As a result dataset
 consisting of 22 authors with a total of 3662 posts was obtained. An
 averege number of words in a post is 846 words. For the testing purposes we
 splitted the dataset by dates using the same technique that was applied to the
@@ -387,70 +387,51 @@ result dataset consists of 19 authors and 4026 posts altogether.
 \end{minipage}
 
 \begin{table*}[htb]
-\begin{center}
 \caption{Evaluation of Different Features}%
-\begin{tabular}{c c c c r@{.}l}%
+\centering
+\begin{tabular}{c c c c c c c}%
 \toprule%
-Features & Accuracy [\%] & Macro $F_1$ [\%] & $C$ &
-\multicolumn{2}{c}{$\gamma$}\\
+Features & \multicolumn{2}{c}{Newspapers} & \multicolumn{2}{c}{Blogs} & \multicolumn{2}{c}{Books}\\ 
+ & Acc [\%]\hspace{5pt} & $F_1$ [\%]\hspace{10pt} & Acc [\%]\hspace{5pt} & $F_1$ [\%]\hspace{10pt} & Acc [\%]\hspace{5pt} & $F_1$ [\%]\\
 \midrule
-Function Words ($\mathcal{F}$) & 88.39 & 87.38 & 8192 & 0 & 125\\
-Idf Weighted Function Words ($\mathcal{I}$) & 87.96 & 86.84 & 8192 & 0 & 125\\
-Word POS ($\mathcal{C}$) & 44.50 & 38.18 & 512 & 2 & 0\\
-Punctuation Marks ($\mathcal{P}$) & 57.50 & 52.93 & 8192 & 0 & 125\\
-Vowels ($\mathcal{V}$) & 30.54 & 16.24 & 128 & 0 & 125\\
-Words Length ($\mathcal{L}$) & 43.19 & 33.22 & 128 & 0 & 125\\
-Sentence Length ($\mathcal{S}$) & 40.49 & 33.70 & 128 & 0 & 125\\
-POS \emph{n}-grams -- 1st method ($\mathcal{N}_1$) & 71.29 &
-68.68 & 512 & 0 & 125\\
-POS \emph{n}-grams -- 2nd method ($\mathcal{N}_2$) & 76.09
-& 72.52 & 512 & 0 & 125\\
-Word Morphological Category ($\mathcal{M}$) & 61.17 & 58.91 & 512 & 0 & 125\\
-$\mathcal{C}$, $\mathcal{M}$ & 63.17 & 62.06 & 8192 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$ & 92.41 & 91.93 & 8 & 0 & 03125\\
-$\mathcal{F}$, $\mathcal{M}$ & 91.18 & 90.68 & 128 & 0 & 03125\\
-$\mathcal{F}$, $\mathcal{N}_1$ & 89.44 & 88.52 & 128 & 0 & 03125\\
-$\mathcal{F}$, $\mathcal{N}_2$ & 90.92 & 90.43 & 128 & 0 & 03125\\
-$\mathcal{F}$, $\mathcal{C}$ & 90.05 & 89.52 & 128 & 0 & 03125\\
-$\mathcal{I}$, $\mathcal{M}$ & 90.84 & 90.35 & 128 & 0 & 03125\\
-$\mathcal{N}_1$, $\mathcal{M}$ & 71.38 & 70.15 & 128 & 0 & 03125\\
-$\mathcal{I}$, $\mathcal{M}$, $\mathcal{C}$ & 91.36 & 90.89 & 128 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & \textbf{93.37} & 92.96 & 128 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$ & \textbf{93.46} &
-\textbf{93.09} & 32768 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{C}$ & 93.28 & 92.97 &
-128 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{N}_2$ & 90.31 & 89.24 &
-128 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$ &
-93.46 & \textbf{93.15} & 128 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_2$ &
-91.54 & 90.52 & 128 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$,
-$\mathcal{N}_2$ & 91.80 & 90.88 & 128 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 93.37 & 93.04 &
-128 & 0 & 03125\\
-$\mathcal{P}$, $\mathcal{C}$, $\mathcal{N}_2$,  $\mathcal{M}$ & 85.42 & 84.11 &
-2048 & 0 & 03125\\
-$\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 89.62 & 88.70 & 128 & 0
-& 03125\\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 92.67 & 92.18 & 128 & 0 &
-03125\\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{N}_2$, $\mathcal{L}$ & 83.33 & 81.68 & 8 & 0 &
-03125\\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ &
-93.19 & 92.85 & 128 & 0 & 03125\\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
-$\mathcal{M}$ & 93.19 & 92.88 & 128 & 0 & 03125\\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
-$\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 92.41 & 91.96 & 128 & 0 & 03125\\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
-$\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 92.41 &
-91.96 & 128 & 0 & 03125\\
+Function Words ($\mathcal{F}$) & 88.39 & 87.38 & 87.21 & 87.08 & 97.24 & 97.12 \\
+Idf Weighted Function Words ($\mathcal{I}$) & 87.96 & 86.84 & 87.10 & 86.94 & 97.24 & 97.11 \\
+Word POS ($\mathcal{C}$) & 44.50 & 38.18 & 34.95 & 29.85 & 38.97 & 33.63 \\
+Punctuation Marks ($\mathcal{P}$) & 57.50 & 52.93 & 60.64 & 59.35 & 76.55 & 76.31 \\
+Vowels ($\mathcal{V}$) & 30.54 & 16.24 & 25.58 & 21.84 & 42.41 & 39.72 \\
+Words Length ($\mathcal{L}$) & 43.19 & 33.22 & 38.59 & 35.11 & 47.24 & 44.15 \\
+Sentence Length ($\mathcal{S}$) & 40.49 & 33.70 & 28.00 & 21.79 & 25.86 & 20.12 \\
+POS \emph{n}-grams -- 1st method ($\mathcal{N}_1$) & 71.29 & 68.68 & 56.67 & 54.05 & 80.34 & 79.83 \\
+POS \emph{n}-grams -- 2nd method ($\mathcal{N}_2$) & 76.09 & 72.52 & 67.03 & 66.16 & 91.72 & 91.45 \\
+Word Morphological Category ($\mathcal{M}$) & 61.17 & 58.91 & 58.32 & 57.04 & 67.24 & 66.13 \\
+$\mathcal{C}$, $\mathcal{M}$ & 63.17 & 62.06 & 59.65 & 57.98 & 71.72 & 71.84 \\
+$\mathcal{P}$, $\mathcal{F}$ & 92.41 & 91.93 & 88.75 & 88.69 & 98.62 & 98.57 \\
+$\mathcal{F}$, $\mathcal{M}$ & 91.18 & 90.68 & 88.53 & 88.41 & 97.93 & 97.89 \\
+$\mathcal{F}$, $\mathcal{N}_1$ & 89.44 & 88.52 & 84.45 & 84.04 & 97.59 & 97.54 \\
+$\mathcal{F}$, $\mathcal{N}_2$ & 90.92 & 90.43 & 86.55 & 86.25 & 97.93 & 97.80 \\
+$\mathcal{F}$, $\mathcal{C}$ & 90.05 & 89.52 & 88.20 & 87.99 & 97.59 & 97.49 \\
+$\mathcal{I}$, $\mathcal{M}$ & 90.84 & 90.35 & 88.53 & 88.30 & 97.93 & 97.88 \\
+$\mathcal{N}_1$, $\mathcal{M}$ & 71.38 & 70.15 & 62.29 & 60.20 & 84.48 & 83.80 \\
+$\mathcal{I}$, $\mathcal{M}$, $\mathcal{C}$ & 91.36 & 90.89 & 88.31 & 88.16 & 97.93 & 97.81 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & \textbf{93.37} & 92.96 & 90.30 & 90.22 & 98.62 & 98.57 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$ & \textbf{93.46} & \textbf{93.09} & 90.85 & 90.65 & 98.28 & 98.23 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{C}$ & 93.28 & 92.97 & 89.97 & 89.87 & 98.62 & 98.57 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{N}_2$ & 90.31 & 89.24 & 87.32 & 87.21 & 98.28 & 98.14 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$ & 93.46 & \textbf{93.15} & 90.85 & 90.73 & 98.62 & 98.58 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_2$ & 91.54 & 90.52 & 88.09 & 87.95 & 98.28 & 98.14 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_2$ & 91.80 & 90.88 & 88.64 & 88.49 & 97.93 & 97.81 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 93.37 & 93.04 & 90.19 & 90.11 & 98.62 & 98.57 \\
+$\mathcal{P}$, $\mathcal{C}$, $\mathcal{N}_2$,  $\mathcal{M}$ & 85.42 & 84.11 & 73.87 & 73.06 & 94.14 & 94.02 \\
+$\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 89.62 & 88.70 & 86.11 & 85.69 & 98.62 & 98.57 \\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 92.67 & 92.18 & 91.29 & 91.23 & 99.66 & 99.65 \\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{N}_2$, $\mathcal{L}$ & 83.33 & 81.68 & 73.98 & 73.31 & 95.17 & 95.06 \\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 93.19 & 92.85 & 91.18 & 91.10 & 98.62 & 98.58 \\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$ & 93.19 & 92.88 & 91.51 & 91.38 & 98.62 & 98.57 \\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 92.41 & 91.96 & 89.08 & 88.71 & 98.28 & 98.23 \\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 92.41 & 91.96 & 89.75 & 89.44 & 98.28 & 98.23 \\
 \bottomrule
 \end{tabular}
 \label{tbl:eval}
-\end{center}
 \end{table*}
 
 \section{Evaluation}
