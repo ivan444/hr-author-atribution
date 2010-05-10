@@ -27,11 +27,11 @@ In this work we investigate the use of various character, lexical, and syntactic
 level features and their combinations in automatic authorship attribution. Since
 the majority of text representation features are language specific, we examine
 their application on texts written in Croatian language. Our work differs from
-the similar work in at least three aspects. Firstly, we use slighty different set
-of features than previously proposed. Secondly, the data set we use contains much
+the similar work in at least three aspects. Firstly, we use slightly different
+set of features than previously proposed. Secondly, the data set we use contains much
 shorter texts written by more authors. More precisely, the data set consists of
-articles from a Croatian daily newspaper written by 25 authors. Finaly, we employ
-a classification method based on a strong classifier. We use Support Vector
+articles from a Croatian daily newspaper written by 25 authors. Finally, we
+employ a classification method based on a strong classifier. We use Support Vector
 Machine algorithm to learn classifiers which achieve excellent results of 93\%
 accuracy and 93\% $F_1$ measure.
 
@@ -87,8 +87,8 @@ describe character, lexical and syntactic features in more depth and relate our
 work with the existing research.
 
 \emph{Character features} are the simplest text representation features. They
-consider text as a mere sequence of characters and are therby usable for any natural
-language or corpus. Various measures can be defined, such as
+consider text as a mere sequence of characters and are thereby usable for any
+natural language or corpus. Various measures can be defined, such as
 characters frequencies, digit frequencies, uppercase and lowercase character
 frequencies, punctuation marks frequencies, etc.\ \cite{de2001mining}. Another
 type of character based features, which has been proven as quite successful
@@ -106,7 +106,7 @@ features based on frequencies of different words, especially function words,
 can produce fairly better results
 \cite{argamon2005measuring,koppel2003exploiting,uzuner2005comparative,zhao2005effective}.
 Analogous to character \emph{n}-grams, word \emph{n}-gram features
-can be defined for which is shown to be quite successfull too
+can be defined for which is shown to be quite successful too
 \cite{coyotl2006authorship,keselj2003n}.
 
 The use of \emph{syntactic features} is governed by the idea that authors tend to
@@ -127,7 +127,7 @@ can be useful in authorship attribution.
 Our work is based on the composition and evaluation of various afore-mentioned
 text representation features. We use different character, lexical and syntactic
 features and adapt them for the use with the Croatian language. We use
-punctuation marks and wovels frequency as character features. Word length,
+punctuation marks and vowels frequency as character features. Word length,
 sentence length and function words frequencies are used as lexical features. For
 the syntax-based features we use those relatively similar to POS tag and POS tag
 \emph{n}-grams frequencies.
@@ -239,11 +239,11 @@ for nouns, \emph{form}, \emph{gender}, \emph{number}, \emph{person} for verbs an
 Moreover, each morphological category can take one of a number of different
 values, like for example noun can be in nominative, genitive, dative, accusative, vocative,
 locative, or instrumental case. Features we use are obtained by counting the
-number of occurences of different values for each morphological category and
+number of occurrences of different values for each morphological category and
 then normalizing them by the total number of words in the text. If, for example,
 a sentence consists of two nouns and an adjective in nominative case then the
-number of occurences of nominative case would be equal three and the normalized
-nominative case frequeny would equal one.
+number of occurrences of nominative case would be equal three and the normalized
+nominative case frequency would equal one.
 
 \subsection{Part-Of-Speech \emph{n}-grams}
 \label{sec:ngrami-tipova}
@@ -258,7 +258,7 @@ Since POS \emph{n}-gram features can produce very large dimensionality, only
 3-grams are considered. Example of an POS \emph{n}-gram on a word 3-gram ``Adam i
 Eva'' (``Adam and Eve'') is the ``noun conjunction noun'' trigram.
 
-Further, we invastigate the use of \emph{n}-grams on POS and function words in
+Further, we investigate the use of \emph{n}-grams on POS and function words in
 parallel. The nouns, verbs and adjectives in a given text are replaced by their
 POS. All the other words, which are considered to be the function words, are
 left as they were. Therefore the 3-gram ``Adam i Eva'' transforms to ``noun i
@@ -335,8 +335,9 @@ Parameters $(C, \gamma)$ that were considered are: $C \in \{2^{-5}, 2^{-4},
 
 \section{Data Set}
 \label{sec:podatci}
-We used an online archive of \emph{proofread} articles (journals) from a daily
-Croatian newspaper ``Jutarnji list,'' available at
+We use three different datasets in our experimental evaluation. First we
+experimented using an online archive of \emph{proofread} articles (journals) from
+a daily Croatian newspaper ``Jutarnji list,'' available at
 \url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
 written by 25 different authors. The texts are not evenly distributed among
 authors. The number of texts per author in the used data set is shown in Figure
@@ -344,12 +345,39 @@ authors. The number of texts per author in the used data set is shown in Figure
 average number of words in the text per author is 315 words, and the highest
 average is 1347 words. An average number of words in a text per author is 717
 words. Considering this analysis, we can conclude that the used data set is very
-heterogeneous.
+heterogeneous. Since the writing topics in these articles tend to be
+time-specific, to avoid the overfitting, we split the set by dates -- 20\% of the
+newest articles of each author are taken for testing (hold-out method).
+Therefore, the training set contains 3425 texts and the testing set 1146 texts.
 
-Since the writing topics in these articles tend to be time-specific, to avoid the
-overfitting, we split the set by dates -- 20\% of the newest articles of each author are
-taken for testing (hold-out method). Therefore, the training set contains 3425 texts
-and the testing set 1146 texts.
+Second dataset we used is a collection of online blogs. Blog authors were
+carefully selected: only those authors with topic-independent blog posts were
+considered. Moreover, we have chosen only those authors with more than 40 posts
+and posts longer than 500 words. Finally, special attention was paid to select
+only posts that contain original information as authors often tend to
+quote other sources (news, books, other authors, etc.~). As a result dataset
+consisting of 22 authors with a total of 3662 posts was obtained. An
+averege number of words in a post is 846 words. For the testing purposes we
+splitted the dataset by dates using the same technique that was applied to the
+articles. That resulted with training set containing 2715 posts and test set
+containing 907 posts.
+
+Third dataset we used is comprised of classics of Croatian literature. We have
+selected 52 novels and novellas from 20 different authors and divided them by
+chapters, treating each chapter as a separate text (the same approach was used by
+Argamon et al.\ \cite{argamon2005measuring}). That resulted with a total of 1149
+texts (chapters), with an average of 2236 words in a text. The lowest average
+number of words in the text per author is 1407 words and the highest average is
+3652 words. We have selected randomly 20\% of the texts from each
+author for the test set, leaving the rest as a training set.
+
+Last dataset we used is a set of internet forum (message board) posts from
+\url{http://www.forum.hr}. We have selected all the posts from the threads in
+\textit{Politics} category. Initialy there were 2269 different authors with a
+total of 64765 posts. Subsequently we have chosen only those authors that on
+average have more than 100 words per post and more than 64 posts in total. As the
+result dataset consists of 19 authors and 4026 posts altogether.
+
 
 \begin{minipage}{0.8\linewidth}
 \vspace{10pt}
@@ -369,7 +397,7 @@ Features & Accuracy [\%] & Macro $F_1$ [\%] & $C$ &
 Function Words ($\mathcal{F}$) & 88.39 & 87.38 & 8192 & 0 & 125\\
 Idf Weighted Function Words ($\mathcal{I}$) & 87.96 & 86.84 & 8192 & 0 & 125\\
 Word POS ($\mathcal{C}$) & 44.50 & 38.18 & 512 & 2 & 0\\
-Punctation Marks ($\mathcal{P}$) & 57.50 & 52.93 & 8192 & 0 & 125\\
+Punctuation Marks ($\mathcal{P}$) & 57.50 & 52.93 & 8192 & 0 & 125\\
 Vowels ($\mathcal{V}$) & 30.54 & 16.24 & 128 & 0 & 125\\
 Words Length ($\mathcal{L}$) & 43.19 & 33.22 & 128 & 0 & 125\\
 Sentence Length ($\mathcal{S}$) & 40.49 & 33.70 & 128 & 0 & 125\\
@@ -465,13 +493,17 @@ would show no considerable improvements. Also, certain feature combinations made
 no significant contributions so we did not conduct further evaluation using
 those combinations.
 
-As we can see from Table \ref{tbl:eval}, highest accuracies are achived by using
-simple features such as function words, punctuation marks and words length
+As we can see from Table \ref{tbl:eval}, highest accuracies are achieved by
+using simple features such as function words, punctuation marks and words length
 frequencies. On the other hand the combinations of syntax-based features are
 slightly less accurate. If we use the combination of function word and
 syntax-based features accuracy remains nearly the same as without the use of syntax-based
-features. Therefore, we conclude that the features based on function words are
-the most suitable features for the use in the task of authorship attribution.
+features. Additionaly, we can also see that features based on function
+words achieve excellent results on different datasets, regardless of the form of
+the text, as long as the dataset used is comprised of texts that are
+sufficiently long. Therefore, we conclude that the features based on function
+words are the most suitable features for the use in the task of authorship
+attribution.
 
 \section{Conclusion}
 It is shown that the authorship attribution problem, when applied to
