@@ -220,14 +220,7 @@ normalized by the total number of words in the text. The used POS tags are
 adverbs, adpositions, conjunctions, particles, interjections, nouns, verbs,
 adjectives, and pronouns. In addition, category ``unknown'' is introduced for all
 the words not found in the lexicon (names, places, etc.).
-% As an example, the sentence ``Adam je u vodi'' (``Adam is in the water'') would
-% be analyzed as follows: ``Adam\{U\} je\{P|V\} u\{S\} vodi\{N|V\}'' where
-% characters N, P, S, U, V denotate noun, pronoun, adposition, unknown, verb. We
-% can see that the method used for syntax analysis is ambiguous and does not solve
-% the problem with homographs like with ``je'' -- as the form of verb to be -- and
-% ``je'' -- as the form of pronoun ``she''. The number of occurences of POS would
-% therefore be: one noun, one pronoun, one adposition, two verbs and one unknown,
-% counting all possible POS.
+
 
 \subsection{Word Morphological Category}
 \label{sec:morphosyntactic}
@@ -348,8 +341,7 @@ words. An average number of words in a text per author is 717 words. Considering
 this analysis, we can conclude that the used data set is very heterogeneous.
 Since the writing topics in these articles tend to be time-specific, to avoid the
 overfitting, we split the set by dates -- 20\% of the newest articles of each
-author are taken for testing (hold-out method). Therefore, the training set
-contains 3425 texts and the testing set 1146 texts.
+author are taken for testing (hold-out method).
 
 The second data set we used is a collection of on-line blogs. Blog authors were
 carefully selected: only those authors with more than 40 posts
@@ -359,8 +351,7 @@ quote other sources like news, books, other authors, etc. As a result dataset
 consisting of 22 authors with a total of 3662 posts was obtained. An
 average number of words in a post is 846 words. For the testing purposes we
 split the data set by dates using the same technique that was applied to the
-articles. That resulted with the training set containing 2715 posts and the test set
-containing 907 posts.
+articles.
 
 The third data set is comprised of classics of Croatian literature. We have
 selected 52 novels and novellas from 20 different authors and divided them by
@@ -380,49 +371,66 @@ average have more than 100 words per post and more than 64 posts in total. As a
 result, the data set consisting of 19 authors and 4026 posts was obtained. Twenty
 percent of the newest posts of each author were taken as the test set.
 
-\begin{table*}[htb]
+\begin{table*}[htb]\scriptsize
 \caption{Evaluation of Different Features}%
 \centering
-\begin{tabular}{c c c c c c c}%
+\begin{tabular}{c c c c c c c c}%
 \toprule%
-Features & \multicolumn{2}{c}{Newspapers} & \multicolumn{2}{c}{Blogs} & \multicolumn{2}{c}{Books}\\ 
- & Acc [\%]\hspace{5pt} & $F_1$ [\%]\hspace{10pt} & Acc [\%]\hspace{5pt} & $F_1$ [\%]\hspace{10pt} & Acc [\%]\hspace{5pt} & $F_1$ [\%]\\
+Features & Number of & \multicolumn{2}{c}{Newspapers} &
+\multicolumn{2}{c}{Blogs} & \multicolumn{2}{c}{Books}\\ & Features & Acc
+[\%]\hspace{5pt} & $F_1$ [\%]\hspace{10pt} & Acc [\%]\hspace{5pt} & $F_1$ [\%]\hspace{10pt} & Acc [\%]\hspace{5pt} & $F_1$ [\%]\\
 \midrule
-Function Words ($\mathcal{F}$) & 88.39 & 87.38 & 87.21 & 87.08 & 97.24 & 97.12 \\
-Idf Weighted Function Words ($\mathcal{I}$) & 87.96 & 86.84 & 87.10 & 86.94 & 97.24 & 97.11 \\
-Word POS ($\mathcal{C}$) & 44.50 & 38.18 & 34.95 & 29.85 & 38.97 & 33.63 \\
-Punctuation Marks ($\mathcal{P}$) & 57.50 & 52.93 & 60.64 & 59.35 & 76.55 & 76.31 \\
-Vowels ($\mathcal{V}$) & 30.54 & 16.24 & 25.58 & 21.84 & 42.41 & 39.72 \\
-Words Length ($\mathcal{L}$) & 43.19 & 33.22 & 38.59 & 35.11 & 47.24 & 44.15 \\
-Sentence Length ($\mathcal{S}$) & 40.49 & 33.70 & 28.00 & 21.79 & 25.86 & 20.12 \\
-POS \emph{n}-grams -- 1st method ($\mathcal{N}_1$) & 71.29 & 68.68 & 56.67 & 54.05 & 80.34 & 79.83 \\
-POS \emph{n}-grams -- 2nd method ($\mathcal{N}_2$) & 76.09 & 72.52 & 67.03 & 66.16 & 91.72 & 91.45 \\
-Word Morphological Category ($\mathcal{M}$) & 61.17 & 58.91 & 58.32 & 57.04 & 67.24 & 66.13 \\
-$\mathcal{C}$, $\mathcal{M}$ & 63.17 & 62.06 & 59.65 & 57.98 & 71.72 & 71.84 \\
-$\mathcal{P}$, $\mathcal{F}$ & 92.41 & 91.93 & 88.75 & 88.69 & 98.62 & 98.57 \\
-$\mathcal{F}$, $\mathcal{M}$ & 91.18 & 90.68 & 88.53 & 88.41 & 97.93 & 97.89 \\
-$\mathcal{F}$, $\mathcal{N}_1$ & 89.44 & 88.52 & 84.45 & 84.04 & 97.59 & 97.54 \\
-$\mathcal{F}$, $\mathcal{N}_2$ & 90.92 & 90.43 & 86.55 & 86.25 & 97.93 & 97.80 \\
-$\mathcal{F}$, $\mathcal{C}$ & 90.05 & 89.52 & 88.20 & 87.99 & 97.59 & 97.49 \\
-$\mathcal{I}$, $\mathcal{M}$ & 90.84 & 90.35 & 88.53 & 88.30 & 97.93 & 97.88 \\
-$\mathcal{N}_1$, $\mathcal{M}$ & 71.38 & 70.15 & 62.29 & 60.20 & 84.48 & 83.80 \\
-$\mathcal{I}$, $\mathcal{M}$, $\mathcal{C}$ & 91.36 & 90.89 & 88.31 & 88.16 & 97.93 & 97.81 \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & \textbf{93.37} & 92.96 & 90.30 & 90.22 & 98.62 & 98.57 \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$ & \textbf{93.46} & \textbf{93.09} & 90.85 & 90.65 & 98.28 & 98.23 \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{C}$ & 93.28 & 92.97 & 89.97 & 89.87 & 98.62 & 98.57 \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{N}_2$ & 90.31 & 89.24 & 87.32 & 87.21 & 98.28 & 98.14 \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$ & 93.46 & \textbf{93.15} & 90.85 & 90.73 & 98.62 & 98.58 \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_2$ & 91.54 & 90.52 & 88.09 & 87.95 & 98.28 & 98.14 \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_2$ & 91.80 & 90.88 & 88.64 & 88.49 & 97.93 & 97.81 \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 93.37 & 93.04 & 90.19 & 90.11 & 98.62 & 98.57 \\
-$\mathcal{P}$, $\mathcal{C}$, $\mathcal{N}_2$,  $\mathcal{M}$ & 85.42 & 84.11 & 73.87 & 73.06 & 94.14 & 94.02 \\
-$\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 89.62 & 88.70 & 86.11 & 85.69 & 98.62 & 98.57 \\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 92.67 & 92.18 & 91.29 & 91.23 & 99.66 & 99.65 \\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{N}_2$, $\mathcal{L}$ & 83.33 & 81.68 & 73.98 & 73.31 & 95.17 & 95.06 \\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 93.19 & 92.85 & 91.18 & 91.10 & 98.62 & 98.58 \\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$ & 93.19 & 92.88 & 91.51 & 91.38 & 98.62 & 98.57 \\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 92.41 & 91.96 & 89.08 & 88.71 & 98.28 & 98.23 \\
-$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 92.41 & 91.96 & 89.75 & 89.44 & 98.28 & 98.23 \\
+Function Words ($\mathcal{F}$) & 1 & 88.39 & 87.38 & 87.21 & 87.08 & 97.24 &
+97.12 \\ Idf Weighted Function Words ($\mathcal{I}$) & 1 & 87.96 & 86.84 & 87.10
+& 86.94 & 97.24 & 97.11 \\ Word POS ($\mathcal{C}$) & 1 & 44.50 & 38.18 & 34.95
+& 29.85 & 38.97 & 33.63 \\ Punctuation Marks ($\mathcal{P}$) & 1 & 57.50 & 52.93
+& 60.64 & 59.35 & 76.55 & 76.31 \\ Vowels ($\mathcal{V}$) & 1 & 30.54 & 16.24 &
+25.58 & 21.84 & 42.41 & 39.72 \\ Words Length ($\mathcal{L}$) & 1 & 43.19 &
+33.22 & 38.59 & 35.11 & 47.24 & 44.15 \\ Sentence Length ($\mathcal{S}$) & 1 &
+40.49 & 33.70 & 28.00 & 21.79 & 25.86 & 20.12 \\ POS \emph{n}-grams -- 1st
+method ($\mathcal{N}_1$) & 1 & 71.29 & 68.68 & 56.67 & 54.05 & 80.34 & 79.83 \\
+POS \emph{n}-grams -- 2nd method ($\mathcal{N}_2$) & 1 & 76.09 & 72.52 & 67.03 &
+66.16 & 91.72 & 91.45 \\ Word Morphological Category ($\mathcal{M}$) & 1 & 61.17
+& 58.91 & 58.32 & 57.04 & 67.24 & 66.13 \\ $\mathcal{C}$, $\mathcal{M}$ & 2 &
+63.17 & 62.06 & 59.65 & 57.98 & 71.72 & 71.84 \\ $\mathcal{P}$, $\mathcal{F}$ &
+2 & 92.41 & 91.93 & 88.75 & 88.69 & \textbf{98.62} & 98.57 \\ $\mathcal{F}$,
+$\mathcal{M}$ & 2 & 91.18 & 90.68 & 88.53 & 88.41 & 97.93 & 97.89 \\
+$\mathcal{F}$, $\mathcal{N}_1$ & 2 & 89.44 & 88.52 & 84.45 & 84.04 & 97.59 &
+97.54 \\ $\mathcal{F}$, $\mathcal{N}_2$ & 2 & 90.92 & 90.43 & 86.55 & 86.25 &
+97.93 & 97.80 \\ $\mathcal{F}$, $\mathcal{C}$ & 2 & 90.05 & 89.52 & 88.20 &
+87.99 & 97.59 & 97.49 \\ $\mathcal{I}$, $\mathcal{M}$ & 2 & 90.84 & 90.35 &
+88.53 & 88.30 & 97.93 & 97.88 \\ $\mathcal{N}_1$, $\mathcal{M}$ & 2 & 71.38 &
+70.15 & 62.29 & 60.20 & 84.48 & 83.80 \\ $\mathcal{I}$, $\mathcal{M}$,
+$\mathcal{C}$ & 3 & 91.36 & 90.89 & 88.31 & 88.16 & 97.93 & 97.81 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 3 & \textbf{93.37} & 92.96 & 90.30
+& 90.22 & 98.62 & 98.57 \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$,
+$\mathcal{M}$ & 4 & \textbf{93.46} & \textbf{93.09} & 90.85 & 90.65 & 98.28 &
+98.23 \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{C}$ & 4 & 93.28
+& 92.97 & 89.97 & 89.87 & 98.62 & 98.57 \\ $\mathcal{P}$, $\mathcal{F}$,
+$\mathcal{L}$, $\mathcal{N}_2$ & 4 & 90.31 & 89.24 & 87.32 & 87.21 & 98.28 &
+98.14 \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$,
+$\mathcal{C}$ & 5 & 93.46 & \textbf{93.15} & 90.85 & 90.73 & 98.62 &
+\textbf{98.58} \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$,
+$\mathcal{N}_2$ & 5 & 91.54 & 90.52 & 88.09 & 87.95 & 98.28 & 98.14 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$,
+$\mathcal{N}_2$ & 6 & 91.80 & 90.88 & 88.64 & 88.49 & 97.93 & 97.81 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 4 & 93.37 & 93.04 &
+90.19 & 90.11 & 98.62 & 98.57 \\ $\mathcal{P}$, $\mathcal{C}$, $\mathcal{N}_2$,
+$\mathcal{M}$ & 4 & 85.42 & 84.11 & 73.87 & 73.06 & 94.14 & 94.02 \\
+$\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 4 & 89.62 & 88.70
+& 86.11 & 85.69 & 98.62 & 98.57 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$,
+$\mathcal{L}$ & 4 & 92.67 & 92.18 & \textbf{91.29} & \textbf{91.23} &
+\textbf{99.66} & \textbf{99.65} \\ $\mathcal{S}$, $\mathcal{P}$,
+$\mathcal{N}_2$, $\mathcal{L}$ & 4 & 83.33 & 81.68 & 73.98 & 73.31 & 95.17 &
+95.06 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
+$\mathcal{L}$ & 5 & 93.19 & 92.85 & 91.18 & 91.10 & 98.62 & 98.58 \\
+$\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
+$\mathcal{M}$ & 6 & 93.19 & 92.88 & \textbf{91.51} & \textbf{91.38} & 98.62 &
+98.57 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
+$\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 7 & 92.41 & 91.96 & 89.08 &
+88.71 & 98.28 & 98.23 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$,
+$\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 8
+& 92.41 & 91.96 & 89.75 & 89.44 & 98.28 & 98.23 \\
 \bottomrule
 \end{tabular}
 \label{tbl:eval}
@@ -433,29 +441,30 @@ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$, $\mat
 Classification success is measured by the ratio of correctly classified texts and
 the total number of texts in the training set i.e., micro average accuracy.
 First we tested all the features separately and then the same features in
-various combinations. Results of the evaluation
+various combinations. Results of the evaluation on articles, blogs, and books
 are shown in Table \ref{tbl:eval}.
 
 Total accuracy does not explain the behavior of the classifier for every class by
 itself. Therefore, precision and recall are calculated for each class and then
-used to calculate the total macro $F_1$ measure. For particular class $c$,
-precision is the ratio of the number of correctly classified documents in $c$ and
-the number of all documents which are classified as $c$. Recall is the ratio of the
-number of correctly classified documents in $c$ and the number of all the
-documents truly in $c$. $F_1$ measure is calculated for every class $c_i$
-according to the following expression:
-\begin{equation}
-F_i = \frac{2 \cdot precision_i \cdot recall_i}{precision_i + recall_i}
-\end{equation}
-where $precision_i$ and $recall_i$ are measures of precision and recall for
-the class $c_i$.
-
-Total macro $F_1$ measure is calculated by the following expression:
-\begin{equation}
-F_w = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
-\end{equation}
-where $n$ is total number of classes, $|c_i|$ number of documents in the class
-$c_i$ and $F_i$ an $F_1$ measure for class $c_i$.
+used to calculate the total macro $F_1$ measure. 
+% For particular class $c$,
+% precision is the ratio of the number of correctly classified documents in $c$ and
+% the number of all documents which are classified as $c$. Recall is the ratio of the
+% number of correctly classified documents in $c$ and the number of all the
+% documents truly in $c$. $F_1$ measure is calculated for every class $c_i$
+% according to the following expression:
+% \begin{equation}
+% F_i = \frac{2 \cdot precision_i \cdot recall_i}{precision_i + recall_i}
+% \end{equation}
+% where $precision_i$ and $recall_i$ are measures of precision and recall for
+% the class $c_i$.
+% 
+% Total macro $F_1$ measure is calculated by the following expression:
+% \begin{equation}
+% F_w = \frac{\sum^{n}_i |c_i|\cdot F_i}{\sum^n_i|c_i|}
+% \end{equation}
+% where $n$ is total number of classes, $|c_i|$ number of documents in the class
+% $c_i$ and $F_i$ an $F_1$ measure for class $c_i$.
 
 The SVM parameter selection is very time consuming process. Thus, not all of the
 feature combinations were tested. We focused on the evaluation of the feature
@@ -474,9 +483,11 @@ syntax-based features accuracy remains nearly the same as without the use of syn
 features. We can also see that features based on function
 words frequencies achieve excellent results on different data sets, regardless
 of the form of the text, as long as the data set used is comprised of texts that
-are sufficiently large. By increasing the average text length we can
-see that classification results get higher. Consequently evaluation
-on Internet forum posts shows poor results as the texts considered are too short.
+are sufficiently large. By increasing the average text length we can see that
+classification results get higher. To further evaluate the impact of the text
+length on performance of features used, we have performed experiments on much
+shorter texts. We used forum posts data set but the results were not satisfying.
+The highest accuracy of 27\% was achieved by using punctuation marks frequencies.
 
 \section{Conclusion}
 It is shown that the authorship attribution problem, when applied to
@@ -485,13 +496,13 @@ successfully solved using a combination of some relatively simple features. Our
 results with 91\%, 93\% and 99\% accuracy are quite notable considering the fact
 that different heterogeneous data sets were used. Evaluation on different data
 sets shows that the same feature combinations, based on function words,
-punctuation marks, word lengths, and sentence lengths frequencies achieve the
+punctuation marks, word lengths, and sentence lengths frequencies, achieve the
 highest results. Therefore, we conclude that those
 features are the most suitable features for use in the task of authorship
 attribution. In the similar work of Uzuner et al.\ \cite{uzuner2005comparative}
 on a smaller set of authors, fairly larger texts and with the use of
-different classifier similar results and conclusions are obtained. The direct comparison of
-the results has proved very difficult due to the different types of data sets
+different classifier nearly the same results and conclusions are obtained. The
+direct comparison of the results has proved very difficult due to the different types of data sets
 used  and different number of authors considered. However, our results fall
 within the interval of previously reported results, which range from 70\% to 99\%
 \cite{argamon2005measuring,coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer,uzuner2005comparative}.
