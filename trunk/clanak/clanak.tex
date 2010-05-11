@@ -215,7 +215,7 @@ similar to the one used in \cite{kukushkina2001using}. The given text is
 preprocessed and the POS of each word in the text is determined. Features are
 obtained by counting the number of occurrences of different POS tags and then
 normalized by the total number of words in the text. The used POS tags are
-adverbs, adpositions, conjunctions, particles, interjections, nouns, verbs,
+adpositions, conjunctions, interjections, nouns, verbs,
 adjectives, and pronouns. In addition, category ``unknown'' is introduced for all
 the words not found in the lexicon (names, places, etc.).
 
@@ -376,61 +376,61 @@ percent of the newest posts of each author were taken as the test set.
 \centering
 \begin{tabular}{l c c c c c c c}%
 \toprule%
-Features & Number of & \multicolumn{2}{c}{Newspapers} &
+Features & Dimension of & \multicolumn{2}{c}{Newspapers} &
 \multicolumn{2}{c}{Blogs} & \multicolumn{2}{c}{Books}\\ & Features & \hspace{5pt} Acc
 \hspace{5pt} & \hspace{5pt} $F_1$ \hspace{5pt} & \hspace{5pt} Acc \hspace{5pt} & \hspace{5pt} $F_1$ \hspace{5pt} & \hspace{5pt} Acc \hspace{5pt} & \hspace{5pt} $F_1$ \hspace{5pt}\\
 \midrule
-Function Words ($\mathcal{F}$) & 1 & 88.39 & 87.38 & 87.21 & 87.08 & 97.24 &
-97.12 \\ Idf Weighted Func. Words ($\mathcal{I}$) & 1 & 87.96 & 86.84 & 87.10
-& 86.94 & 97.24 & 97.11 \\ Word POS ($\mathcal{C}$) & 1 & 44.50 & 38.18 & 34.95
-& 29.85 & 38.97 & 33.63 \\ Punctuation Marks ($\mathcal{P}$) & 1 & 57.50 & 52.93
-& 60.64 & 59.35 & 76.55 & 76.31 \\ Vowels ($\mathcal{V}$) & 1 & 30.54 & 16.24 &
-25.58 & 21.84 & 42.41 & 39.72 \\ Words Length ($\mathcal{L}$) & 1 & 43.19 &
-33.22 & 38.59 & 35.11 & 47.24 & 44.15 \\ Sentence Length ($\mathcal{S}$) & 1 &
+Function Words ($\mathcal{F}$) & 652 & 88.39 & 87.38 & 87.21 & 87.08 & 97.24 &
+97.12 \\ Idf Weighted Func. Words ($\mathcal{I}$) & 652 & 87.96 & 86.84 & 87.10
+& 86.94 & 97.24 & 97.11 \\ Word POS ($\mathcal{C}$) & 8 & 44.50 & 38.18 & 34.95
+& 29.85 & 38.97 & 33.63 \\ Punctuation Marks ($\mathcal{P}$) & 11 & 57.50 &
+52.93 & 60.64 & 59.35 & 76.55 & 76.31 \\ Vowels ($\mathcal{V}$) & 5 & 30.54 & 16.24 &
+25.58 & 21.84 & 42.41 & 39.72 \\ Words Length ($\mathcal{L}$) & 11 & 43.19 &
+33.22 & 38.59 & 35.11 & 47.24 & 44.15 \\ Sentence Length ($\mathcal{S}$) & 20 &
 40.49 & 33.70 & 28.00 & 21.79 & 25.86 & 20.12 \\ POS \emph{n}-grams, 1st
-meth. ($\mathcal{N}_1$) & 1 & 71.29 & 68.68 & 56.67 & 54.05 & 80.34 & 79.83 \\
-POS \emph{n}-grams, 2nd meth. ($\mathcal{N}_2$) & 1 & 76.09 & 72.52 & 67.03 &
-66.16 & 91.72 & 91.45 \\ Word Morph. Category ($\mathcal{M}$) & 1 & 61.17
-& 58.91 & 58.32 & 57.04 & 67.24 & 66.13 \\ $\mathcal{C}$, $\mathcal{M}$ & 2 &
+meth. ($\mathcal{N}_1$) & 512 & 71.29 & 68.68 & 56.67 & 54.05 & 80.34 & 79.83 \\
+POS \emph{n}-grams, 2nd meth. ($\mathcal{N}_2$) & 500 & 76.09 & 72.52 & 67.03 &
+66.16 & 91.72 & 91.45 \\ Word Morph. Category ($\mathcal{M}$) & 22 & 61.17
+& 58.91 & 58.32 & 57.04 & 67.24 & 66.13 \\ $\mathcal{C}$, $\mathcal{M}$ & 30 &
 63.17 & 62.06 & 59.65 & 57.98 & 71.72 & 71.84 \\ $\mathcal{P}$, $\mathcal{F}$ &
-2 & 92.41 & 91.93 & 88.75 & 88.69 & \textbf{98.62} & \textbf{98.57} \\ $\mathcal{F}$,
-$\mathcal{M}$ & 2 & 91.18 & 90.68 & 88.53 & 88.41 & 97.93 & 97.89 \\
-$\mathcal{F}$, $\mathcal{N}_1$ & 2 & 89.44 & 88.52 & 84.45 & 84.04 & 97.59 &
-97.54 \\ $\mathcal{F}$, $\mathcal{N}_2$ & 2 & 90.92 & 90.43 & 86.55 & 86.25 &
-97.93 & 97.80 \\ $\mathcal{F}$, $\mathcal{C}$ & 2 & 90.05 & 89.52 & 88.20 &
-87.99 & 97.59 & 97.49 \\ $\mathcal{I}$, $\mathcal{M}$ & 2 & 90.84 & 90.35 &
-88.53 & 88.30 & 97.93 & 97.88 \\ $\mathcal{N}_1$, $\mathcal{M}$ & 2 & 71.38 &
-70.15 & 62.29 & 60.20 & 84.48 & 83.80 \\ $\mathcal{I}$, $\mathcal{M}$,
-$\mathcal{C}$ & 3 & 91.36 & 90.89 & 88.31 & 88.16 & 97.93 & 97.81 \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 3 & \textbf{93.37} & 92.96 & 90.30
-& 90.22 & \textbf{98.62} & \textbf{98.57} \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$,
-$\mathcal{M}$ & 4 & \textbf{93.46} & \textbf{93.09} & 90.85 & 90.65 & 98.28 &
-98.23 \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{C}$ & 4 & 93.28
-& 92.97 & 89.97 & 89.87 & 98.62 & 98.57 \\ $\mathcal{P}$, $\mathcal{F}$,
-$\mathcal{L}$, $\mathcal{N}_2$ & 4 & 90.31 & 89.24 & 87.32 & 87.21 & 98.28 &
+663 & 92.41 & 91.93 & 88.75 & 88.69 & \textbf{98.62} & \textbf{98.57} \\
+ $\mathcal{F}$, $\mathcal{M}$ & 674 & 91.18 & 90.68 & 88.53 & 88.41 & 97.93 &
+ 97.89 \\ $\mathcal{F}$, $\mathcal{N}_1$ & 1164 & 89.44 & 88.52 & 84.45 & 84.04
+ & 97.59 & 97.54 \\ $\mathcal{F}$, $\mathcal{N}_2$ & 1152 & 90.92 & 90.43 & 86.55
+ & 86.25 & 97.93 & 97.80 \\ $\mathcal{F}$, $\mathcal{C}$ & 660 & 90.05 & 89.52 &
+ 88.20 & 87.99 & 97.59 & 97.49 \\ $\mathcal{I}$, $\mathcal{M}$ & 674 & 90.84 &
+ 90.35 & 88.53 & 88.30 & 97.93 & 97.88 \\ $\mathcal{N}_1$, $\mathcal{M}$ & 534 &
+ 71.38 & 70.15 & 62.29 & 60.20 & 84.48 & 83.80 \\ $\mathcal{I}$, $\mathcal{M}$,
+$\mathcal{C}$ & 682 & 91.36 & 90.89 & 88.31 & 88.16 & 97.93 & 97.81 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 674 & \textbf{93.37} & 92.96 &
+90.30 & 90.22 & \textbf{98.62} & \textbf{98.57} \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$,
+$\mathcal{M}$ & 696 & \textbf{93.46} & \textbf{93.09} & 90.85 & 90.65 & 98.28 &
+98.23 \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{C}$ & 682 &
+93.28 & 92.97 & 89.97 & 89.87 & 98.62 & 98.57 \\ $\mathcal{P}$, $\mathcal{F}$,
+$\mathcal{L}$, $\mathcal{N}_2$ & 1174 & 90.31 & 89.24 & 87.32 & 87.21 & 98.28 &
 98.14 \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$,
-$\mathcal{C}$ & 5 & \textbf{93.46} & \textbf{93.15} & 90.85 & 90.73 & \textbf{98.62} &
-\textbf{98.58} \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$,
-$\mathcal{N}_2$ & 5 & 91.54 & 90.52 & 88.09 & 87.95 & 98.28 & 98.14 \\
+$\mathcal{C}$ & 704 & \textbf{93.46} & \textbf{93.15} & 90.85 & 90.73 &
+\textbf{98.62} & \textbf{98.58} \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$,
+$\mathcal{N}_2$ & 1196 & 91.54 & 90.52 & 88.09 & 87.95 & 98.28 & 98.14 \\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$,
-$\mathcal{N}_2$ & 6 & 91.80 & 90.88 & 88.64 & 88.49 & 97.93 & 97.81 \\
-$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 4 & 93.37 & 93.04 &
-90.19 & 90.11 & 98.62 & 98.57 \\ $\mathcal{P}$, $\mathcal{C}$, $\mathcal{N}_2$,
-$\mathcal{M}$ & 4 & 85.42 & 84.11 & 73.87 & 73.06 & 94.14 & 94.02 \\
-$\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 4 & 89.62 & 88.70
-& 86.11 & 85.69 & 98.62 & 98.57 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$,
-$\mathcal{L}$ & 4 & 92.67 & 92.18 & \textbf{91.29} & \textbf{91.23} &
+$\mathcal{N}_2$ & 1204 & 91.80 & 90.88 & 88.64 & 88.49 & 97.93 & 97.81 \\
+$\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$ & 679 & 93.37 &
+93.04 & 90.19 & 90.11 & 98.62 & 98.57 \\ $\mathcal{P}$, $\mathcal{C}$, $\mathcal{N}_2$,
+$\mathcal{M}$ & 541 & 85.42 & 84.11 & 73.87 & 73.06 & 94.14 & 94.02 \\
+$\mathcal{F}$, $\mathcal{M}$, $\mathcal{C}$, $\mathcal{N}_1$ & 1194 & 89.62 &
+88.70 & 86.11 & 85.69 & 98.62 & 98.57 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$,
+$\mathcal{L}$ & 694 & 92.67 & 92.18 & \textbf{91.29} & \textbf{91.23} &
 \textbf{99.66} & \textbf{99.65} \\ $\mathcal{S}$, $\mathcal{P}$,
-$\mathcal{N}_2$, $\mathcal{L}$ & 4 & 83.33 & 81.68 & 73.98 & 73.31 & 95.17 &
+$\mathcal{N}_2$, $\mathcal{L}$ & 542 & 83.33 & 81.68 & 73.98 & 73.31 & 95.17 &
 95.06 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
-$\mathcal{L}$ & 5 & 93.19 & 92.85 & 91.18 & 91.10 & 98.62 & 98.58 \\
+$\mathcal{L}$ & 699 & 93.19 & 92.85 & 91.18 & 91.10 & 98.62 & 98.58 \\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
-$\mathcal{M}$ & 6 & 93.19 & 92.88 & \textbf{91.51} & \textbf{91.38} & \textbf{98.62} &
-\textbf{98.57} \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
-$\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 7 & 92.41 & 91.96 & 89.08 &
+$\mathcal{M}$ & 721 & 93.19 & 92.88 & \textbf{91.51} & \textbf{91.38} &
+\textbf{98.62} & \textbf{98.57} \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
+$\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 1233 & 92.41 & 91.96 & 89.08 &
 88.71 & 98.28 & 98.23 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$,
-$\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 8
-& 92.41 & 91.96 & 89.75 & 89.44 & 98.28 & 98.23 \\
+$\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ &
+1241 & 92.41 & 91.96 & 89.75 & 89.44 & 98.28 & 98.23 \\
 \bottomrule
 \end{tabular}
 \label{tbl:eval}
