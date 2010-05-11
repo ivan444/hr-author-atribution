@@ -143,9 +143,7 @@ specific to each author. Moreover, as the texts from dataset greatly differ in
 length and topic, it is necessary to use the features independent of such
 variations. If the features were not independent of such variation that
 would most certainly reduce generality of system's application and could lead
-to a decrease of accuracy (e.g., relating author to concrete topic or terms).
-
-In the following subsections we will describe different features used.
+to a decrease of accuracy (e.g., relating author to concrete topic or terms). In the following subsections we will describe different features used.
 
 \subsection{Function Words}
 \label{sec:funkcijske-rijeci}
@@ -332,7 +330,7 @@ Parameters $(C, \gamma)$ that were considered are: $C \in \{2^{-5}, 2^{-4},
 We used three different data sets in our experimental evaluation. First we
 experimented using an on-line archive of \emph{proofread} articles (journals)
 from a daily Croatian newspaper ``Jutarnji list,'' available at
-\url{http://www.jutarnji.hr/komentari/}. The data set consists of 4571 texts
+\small \url{http://www.jutarnji.hr/komentari/}\normalsize.  The data set consists of 4571 texts
 written by 25 different authors. The texts are not evenly distributed among
 authors -- numbers vary from 14 to 1285 texts per author with an average of 182
 texts per author. The articles also differ in size -- the lowest average number
@@ -363,37 +361,39 @@ author is 1407 words and the highest average is 3652 words. We have randomly
 selected 20\% of the texts from each author for the test set, leaving the rest as
 a training set.
 
-The Last data set used is a set of Internet forum (message board)
-posts from \url{http://www.forum.hr}. We have selected all the posts from the threads in
+The last data set used is a set of Internet forum (message board)
+posts from \small \url{http://www.forum.hr}\normalsize. We have selected all the posts from the threads in
 \textit{Politics} category. Initially there were 2269 different authors with a
 total of 64765 posts. Subsequently we have chosen only those authors that on
 average have more than 100 words per post and more than 64 posts in total. As a
 result, the data set consisting of 19 authors and 4026 posts was obtained. Twenty
 percent of the newest posts of each author were taken as the test set.
 
-\begin{table*}[htb]\scriptsize
-\caption{Evaluation of Different Features}%
+
+\begin{table*}[htb]
+\normalsize\caption{Evaluation of different features using accuracy and $F_1$ measures [\%]}
+\scriptsize
 \centering
-\begin{tabular}{c c c c c c c c}%
+\begin{tabular}{l c c c c c c c}%
 \toprule%
 Features & Number of & \multicolumn{2}{c}{Newspapers} &
-\multicolumn{2}{c}{Blogs} & \multicolumn{2}{c}{Books}\\ & Features & Acc
-[\%]\hspace{5pt} & $F_1$ [\%]\hspace{10pt} & Acc [\%]\hspace{5pt} & $F_1$ [\%]\hspace{10pt} & Acc [\%]\hspace{5pt} & $F_1$ [\%]\\
+\multicolumn{2}{c}{Blogs} & \multicolumn{2}{c}{Books}\\ & Features & \hspace{5pt} Acc
+\hspace{5pt} & \hspace{5pt} $F_1$ \hspace{5pt} & \hspace{5pt} Acc \hspace{5pt} & \hspace{5pt} $F_1$ \hspace{5pt} & \hspace{5pt} Acc \hspace{5pt} & \hspace{5pt} $F_1$ \hspace{5pt}\\
 \midrule
 Function Words ($\mathcal{F}$) & 1 & 88.39 & 87.38 & 87.21 & 87.08 & 97.24 &
-97.12 \\ Idf Weighted Function Words ($\mathcal{I}$) & 1 & 87.96 & 86.84 & 87.10
+97.12 \\ Idf Weighted Func. Words ($\mathcal{I}$) & 1 & 87.96 & 86.84 & 87.10
 & 86.94 & 97.24 & 97.11 \\ Word POS ($\mathcal{C}$) & 1 & 44.50 & 38.18 & 34.95
 & 29.85 & 38.97 & 33.63 \\ Punctuation Marks ($\mathcal{P}$) & 1 & 57.50 & 52.93
 & 60.64 & 59.35 & 76.55 & 76.31 \\ Vowels ($\mathcal{V}$) & 1 & 30.54 & 16.24 &
 25.58 & 21.84 & 42.41 & 39.72 \\ Words Length ($\mathcal{L}$) & 1 & 43.19 &
 33.22 & 38.59 & 35.11 & 47.24 & 44.15 \\ Sentence Length ($\mathcal{S}$) & 1 &
-40.49 & 33.70 & 28.00 & 21.79 & 25.86 & 20.12 \\ POS \emph{n}-grams -- 1st
-method ($\mathcal{N}_1$) & 1 & 71.29 & 68.68 & 56.67 & 54.05 & 80.34 & 79.83 \\
-POS \emph{n}-grams -- 2nd method ($\mathcal{N}_2$) & 1 & 76.09 & 72.52 & 67.03 &
-66.16 & 91.72 & 91.45 \\ Word Morphological Category ($\mathcal{M}$) & 1 & 61.17
+40.49 & 33.70 & 28.00 & 21.79 & 25.86 & 20.12 \\ POS \emph{n}-grams, 1st
+meth. ($\mathcal{N}_1$) & 1 & 71.29 & 68.68 & 56.67 & 54.05 & 80.34 & 79.83 \\
+POS \emph{n}-grams, 2nd meth. ($\mathcal{N}_2$) & 1 & 76.09 & 72.52 & 67.03 &
+66.16 & 91.72 & 91.45 \\ Word Morph. Category ($\mathcal{M}$) & 1 & 61.17
 & 58.91 & 58.32 & 57.04 & 67.24 & 66.13 \\ $\mathcal{C}$, $\mathcal{M}$ & 2 &
 63.17 & 62.06 & 59.65 & 57.98 & 71.72 & 71.84 \\ $\mathcal{P}$, $\mathcal{F}$ &
-2 & 92.41 & 91.93 & 88.75 & 88.69 & \textbf{98.62} & 98.57 \\ $\mathcal{F}$,
+2 & 92.41 & 91.93 & 88.75 & 88.69 & \textbf{98.62} & \textbf{98.57} \\ $\mathcal{F}$,
 $\mathcal{M}$ & 2 & 91.18 & 90.68 & 88.53 & 88.41 & 97.93 & 97.89 \\
 $\mathcal{F}$, $\mathcal{N}_1$ & 2 & 89.44 & 88.52 & 84.45 & 84.04 & 97.59 &
 97.54 \\ $\mathcal{F}$, $\mathcal{N}_2$ & 2 & 90.92 & 90.43 & 86.55 & 86.25 &
@@ -403,13 +403,13 @@ $\mathcal{F}$, $\mathcal{N}_1$ & 2 & 89.44 & 88.52 & 84.45 & 84.04 & 97.59 &
 70.15 & 62.29 & 60.20 & 84.48 & 83.80 \\ $\mathcal{I}$, $\mathcal{M}$,
 $\mathcal{C}$ & 3 & 91.36 & 90.89 & 88.31 & 88.16 & 97.93 & 97.81 \\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$ & 3 & \textbf{93.37} & 92.96 & 90.30
-& 90.22 & 98.62 & 98.57 \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$,
+& 90.22 & \textbf{98.62} & \textbf{98.57} \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$,
 $\mathcal{M}$ & 4 & \textbf{93.46} & \textbf{93.09} & 90.85 & 90.65 & 98.28 &
 98.23 \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{C}$ & 4 & 93.28
 & 92.97 & 89.97 & 89.87 & 98.62 & 98.57 \\ $\mathcal{P}$, $\mathcal{F}$,
 $\mathcal{L}$, $\mathcal{N}_2$ & 4 & 90.31 & 89.24 & 87.32 & 87.21 & 98.28 &
 98.14 \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$,
-$\mathcal{C}$ & 5 & 93.46 & \textbf{93.15} & 90.85 & 90.73 & 98.62 &
+$\mathcal{C}$ & 5 & \textbf{93.46} & \textbf{93.15} & 90.85 & 90.73 & \textbf{98.62} &
 \textbf{98.58} \\ $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$,
 $\mathcal{N}_2$ & 5 & 91.54 & 90.52 & 88.09 & 87.95 & 98.28 & 98.14 \\
 $\mathcal{P}$, $\mathcal{F}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{C}$,
@@ -425,8 +425,8 @@ $\mathcal{N}_2$, $\mathcal{L}$ & 4 & 83.33 & 81.68 & 73.98 & 73.31 & 95.17 &
 95.06 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
 $\mathcal{L}$ & 5 & 93.19 & 92.85 & 91.18 & 91.10 & 98.62 & 98.58 \\
 $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$, $\mathcal{L}$,
-$\mathcal{M}$ & 6 & 93.19 & 92.88 & \textbf{91.51} & \textbf{91.38} & 98.62 &
-98.57 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
+$\mathcal{M}$ & 6 & 93.19 & 92.88 & \textbf{91.51} & \textbf{91.38} & \textbf{98.62} &
+\textbf{98.57} \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$, $\mathcal{V}$,
 $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$ & 7 & 92.41 & 91.96 & 89.08 &
 88.71 & 98.28 & 98.23 \\ $\mathcal{S}$, $\mathcal{P}$, $\mathcal{F}$,
 $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ & 8
@@ -476,17 +476,13 @@ would show no considerable improvements. Also, certain feature combinations made
 no significant contributions so we did not conduct further evaluation.
 
 As we can see from Table \ref{tbl:eval}, highest accuracies are achieved by
-using combination of simple features such as function words, punctuation marks
-and words length frequencies. On the other hand the combinations of syntax-based features are
-slightly less accurate. If we use the combination of function word and
-syntax-based features accuracy remains nearly the same as without the use of syntax-based
-features. We can also see that features based on function
-words frequencies achieve excellent results on different data sets, regardless
+using combination of simple features such as function words, punctuation marks,
+words length, and sentence length frequencies ($\mathcal{F}$, $\mathcal{P}$, $\mathcal{L}$, $\mathcal{S}$). On the other hand, the combinations of syntax-based features are slightly less accurate. If we use the combination of function word and syntax-based features accuracy remains nearly the same as without the use of syntax-based features. We can also see that features based on function words frequencies achieve excellent results on different data sets, regardless
 of the form of the text, as long as the data set used is comprised of texts that
 are sufficiently large. By increasing the average text length we can see that
 classification results get higher. To further evaluate the impact of the text
 length on performance of features used, we have performed experiments on much
-shorter texts. We used forum posts data set but the results were not satisfying.
+shorter texts. We used forum posts data set, but the results were not satisfying.
 The highest accuracy of 27\% was achieved by using punctuation marks frequencies.
 
 \section{Conclusion}
@@ -495,10 +491,10 @@ morphologically complex languages, such as the Croatian language, can be
 successfully solved using a combination of some relatively simple features. Our
 results with 91\%, 93\% and 99\% accuracy are quite notable considering the fact
 that different heterogeneous data sets were used. Evaluation on different data
-sets shows that the same feature combinations, based on function words,
-punctuation marks, word lengths, and sentence lengths frequencies, achieve the
+sets shows that the same feature combination based on function words,
+punctuation marks, word length, and sentence length frequencies, achieve the
 highest results. Therefore, we conclude that those
-features are the most suitable features for use in the task of authorship
+features are the most suitable for use in the task of authorship
 attribution. In the similar work of Uzuner et al.\ \cite{uzuner2005comparative}
 on a smaller set of authors, fairly larger texts and with the use of
 different classifier nearly the same results and conclusions are obtained. The
@@ -511,7 +507,7 @@ In addition, there are no other reported methods or results for the Croatian
 language, nor any of the related South Slavic languages, so our work presents a
 basis for further research.
 
-In the future work the problems with homography should be resolved in order to
+In future work the problems with homography should be resolved in order to
 get more accurate results of syntax-based features. Features based on word and
 character \emph{n}-grams, suggested in
 \cite{coyotl2006authorship,keselj2003n,peng2003language}, should be compared to

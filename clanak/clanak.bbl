@@ -1,0 +1,123 @@
+\begin{thebibliography}{10}
+
+\bibitem{argamon2005measuring}
+Argamon, S., Levitan, S.:
+\newblock {Measuring the usefulness of function words for authorship
+  attribution}.
+\newblock Proceedings of ACH/ALLC 2005 (2005)
+
+\bibitem{CC01a}
+Chang, C.C., Lin, C.J.:
+\newblock {LIBSVM}: a library for support vector machines. (2001)
+
+\bibitem{cortes1995support}
+Cortes, C., Vapnik, V.:
+\newblock {Support-vector networks}.
+\newblock Machine learning \textbf{20}(3) (1995)  273--297
+
+\bibitem{coyotl2006authorship}
+Coyotl-Morales, R., Villase{\~n}or-Pineda, L., Montes-y G{\'o}mez, M., Rosso,
+  P., del Lenguaje, L.:
+\newblock {Authorship attribution using word sequences}.
+\newblock Lecture Notes in Computer Science \textbf{4225} (2006)  844
+
+\bibitem{de2001mining}
+De~Vel, O., Anderson, A., Corney, M., Mohay, G.:
+\newblock {Mining e-mail content for author identification forensics}.
+\newblock ACM Sigmod Record \textbf{30}(4) (2001)  55--64
+
+\bibitem{diederich2003authorship}
+Diederich, J., Kindermann, J., Leopold, E., Paass, G.:
+\newblock {Authorship attribution with support vector machines}.
+\newblock Applied Intelligence \textbf{19}(1) (2003)  109--123
+
+\bibitem{holmes1994authorship}
+Holmes, D.:
+\newblock {Authorship attribution}.
+\newblock Computers and the Humanities \textbf{28}(2) (1994)  87--106
+
+\bibitem{keselj2003n}
+Kešelj, V., Peng, F., Cercone, N., Thomas, C.:
+\newblock {N-gram-based author profiles for authorship attribution}.
+\newblock In: Proceedings of the Conference Pacific Association for
+  Computational Linguistics, PACLING. Volume~3. (2003)  255--264
+
+\bibitem{keerthi2003asymptotic}
+Keerthi, S., Lin, C.:
+\newblock {Asymptotic behaviors of support vector machines with Gaussian
+  kernel}.
+\newblock Neural Computation \textbf{15}(7) (2003)  1667--1689
+
+\bibitem{koppel2003exploiting}
+Koppel, M., Schler, J.:
+\newblock {Exploiting stylistic idiosyncrasies for authorship attribution}.
+\newblock In: Proceedings of IJCAI. Volume~3. (2003)  69--72
+
+\bibitem{kukushkina2001using}
+Kukushkina, O., Polikarpov, A., Khmelev, D.:
+\newblock {Using literal and grammatical statistics for authorship
+  attribution}.
+\newblock Problems of Information Transmission \textbf{37}(2) (2001)  172--184
+
+\bibitem{luyckx2005shallow}
+Luyckx, K., Daelemans, W.:
+\newblock {Shallow text analysis and machine learning for authorship
+  attribution}.
+\newblock In: Proceedings of the fifteenth meeting of Computational Linguistics
+  in the Netherlands (CLIN 2004). (2005)  149--160
+
+\bibitem{mendenhall1887}
+Mendenhall, T.:
+\newblock {The characteristic curves of composition}.
+\newblock Science (214S) (1887)  237
+
+\bibitem{peng2003language}
+Peng, F., Schuurmans, D., Wang, S., Keselj, V.:
+\newblock {Language independent authorship attribution using character level
+  language models}.
+\newblock In: Proceedings of the tenth conference on European chapter of the
+  Association for Computational Linguistics-Volume 1, Association for
+  Computational Linguistics (2003)  274
+
+\bibitem{stamatatos2006ensemble}
+Stamatatos, E.:
+\newblock {Ensemble-based author identification using character n-grams}.
+\newblock In: Proceedings of the 3rd International Workshop on Text-based
+  Information Retrieval. (2006)  41--46
+
+\bibitem{stamatatos2009survey}
+Stamatatos, E.:
+\newblock {A survey of modern authorship attribution methods}.
+\newblock Journal of the American Society for information Science and
+  Technology \textbf{60}(3) (2009)  538--556
+
+\bibitem{stamatatos2001computer}
+Stamatatos, E., Fakotakis, N., Kokkinakis, G.:
+\newblock {Computer-based authorship attribution without lexical measures}.
+\newblock Computers and the Humanities \textbf{35}(2) (2001)  193--214
+
+\bibitem{uzuner2005comparative}
+Uzuner, O., Katz, B.:
+\newblock {A comparative study of language models for book and author
+  recognition}.
+\newblock Lecture Notes in Computer Science \textbf{3651} (2005)  969
+
+\bibitem{van1996outside}
+van Halteren, H., Tweedie, F., Baayen, H.:
+\newblock {Outside the cave of shadows: Using syntactic annotation to enhance
+  authorship attribution}.
+\newblock Computers and the Humanities \textbf{28}(2) (1996)  87--106
+
+\bibitem{snajder08automatic}
+\v{S}najder, J., Dalbelo~Ba\v{s}i\'{c}, B., Tadi\'c, M.:
+\newblock Automatic acquisition of inflectional lexica for morphological
+  normalisation.
+\newblock Information Processing and Management \textbf{44}(5) (2008)
+  1720--1731
+
+\bibitem{zhao2005effective}
+Zhao, Y., Zobel, J.:
+\newblock {Effective and scalable authorship attribution using function words}.
+\newblock Lecture Notes in Computer Science \textbf{3689} (2005)  174
+
+\end{thebibliography}
