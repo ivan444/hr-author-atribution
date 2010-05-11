@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.9 (MiKTeX 2.7) (preloaded format=pdflatex 2010.2.1)  11 MAY 2010 16:00
+This is pdfTeX, Version 3.1415926-1.40.9 (MiKTeX 2.7) (preloaded format=latex 2009.11.24)  11 MAY 2010 16:11
 entering extended mode
 **clanak.tex
 (clanak.tex
@@ -384,11 +384,10 @@ Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 ("C:\Program Files\MiKTeX 2.7\tex\latex\00miktex\graphics.cfg"
 File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
 )
-Package graphics Info: Driver file: pdftex.def on input line 90.
+Package graphics Info: Driver file: dvips.def on input line 90.
 
-("C:\Program Files\MiKTeX 2.7\tex\latex\pdftex-def\pdftex.def"
-File: pdftex.def 2008/07/16 v0.04k Graphics/color for pdfTeX
-\Gread@gobject=\count116
+("C:\Program Files\MiKTeX 2.7\tex\latex\graphics\dvips.def"
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
 ))
 \Gin@req@height=\dimen125
 \Gin@req@width=\dimen126
@@ -405,12 +404,12 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \cmidrulesep=\dimen134
 \cmidrulekern=\dimen135
 \defaultaddspace=\dimen136
-\@cmidla=\count117
-\@cmidlb=\count118
+\@cmidla=\count116
+\@cmidlb=\count117
 \@aboverulesep=\dimen137
 \@belowrulesep=\dimen138
-\@thisruleclass=\count119
-\@lastruleclass=\count120
+\@thisruleclass=\count118
+\@lastruleclass=\count119
 \@thisrulewidth=\dimen139
 )
 ("C:\Program Files\MiKTeX 2.7\tex\latex\amsmath\amsmath.sty"
@@ -433,13 +432,13 @@ Package: amsbsy 1999/11/29 v1.2d
 ("C:\Program Files\MiKTeX 2.7\tex\latex\amsmath\amsopn.sty"
 Package: amsopn 1999/12/14 v2.01 operator names
 )
-\inf@bad=\count121
+\inf@bad=\count120
 LaTeX Info: Redefining \frac on input line 211.
-\uproot@=\count122
-\leftroot@=\count123
+\uproot@=\count121
+\leftroot@=\count122
 LaTeX Info: Redefining \overline on input line 307.
-\classnum@=\count124
-\DOTSCASE@=\count125
+\classnum@=\count123
+\DOTSCASE@=\count124
 LaTeX Info: Redefining \ldots on input line 379.
 LaTeX Info: Redefining \dots on input line 382.
 LaTeX Info: Redefining \cdots on input line 467.
@@ -452,15 +451,15 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 
 Package amsmath Warning: Unable to redefine math accent \vec.
 
-\macc@depth=\count126
-\c@MaxMatrixCols=\count127
+\macc@depth=\count125
+\c@MaxMatrixCols=\count126
 \dotsspace@=\muskip10
-\c@parentequation=\count128
-\dspbrk@lvl=\count129
+\c@parentequation=\count127
+\dspbrk@lvl=\count128
 \tag@help=\toks22
-\row@=\count130
-\column@=\count131
-\maxfields@=\count132
+\row@=\count129
+\column@=\count130
+\maxfields@=\count131
 \andhelp@=\toks23
 \eqnshift@=\dimen143
 \alignsep@=\dimen144
@@ -533,21 +532,9 @@ LaTeX Font Info:    Try loading font information for T1+lmr on input line 13.
 ("C:\Program Files\MiKTeX 2.7\tex\latex\lm\t1lmr.fd"
 File: t1lmr.fd 2007/01/14 v1.3 Font defs for Latin Modern
 )
-("C:\Program Files\MiKTeX 2.7\tex\context\base\supp-pdf.tex"
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count133
-\scratchdimen=\dimen149
-\scratchbox=\box56
-\nofMPsegments=\count134
-\nofMParguments=\count135
-\everyMPshowfont=\toks26
-\MPscratchCnt=\count136
-\MPscratchDim=\dimen150
-\MPnumerator=\count137
-\everyMPtoPDFconversion=\toks27
-)
 LaTeX Font Info:    Try loading font information for OT1+lmr on input line 23.
- ("C:\Program Files\MiKTeX 2.7\tex\latex\lm\ot1lmr.fd"
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\lm\ot1lmr.fd"
 File: ot1lmr.fd 2007/01/14 v1.3 Font defs for Latin Modern
 )
 LaTeX Font Info:    Try loading font information for OML+lmm on input line 23.
@@ -584,11 +571,10 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <6> on input line 36.
  [1
 
-{C:/Documents and Settings/All Users/Application Data/MiKTeX/2.7/pdftex/config/
-pdftex.map}] [2]
+] [2]
 Overfull \hbox (8.76509pt too wide) in paragraph at lines 128--135
-[]\T1/lmr/m/n/10 Our work is based on the com-po-si-tion and eval-u-a-tion of v
-ar-i-ous afore-mentioned
+[][]\T1/lmr/m/n/10 Our work is based on the com-po-si-tion and eval-u-a-tion of
+ var-i-ous afore-mentioned
  []
 
 [3] [4] [5] [6] [7]
@@ -597,35 +583,12 @@ Underfull \vbox (badness 2173) has occurred while \output is active []
  [8]
 (clanak.bbl [9]) [10] (clanak.aux) ) 
 Here is how much of TeX's memory you used:
- 2963 strings out of 95304
- 33329 string characters out of 1183033
- 111304 words of memory out of 1500000
- 6105 multiletter control sequences out of 110000
+ 2607 strings out of 95305
+ 28657 string characters out of 1183058
+ 104999 words of memory out of 1500000
+ 5753 multiletter control sequences out of 110000
  84654 words of font info for 51 fonts, out of 1200000 for 2000
  14 hyphenation exceptions out of 8191
  29i,9n,22p,488b,266s stack positions out of 5000i,500n,10000p,200000b,5000s
-{C:/Program Files/MiKTeX 2.7/fonts/enc/dvip
-s/lm/lm-ec.enc}{C:/Program Files/MiKTeX 2.7/fonts/enc/dvips/lm/lm-rm.enc}{C:/Pr
-ogram Files/MiKTeX 2.7/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Program Files/MiKTe
-X 2.7/fonts/enc/dvips/lm/lm-mathit.enc}<C:/Program Files/MiKTeX 2.7/fonts/type1
-/public/lm/lmbx10.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/public/lm/lmbx12
-.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/public/lm/lmbx7.pfb><C:/Program F
-iles/MiKTeX 2.7/fonts/type1/public/lm/lmbx9.pfb><C:/Program Files/MiKTeX 2.7/fo
-nts/type1/public/lm/lmbxi10.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/public
-/lm/lmmi10.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/public/lm/lmmi7.pfb><C:
-/Program Files/MiKTeX 2.7/fonts/type1/public/lm/lmmi9.pfb><C:/Program Files/MiK
-TeX 2.7/fonts/type1/public/lm/lmr10.pfb><C:/Program Files/MiKTeX 2.7/fonts/type
-1/public/lm/lmr5.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/public/lm/lmr6.pf
-b><C:/Program Files/MiKTeX 2.7/fonts/type1/public/lm/lmr7.pfb><C:/Program Files
-/MiKTeX 2.7/fonts/type1/public/lm/lmr9.pfb><C:/Program Files/MiKTeX 2.7/fonts/t
-ype1/public/lm/lmri10.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/public/lm/lm
-ri7.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/public/lm/lmri9.pfb><C:/Progra
-m Files/MiKTeX 2.7/fonts/type1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.
-7/fonts/type1/public/lm/lmsy7.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/publ
-ic/lm/lmtt9.pfb>
-Output written on clanak.pdf (10 pages, 364226 bytes).
-PDF statistics:
- 123 PDF objects out of 1000 (max. 8388607)
- 0 named destinations out of 1000 (max. 131072)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
+Output written on clanak.dvi (10 pages, 43940 bytes).
