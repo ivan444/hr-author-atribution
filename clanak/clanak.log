@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.9 (MiKTeX 2.7) (preloaded format=latex 2009.11.24)  11 MAY 2010 16:11
+This is pdfTeX, Version 3.1415926-1.40.9 (MiKTeX 2.7) (preloaded format=latex 2009.11.24)  12 MAY 2010 12:01
 entering extended mode
 **clanak.tex
 (clanak.tex
@@ -581,7 +581,7 @@ Overfull \hbox (8.76509pt too wide) in paragraph at lines 128--135
 Underfull \vbox (badness 2173) has occurred while \output is active []
 
  [8]
-(clanak.bbl [9]) [10] (clanak.aux) ) 
+(clanak.bbl [9]) [10] [11] (clanak.aux) ) 
 Here is how much of TeX's memory you used:
  2607 strings out of 95305
  28657 string characters out of 1183058
@@ -589,6 +589,6 @@ Here is how much of TeX's memory you used:
  5753 multiletter control sequences out of 110000
  84654 words of font info for 51 fonts, out of 1200000 for 2000
  14 hyphenation exceptions out of 8191
- 29i,9n,22p,488b,266s stack positions out of 5000i,500n,10000p,200000b,5000s
+ 29i,9n,22p,488b,264s stack positions out of 5000i,500n,10000p,200000b,5000s
 
-Output written on clanak.dvi (10 pages, 43940 bytes).
+Output written on clanak.dvi (11 pages, 44716 bytes).
