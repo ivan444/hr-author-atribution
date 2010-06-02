@@ -4,22 +4,24 @@
 Argamon, S., Levitan, S.:
 \newblock {Measuring the usefulness of function words for authorship
   attribution}.
-\newblock Proceedings of ACH/ALLC 2005 (2005)
+\newblock Proceedings of ACH/ALLC (2005)
 
 \bibitem{CC01a}
 Chang, C.C., Lin, C.J.:
-\newblock {LIBSVM}: a library for support vector machines. (2001)
+\newblock {LIBSVM}: a library for support vector machines.
+\newblock http://www.csie.ntu.edu.tw/~cjlin/libsvm (2001)
 
 \bibitem{cortes1995support}
 Cortes, C., Vapnik, V.:
 \newblock {Support-vector networks}.
-\newblock Machine learning \textbf{20}(3) (1995)  273--297
+\newblock Machine L. \textbf{20}(3) (1995)  273--297
 
 \bibitem{coyotl2006authorship}
 Coyotl-Morales, R., Villase{\~n}or-Pineda, L., Montes-y G{\'o}mez, M., Rosso,
-  P., del Lenguaje, L.:
+  P., Lenguaje, L.:
 \newblock {Authorship attribution using word sequences}.
-\newblock Lecture Notes in Computer Science \textbf{4225} (2006)  844
+\newblock In: Iberoamerican Congress on Pattern Recognition. Volume 4225.,
+  Springer (2006)  844--853
 
 \bibitem{de2001mining}
 De~Vel, O., Anderson, A., Corney, M., Mohay, G.:
@@ -34,7 +36,7 @@ Diederich, J., Kindermann, J., Leopold, E., Paass, G.:
 \bibitem{holmes1994authorship}
 Holmes, D.:
 \newblock {Authorship attribution}.
-\newblock Computers and the Humanities \textbf{28}(2) (1994)  87--106
+\newblock Comp. and Humanities \textbf{28}(2) (1994)  87--106
 
 \bibitem{keselj2003n}
 Kešelj, V., Peng, F., Cercone, N., Thomas, C.:
@@ -57,7 +59,7 @@ Koppel, M., Schler, J.:
 Kukushkina, O., Polikarpov, A., Khmelev, D.:
 \newblock {Using literal and grammatical statistics for authorship
   attribution}.
-\newblock Problems of Information Transmission \textbf{37}(2) (2001)  172--184
+\newblock Probl. of Info. Trans. \textbf{37}(2) (2001)  172--184
 
 \bibitem{luyckx2005shallow}
 Luyckx, K., Daelemans, W.:
@@ -65,6 +67,12 @@ Luyckx, K., Daelemans, W.:
   attribution}.
 \newblock In: Proceedings of the fifteenth meeting of Computational Linguistics
   in the Netherlands (CLIN 2004). (2005)  149--160
+
+\bibitem{malenica}
+Malenica, M., Smuc, T., \v{S}najder, J., {Dalbelo Ba\v{s}i\'c}, B.:
+\newblock Language morphology offset: Text classification on a croatian-english
+  parallel corpus.
+\newblock Information Processing and Management \textbf{44}(1) (2008)  325--339
 
 \bibitem{mendenhall1887}
 Mendenhall, T.:
@@ -75,38 +83,45 @@ Mendenhall, T.:
 Peng, F., Schuurmans, D., Wang, S., Keselj, V.:
 \newblock {Language independent authorship attribution using character level
   language models}.
-\newblock In: Proceedings of the tenth conference on European chapter of the
-  Association for Computational Linguistics-Volume 1, Association for
-  Computational Linguistics (2003)  274
+\newblock In: Proc. 10th Conf. on European Chapter of the Assoc. Comp. Ling.
+  Volume~1., ACL (2003)  267--274
 
 \bibitem{stamatatos2006ensemble}
 Stamatatos, E.:
 \newblock {Ensemble-based author identification using character n-grams}.
-\newblock In: Proceedings of the 3rd International Workshop on Text-based
-  Information Retrieval. (2006)  41--46
+\newblock In: Proc. 3rd Int. Workshop on Text-based Information Retrieval.
+  (2006)  41--46
 
 \bibitem{stamatatos2009survey}
 Stamatatos, E.:
 \newblock {A survey of modern authorship attribution methods}.
-\newblock Journal of the American Society for information Science and
+\newblock Journal of the American Society for Information Science and
   Technology \textbf{60}(3) (2009)  538--556
 
 \bibitem{stamatatos2001computer}
 Stamatatos, E., Fakotakis, N., Kokkinakis, G.:
 \newblock {Computer-based authorship attribution without lexical measures}.
-\newblock Computers and the Humanities \textbf{35}(2) (2001)  193--214
+\newblock Comp. and Hum. \textbf{35}(2) (2001)  193--214
 
 \bibitem{uzuner2005comparative}
 Uzuner, O., Katz, B.:
 \newblock {A comparative study of language models for book and author
   recognition}.
-\newblock Lecture Notes in Computer Science \textbf{3651} (2005)  969
+\newblock Lecture Notes in Computer Science \textbf{3651} (2005)  969--980
 
 \bibitem{van1996outside}
 van Halteren, H., Tweedie, F., Baayen, H.:
 \newblock {Outside the cave of shadows: Using syntactic annotation to enhance
   authorship attribution}.
 \newblock Computers and the Humanities \textbf{28}(2) (1996)  87--106
+
+\bibitem{silic}
+\v{S}ili\'c, A., Chauchat, J.H., {Dalbelo Ba\v{s}i\'c}, B., Morin, A.:
+\newblock {N}-grams and morphological normalization in text classification: {A}
+  comparison on a croatian-english parallel corpus.
+\newblock In: Proc. 13th Portuguese Conf. on Artificial Intelligence, {EPIA}
+  2007. Volume 4874 of Lecture Notes in Computer Science., Springer (2007)
+  671--682
 
 \bibitem{snajder08automatic}
 \v{S}najder, J., Dalbelo~Ba\v{s}i\'{c}, B., Tadi\'c, M.:
@@ -118,6 +133,6 @@ van Halteren, H., Tweedie, F., Baayen, H.:
 \bibitem{zhao2005effective}
 Zhao, Y., Zobel, J.:
 \newblock {Effective and scalable authorship attribution using function words}.
-\newblock Lecture Notes in Computer Science \textbf{3689} (2005)  174
+\newblock Lecture Notes in Computer Science \textbf{3689} (2005)  174--189
 
 \end{thebibliography}
