@@ -21,27 +21,22 @@ Unska 3, 10000 Zagreb, Croatia\\
 \email{\{tomislav.reicher, ivan.kristo, igor.belsa, artur.silic\}@fer.hr}}
 
 \maketitle
-
+\vspace{-10pt}
 \begin{abstract}
 In this work we investigate the use of various character, lexical, and syntactic
 level features and their combinations in automatic authorship attribution. Since
 the majority of text representation features are language specific, we examine
 their application on texts written in Croatian language. Our work differs from
 the similar work in at least three aspects. Firstly, we use slightly different
-set of features than previously proposed. Secondly, we use three different
+set of features than previously proposed. Secondly, we use four different
 data sets and compare the same features across those data sets to draw stronger
-conclusions. The data sets that we use consist of articles, blogs and books
-written in Croatian language. Finally, we employ a classification method based on
-a strong classifier. We use the Support Vector Machine algorithm to learn classifiers
-which achieve excellent results from 91\% accuracy and 91\% $F_1$ measure up to
-99\% accuracy and 99\% $F_1$ measure.
+conclusions. The data sets that we use consist of articles, blogs, books, and forum posts written in Croatian language. Finally, we employ a classification method based on a strong classifier. We use the Support Vector Machines to learn classifiers which achieve excellent results for longer texts: 91\% accuracy and $F_1$ measure for blogs, 93\% acc. and $F_1$ for articles, and 99\% acc. and $F_1$ for books. Experiments conducted on forum posts show that more complex features need to be employed for shorter texts.
 
-\vspace{10pt}
 \textbf{Key words:} author attribution, function words, POS \emph{n}-grams,
 feature combinations, SVM.
 \end{abstract}
 
-
+\vspace{-20pt}
 \section{Introduction}
 Automatic authorship attribution is a process in the field of text classification
 dealing with author identification of a given text. It can be interpreted
@@ -74,16 +69,14 @@ in the Croatian language. The work is oriented on the combination and evaluation
 of different text representation features on different data sets. The rest of
 the paper is organized in the following manner. Section 2 discusses related work in authorship attribution
 and similar problems. Section 3 introduces different types of text representation
-features we have utilized. Section 4 describes the classification, Section 5
-describes the used data sets and Section 6 presents evaluation methods and
+features that we have utilized. Section 4 describes the classification method, Section 5
+describes the used data sets and Section 6 presents the evaluation methods and
 experiment results. The conclusion and future work are given in Section 7.
 
 \section{Related Work}
 There are several approaches to author attribution in respect of different text
 representation features used for the classification. Based on those features, the
-following taxonomy can be made \cite{stamatatos2009survey}: \emph{character
-features}, \emph{lexical features}, \emph{syntactic features}, \emph{semantic
-features} and \emph{application-specific features}. The following paragraphs
+following taxonomy can be made \cite{stamatatos2009survey}: \emph{character}, \emph{lexical}, \emph{syntactic}, \emph{semantic} and \emph{application-specific features}. Feature choice for topic classfication of Croatian texts was investigated in \cite{malenica,silic}. These methods use character and lexical features. The following paragraphs
 describe character, lexical and syntactic features in more depth and relate our
 work with the existing research.
 
@@ -107,7 +100,7 @@ features based on frequencies of different words, especially function words,
 can produce fairly better results
 \cite{argamon2005measuring,koppel2003exploiting,uzuner2005comparative,zhao2005effective}.
 Analogous to character \emph{n}-grams, word \emph{n}-gram features
-can be defined for which is shown to be quite successful too
+can be defined. They are shown to be quite successful as well
 \cite{coyotl2006authorship,keselj2003n}.
 
 The use of \emph{syntactic features} is governed by the idea that authors tend to
@@ -115,17 +108,17 @@ unconsciously use similar syntactic patterns. Information related to the
 structure of the language is obtained by an in-depth syntactic analysis of the
 text, usually using some sort of an NLP tool. A single text is characterized by
 the presence and frequency of certain syntactic structures. Syntax-based features
-were introduced in \cite{van1996outside}, where the rewrite rules frequencies
+were introduced in \cite{van1996outside}, where the rewrite rule frequencies
 were utilized. Stamatatos et al.\ \cite{stamatatos2001computer} used noun, verb
 and prepositional phrase frequencies. Using a Part-of-speech (POS) tagger one can
 obtain POS tags and POS tag \emph{n}-gram frequencies. Using such features
 excellent results can be achieved
 \cite{diederich2003authorship,koppel2003exploiting,kukushkina2001using,luyckx2005shallow}.
 Koppel et al.\ \cite{koppel2003exploiting} show that the use of grammatical
-errors and informal styling (e.g., writing sentences in capital letters) as text features
+errors and informal styling (e.g., writing sentences in capitals) as text features
 can be useful in authorship attribution.
 
-Our work is based on the composition and evaluation of various afore-mentioned
+Our work is based on the composition and evaluation of various afore mentioned
 text representation features. We use different character, lexical and syntactic
 features and adapt them for the use with the Croatian language. We use
 punctuation marks and vowels frequency as character features. Word length,
@@ -151,10 +144,10 @@ Function words, such as adverbs, prepositions, conjunctions, or interjections,
 are words that have little or no semantic content of their own. They usually
 indicate a grammatical relationship or a generic property
 \cite{zhao2005effective}. Although one would assume that frequencies of some of
-the less used function words would be useful indicator of authors style even the
+the less used function words would be a useful indicator of author's style, even the
 frequencies of more common function words can adequately distinguish between the
-authors. Due to the high frequency of the function words and their significant
-roles in the grammar, the author usually has no conscious control over their
+authors. Due to the high frequency of function words and their significant
+roles in the grammar, an author usually has no conscious control over their
 usage in a particular text \cite{argamon2005measuring}. They are also
 topic-independent. Therefore, function words are good indicators of the author's
 style.
@@ -167,7 +160,7 @@ impossible to conclude if these features are generally effective
 
 In addition to function words, in this work we also consider frequencies of
 auxiliary verbs and pronouns. Their frequencies might be
-representative of the authors style. This makes the set of totally
+representative of the author's style. This makes the set of totally
 652 function words that were used.
 
 \subsection{Idf Weighted Function Words}
@@ -205,115 +198,89 @@ features, some sort of NLP tool was required. Croatian language is
 morphologically complex and it is difficult to develop an accurate and robust POS
 or MSD (Morphosyntactic Description) tagger. We utilized the method given in
 \cite{snajder08automatic} that uses inflectional morphological lexicon to obtain
-POS and MSD of each word from the text. However, as large percentage of
-word-forms are ambiguous and using the given method we cannot disambiguate
-homographs -- words with same spelling but with different meaning -- all possible
-POS and MSD tags for a given word are considered.
+POS and MSD of each word from the text. However, the problem of homography remained. Homographs are equally spelled words with different meanings in their context, sequently having differnet MSDs. Large percentage of
+word forms are ambiguous and using the given method we cannot disambiguate
+homographs, so all possible POS and MSD tags for such words are considered.
 
-Simplest morphosyntactic features we use are features based on POS frequency,
-similar to the one used in \cite{kukushkina2001using}. The given text is
+Simplest morphosyntactic features that we use are features based on POS frequency, similar to the one used in \cite{kukushkina2001using}. The given text is
 preprocessed and the POS of each word in the text is determined. Features are
 obtained by counting the number of occurrences of different POS tags and then
 normalized by the total number of words in the text. The used POS tags are
 adpositions, conjunctions, interjections, nouns, verbs,
 adjectives, and pronouns. In addition, category ``unknown'' is introduced for all
-the words not found in the lexicon (names, places, etc.).
+the words not found in the lexicon.
 
 
 \subsection{Word Morphological Category}
 \label{sec:morphosyntactic}
 
-More complex morphosyntactic features we use take advantage of morphological
-category of a word. Each word can be described by the set of morphological
-categories depending on the word's POS: \emph{case}, \emph{gender}, \emph{number}
-for nouns, \emph{form}, \emph{gender}, \emph{number}, \emph{person} for verbs and
-\emph{case}, \emph{degree}, \emph{gender}, \emph{number} for adjectives.
+More complex morphosyntactic features that we use take advantage of words' morphological categories. Each word can be described by a set of morphological
+categories depending on the word's POS: \emph{case}, \emph{gender}, and \emph{number}
+for nouns, \emph{form}, \emph{gender}, \emph{number}, and \emph{person} for verbs, and
+\emph{case}, \emph{degree}, \emph{gender}, and \emph{number} for adjectives.
 Moreover, each morphological category can take one of a number of different
-values, like for example noun can be in nominative, genitive, dative, accusative, vocative,
-locative, or instrumental case. Features we use are obtained by counting the
-number of occurrences of different values for each morphological category and
-then normalizing them by the total number of words in the text. If, for example,
-a sentence consists of two nouns and an adjective in nominative case then the
-number of occurrences of nominative case would be equal three and the normalized
-nominative case frequency would equal one.
+values; for example, noun can be in nominative, genitive, dative, accusative, vocative, locative, or instrumental case. Features that we use are obtained by counting the number of occurrences of different values for each morphological category and then normalizing them by the total number of words in the text. If, for example, a sentence consists of two nouns and an adjective in nominative case then the number of occurrences of nominative case would be equal three and the normalized nominative case frequency would equal one.
 
 \subsection{Part-Of-Speech \emph{n}-grams}
 \label{sec:ngrami-tipova}
-POS \emph{n}-grams frequency-based features are features that utilize the idea of
-word \emph{n}-grams applied to POS of words in the text. All the words in a given
-text are replaced by their POS to make a new text representation that is then
-used to count the number of occurrences of different POS \emph{n}-grams. The
-number of occurrences of every single POS \emph{n}-gram is normalized by the
-total number of \emph{n}-grams to make this feature independent of the text
-length. The POS we use are those given in Subsection \ref{sec:rijeci-grupe}.
-Since POS \emph{n}-gram features can produce very large dimensionality, only
-3-grams are considered. Example of an POS \emph{n}-gram on a word 3-gram ``Adam i
+%POS \emph{n}-grams frequency-based features are features that utilize the idea of word \emph{n}-grams applied to POS of words in the text.
+POS \emph{n}-grams are similar to word \emph{n}-grams. Instead of using the actual words found in a text, all words are replaced by their POS to make a new text representation that is then used to count the number of occurrences of different POS \emph{n}-grams. The number of occurrences of every single POS \emph{n}-gram is normalized by the total number of \emph{n}-grams to make this feature independent of the text length. The POS we use are those given in Subsection \ref{sec:rijeci-grupe}.
+Since POS \emph{n}-gram features can cause very large dimensionality, only
+3-grams are considered. Example of a POS \emph{n}-gram on a word 3-gram ``Adam i
 Eva'' (``Adam and Eve'') is the ``noun conjunction noun'' trigram.
 
 Further, we investigate the use of \emph{n}-grams on POS and function words in
 parallel. The nouns, verbs and adjectives in a given text are replaced by their
 POS. All the other words, which are considered to be the function words, are
-left as they were. Therefore the 3-gram ``Adam i Eva'' transforms to ``noun i
+left as they were. Therefore, the 3-gram ``Adam i Eva'' transforms to ``noun i
 noun'' 3-gram. Frequencies of such \emph{n}-grams are then used as features.
-The use of such features is motivated by the idea of capturing the contextual
+The use of such features is motivated by the idea of capturing contextual
 information of function words. Due to many different pronouns, conjunctions,
 interjections and prepositions that make many different \emph{n}-grams, frequency
 filtering is applied -- only the frequency of 500 most frequent 3-grams in the
 training data set is considered. Used dimension reduction method is not optimal,
-therefore in the future work other methods should be evaluated, such as
+so in future work other methods should be evaluated, such as
 information gain, $\chi^2$ test, mutual information, maximum relevance, minimum
 redundancy, etc.
 
 \subsection{Other Features}
 \label{sec:znacajke-manje}
-Other features we use are simple character and lexical features:
+Other features that we use are simple character and lexical features:
 punctuation marks, vowels, words length and sentence length frequencies.
 
-A set of following punctuation marks is used: ``.'', ``,'', ``!'', ``?'',
-``''', ``"'', ``-'', ``:'', ``;'', ``+'', ``*''. Their appearance in the text is counted and
+A set of following punctuation marks is used: {``.''}, {``,''}, {``!''}, {``?''},{``{'}''}, {``"''}, {``-''}, {``:''}, {``;''}, {``+''}, and {``*''}. Their appearance in the text is counted and
 the result is normalized by the total number of characters in the text. 
 
 Features based on the frequency of vowel occurrence (a, e, i, o, u) are
 obtained in an equal manner.
 
-The frequencies of words lengths are obtained by counting the lengths of all
-the words from a text and then normalizing them by the total number of words in
-the given text. To enforce consistency, the words longer than 10 characters are
-counted as if they were 10 characters long.
+%The frequencies of words lengths are obtained by counting the lengths of all the words from a text and then normalizing them by the total number of words in the given text.
+
+The frequencies of word lengths are obtained by counting occurences of words for each possible word length. The number is normalized by the total number of words in the given text. To increase robustness, words longer than 10 characters are counted as if they were 10 characters long.
 
 The sentence length frequency is obtained in a similar procedure.
-For the same reason as with the words length, sentences longer than 20 words are
+For the same reason as with the word lengths, sentences longer than 20 words are
 counted as if they were 20 words long.
 
 All features suggested in this subsection have weak discriminatory power
-on their own. However, they proved very useful in the combination with other features, as
-shown in Table \ref{tbl:eval}.
+on their own. However, they have proved to be very useful in combination with other features as shown in Table \ref{tbl:eval}.
 
 \section{Classification}
 % Representation of documents by real number vectors  enables easy use of
 % classifiers that search decision functions, i.e., boundaries in vector
 % space.
-All the features mentioned in this work use some sort of frequency information
-that makes it possible to represent them by real valued feature vectors. Having
-features in a form of vectors, for the classification, we used an SVM (Support
-Vector Machine) with radial basis function as the kernel. It is shown that, with
-the use of parameter selection, linear SVM is a special case of an SVM with RBF
-kernel \cite{keerthi2003asymptotic}, which removes the need to consider a linear
-SVM as a potential classifier. RBF kernel is defined as:
+All features mentioned in this work use some sort of frequency information
+that makes it possible to represent texts with real-valued feature vectors. Having texts in a form of vectors, for the classification we used an SVM (Support Vector Machine) with radial basis function as the kernel. It is shown that, with the use of parameter selection, linear SVM is a special case of an SVM with RBF kernel \cite{keerthi2003asymptotic}, which removes the need to consider a linear SVM as a potential classifier. RBF kernel is defined as:
 \begin{equation}
 k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2).
 \end{equation}
 
-Before commencing the learning process and classification with the SVM, we scale
-the data, real valued feature vectors, to ensure equal contribution of every attribute to
-the classification. Components of every feature vector are scaled to an interval
-$[0, 1]$.
+Before commencing the learning process and classification with SVM, we scale
+the data to ensure equal contribution of every attribute to the classification. Components of every feature vector are scaled to an interval $[0, 1]$.
 
 For the application of SVM classifier in practical problems it is reasonable to
 consider SVM with soft margins defined by parameter $C$, as in
-\cite{cortes1995support}. Parameter $C$ together with $\gamma$ used in RBF kernel
-completely define an SVM model. The search for the appropriate parameters $(C,
-\gamma)$, i.e., model selection, is done by the means of cross-validation: using
+\cite{cortes1995support}. Parameter $C$ together with $\gamma$ used in RBF kernel completely define an SVM model. The search for the appropriate parameters $(C, \gamma)$, i.e., model selection, is done by the means of cross-validation: using
 the 5-fold cross-validation on the learning set parameters $(C, \gamma)$ yielding
 the highest accuracy are selected and the SVM classifier is learned using them.
 The accuracy of classification is measured by the expression:
@@ -323,11 +290,11 @@ acc = \frac{n_c}{N}, % ako bude problema, ovo staviti kao ``inline'' jednadžbu.
 where $n_c$ is the number of correctly classified texts and $N$ is the total number of
 texts.
 Parameters $(C, \gamma)$ that were considered are: $C \in \{2^{-5}, 2^{-4},
-\cdots , 2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \cdots, 2^3\}$ \cite{CC01a}.
+\ldots, 2^{15}\}$, $\gamma \in \{2^{-15}, 2^{-14}, \ldots, 2^3\}$ \cite{CC01a}.
 
 \section{Data Set}
 \label{sec:podatci}
-We used three different data sets in our experimental evaluation. First we
+We have used three different data sets in our experimental evaluation. First we
 experimented using an on-line archive of \emph{proofread} articles (journals)
 from a daily Croatian newspaper ``Jutarnji list,'' available at
 \small \url{http://www.jutarnji.hr/komentari/}\normalsize.  The data set consists of 4571 texts
@@ -337,21 +304,21 @@ texts per author. The articles also differ in size -- the lowest average number
 of words in the text per author is 315 words, and the highest average is 1347
 words. An average number of words in a text per author is 717 words. Considering
 this analysis, we can conclude that the used data set is very heterogeneous.
-Since the writing topics in these articles tend to be time-specific, to avoid the
-overfitting, we split the set by dates -- 20\% of the newest articles of each
+Since the topics in these articles tend to be time-specific, to avoid
+overfitting we split the set by dates -- 20\% of the newest articles of each
 author are taken for testing (hold-out method).
 
-The second data set we used is a collection of on-line blogs. Blog authors were
+The second data set that we have used is a collection of on-line blogs. Blog authors were
 carefully selected: only those authors with more than 40 posts
 and posts longer than 500 words were considered. In addition, special attention
 was paid to select only posts that contain original information as authors often tend to
-quote other sources like news, books, other authors, etc. As a result dataset
-consisting of 22 authors with a total of 3662 posts was obtained. An
+quote other sources like news, books, other authors, etc. As a result, we obtained a dataset
+consisting of 22 authors with a total of 3662 posts. An
 average number of words in a post is 846 words. For the testing purposes we
 split the data set by dates using the same technique that was applied to the
 articles.
 
-The third data set is comprised of classics of Croatian literature. We have
+The third data set is comprised of Croatian literature classics. We have
 selected 52 novels and novellas from 20 different authors and divided them by
 chapters, treating each chapter as a separate text (the same approach was used by
 Argamon et al.\ \cite{argamon2005measuring}). All chapters longer than 4000 words
@@ -362,7 +329,7 @@ selected 20\% of the texts from each author for the test set, leaving the rest a
 a training set.
 
 The last data set used is a set of Internet forum (message board)
-posts from \small \url{http://www.forum.hr}\normalsize. We have selected all the posts from the threads in
+posts from \small \url{http://www.forum.hr/}\normalsize. We have selected all the posts from the threads in
 \textit{Politics} category. Initially there were 2269 different authors with a
 total of 64765 posts. Subsequently we have chosen only those authors that on
 average have more than 100 words per post and more than 64 posts in total. As a
@@ -438,14 +405,12 @@ $\mathcal{V}$, $\mathcal{L}$, $\mathcal{M}$, $\mathcal{N}_1$, $\mathcal{C}$ &
 
 \section{Evaluation}
 \label{sec:evaluacija}
-Classification success is measured by the ratio of correctly classified texts and
-the total number of texts in the training set i.e., micro average accuracy.
-First we tested all the features separately and then the same features in
-various combinations. Results of the evaluation on articles, blogs, and books
+Classifier quality is measured as the ratio of correctly classified texts and
+the total number of texts in the test set i.e., micro average accuracy.
+First we tested all features separately and then we tested their various combinations. Results of the evaluation on articles, blogs, and books
 are shown in Table \ref{tbl:eval}.
 
-Total accuracy does not explain the behavior of the classifier for every class by
-itself. Therefore, precision and recall are calculated for each class and then
+Total accuracy does not explain the behavior of a classifier for every class by itself, so precision and recall were calculated for each class and then
 used to calculate the total macro $F_1$ measure. 
 % For particular class $c$,
 % precision is the ratio of the number of correctly classified documents in $c$ and
@@ -467,7 +432,7 @@ used to calculate the total macro $F_1$ measure.
 % $c_i$ and $F_i$ an $F_1$ measure for class $c_i$.
 
 The SVM parameter selection is very time consuming. Thus, not all of the
-feature combinations were tested. We focused on the evaluation of the feature
+feature combinations were tested. We focused on the evaluation of feature
 combinations that are based on syntactic analysis of the Croatian language and
 those that are based on function word frequencies as they have proven to be most
 successful. Furthermore, some of the features like function words and idf
@@ -477,63 +442,39 @@ no significant contributions so we did not conduct further evaluation.
 
 As we can see from Table \ref{tbl:eval}, highest accuracies are achieved by
 using combination of simple features such as function words, punctuation marks,
-words length, and sentence length frequencies ($\mathcal{F}$, $\mathcal{P}$, $\mathcal{L}$, $\mathcal{S}$). On the other hand, the combinations of syntax-based features are slightly less accurate. If we use the combination of function word and syntax-based features accuracy remains nearly the same as without the use of syntax-based features. We can also see that features based on function words frequencies achieve excellent results on different data sets, regardless
-of the form of the text, as long as the data set used is comprised of texts that
+word length, and sentence length frequencies ($\mathcal{F}$, $\mathcal{P}$, $\mathcal{L}$, $\mathcal{S}$). On the other hand, the combinations of syntax-based features are slightly less accurate. If we use the combination of function words and syntax-based features, accuracy remains nearly the same as without the use of syntax-based features. We can also see that features based on function word frequencies achieve excellent results on different data sets, regardless
+of the text form as long as the data set is comprised of texts that
 are sufficiently large. By increasing the average text length we can see that
 classification results get higher. To further evaluate the impact of the text
-length on performance of features used, we have performed experiments on much
-shorter texts. We used forum posts data set, but the results were not satisfying.
+length on performance of used features, we have performed experiments on much
+shorter texts. We have used forum posts data set, but the results were not satisfying.
 The highest accuracy of 27\% was achieved by using punctuation marks frequencies.
 
 \section{Conclusion}
 It is shown that the authorship attribution problem, when applied to
 morphologically complex languages, such as the Croatian language, can be
 successfully solved using a combination of some relatively simple features. Our
-results with 91\%, 93\% and 99\% accuracy are quite notable considering the fact
+results with 91\%, 93\% and 99\% accuracy on texts with average length longer than 700 words are quite notable considering the fact
 that different heterogeneous data sets were used. Evaluation on different data
 sets shows that the same feature combination based on function words,
 punctuation marks, word length, and sentence length frequencies, achieve the
 highest results. Therefore, we conclude that those
 features are the most suitable for use in the task of authorship
-attribution. In the similar work of Uzuner et al.\ \cite{uzuner2005comparative}
-on a smaller set of authors, fairly larger texts and with the use of
-different classifier nearly the same results and conclusions are obtained. The
-direct comparison of the results has proved very difficult due to the different types of data sets
-used  and different number of authors considered. However, our results fall
-within the interval of previously reported results, which range from 70\% to 99\%
+attribution. Experimental resuls for short texts indicate that more complex features should be utilized. In the similar work of Uzuner et al.\ \cite{uzuner2005comparative}
+on a smaller set of authors, fairly larger texts, and with the use of
+different classifiers nearly the same results and conclusions are obtained. The
+direct comparison of the results has proved very difficult due to different types of data sets used  and different number of authors considered. However, our results fall within the interval of previously reported results, which range from 70\% to 99\%
 \cite{argamon2005measuring,coyotl2006authorship,keselj2003n,luyckx2005shallow,stamatatos2001computer,uzuner2005comparative}.
 
 In addition, there are no other reported methods or results for the Croatian
 language, nor any of the related South Slavic languages, so our work presents a
-basis for further research.
-
-In future work the problems with homography should be resolved in order to
-get more accurate results of syntax-based features. Features based on word and
-character \emph{n}-grams, suggested in
-\cite{coyotl2006authorship,keselj2003n,peng2003language}, should be compared to
-features used in this work. Also, comparison to semantic based features
-should be conducted. It would be interesting to investigate other features
-that are able to cope with short texts such as Internet forum posts, e-mails,
-on-line conversations, or text messages.
+basis for further research. In future work, homography should be resolved in order to get more accurate results of syntax-based features. As suggested in \cite{coyotl2006authorship,keselj2003n,peng2003language}, features based on word and character \emph{n}-grams should be compared to features used in this work. Also, comparison to semantic based features should be conducted as well. It would be interesting to investigate other features that are able to cope with shorter texts such as Internet forum posts, e-mails, on-line conversations, or text messages.
 
 \section*{Acknowledgement}
 This research has been supported by the Croatian Ministry of Science, Education
-and Sports under the grant No.~036-1300646-1986. The authors would like to thank Bojana Dalbelo Ba\v{s}i\'c and Jan \v{S}najder for their helpful suggestions.
+and Sports under the grant No.~036-1300646-1986. The authors would like to thank Bojana Dalbelo Ba\v{s}i\'c, Jan \v{S}najder, and the reviewers for their helpful suggestions.
 
 \bibliographystyle{mysplncs}
 \bibliography{literatura}
-
-\section*{List of changes during the revision}
-
-\begin{itemize}
-\item Abstract -- modified to include information on different data sets.
-
-\item Section 3 Data Set -- added 2nd, 3rd, and 4th paragraph.
-
-\item Section 6 Evaluation -- modified to include information on different data sets, table 1 modified to include new results.
-
-\item Section 7 Conclusion -- modified 1st and 3rd paragraph.
-
-\end{itemize}
 
 \end{document}
