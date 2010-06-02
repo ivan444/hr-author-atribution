@@ -76,7 +76,7 @@ experiment results. The conclusion and future work are given in Section 7.
 \section{Related Work}
 There are several approaches to author attribution in respect of different text
 representation features used for the classification. Based on those features, the
-following taxonomy can be made \cite{stamatatos2009survey}: \emph{character}, \emph{lexical}, \emph{syntactic}, \emph{semantic} and \emph{application-specific features}. Feature choice for topic classfication of Croatian texts was investigated in \cite{malenica,silic}. These methods use character and lexical features. The following paragraphs
+following taxonomy can be made \cite{stamatatos2009survey}: \emph{character}, \emph{lexical}, \emph{syntactic}, \emph{semantic} and \emph{application-specific features}. Feature choice for topic classification of Croatian texts was investigated in \cite{malenica,silic}. These methods use character and lexical features. The following paragraphs
 describe character, lexical and syntactic features in more depth and relate our
 work with the existing research.
 
@@ -198,7 +198,7 @@ features, some sort of NLP tool was required. Croatian language is
 morphologically complex and it is difficult to develop an accurate and robust POS
 or MSD (Morphosyntactic Description) tagger. We utilized the method given in
 \cite{snajder08automatic} that uses inflectional morphological lexicon to obtain
-POS and MSD of each word from the text. However, the problem of homography remained. Homographs are equally spelled words with different meanings in their context, sequently having differnet MSDs. Large percentage of
+POS and MSD of each word from the text. However, the problem of homography remained. Homographs are equally spelled words with different meanings in their context, sequently having different MSDs. Large percentage of
 word forms are ambiguous and using the given method we cannot disambiguate
 homographs, so all possible POS and MSD tags for such words are considered.
 
@@ -256,7 +256,7 @@ obtained in an equal manner.
 
 %The frequencies of words lengths are obtained by counting the lengths of all the words from a text and then normalizing them by the total number of words in the given text.
 
-The frequencies of word lengths are obtained by counting occurences of words for each possible word length. The number is normalized by the total number of words in the given text. To increase robustness, words longer than 10 characters are counted as if they were 10 characters long.
+The frequencies of word lengths are obtained by counting occurrences of words for each possible word length. The number is normalized by the total number of words in the given text. To increase robustness, words longer than 10 characters are counted as if they were 10 characters long.
 
 The sentence length frequency is obtained in a similar procedure.
 For the same reason as with the word lengths, sentences longer than 20 words are
@@ -460,7 +460,7 @@ sets shows that the same feature combination based on function words,
 punctuation marks, word length, and sentence length frequencies, achieve the
 highest results. Therefore, we conclude that those
 features are the most suitable for use in the task of authorship
-attribution. Experimental resuls for short texts indicate that more complex features should be utilized. In the similar work of Uzuner et al.\ \cite{uzuner2005comparative}
+attribution. Experimental results for short texts indicate that more complex features should be utilized. In the similar work of Uzuner et al.\ \cite{uzuner2005comparative}
 on a smaller set of authors, fairly larger texts, and with the use of
 different classifiers nearly the same results and conclusions are obtained. The
 direct comparison of the results has proved very difficult due to different types of data sets used  and different number of authors considered. However, our results fall within the interval of previously reported results, which range from 70\% to 99\%
